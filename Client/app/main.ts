@@ -4,11 +4,11 @@
 
 class Main {
     static run() {
-        alert(new Compressor().CompressText("asd"))
+        var j:string = ((<any>window).STATICLEVEL);
+        var message = new Compressor().DecompressText(j);
+        console.log(message)
 
     }
 }
-
-console.log(';asd');
 
 Main.run();
