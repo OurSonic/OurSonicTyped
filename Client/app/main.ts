@@ -1,13 +1,10 @@
-﻿/// <reference path="/typings/Compress.d.ts" />
-/// <reference path="/typings/jQuery.d.ts" />
-
+﻿import {SLData} from "./SLData";
 
 class Main {
     static run() {
         var j:string = ((<any>window).STATICLEVEL);
         var message = new Compressor().DecompressText(j);
-        console.log(message)
-
+        var sl:SLData=JSON.parse(message);
     }
 }
 
