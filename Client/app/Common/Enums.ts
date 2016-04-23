@@ -8,3 +8,7 @@ export enum ClickState {
     PlaceRing,
     PlaceObject
 }
+export enum ChunkLayer {
+    Low = 0,
+    High = 1
+}
