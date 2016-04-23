@@ -1,4 +1,5 @@
 /// <reference path="../../typings/keyboardjs.d.ts" />
+/// <reference path="../../typings/socket.io-client.d.ts" />
 
 
 import {CanvasInformation} from "../Common/CanvasInformation";
