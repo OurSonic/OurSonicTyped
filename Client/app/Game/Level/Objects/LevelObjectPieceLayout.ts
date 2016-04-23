@@ -1,15 +1,14 @@
-﻿import {Rectangle, Point } from "../../../Common/Utils";
-import {LevelObjectAsset} from "LevelObjectAsset";
-import {SonicManager} from "../../SonicManager";
-import {LevelObjectProjectile} from "LevelObjectProjectile";
-import {SensorM } from "../../Sonic/SensorManager";
-import {SLDataObjectEntry  } from "../../../SLData";
-import {ObjectManager } from "ObjectManager";
-import {Sonic} from "../../Sonic/Sonic";
-import {LevelObjectInfo} from "LevelObjectInfo";
-import {LevelObjectPiece } from "LevelObjectPiece";
-import {LevelObjectPieceLayoutPiece } from "LevelObjectPieceLayoutPiece";
-import {LevelObject } from "LevelObject";
+﻿import {Help } from "../../../Common/Help";
+import {SonicManager } from "../../SonicManager";
+import {LevelObjectAsset } from "./LevelObjectAsset";
+import {LevelObjectAssetFrame } from "./LevelObjectAssetFrame";
+import {LevelObjectProjectile } from "./LevelObjectProjectile";
+import {LevelObjectData} from "./LevelObjectData";
+import {LevelObject } from "./LevelObject";
+import {LevelObjectPiece} from "./LevelObjectPiece";
+import {LevelObjectPieceLayoutPiece} from "./LevelObjectPieceLayoutPiece";
+import {Point, Rectangle } from "../../../Common/Utils";
+import {LevelObjectInfo} from "./LevelObjectInfo";
 
 export class LevelObjectPieceLayout {
     /*[IntrinsicProperty]*/

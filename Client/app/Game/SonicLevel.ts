@@ -1,6 +1,6 @@
 ﻿import {LevelObjectInfo } from "Level/Objects/LevelObjectInfo";
 import {Point} from "../Common/Utils";
-import {HeightMap } from "Level/HeightMap";
+import {HeightMap } from "./Level/HeightMap";
 
 export class SonicLevel {
     public TileAnimations: TileAnimationData[];

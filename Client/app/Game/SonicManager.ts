@@ -1,14 +1,16 @@
 import {Point, DoublePoint, IntersectingRectangle, Rectangle} from "../Common/Utils";
 import {CanvasInformation} from "../Common/CanvasInformation";
-import {SonicEngine} from "SonicEngine";
-import {SonicImage} from "Level/SonicImage";
+import {SonicEngine} from "./SonicEngine";
+import {SonicImage} from "./Level/SonicImage";
 import {GameState, ClickState, ChunkLayer } from "../Common/Enums";
 import {Help} from "../Common/Help";
-import {Sonic} from "Sonic/Sonic";
-import {HeightMap} from "Level/HeightMap";
-import {ObjectManager } from "Level/Objects/ObjectManager";
-import {SonicLevel}from "SonicLevel";
-import {LevelObjectInfo } from "Level/Objects/LevelObjectInfo";
+import {Sonic} from "./Sonic/Sonic";
+import {HeightMap} from "./Level/HeightMap";
+import {ObjectManager } from "./Level/Objects/ObjectManager";
+import {SonicLevel}from "./SonicLevel";
+import {LevelObjectInfo } from "./Level/Objects/LevelObjectInfo";
+import {Ring  } from "./Level/Ring";
+import {SpriteCache } from "./Level/SpriteCache";
 
 export class SonicManager {
     public static Instance: SonicManager;
@@ -64,7 +66,7 @@ export class SonicManager {
         this.engine.canvasHeight = $(window).height();
         gameCanvas.DomCanvas[0].setAttribute("width", this.engine.canvasWidth.toString());
         gameCanvas.DomCanvas[0].setAttribute("height", this.engine.canvasHeight.toString());
-        jQuery.getJSON("Content/sprites/sonic.js", (data: { [key: string]: SonicImage}) => {
+        jQuery.getJSON("content/sprites/sonic.js", (data: { [key: string]: SonicImage}) => {
             this.sonicSprites = data;
         });
         this.objectManager = new ObjectManager(this);
@@ -215,7 +217,7 @@ export class SonicManager {
         var ci = this.SpriteCache.Rings;
         var spriteLocations = new Array<string>();
         for (var j: number = 0; j < 4; j++) {
-            spriteLocations.push(`assets/Sprites/ring${j}.png`);
+            spriteLocations.push(`assets/sprites/ring${j}.png`);
             this.imageLength++;
         }
         var ind_ = this.SpriteCache.Indexes;

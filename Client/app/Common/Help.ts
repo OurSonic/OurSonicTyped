@@ -1,8 +1,8 @@
-﻿import {Point, IntersectingRectangle } from "Utils";
-import {CanvasInformation  } from "CanvasInformation";
-import {Color} from "Color";
+﻿import {Point, IntersectingRectangle } from "./Utils";
+import {CanvasInformation  } from "./CanvasInformation";
+import {Color} from "./Color";
 import {SonicImage} from "../Game/Level/SonicImage";
-import {GameState} from "Enums";
+import {GameState} from "./Enums";
 import {SonicManager} from "../Game/SonicManager";
 
 export class Help {

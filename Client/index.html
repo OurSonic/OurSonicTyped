@@ -24,7 +24,7 @@
         packages: {
             // meaning [baseURL]/local/package when no other rules are present
             // path is normalized using map and paths configuration
-            'app': {
+            '': {
                 main: 'main.ts',
                 defaultExtension: 'ts',
                 meta: {
@@ -35,14 +35,15 @@
              }
         },
         transpiler: 'typescript',
+        baseURL:'app/',
         typescriptOptions: {
             resolveTypings: true,
             emitDecoratorMetadata: true,
             sourceMap: true,
             inlineSourceMap: true
-        },
+        }
     });
-    System.import('app');
+    System.import('');
 </script>
 </body>
 </html>

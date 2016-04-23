@@ -1,16 +1,16 @@
 ﻿import {Help } from "../../../Common/Help";
 import {SonicManager } from "../../SonicManager"; 
-import {LevelObjectAsset } from "LevelObjectAsset";
-import {LevelObjectAssetFrame } from "LevelObjectAssetFrame";
-import {LevelObjectProjectile } from "LevelObjectProjectile";
-import {LevelObjectData} from "LevelObjectData";
-import {LevelObject } from "LevelObject";
-import {LevelObjectPiece} from "LevelObjectPiece";
-import {LevelObjectPieceLayout } from "LevelObjectPieceLayout";
-import {LevelObjectPieceLayoutPiece} from "LevelObjectPieceLayoutPiece";
+import {LevelObjectAsset } from "./LevelObjectAsset";
+import {LevelObjectAssetFrame } from "./LevelObjectAssetFrame";
+import {LevelObjectProjectile } from "./LevelObjectProjectile";
+import {LevelObjectData} from "./LevelObjectData";
+import {LevelObject } from "./LevelObject";
+import {LevelObjectPiece} from "./LevelObjectPiece";
+import {LevelObjectPieceLayout } from "./LevelObjectPieceLayout";
+import {LevelObjectPieceLayoutPiece} from "./LevelObjectPieceLayoutPiece";
 
 export class ObjectManager {
-    public static broken = Help.LoadSprite("assets/Sprites/broken.png", (e) => {
+    public static broken = Help.LoadSprite("assets/sprites/broken.png", (e) => {
 
     });
     private sonicManager: SonicManager;
