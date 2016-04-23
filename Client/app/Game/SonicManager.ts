@@ -6,6 +6,7 @@ import {GameState, ClickState, ChunkLayer } from "../Common/Enums";
 import {Help} from "../Common/Help";
 import {Sonic} from "Sonic/Sonic";
 import {HeightMap} from "Level/HeightMap";
+import {ObjectManager } from "Level/Objects/ObjectManager";
 
 export class SonicManager {
     public static instance: SonicManager;
@@ -142,7 +143,7 @@ export class SonicManager {
                 case ClickState.PlaceRing:
                     ex = e.x;
                     ey = e.y;
-                    this.sonicLevel.rings.add(__init(new Ring(true), { x: ex, y: ey }));
+                    this.sonicLevel.rings.add(Help.merge(new Ring(true), { x: ex, y: ey }));
                     return true;
                 case ClickState.PlaceObject:
                     ex = e.x;

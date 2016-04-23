@@ -221,4 +221,11 @@ export class Help {
         }
         return result;
     }
+
+    static merge<T>(base: T, update: T):T {
+        for (var i in update) {
+            base[i] = update[i];
+        }
+        return base;
+    }
 }
