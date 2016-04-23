@@ -14,7 +14,7 @@
     public set Y(val: number) {
         this._y = val | 0;
     }
-    public static create(pos: Point): Point {
+    public static Create(pos: Point): Point {
         return new Point(pos.X, pos.Y);
     }
 
@@ -22,16 +22,16 @@
         this.X = x;
         this.Y = y;
     }
-    public offset(windowLocation: Point): Point {
+    public Offset(windowLocation: Point): Point {
         return new Point(this.X + windowLocation.X, this.Y + windowLocation.Y);
     }
-    public negatePoint(windowLocation: Point): Point {
+    public NegatePoint(windowLocation: Point): Point {
         return new Point(this.X - windowLocation.X, this.Y - windowLocation.Y);
     }
-    public negate(x: number, y: number): Point {
+    public Negate(x: number, y: number): Point {
         return new Point(this.X - (x | 0), this.Y - (y | 0));
     }
-    public set(x: number, y: number): void {
+    public Set(x: number, y: number): void {
         this.X = x;
         this.Y = y;
     }
@@ -48,16 +48,16 @@ export class DoublePoint {
         this.X = x;
         this.Y = y;
     }
-    public offset(windowLocation: DoublePoint): DoublePoint {
+    public Offset(windowLocation: DoublePoint): DoublePoint {
         return new DoublePoint(this.X + windowLocation.X, this.Y + windowLocation.Y);
     }
-    public negatePoint(windowLocation: DoublePoint): DoublePoint {
+    public NegatePoint(windowLocation: DoublePoint): DoublePoint {
         return new DoublePoint(this.X - windowLocation.X, this.Y - windowLocation.Y);
     }
-    public negate(x: number, y: number): DoublePoint {
+    public Negate(x: number, y: number): DoublePoint {
         return new DoublePoint(this.X - (x | 0), this.Y - (y | 0));
     }
-    public set(x: number, y: number): void {
+    public et(x: number, y: number): void {
         this.X = x;
         this.Y = y;
     }

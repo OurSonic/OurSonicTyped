@@ -13,71 +13,71 @@ export class Sonic {
     private oldSign: number;
     private physicsVariables: SonicConstants;
     private runningTick: number;
-    /*[IntrinsicProperty]*/
+    
     public SensorManager: SensorManager;
     public sonicLastHitTick: number;
     private sonicLevel: SonicLevel;
-    /*[IntrinsicProperty]*/
+    
     public Watcher: Watcher;
-    /*[IntrinsicProperty]*/
+    
     public Ticking: boolean;
-    /*[IntrinsicProperty]*/
+    
     public X: number;
-    /*[IntrinsicProperty]*/
+    
     public Y: number;
-    /*[IntrinsicProperty]*/
+    
     public Rings: number;
-    /*[IntrinsicProperty]*/
+    
     public Debugging: boolean;
-    /*[IntrinsicProperty]*/
+    
     public Jumping: boolean;
-    /*[IntrinsicProperty]*/
+    
     public Crouching: boolean;
-    /*[IntrinsicProperty]*/
+    
     public HoldingLeft: boolean;
-    /*[IntrinsicProperty]*/
+    
     public HoldingRight: boolean;
-    /*[IntrinsicProperty]*/
+    
     public HoldingUp: boolean;
-    /*[IntrinsicProperty]*/
+    
     public Xsp: number;
-    /*[IntrinsicProperty]*/
+    
     public Ysp: number;
-    /*[IntrinsicProperty]*/
+    
     public Gsp: number;
-    /*[IntrinsicProperty]*/
+    
     public Rolling: boolean;
-    /*[IntrinsicProperty]*/
+    
     public InAir: boolean;
-    /*[IntrinsicProperty]*/
+    
     public WasInAir: boolean;
-    /*[IntrinsicProperty]*/
+    
     public HoldingJump: boolean;
-    /*[IntrinsicProperty]*/
+    
     public JustHit: boolean;
-    /*[IntrinsicProperty]*/
+    
     public HLock: number;
-    /*[IntrinsicProperty]*/
+    
     public Mode: RotationMode;
-    /*[IntrinsicProperty]*/
+    
     public Facing: boolean;
-    /*[IntrinsicProperty]*/
+    
     public Breaking: number;
-    /*[IntrinsicProperty]*/
+    
     public Ducking: boolean;
-    /*[IntrinsicProperty]*/
+    
     public SpinDash: boolean;
-    /*[IntrinsicProperty]*/
+    
     public SpinDashSpeed: number;
-    /*[IntrinsicProperty]*/
+    
     public Angle: number;
-    /*[IntrinsicProperty]*/
+    
     protected CurrentlyBall: boolean;
-    /*[IntrinsicProperty]*/
+    
     protected SpriteState: string;
-    /*[IntrinsicProperty]*/
+    
     protected HaltSmoke: Point[];
-    /*[IntrinsicProperty]*/
+    
     public WasJumping: boolean;
     constructor() {
         this.Watcher = new Watcher();

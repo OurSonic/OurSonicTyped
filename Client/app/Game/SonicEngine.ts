@@ -250,14 +250,14 @@ export class SonicEngine {
         switch (sonicManager.CurrentGameState) {
             case GameState.Playing:
                 sonicManager.CurrentGameState = GameState.Editing;
-                sonicManager.Scale = new Point(4, 4);
-                sonicManager.WindowLocation = Help.DefaultWindowLocation(sonicManager.CurrentGameState, sonicManager.Scale);
+                sonicManager.scale = new Point(4, 4);
+                sonicManager.WindowLocation = Help.DefaultWindowLocation(sonicManager.CurrentGameState, sonicManager.scale);
                 sonicManager.SonicToon = null;
                 break;
             case GameState.Editing:
                 sonicManager.CurrentGameState = GameState.Playing;
-                sonicManager.Scale = new Point(4, 4);
-                sonicManager.WindowLocation = Help.DefaultWindowLocation(sonicManager.CurrentGameState, sonicManager.Scale);
+                sonicManager.scale = new Point(4, 4);
+                sonicManager.WindowLocation = Help.DefaultWindowLocation(sonicManager.CurrentGameState, sonicManager.scale);
                 sonicManager.SonicToon = new Sonic();
                 break;
         }
@@ -279,20 +279,20 @@ export class SonicEngine {
     public resizeCanvas(resetOverride: boolean): void {
         this.canvasWidth = $(window).width();
         this.canvasHeight = $(window).height();
-        this.sonicManager.WindowLocation = Help.DefaultWindowLocation(this.sonicManager.CurrentGameState,this.sonicManager.Scale);
-        var wide = new DoublePoint((this.canvasWidth / 320 / this.sonicManager.Scale.X), (this.canvasHeight / 224 / this.sonicManager.Scale.Y));
-        var even = new DoublePoint(Math.min((this.canvasWidth / 320 / this.sonicManager.Scale.X), (this.canvasHeight / 224 / this.sonicManager.Scale.Y)),Math.min((this.canvasWidth / 320 / this.sonicManager.Scale.X),(this.canvasHeight / 224 / this.sonicManager.Scale.Y)));
+        this.sonicManager.WindowLocation = Help.DefaultWindowLocation(this.sonicManager.CurrentGameState,this.sonicManager.scale);
+        var wide = new DoublePoint((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y));
+        var even = new DoublePoint(Math.min((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y)),Math.min((this.canvasWidth / 320 / this.sonicManager.scale.X),(this.canvasHeight / 224 / this.sonicManager.scale.Y)));
         this.sonicManager.RealScale = !this.fullscreenMode ? new DoublePoint(1, 1) : (this.WideScreen ? wide : even);
         if (resetOverride || this.sonicManager.overrideRealScale == null)
             this.sonicManager.overrideRealScale = DoublePoint.create(this.sonicManager.RealScale);
         else this.sonicManager.RealScale = DoublePoint.create(this.sonicManager.overrideRealScale);
         this.gameCanvas.DomCanvas.attr("width",
-            (this.sonicManager.WindowLocation.Width * (this.sonicManager.CurrentGameState == GameState.Playing ? this.sonicManager.Scale.X * this.sonicManager.RealScale.X : 1)).toString());
+            (this.sonicManager.WindowLocation.Width * (this.sonicManager.CurrentGameState == GameState.Playing ? this.sonicManager.scale.X * this.sonicManager.RealScale.X : 1)).toString());
         this.gameCanvas.DomCanvas.attr("height",
-            (this.sonicManager.WindowLocation.Height * (this.sonicManager.CurrentGameState == GameState.Playing ? this.sonicManager.Scale.Y * this.sonicManager.RealScale.Y : 1)).toString());
-        this.gameGoodWidth = <number>(this.sonicManager.WindowLocation.Width * (this.sonicManager.CurrentGameState == GameState.Playing ? this.sonicManager.Scale.X * this.sonicManager.RealScale.X : 1));
-        var screenOffset = this.sonicManager.CurrentGameState == GameState.Playing ? new DoublePoint(((this.canvasWidth / 2 - this.sonicManager.WindowLocation.Width * this.sonicManager.Scale.X * this.sonicManager.RealScale.X / 2)),
-        (this.canvasHeight / 2 - this.sonicManager.WindowLocation.Height * this.sonicManager.Scale.Y * this.sonicManager.RealScale.Y / 2)) : new DoublePoint(0, 0);
+            (this.sonicManager.WindowLocation.Height * (this.sonicManager.CurrentGameState == GameState.Playing ? this.sonicManager.scale.Y * this.sonicManager.RealScale.Y : 1)).toString());
+        this.gameGoodWidth = <number>(this.sonicManager.WindowLocation.Width * (this.sonicManager.CurrentGameState == GameState.Playing ? this.sonicManager.scale.X * this.sonicManager.RealScale.X : 1));
+        var screenOffset = this.sonicManager.CurrentGameState == GameState.Playing ? new DoublePoint(((this.canvasWidth / 2 - this.sonicManager.WindowLocation.Width * this.sonicManager.scale.X * this.sonicManager.RealScale.X / 2)),
+        (this.canvasHeight / 2 - this.sonicManager.WindowLocation.Height * this.sonicManager.scale.Y * this.sonicManager.RealScale.Y / 2)) : new DoublePoint(0, 0);
         this.gameCanvas.DomCanvas.css("left", screenOffset.X+'px');
         this.gameCanvas.DomCanvas.css("top", screenOffset.Y + 'px');
         this.sonicManager.DestroyCanvases();

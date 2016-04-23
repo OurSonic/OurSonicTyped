@@ -8,9 +8,9 @@ import {SonicManager } from "../SonicManager";
 import {RotationMode } from "../../Common/Enums";
 
 export class SensorManager {
-    /*[IntrinsicProperty]*/
+    
     protected Sensors: { [sensorKey: string]: Sensor };
-    /*[IntrinsicProperty]*/
+    
     protected SensorResults: { [sensorKey: string]: SensorM };
     constructor() {
         this.Sensors = {};

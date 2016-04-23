@@ -2,11 +2,11 @@
 
 export class CanvasInformation {
     private static blackPixel: HTMLCanvasElement;
-    /*[IntrinsicProperty]*/
+    
     public Context: CanvasRenderingContext2D;
-    /*[IntrinsicProperty]*/
+    
     public DomCanvas: JQuery;
-    /*[IntrinsicProperty]*/
+    
     public Canvas: HTMLCanvasElement;
     public static get BlackPixel(): HTMLCanvasElement {
         if (CanvasInformation.blackPixel == null) {

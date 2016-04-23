@@ -2,7 +2,7 @@ import {Point, DoublePoint, IntersectingRectangle, Rectangle} from "../Common/Ut
 import {CanvasInformation} from "../Common/CanvasInformation";
 import {SonicEngine} from "./SonicEngine";
 import {SonicImage} from "./Level/SonicImage";
-import {GameState, ClickState, ChunkLayer } from "../Common/Enums";
+import {GameState, ClickState, ChunkLayer, ChunkLayerState, ChunkLayerState, ChunkLayerState, ChunkLayerState } from "../Common/Enums";
 import {Help} from "../Common/Help";
 import {Sonic} from "./Sonic/Sonic";
 import {HeightMap} from "./Level/HeightMap";
@@ -10,7 +10,12 @@ import {ObjectManager } from "./Level/Objects/ObjectManager";
 import {SonicLevel}from "./SonicLevel";
 import {LevelObjectInfo } from "./Level/Objects/LevelObjectInfo";
 import {Ring  } from "./Level/Ring";
-import {SpriteCache } from "./Level/SpriteCache";
+import {SpriteCache } from "./Level/SpriteCache"; 
+import {TileAnimationData} from "./Level/Animations/TileAnimationData";
+import {AnimationInstance, } from "./Level/Animations/AnimationInstance";
+import {TilePaletteAnimationManager } from "./Level/Tiles/TilePaletteAnimationManager";
+import {TileAnimationManager } from "./Level/Tiles/TileAnimationManager";
+import {TileChunkDebugDrawOptions,  TileChunk } from "./Level/Tiles/TileChunk";
 
 export class SonicManager {
     public static Instance: SonicManager;
@@ -32,7 +37,7 @@ export class SonicManager {
     public CurrentGameState: GameState;
     public BigWindowLocation: IntersectingRectangle;
     public SonicToon: Sonic;
-    public Scale: Point;
+    public scale: Point;
     public WindowLocation: IntersectingRectangle;
     public RealScale: DoublePoint;
     public InHaltMode: boolean;
@@ -54,9 +59,9 @@ export class SonicManager {
     public OnLevelLoad: (_: SonicLevel) => void;
     public TileChunkDebugDrawOptions: TileChunkDebugDrawOptions;
      
-    /*[IntrinsicProperty]*/
+    
     public TilePaletteAnimationManager: TilePaletteAnimationManager;
-    /*[IntrinsicProperty]*/
+    
     public TileAnimationManager: TileAnimationManager;
      
     constructor(engine: SonicEngine, gameCanvas: CanvasInformation, resize: () => void) {
@@ -72,11 +77,11 @@ export class SonicManager {
         this.objectManager = new ObjectManager(this);
         this.objectManager.Init();
         var scl: number = 4;
-        this.Scale = new Point(scl, scl);
+        this.scale = new Point(scl, scl);
         this.RealScale = new DoublePoint(1, 1);
         this.mainCanvas = gameCanvas;
-        this.WindowLocation = Help.DefaultWindowLocation(GameState.Editing,  this.Scale);
-        this.BigWindowLocation = Help.DefaultWindowLocation(GameState.Editing,  this.Scale);
+        this.WindowLocation = Help.DefaultWindowLocation(GameState.Editing,  this.scale);
+        this.BigWindowLocation = Help.DefaultWindowLocation(GameState.Editing,  this.scale);
         this.BigWindowLocation.Width = <number>(this.BigWindowLocation.Width * 1.8);
         this.BigWindowLocation.Height = <number>(this.BigWindowLocation.Height * 1.8);
         this.TileAnimations = new Array<TileAnimationData>();
@@ -104,8 +109,8 @@ export class SonicManager {
         return false;
     }
     private effectClick(event: JQueryEventObject): boolean {
-        var e = new Point(<number>(<number>event.clientX / this.Scale.X / this.RealScale.X + this.WindowLocation.X),
-            <number>(<number>event.clientY / this.Scale.Y / this.RealScale.Y + this.WindowLocation.Y));
+        var e = new Point(<number>(<number>event.clientX / this.scale.X / this.RealScale.X + this.WindowLocation.X),
+            <number>(<number>event.clientY / this.scale.Y / this.RealScale.Y + this.WindowLocation.Y));
         var ey: number;
         var ex: number;
         if (event.ctrlKey) {
@@ -222,13 +227,13 @@ export class SonicManager {
         }
         var ind_ = this.SpriteCache.Indexes;
         this.SpriteLoader = new SpriteLoader(completed, update);
-        if (ci.Count == 0) {
+        if (ci.length == 0) {
             var spriteStep = this.SpriteLoader.AddStep("Sprites",
                 (i, done) => {
                     Help.LoadSprite(spriteLocations[i],
                         jd => {
                             ci[i] = CanvasInformation.Create(jd.width, jd.height, false);
-                            ci[i].Context.DrawImage(jd, 0, 0);
+                            ci[i].Context.drawImage(jd, 0, 0);
                             done();
                         });
                 },
@@ -244,7 +249,7 @@ export class SonicManager {
             }
         }
         var cci = this.SpriteCache.SonicSprites;
-        if (cci.Count == 0) {
+        if (cci.length == 0) {
             var sonicStep = this.SpriteLoader.AddStep("Sonic Sprites",
                 (sp, done) => {
                     for (var sonicSprite in this.sonicSprites) {
@@ -281,8 +286,8 @@ export class SonicManager {
         if (this.CurrentGameState == GameState.Editing) {
             w1 += 1;
             h1 += 1;
-            w1 /= this.Scale.X;
-            h1 /= this.Scale.Y;
+            w1 /= this.scale.X;
+            h1 /= this.scale.Y;
         }
         var offs = SonicManager.getOffs(w1, h1);
         this.TilePaletteAnimationManager.TickAnimatedPalettes();
@@ -320,7 +325,7 @@ export class SonicManager {
             this.SonicToon.DrawUI(context, new Point(this.ScreenOffset.X, this.ScreenOffset.Y));
     }
     private drawCanveses(canvas: CanvasRenderingContext2D, localPoint: Point): void {
-        canvas.scale(this.Scale.X, this.Scale.Y);
+        canvas.scale(this.scale.X, this.scale.Y);
         canvas.drawImage(this.lowChunkCanvas.Canvas, localPoint.X, localPoint.Y);
         canvas.drawImage(this.sonicCanvas.Canvas, localPoint.X, localPoint.Y);
         canvas.drawImage(this.highChuckCanvas.Canvas, localPoint.X, localPoint.Y);
@@ -402,7 +407,7 @@ export class SonicManager {
             localPoint.X = (_xPreal * 128) - this.WindowLocation.X;
             localPoint.Y = (_yPreal * 128) - this.WindowLocation.Y;
             if (!chunk.IsEmpty() && !chunk.OnlyForeground())
-                chunk.Draw(canvas, localPoint, ChunkLayer.Low);
+                chunk.Draw(canvas, localPoint, ChunkLayerState.Low);
         }
     }
     private drawHighChunks(canvas: CanvasRenderingContext2D, fxP: number, fyP: number, offs: Point[], localPoint: Point): void {
@@ -419,7 +424,7 @@ export class SonicManager {
             localPoint.X = (_xPreal * 128) - this.WindowLocation.X;
             localPoint.Y = (_yPreal * 128) - this.WindowLocation.Y;
             if (!chunk.IsEmpty() && !chunk.OnlyBackground())
-                chunk.Draw(canvas, localPoint, ChunkLayer.High);
+                chunk.Draw(canvas, localPoint, ChunkLayerState.High);
             if (this.ShowHeightMap) {
                 var fd = this.SpriteCache.HeightMapChunks[(this.SonicLevel.CurHeightMap ? 1 : 2) + " " + chunk.Index];
                 if (fd == null) {
@@ -448,9 +453,9 @@ export class SonicManager {
             localPoint.X = (_xPreal * 128) - this.WindowLocation.X;
             localPoint.Y = (_yPreal * 128) - this.WindowLocation.Y;
             if (!chunk.IsEmpty() && !chunk.OnlyForeground())
-                chunk.DrawAnimationDebug(canvas, localPoint, ChunkLayer.Low, this.TileChunkDebugDrawOptions);
+                chunk.DrawAnimationDebug(canvas, localPoint, ChunkLayerState.Low, this.TileChunkDebugDrawOptions);
             if (!chunk.IsEmpty() && !chunk.OnlyBackground())
-                chunk.DrawAnimationDebug(canvas, localPoint, ChunkLayer.High, this.TileChunkDebugDrawOptions);
+                chunk.DrawAnimationDebug(canvas, localPoint, ChunkLayerState.High, this.TileChunkDebugDrawOptions);
         }
     }
     private cacheHeightMapForChunk(chunk: TileChunk): CanvasInformation {
@@ -631,10 +636,10 @@ export class SonicManager {
             var debugCanvases: CanvasInformation[] = new Array<CanvasInformation>();
             var totalHeight: number = 0;
             var broke = false;
-            for (var index: number = dropOffIndex; index < this.SonicLevel.TileChunks.Count; index++) {
+            for (var index: number = dropOffIndex; index < this.SonicLevel.TileChunks.length; index++) {
                 var chunk = this.SonicLevel.TileChunks[index];
                 var canvasCache = chunk.Debug_DrawCache();
-                totalHeight += canvasCache.Canvas.Height;
+                totalHeight += canvasCache.Canvas.height;
                 debugCanvases.push(canvasCache);
                 if (totalHeight > 10000) {
                     dropOffIndex = index + 1;

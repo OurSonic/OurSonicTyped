@@ -1,6 +1,11 @@
 ﻿import {LevelObjectInfo } from "Level/Objects/LevelObjectInfo";
 import {Point} from "../Common/Utils";
 import {HeightMap } from "./Level/HeightMap";
+import {Tile } from "./Level/Tiles/Tile";
+import {Ring } from "./Level/Ring";
+import {TilePiece } from "./Level/Tiles/TilePiece";
+import {TileAnimationData} from "./Level/Animations/TileAnimationData";
+import {TileChunk  } from "./Level/Tiles/TileChunk";
 
 export class SonicLevel {
     public TileAnimations: TileAnimationData[];
@@ -43,10 +48,10 @@ export class SonicLevel {
         return this.TileChunks[this.ChunkMap[x][y]];
     }
     public ClearCache(): void {
-        for (var tile of this.Tiles.Array()) {
+        for (var tile of this.Tiles) {
             tile.ClearCache();
         }
-        for (var chunk of this.TileChunks.Array()) {
+        for (var chunk of this.TileChunks) {
             chunk.ClearCache();
         }
     }
@@ -59,4 +64,16 @@ export class SonicLevel {
     public SetChunkAt(x: number, y: number, tileChunk: TileChunk): void {
         this.ChunkMap[x][y] = tileChunk.Index;
     }
+}
+
+export class PaletteItem {
+    public Palette: string[];
+    public SkipIndex: number;
+    public TotalLength: number;
+    public Pieces: PaletteItemPieces[];
+}
+export class PaletteItemPieces {
+    public PaletteIndex: number;
+    public PaletteMultiply: number;
+    public PaletteOffset: number;
 }

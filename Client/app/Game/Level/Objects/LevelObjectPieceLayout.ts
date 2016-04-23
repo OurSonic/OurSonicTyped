@@ -11,13 +11,13 @@ import {Point, Rectangle } from "../../../Common/Utils";
 import {LevelObjectInfo} from "./LevelObjectInfo";
 
 export class LevelObjectPieceLayout {
-    /*[IntrinsicProperty]*/
+    
     public Width: number;
-    /*[IntrinsicProperty]*/
+    
     public Height: number;
-    /*[IntrinsicProperty]*/
+    
     public Pieces: LevelObjectPieceLayoutPiece[];
-    /*[IntrinsicProperty]*/
+    
     public Name: string;
     constructor(name: string) {
         this.Name = name;

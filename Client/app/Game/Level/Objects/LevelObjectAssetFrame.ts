@@ -46,7 +46,7 @@ export class LevelObjectAssetFrame {
         mainCanvas.translate(pos.X, pos.Y);
         mainCanvas.scale((<number>width / this.Width), (<number>height / this.Height));
         mainCanvas.drawImage(c.Canvas, 0, 0);
-        mainCanvas.restore();
+        maincanvas.restore();
     }
     public GetCache(showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): CanvasInformation {
         var m = this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
