@@ -20,7 +20,7 @@ export class Sonic {
 
     public Watcher: Watcher;
     public Ticking: boolean;
-    public X: number=0;
+    public X: number = 0;
     public Y: number = 0;
     public Rings: number = 0;
     public Debugging: boolean;
@@ -80,7 +80,7 @@ export class Sonic {
         else if (this.Angle > 0xA1 && this.Angle < 0xDE)
             this.Mode = RotationMode.RightWall;
         this.myRec.X = (this.X - 10) | 0;
-        this.myRec.Y = (this.Y - 20)|0;
+        this.myRec.Y = (this.Y - 20) | 0;
         this.myRec.Width = 10 * 2;
         this.myRec.Height = 20 * 2;
         if (this.InAir)
@@ -716,10 +716,10 @@ export class Sonic {
                 this.SensorManager.Draw(canvas, this);
             for (var i = 0; i < this.HaltSmoke.length; i++) {
                 var lo = this.HaltSmoke[i];
-                canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("haltsmoke" + (SonicManager.Instance.DrawTickCount % (4 * 6)) / 6)],
+                canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("haltsmoke" + ((SonicManager.Instance.DrawTickCount % (4 * 6)) / 6 | 0))],
                     ((lo.X - SonicManager.Instance.WindowLocation.X - 25)),
                     ((lo.Y + 12 - SonicManager.Instance.WindowLocation.Y + offset.Y)));
-                if ((((SonicManager.Instance.DrawTickCount + 6) % (4 * 6)) / 6 | 0 )== 0)
+                if ((((SonicManager.Instance.DrawTickCount + 6) % (4 * 6)) / 6 | 0) == 0)
                     this.HaltSmoke = this.HaltSmoke.slice(i, 1);
             }
         }
@@ -866,7 +866,7 @@ export class Watcher {
             offset = 16;
         else offset = ticks - this.lastTick;
         this.lastTick = ticks;
-        this.mult = (offset / 16)|0;
+        this.mult = (offset / 16) | 0;
     }
     public Multiply(v: number): number {
         return this.mult * v;

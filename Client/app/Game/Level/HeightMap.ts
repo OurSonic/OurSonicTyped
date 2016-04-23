@@ -10,12 +10,13 @@ export class HeightMap {
     protected Height: number;
     public Items: number[];
     protected Index: number;
-    public Full: boolean;
+    public Full: boolean=undefined;
     constructor(heightMap: number[], i: number) {
         this.Items = heightMap;
         this.Width = 16;
         this.Height = 16;
         this.Index = i;
+        this.Full = undefined;
     }
     static FullHeight(full: boolean): HeightMap {
         var h = new HeightMap(null, 0);

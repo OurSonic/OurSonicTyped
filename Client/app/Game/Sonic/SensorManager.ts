@@ -52,9 +52,15 @@ export class SensorManager {
             var ab1 = chunk.AngleMap1 = new Array(8);
             for (var _1 = 0; _1 < 128; _1++) {
                 hb1[_1] = new Array(128);
+                for (var _2 = 0; _2 < 128; _2++) {
+                    hb1[_1][_2] = 0;
+                }
             }
             for (var _1 = 0; _1 < 8; _1++) {
                 ab1[_1] = new Array(8);
+                for (var _2 = 0; _2 < 8; _2++) {
+                    ab1[_1][_2] = 0;
+                }
             }
             for (var _y = 0; _y < 8; _y++) {
                 for (var _x = 0; _x < 8; _x++) {
@@ -80,16 +86,18 @@ export class SensorManager {
                     var heightMaskItems: number[] = null;
                     if (heightMask == null)
                         continue;
-                    var mj: Solidity; 
-                    if (heightMask.Full !==undefined) {
-                        mj = heightMask.Full===false ? 0 : tp.Solid1;
+                    var mj: Solidity;
+                    if (heightMask.Full !== undefined) {
+                        mj = heightMask.Full === false ? 0 : tp.Solid1;
                         for (; __y < 16; __y++) {
                             for (; __x < 16; __x++) {
                                 hb1[(_x * 16 + __x)][(_y * 16 + __y)] = mj;
                             }
                         }
+                    } else {
+                        console.log(heightMask.Items)
+                        heightMaskItems = heightMask.Items;
                     }
-                    else heightMaskItems = heightMask.Items;
                     for (; __y < 16; __y++) {
                         for (; __x < 16; __x++) {
                             var jx = 0;
@@ -116,7 +124,7 @@ export class SensorManager {
                             }
                             if (heightMask.Full === undefined) {
                                 switch (tp.Solid1) {
-                                    case 0:
+                                    case <Solidity>0:
                                         hb1[(_x * 16 + jx)][(_y * 16 + jy)] = 0;
                                         break;
                                     case <Solidity>1:
@@ -167,6 +175,8 @@ export class SensorManager {
                         continue;
                     var mj: Solidity;
                     var hd2Items: number[] = null;
+                     
+
                     if (hd2.Full !== undefined) {
                         mj = hd2.Full === false ? 0 : tp.Solid2;
                         for (; __y < 16; __y++) {
