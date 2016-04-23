@@ -1,1 +1,0 @@
-tsc -t es5 -m system -outFile app.js  main.ts

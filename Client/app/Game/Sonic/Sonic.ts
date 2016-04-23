@@ -19,33 +19,33 @@ export class Sonic {
     private sonicLevel: SonicLevel;
 
     public Watcher: Watcher;
-    public Ticking: boolean;
+    public Ticking: boolean=false;
     public X: number = 0;
     public Y: number = 0;
     public Rings: number = 0;
-    public Debugging: boolean;
-    public Jumping: boolean;
-    public Crouching: boolean;
-    public HoldingLeft: boolean;
-    public HoldingRight: boolean;
-    public HoldingUp: boolean;
+    public Debugging: boolean=false;
+    public Jumping: boolean = false;
+    public Crouching: boolean = false;
+    public HoldingLeft: boolean = false;
+    public HoldingRight: boolean = false;
+    public HoldingUp: boolean = false;
     public Xsp: number = 0;
     public Ysp: number = 0;
     public Gsp: number = 0;
-    public Rolling: boolean;
-    public InAir: boolean;
-    public WasInAir: boolean;
-    public HoldingJump: boolean;
-    public JustHit: boolean;
+    public Rolling: boolean = false;
+    public InAir: boolean = false;
+    public WasInAir: boolean = false;
+    public HoldingJump: boolean = false;
+    public JustHit: boolean = false;
     public HLock: number = 0;
-    public Mode: RotationMode;
-    public Facing: boolean;
+    public Mode: RotationMode=RotationMode.Floor;
+    public Facing: boolean = false;
     public Breaking: number = 0;
-    public Ducking: boolean;
-    public SpinDash: boolean;
+    public Ducking: boolean = false;
+    public SpinDash: boolean = false;
     public SpinDashSpeed: number = 0;
     public Angle: number = 0;
-    protected CurrentlyBall: boolean;
+    protected CurrentlyBall: boolean = false;
     protected SpriteState: string;
     protected HaltSmoke: Point[];
 
@@ -392,7 +392,7 @@ export class Sonic {
             else if (((this.runningTick++) % Math.floor(2 - absgsp) | 0) == 0)
                 this.SpriteState = "spindash" + ((j + 1) % 6);
         }
-        else if (Math.abs(absgsp - 0) < epsilon && this.InAir == false) {
+        else if (Math.abs(absgsp - 0) < epsilon && !this.InAir) {
             if (this.Ducking) {
                 if (word != "duck") {
                     this.SpriteState = "duck0";
@@ -584,7 +584,7 @@ export class Sonic {
                         this.Xsp = -max;
                 }
                 else {
-                    this.Xsp -= this.Watcher.Multiply(physics.Air);
+//                    this.Xsp -= this.Watcher.Multiply(physics.Air);
                 }
             }
             if (this.WasInAir)
@@ -693,8 +693,8 @@ export class Sonic {
                 canvas.drawImage(cur, -cur.width / 2, -cur.height / 2);
                 if (this.SpinDash) {
                     canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("spinsmoke" + ((SonicManager.Instance.DrawTickCount % 14) / 2 | 0))],
-                        (-cur.width / 2) - 25,
-                        -cur.height / 2 + (offset.Y) - 14,
+                        (-cur.width / 2) - 19,
+                        -cur.height / 2 + (offset.Y) - 6,
                         cur.width,
                         cur.height);
                 }
@@ -705,8 +705,8 @@ export class Sonic {
                 canvas.drawImage(cur, -cur.width / 2, -cur.height / 2);
                 if (this.SpinDash) {
                     canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("spinsmoke" + ((SonicManager.Instance.DrawTickCount % 14) / 2 | 0))],
-                        (-cur.width / 2) - 25,
-                        -cur.height / 2 + (offset.Y) - 14,
+                        (-cur.width / 2) - 19,
+                        -cur.height / 2 + (offset.Y) - 6,
                         cur.width,
                         cur.height);
                 }
@@ -717,10 +717,11 @@ export class Sonic {
             for (let i = 0; i < this.HaltSmoke.length; i++) {
                 let lo = this.HaltSmoke[i];
                 canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("haltsmoke" + ((SonicManager.Instance.DrawTickCount % (4 * 6)) / 6 | 0))],
-                    ((lo.X - SonicManager.Instance.WindowLocation.X - 25)),
+                    ((lo.X - SonicManager.Instance.WindowLocation.X - 15)),
                     ((lo.Y + 12 - SonicManager.Instance.WindowLocation.Y + offset.Y)));
-                if ((((SonicManager.Instance.DrawTickCount + 6) % (4 * 6)) / 6 | 0) == 0)
-                    this.HaltSmoke = this.HaltSmoke.slice(i, 1);
+                if ((((SonicManager.Instance.DrawTickCount + 6) % (4 * 6)) / 6 | 0) == 0) {
+                     this.HaltSmoke.splice(i, 1);
+                }
             }
         }
     }
