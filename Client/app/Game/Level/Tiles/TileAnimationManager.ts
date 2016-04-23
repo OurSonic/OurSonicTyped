@@ -18,9 +18,11 @@ export class TileAnimationManager {
     public TickAnimatedTiles(): void {
         if (this.Animations == null)
             this.Init();
-        for (var animation of this.Animations) {
-            var tilePaletteAnimation = animation.Value;
-            tilePaletteAnimation.Tick();
+        for (var animation in this.Animations) {
+            if (this.Animations.hasOwnProperty(animation)) {
+                var tilePaletteAnimation = this.Animations[animation];
+                tilePaletteAnimation.Tick();
+            }
         }
     }
     public ClearCache(): void {

@@ -91,8 +91,8 @@ export class SonicManager {
         this.mainCanvas = gameCanvas;
         this.WindowLocation = Help.DefaultWindowLocation(GameState.Editing, this.scale);
         this.BigWindowLocation = Help.DefaultWindowLocation(GameState.Editing, this.scale);
-        this.BigWindowLocation.Width = <number>(this.BigWindowLocation.Width * 1.8);
-        this.BigWindowLocation.Height = <number>(this.BigWindowLocation.Height * 1.8);
+        this.BigWindowLocation.Width = (this.BigWindowLocation.Width * 1.8) | 0;
+        this.BigWindowLocation.Height = (this.BigWindowLocation.Height * 1.8) | 0;
         this.TileAnimations = new Array<TileAnimationData>();
         this.AnimationInstances = new Array<AnimationInstance>();
         this.ShowHeightMap = false;
@@ -183,8 +183,8 @@ export class SonicManager {
         this.InFocusObjects = new Array<LevelObjectInfo>();
         let levelObjectInfos = this.SonicLevel.Objects;
         for (let obj of levelObjectInfos) {
-            localPoint.X = <number>obj.X;
-            localPoint.Y = <number>obj.Y;
+            localPoint.X = obj.X | 0;
+            localPoint.Y = obj.Y|0;
             if (this.BigWindowLocation.Intersects(localPoint)) {
                 this.InFocusObjects.push(obj);
                 obj.Tick(obj, this.SonicLevel, this.SonicToon);

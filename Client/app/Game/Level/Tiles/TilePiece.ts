@@ -67,7 +67,7 @@ export class TilePiece {
         for (var tileItem of this.Tiles) {
             var tile = tileItem.GetTile();
             if (tile) {
-                if (tileItem.Priority == (<number>layer == 1)) {
+                if (tileItem.Priority == (layer == 1)) {
                     var _xf = xFlip !== tileItem.XFlip;
                     var _yf = yFlip !== tileItem.YFlip;
                     var df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
@@ -97,7 +97,7 @@ export class TilePiece {
             for (var tileItem of this.Tiles) {
                 var tile = tileItem.GetTile();
                 if (tile) {
-                    if (tileItem.Priority == (<number>layer == 1)) {
+                    if (tileItem.Priority == (layer == 1)) {
                         var _xf = xFlip !== tileItem.XFlip;
                         var _yf = yFlip !== tileItem.YFlip;
                         var df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
@@ -122,7 +122,7 @@ export class TilePiece {
         for (var tileItem of this.Tiles) {
             var tile = tileItem.GetTile();
             if (tile) {
-                if (tileItem.Priority == (<number>layer == 1)) {
+                if (tileItem.Priority == (layer == 1)) {
                     var _xf = xFlip !== tileItem.XFlip;
                     var _yf = yFlip !== tileItem.YFlip;
                     var df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];

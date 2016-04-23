@@ -497,8 +497,8 @@ export class TileChunk {
                     let frame = m.Frames[f];
                     var context = canvas.Context;
                     context.save();
-                    var x = <number>((numOfChunks % numWide) * 128);
-                    var y = <number>Math.floor(numOfChunks / numWide) * 128;
+                    var x = ((numOfChunks % numWide) * 128) | 0;
+                    var y = (Math.floor(numOfChunks / numWide) | 0) * 128;
                     context.translate(x, y);
                     canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                     context.fillRect(0, 0, 128, 128);
@@ -515,8 +515,8 @@ export class TileChunk {
                     let frame = m.Frames[f];
                     var context = canvas.Context;
                     context.save();
-                    var x = <number>((numOfChunks % numWide) * 128);
-                    var y = <number>Math.floor(numOfChunks / numWide) * 128;
+                    var x = ((numOfChunks % numWide) * 128) | 0;
+                    var y = (Math.floor(numOfChunks / numWide) | 0) * 128;
                     context.translate(x, y);
                     canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                     context.fillRect(0, 0, 128, 128);

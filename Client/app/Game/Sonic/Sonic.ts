@@ -79,8 +79,8 @@ export class Sonic {
             this.Mode = RotationMode.Ceiling;
         else if (this.Angle > 0xA1 && this.Angle < 0xDE)
             this.Mode = RotationMode.RightWall;
-        this.myRec.X = <number>(this.X - 10);
-        this.myRec.Y = <number>(this.Y - 20);
+        this.myRec.X = (this.X - 10) | 0;
+        this.myRec.Y = (this.Y - 20)|0;
         this.myRec.Width = 10 * 2;
         this.myRec.Height = 20 * 2;
         if (this.InAir)
@@ -381,7 +381,7 @@ export class Sonic {
                 this.SpriteState = "hit0";
                 this.runningTick = 1;
             }
-            else if (((this.runningTick++) % (<number>Math.floor(8 - absgsp)) == 0))
+            else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) == 0))
                 this.SpriteState = "hit1";
         }
         else if (this.SpinDash) {
@@ -389,7 +389,7 @@ export class Sonic {
                 this.SpriteState = "spindash0";
                 this.runningTick = 1;
             }
-            else if (((this.runningTick++) % <number>Math.floor(2 - absgsp)) == 0)
+            else if (((this.runningTick++) % Math.floor(2 - absgsp) | 0) == 0)
                 this.SpriteState = "spindash" + ((j + 1) % 6);
         }
         else if (Math.abs(absgsp - 0) < epsilon && this.InAir == false) {
@@ -398,7 +398,7 @@ export class Sonic {
                     this.SpriteState = "duck0";
                     this.runningTick = 1;
                 }
-                else if (((this.runningTick++) % <number>Math.floor(4 - absgsp)) == 0)
+                else if (((this.runningTick++) % Math.floor(4 - absgsp) | 0) == 0)
                     this.SpriteState = "duck1";
             }
             else if (this.HoldingUp) {
@@ -406,7 +406,7 @@ export class Sonic {
                     this.SpriteState = "lookingup0";
                     this.runningTick = 1;
                 }
-                else if (((this.runningTick++) % <number>Math.floor(4 - absgsp)) == 0)
+                else if (((this.runningTick++) % Math.floor(4 - absgsp) | 0) == 0)
                     this.SpriteState = "lookingup1";
             }
             else {
@@ -424,7 +424,7 @@ export class Sonic {
             else if ((this.runningTick++) % (7) == 0) {
                 this.SpriteState = "breaking" + ((j + 1) % 4);
                 if (j == 0)
-                    this.HaltSmoke.push(new Point(<number>this.X, <number>this.Y));
+                    this.HaltSmoke.push(new Point(this.X, this.Y));
             }
         }
         else if (this.CurrentlyBall) {
@@ -440,7 +440,7 @@ export class Sonic {
                 this.SpriteState = "running0";
                 this.runningTick = 1;
             }
-            else if (((this.runningTick++) % (<number>Math.floor(8 - absgsp)) == 0) || (8 - absgsp < 1))
+            else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) == 0) || (8 - absgsp < 1))
                 this.SpriteState = "running" + ((j + 1) % 8);
         }
         else if (absgsp >= 6) {
@@ -448,7 +448,7 @@ export class Sonic {
                 this.SpriteState = "fastrunning0";
                 this.runningTick = 1;
             }
-            else if (((this.runningTick++) % (<number>Math.floor(8 - absgsp)) == 0) || (8 - absgsp < 1))
+            else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) == 0) || (8 - absgsp < 1))
                 this.SpriteState = "fastrunning" + ((j + 1) % 4);
         }
     }
@@ -757,8 +757,8 @@ export class Sonic {
         while (t < this.Rings) {
             var ring = new Ring(true);
             SonicManager.Instance.ActiveRings.push(ring);
-            ring.X = <number>this.X;
-            ring.Y = <number>this.Y - 10;
+            ring.X = this.X | 0;
+            ring.Y = this.Y - 10 | 0;
             ring.Ysp = -Math.sin(angle) * speed;
             ring.Xsp = Math.cos(angle) * speed;
             if (n) {

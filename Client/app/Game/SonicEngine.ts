@@ -247,10 +247,10 @@ export class SonicEngine {
         this.sonicManager.Load(level);
         this.sonicManager.WindowLocation.X = 0;
         this.sonicManager.WindowLocation.Y = 0;
-        this.sonicManager.BigWindowLocation.X = <number>(this.sonicManager.WindowLocation.X - this.sonicManager.WindowLocation.Width * 0.2);
-        this.sonicManager.BigWindowLocation.Y = <number>(this.sonicManager.WindowLocation.Y - this.sonicManager.WindowLocation.Height * 0.2);
-        this.sonicManager.BigWindowLocation.Width = <number>(this.sonicManager.WindowLocation.Width * 1.8);
-        this.sonicManager.BigWindowLocation.Height = <number>(this.sonicManager.WindowLocation.Height * 1.8);
+        this.sonicManager.BigWindowLocation.X = (this.sonicManager.WindowLocation.X - this.sonicManager.WindowLocation.Width * 0.2) | 0;
+        this.sonicManager.BigWindowLocation.Y = (this.sonicManager.WindowLocation.Y - this.sonicManager.WindowLocation.Height * 0.2) | 0;
+        this.sonicManager.BigWindowLocation.Width = (this.sonicManager.WindowLocation.Width * 1.8) | 0;
+        this.sonicManager.BigWindowLocation.Height = (this.sonicManager.WindowLocation.Height * 1.8) | 0;
         var dl = Help.GetQueryString();
         if (dl["run"]) {
             if (this.sonicManager.CurrentGameState == GameState.Playing)
