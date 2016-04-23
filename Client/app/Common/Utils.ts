@@ -1,6 +1,19 @@
 ﻿export class Point {
-    public x: number;
-    public y: number;
+    private _x: number;
+    private _y: number;
+    public get x(): number {
+        return this._x | 0;
+    }
+    public set x(val: number) {
+        this._x = val | 0;
+    }
+
+    public get y(): number {
+        return this._y | 0;
+    }
+    public set y(val: number) {
+        this._y = val | 0;
+    }
     public static create(pos: Point): Point {
         return new Point(pos.x, pos.y);
     }
@@ -16,7 +29,33 @@
         return new Point(this.x - windowLocation.x, this.y - windowLocation.y);
     }
     public negate(x: number, y: number): Point {
-        return new Point(x - x, y - y);
+        return new Point(this.x - (x | 0), this.y - (y | 0));
+    }
+    public set(x: number, y: number): void {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+export class DoublePoint {
+    public x: number;
+    public y: number;
+    public static create(pos: DoublePoint): DoublePoint {
+        return new DoublePoint(pos.x, pos.y);
+    }
+
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+    public offset(windowLocation: DoublePoint): DoublePoint {
+        return new DoublePoint(this.x + windowLocation.x, this.y + windowLocation.y);
+    }
+    public negatePoint(windowLocation: DoublePoint): DoublePoint {
+        return new DoublePoint(this.x - windowLocation.x, this.y - windowLocation.y);
+    }
+    public negate(x: number, y: number): DoublePoint {
+        return new DoublePoint(this.x - (x | 0), this.y - (y | 0));
     }
     public set(x: number, y: number): void {
         this.x = x;
@@ -50,8 +89,8 @@ export class IntersectingRectangle {
 export class Rectangle extends Point {
     public width: number;
     public height: number;
- 
-    constructor(x: number=0, y: number=0, width: number=0, height: number=0) {
+
+    constructor(x: number = 0, y: number = 0, width: number = 0, height: number = 0) {
         super(x, y);
         this.width = width;
         this.height = height;
