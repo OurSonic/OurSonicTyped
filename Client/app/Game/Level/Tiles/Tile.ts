@@ -38,8 +38,8 @@ export class Tile {
                 oPos.Y = -squareSize;
                 j.Context.scale(1, -1);
             }
-            let palette_ = SonicManager.Instance.SonicLevel.Palette;
-            let colorPaletteIndex: number = (palette + SonicManager.Instance.IndexedPalette) % palette_.length;
+            let palette_ = SonicManager.instance.sonicLevel.Palette;
+            let colorPaletteIndex: number = (palette + SonicManager.instance.indexedPalette) % palette_.length;
             let x = oPos.X;
             let y = oPos.Y;
             for (let _x: number = 0; _x < squareSize; _x++) {
@@ -64,7 +64,7 @@ export class Tile {
     public DrawAnimatedPalette(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, animatedPaletteIndex: number, isAnimatedTile: boolean = false): void {
         if (this.AnimatedTileIndexes != null && (!isAnimatedTile && this.AnimatedTileIndexes.length > 0))
             return
-        let animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xflip, yflip, palette, animatedPaletteIndex, SonicManager.Instance.TilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
+        let animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xflip, yflip, palette, animatedPaletteIndex, SonicManager.instance.tilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
         let animatedPaletteCache: CanvasInformation = this.animatedPaletteCaches[animatedPaletteCacheIndex];
         if (animatedPaletteCache == null) {
             let squareSize = this.Colors.length;
@@ -81,8 +81,8 @@ export class Tile {
                 oPos.Y = -squareSize;
                 j.Context.scale(1, -1);
             }
-            let palette_ = SonicManager.Instance.SonicLevel.Palette;
-            let colorPaletteIndex: number = (palette + SonicManager.Instance.IndexedPalette) % palette_.length;
+            let palette_ = SonicManager.instance.sonicLevel.Palette;
+            let colorPaletteIndex: number = (palette + SonicManager.instance.indexedPalette) % palette_.length;
             let x = oPos.X;
             let y = oPos.Y;
             for (let _x: number = 0; _x < squareSize; _x++) {
@@ -103,7 +103,7 @@ export class Tile {
     public DrawAnimatedTile(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, animatedTileIndex: number): void {
         if (this.AnimatedTileIndexes.indexOf(animatedTileIndex) == -1)
             return
-        let tileAnimationFrame = SonicManager.Instance.TileAnimationManager.GetCurrentFrame(animatedTileIndex);
+        let tileAnimationFrame = SonicManager.instance.tileAnimationManager.GetCurrentFrame(animatedTileIndex);
         let tileAnimation = tileAnimationFrame.Animation;
         let tileAnimationData = tileAnimation.AnimatedTileData;
         let animationIndex = tileAnimationData.AnimationTileIndex;

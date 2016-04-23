@@ -175,7 +175,7 @@ export class LevelObjectInfo {
     }
     public Collide(sonic: Sonic, sensor: string, piece: any): boolean {
         try {
-            return this.ObjectData.OnCollide(this, SonicManager.Instance.SonicLevel, sonic, sensor, piece);
+            return this.ObjectData.OnCollide(this, SonicManager.instance.sonicLevel, sonic, sensor, piece);
         }
         catch (EJ) {
             this.Log(EJ.Message, 0);
@@ -185,7 +185,7 @@ export class LevelObjectInfo {
     }
     public HurtSonic(sonic: Sonic, sensor: string, piece: any): boolean {
         try {
-            return this.ObjectData.OnHurtSonic(this, SonicManager.Instance.SonicLevel, sonic, sensor, piece);
+            return this.ObjectData.OnHurtSonic(this, SonicManager.instance.sonicLevel, sonic, sensor, piece);
         }
         catch (EJ) {
             this.Log(EJ.Message, 0);

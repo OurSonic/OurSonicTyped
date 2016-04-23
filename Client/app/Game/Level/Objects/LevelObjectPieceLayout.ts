@@ -26,7 +26,7 @@ export class LevelObjectPieceLayout {
         this.pieces = new Array<LevelObjectPieceLayoutPiece>();
     }
     public Update(): void {
-        for (let t of SonicManager.Instance.SonicLevel.Objects) {
+        for (let t of SonicManager.instance.sonicLevel.Objects) {
             t.Reset();
         }
     }
@@ -71,7 +71,7 @@ export class LevelObjectPieceLayout {
             }
             else {
                 let drawRadial: CanvasGradient;
-                drawRadial = SonicManager.Instance.mainCanvas.Context.createRadialGradient(0, 0, 0, 10, 10, 50);
+                drawRadial = SonicManager.instance.mainCanvas.Context.createRadialGradient(0, 0, 0, 10, 10, 50);
                 drawRadial.addColorStop(0, "white");
                 if (selectedPieceIndex == levelObjectPieceLayoutPiece.PieceIndex)
                     drawRadial.addColorStop(1, "yellow");

@@ -85,7 +85,7 @@ export class TilePiece {
     }
     private animatedPaletteCaches: { [key: number]: CanvasInformation}= {};
     public DrawAnimatedPalette(canvas: CanvasRenderingContext2D, position: Point, layer: ChunkLayerState, xFlip: boolean, yFlip: boolean, animatedPaletteIndex: number): void {
-        let animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xFlip, yFlip, animatedPaletteIndex, SonicManager.Instance.TilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
+        let animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xFlip, yFlip, animatedPaletteIndex, SonicManager.instance.tilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
         let animatedPaletteCache: CanvasInformation = this.animatedPaletteCaches[animatedPaletteCacheIndex];
         if (animatedPaletteCache == null) {
             let drawOrderIndex = 0;
@@ -149,15 +149,15 @@ export class TilePiece {
         return (this.shouldAnimate);
     }
     public GetLayer1Angles(): number {
-        return SonicManager.Instance.SonicLevel.Angles[SonicManager.Instance.SonicLevel.CollisionIndexes1[this.Index]];
+        return SonicManager.instance.sonicLevel.Angles[SonicManager.instance.sonicLevel.CollisionIndexes1[this.Index]];
     }
     public GetLayer2Angles(): number {
-        return SonicManager.Instance.SonicLevel.Angles[SonicManager.Instance.SonicLevel.CollisionIndexes2[this.Index]];
+        return SonicManager.instance.sonicLevel.Angles[SonicManager.instance.sonicLevel.CollisionIndexes2[this.Index]];
     }
     public GetLayer1HeightMaps(): HeightMap {
-        return SonicManager.Instance.SonicLevel.HeightMaps[SonicManager.Instance.SonicLevel.CollisionIndexes1[this.Index]];
+        return SonicManager.instance.sonicLevel.HeightMaps[SonicManager.instance.sonicLevel.CollisionIndexes1[this.Index]];
     }
     public GetLayer2HeightMaps(): HeightMap {
-        return SonicManager.Instance.SonicLevel.HeightMaps[SonicManager.Instance.SonicLevel.CollisionIndexes2[this.Index]];
+        return SonicManager.instance.sonicLevel.HeightMaps[SonicManager.instance.sonicLevel.CollisionIndexes2[this.Index]];
     }
 }

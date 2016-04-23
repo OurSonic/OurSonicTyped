@@ -1871,19 +1871,19 @@ System.register("Game/Level/Ring", ["Common/Utils", "Game/SonicManager", "Common
                         this.Ysp += 0.09375;
                         this.X += this.Xsp;
                         this.Y += this.Ysp;
-                        var wl = SonicManager_11.SonicManager.Instance.WindowLocation;
+                        var wl = SonicManager_11.SonicManager.Instance.windowLocation;
                         if (this.X < wl.X || this.Y < wl.Y || this.X > wl.X + wl.Width || this.Y > wl.Y + wl.Height) {
                             this.TickCount = 0xfffffff;
                             return;
                         }
-                        if (SonicManager_11.SonicManager.Instance.DrawTickCount > SonicManager_11.SonicManager.Instance.SonicToon.sonicLastHitTick + 64 && Utils_7.IntersectingRectangle.IntersectsRect(SonicManager_11.SonicManager.Instance.SonicToon.myRec, new Utils_7.Rectangle(this.X - 8, this.Y - 8, 8 * 2, 2 * 8))) {
+                        if (SonicManager_11.SonicManager.Instance.DrawTickCount > SonicManager_11.SonicManager.Instance.sonicToon.sonicLastHitTick + 64 && Utils_7.IntersectingRectangle.IntersectsRect(SonicManager_11.SonicManager.Instance.sonicToon.myRec, new Utils_7.Rectangle(this.X - 8, this.Y - 8, 8 * 2, 2 * 8))) {
                             this.TickCount = 0xfffffff;
-                            SonicManager_11.SonicManager.Instance.SonicToon.Rings++;
+                            SonicManager_11.SonicManager.Instance.sonicToon.Rings++;
                             return;
                         }
                         this.TickCount++;
                     }
-                    if (SonicManager_11.SonicManager.Instance.CurrentGameState == Enums_3.GameState.Playing)
+                    if (SonicManager_11.SonicManager.Instance.currentGameState == Enums_3.GameState.Playing)
                         this.AnimationIndex = ((SonicManager_11.SonicManager.Instance.DrawTickCount % ((this.Active ? 4 : 8) * 4)) / (this.Active ? 4 : 8)) | 0;
                     else
                         this.AnimationIndex = 0;
@@ -3034,7 +3034,7 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                         else
                                             break;
                                     }
-                                    if (curh[(__x - i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1 - i, y1, this.Letter)) {
+                                    if (curh[(__x - i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1 - i, y1, this.Letter)) {
                                         this.__currentM.Value = x1 - i;
                                         this.__currentM.Angle = cura[(__x - i) / 16 | 0][(__y) / 16 | 0];
                                         return this.__currentM;
@@ -3053,7 +3053,7 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                     else
                                         break;
                                 }
-                                if (curh[(__x + i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1 + i, y1, this.Letter)) {
+                                if (curh[(__x + i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1 + i, y1, this.Letter)) {
                                     this.__currentM.Value = x1 + i;
                                     this.__currentM.Angle = cura[(__x + i) / 16 | 0][(__y) / 16 | 0];
                                     return this.__currentM;
@@ -3075,7 +3075,7 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                         else
                                             break;
                                     }
-                                    if (curh[(__x + i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1 + i, y1, this.Letter)) {
+                                    if (curh[(__x + i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1 + i, y1, this.Letter)) {
                                         this.__currentM.Value = x1 + i;
                                         this.__currentM.Angle = cura[(__x + i) / 16 | 0][(__y) / 16 | 0];
                                         return this.__currentM;
@@ -3099,7 +3099,7 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                     else
                                         break;
                                 }
-                                if (curh[(__x - i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1 - i, y1, this.Letter)) {
+                                if (curh[(__x - i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1 - i, y1, this.Letter)) {
                                     this.__currentM.Value = x1 - i;
                                     this.__currentM.Angle = cura[(__x - i) / 16 | 0][(__y) / 16 | 0];
                                     return this.__currentM;
@@ -3123,7 +3123,7 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                         else
                                             break;
                                     }
-                                    if (curh[__x][__y - i] > 1 || SonicManager_14.SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1, y1 - i, this.Letter)) {
+                                    if (curh[__x][__y - i] > 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1, y1 - i, this.Letter)) {
                                         this.__currentM.Value = y1 - i;
                                         this.__currentM.Angle = cura[(__x) / 16 | 0][(__y - i) / 16 | 0];
                                         return this.__currentM;
@@ -3142,8 +3142,8 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                     else
                                         break;
                                 }
-                                if (curh[__x][__y + i] >= 1 || SonicManager_14.SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
-                                    if (curh[__x][__y + i] == 1 && SonicManager_14.SonicManager.Instance.SonicToon.InAir && SonicManager_14.SonicManager.Instance.SonicToon.Ysp < 0)
+                                if (curh[__x][__y + i] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
+                                    if (curh[__x][__y + i] == 1 && SonicManager_14.SonicManager.Instance.sonicToon.InAir && SonicManager_14.SonicManager.Instance.sonicToon.Ysp < 0)
                                         continue;
                                     this.__currentM.Value = y1 + i;
                                     this.__currentM.Angle = cura[(__x) / 16 | 0][(__y + i) / 16 | 0];
@@ -3166,7 +3166,7 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                         else
                                             break;
                                     }
-                                    if (curh[__x][__y + i] >= 1 || SonicManager_14.SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
+                                    if (curh[__x][__y + i] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
                                         this.__currentM.Value = y1 + i;
                                         this.__currentM.Angle = cura[(__x) / 16 | 0][(__y + i) / 16 | 0];
                                         return this.__currentM;
@@ -3185,7 +3185,7 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                     else
                                         break;
                                 }
-                                if (curh[__x][__y - i] > 1 || SonicManager_14.SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
+                                if (curh[__x][__y - i] > 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
                                     this.__currentM.Value = y1 - i;
                                     this.__currentM.Angle = cura[(__x) / 16 | 0][(__y - i) / 16 | 0];
                                     return this.__currentM;
@@ -3196,8 +3196,8 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                     return null;
                 };
                 Sensor.prototype.Draw = function (canvas, character, sensorResult) {
-                    var x = Help_3.Help.Floor(character.X) - SonicManager_14.SonicManager.Instance.WindowLocation.X;
-                    var y = Help_3.Help.Floor(character.Y) - SonicManager_14.SonicManager.Instance.WindowLocation.Y;
+                    var x = Help_3.Help.Floor(character.X) - SonicManager_14.SonicManager.Instance.windowLocation.X;
+                    var y = Help_3.Help.Floor(character.Y) - SonicManager_14.SonicManager.Instance.windowLocation.Y;
                     canvas.beginPath();
                     if (sensorResult && sensorResult.Chosen) {
                         canvas.strokeStyle = "#FFF76D";
@@ -3972,7 +3972,7 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
                     if (Help_5.Help.IsLoaded(cur)) {
                         canvas.save();
                         var offset = this.GetOffsetFromImage();
-                        canvas.translate((fx - SonicManager_15.SonicManager.Instance.WindowLocation.X + offset.X), ((fy - SonicManager_15.SonicManager.Instance.WindowLocation.Y + offset.Y)));
+                        canvas.translate((fx - SonicManager_15.SonicManager.Instance.windowLocation.X + offset.X), ((fy - SonicManager_15.SonicManager.Instance.windowLocation.Y + offset.Y)));
                         if (SonicManager_15.SonicManager.Instance.ShowHeightMap) {
                             canvas.save();
                             var mul = 6;
@@ -4015,7 +4015,7 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
                             this.SensorManager.Draw(canvas, this);
                         for (var i = 0; i < this.HaltSmoke.length; i++) {
                             var lo = this.HaltSmoke[i];
-                            canvas.drawImage(SonicManager_15.SonicManager.Instance.SpriteCache.SonicSprites[("haltsmoke" + ((SonicManager_15.SonicManager.Instance.DrawTickCount % (4 * 6)) / 6 | 0))], ((lo.X - SonicManager_15.SonicManager.Instance.WindowLocation.X - 25)), ((lo.Y + 12 - SonicManager_15.SonicManager.Instance.WindowLocation.Y + offset.Y)));
+                            canvas.drawImage(SonicManager_15.SonicManager.Instance.SpriteCache.SonicSprites[("haltsmoke" + ((SonicManager_15.SonicManager.Instance.DrawTickCount % (4 * 6)) / 6 | 0))], ((lo.X - SonicManager_15.SonicManager.Instance.windowLocation.X - 25)), ((lo.Y + 12 - SonicManager_15.SonicManager.Instance.windowLocation.Y + offset.Y)));
                             if ((((SonicManager_15.SonicManager.Instance.DrawTickCount + 6) % (4 * 6)) / 6 | 0) == 0)
                                 this.HaltSmoke = this.HaltSmoke.slice(i, 1);
                         }
@@ -4419,7 +4419,7 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     this.scale = new Utils_10.Point(scl, scl);
                     this.RealScale = new Utils_10.DoublePoint(1, 1);
                     this.mainCanvas = gameCanvas;
-                    this.WindowLocation = Help_6.Help.DefaultWindowLocation(Enums_7.GameState.Editing, this.scale);
+                    this.windowLocation = Help_6.Help.DefaultWindowLocation(Enums_7.GameState.Editing, this.scale);
                     this.BigWindowLocation = Help_6.Help.DefaultWindowLocation(Enums_7.GameState.Editing, this.scale);
                     this.BigWindowLocation.Width = (this.BigWindowLocation.Width * 1.8) | 0;
                     this.BigWindowLocation.Height = (this.BigWindowLocation.Height * 1.8) | 0;
@@ -4430,8 +4430,8 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     this.ActiveRings = new Array();
                     this.ForceResize = resize;
                     this.Background = null;
-                    this.CurrentGameState = Enums_7.GameState.Editing;
-                    this.ScreenOffset = new Utils_10.Point(this.mainCanvas.DomCanvas.width() / 2 - this.WindowLocation.Width / 2, this.mainCanvas.DomCanvas.height() / 2 - this.WindowLocation.Height / 2);
+                    this.currentGameState = Enums_7.GameState.Editing;
+                    this.ScreenOffset = new Utils_10.Point(this.mainCanvas.DomCanvas.width() / 2 - this.windowLocation.Width / 2, this.mainCanvas.DomCanvas.height() / 2 - this.windowLocation.Height / 2);
                     this.ClickState = Enums_7.ClickState.PlaceChunk;
                     this.tickCount = 0;
                     this.DrawTickCount = 0;
@@ -4447,7 +4447,7 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     return false;
                 };
                 SonicManager.prototype.effectClick = function (event) {
-                    var e = new Utils_10.Point((event.clientX / this.scale.X / this.RealScale.X + this.WindowLocation.X), (event.clientY / this.scale.Y / this.RealScale.Y + this.WindowLocation.Y));
+                    var e = new Utils_10.Point((event.clientX / this.scale.X / this.RealScale.X + this.windowLocation.X), (event.clientY / this.scale.Y / this.RealScale.Y + this.windowLocation.Y));
                     var ey;
                     var ex;
                     if (event.ctrlKey) {
@@ -4517,7 +4517,7 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         localPoint.Y = obj.Y | 0;
                         if (this.BigWindowLocation.Intersects(localPoint)) {
                             this.InFocusObjects.push(obj);
-                            obj.Tick(obj, this.SonicLevel, this.SonicToon);
+                            obj.Tick(obj, this.SonicLevel, this.sonicToon);
                         }
                     }
                     //        if (this.UIManager.UIManagerAreas.LiveObjectsArea != null)
@@ -4530,19 +4530,19 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                 SonicManager.prototype.Tick = function () {
                     if (this.Loading)
                         return;
-                    if (this.CurrentGameState == Enums_7.GameState.Playing) {
+                    if (this.currentGameState == Enums_7.GameState.Playing) {
                         if (this.InHaltMode) {
                             if (this.waitingForTickContinue)
                                 return;
                         }
                         this.tickCount++;
                         this.tickObjects();
-                        this.SonicToon.Ticking = true;
+                        this.sonicToon.Ticking = true;
                         try {
-                            this.SonicToon.Tick(this.SonicLevel);
+                            this.sonicToon.Tick(this.SonicLevel);
                         }
                         finally {
-                            this.SonicToon.Ticking = false;
+                            this.sonicToon.Ticking = false;
                         }
                         if (this.InHaltMode) {
                             if (this.waitingForTickContinue)
@@ -4613,9 +4613,9 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         return;
                     }
                     this.updatePositions(context);
-                    var w1 = this.WindowLocation.Width / 128 + 2;
-                    var h1 = this.WindowLocation.Height / 128 + 2;
-                    if (this.CurrentGameState == Enums_7.GameState.Editing) {
+                    var w1 = this.windowLocation.Width / 128 + 2;
+                    var h1 = this.windowLocation.Height / 128 + 2;
+                    if (this.currentGameState == Enums_7.GameState.Editing) {
                         w1 += 1;
                         h1 += 1;
                         w1 /= this.scale.X;
@@ -4624,19 +4624,19 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     var offs = SonicManager.getOffs(w1, h1);
                     this.TilePaletteAnimationManager.TickAnimatedPalettes();
                     this.TileAnimationManager.TickAnimatedTiles();
-                    var fxP = ((this.WindowLocation.X) / 128) | 0;
-                    var fyP = ((this.WindowLocation.Y) / 128) | 0;
+                    var fxP = ((this.windowLocation.X) / 128) | 0;
+                    var fyP = ((this.windowLocation.Y) / 128) | 0;
                     this.ResetCanvases();
                     var zero = new Utils_10.Point(0, 0);
                     if (this.Background) {
-                        var wOffset = this.WindowLocation.X;
+                        var wOffset = this.windowLocation.X;
                         var bw = this.Background.Width;
                         var movex = (wOffset / bw) * bw;
-                        localPoint.X = -this.WindowLocation.X + movex;
-                        localPoint.Y = -this.WindowLocation.Y / 4;
+                        localPoint.X = -this.windowLocation.X + movex;
+                        localPoint.Y = -this.windowLocation.Y / 4;
                         this.Background.Draw(this.lowChunkCanvas.Context, localPoint, wOffset);
-                        localPoint.X = -this.WindowLocation.X + movex + this.Background.Width;
-                        localPoint.Y = -this.WindowLocation.Y / 4;
+                        localPoint.X = -this.windowLocation.X + movex + this.Background.Width;
+                        localPoint.Y = -this.windowLocation.Y / 4;
                         this.Background.Draw(this.lowChunkCanvas.Context, localPoint, wOffset);
                     }
                     this.drawLowChunks(this.lowChunkCanvas.Context, zero, offs, fyP, fxP);
@@ -4653,8 +4653,8 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     //        this.highChuckCanvas.Context.OffsetPixelsForWater();
                     this.drawCanveses(context, localPoint);
                     context.restore();
-                    if (this.CurrentGameState == Enums_7.GameState.Playing)
-                        this.SonicToon.DrawUI(context, new Utils_10.Point(this.ScreenOffset.X, this.ScreenOffset.Y));
+                    if (this.currentGameState == Enums_7.GameState.Playing)
+                        this.sonicToon.DrawUI(context, new Utils_10.Point(this.ScreenOffset.X, this.ScreenOffset.Y));
                 };
                 SonicManager.prototype.drawCanveses = function (canvas, localPoint) {
                     canvas.scale(this.scale.X, this.scale.Y);
@@ -4663,12 +4663,12 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     canvas.drawImage(this.highChuckCanvas.Canvas, localPoint.X, localPoint.Y);
                 };
                 SonicManager.prototype.ResetCanvases = function () {
-                    this.lowChunkCanvas = this.lowChunkCanvas != null ? this.lowChunkCanvas : CanvasInformation_7.CanvasInformation.Create(this.WindowLocation.Width, this.WindowLocation.Height, false);
-                    this.sonicCanvas = this.sonicCanvas != null ? this.sonicCanvas : CanvasInformation_7.CanvasInformation.Create(this.WindowLocation.Width, this.WindowLocation.Height, true);
-                    this.highChuckCanvas = this.highChuckCanvas != null ? this.highChuckCanvas : CanvasInformation_7.CanvasInformation.Create(this.WindowLocation.Width, this.WindowLocation.Height, false);
-                    this.sonicCanvas.Context.clearRect(0, 0, this.WindowLocation.Width, this.WindowLocation.Height);
-                    this.highChuckCanvas.Context.clearRect(0, 0, this.WindowLocation.Width, this.WindowLocation.Height);
-                    this.lowChunkCanvas.Context.clearRect(0, 0, this.WindowLocation.Width, this.WindowLocation.Height);
+                    this.lowChunkCanvas = this.lowChunkCanvas != null ? this.lowChunkCanvas : CanvasInformation_7.CanvasInformation.Create(this.windowLocation.Width, this.windowLocation.Height, false);
+                    this.sonicCanvas = this.sonicCanvas != null ? this.sonicCanvas : CanvasInformation_7.CanvasInformation.Create(this.windowLocation.Width, this.windowLocation.Height, true);
+                    this.highChuckCanvas = this.highChuckCanvas != null ? this.highChuckCanvas : CanvasInformation_7.CanvasInformation.Create(this.windowLocation.Width, this.windowLocation.Height, false);
+                    this.sonicCanvas.Context.clearRect(0, 0, this.windowLocation.Width, this.windowLocation.Height);
+                    this.highChuckCanvas.Context.clearRect(0, 0, this.windowLocation.Width, this.windowLocation.Height);
+                    this.lowChunkCanvas.Context.clearRect(0, 0, this.windowLocation.Width, this.windowLocation.Height);
                 };
                 SonicManager.prototype.DestroyCanvases = function () {
                     this.lowChunkCanvas = null;
@@ -4689,26 +4689,26 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                 SonicManager.prototype.updatePositions = function (canvas) {
                     this.ScreenOffset.X = 0;
                     this.ScreenOffset.Y = 0;
-                    if (this.CurrentGameState == Enums_7.GameState.Playing)
+                    if (this.currentGameState == Enums_7.GameState.Playing)
                         this.updatePositionsForPlaying(canvas);
                 };
                 SonicManager.prototype.updatePositionsForPlaying = function (canvas) {
                     canvas.scale(this.RealScale.X, this.RealScale.Y);
-                    if (this.SonicToon.Ticking) {
+                    if (this.sonicToon.Ticking) {
                         while (true) {
-                            if (this.SonicToon.Ticking)
+                            if (this.sonicToon.Ticking)
                                 break;
                         }
                     }
                     canvas.translate(this.ScreenOffset.X, this.ScreenOffset.Y);
-                    this.WindowLocation.X = (this.SonicToon.X) - this.WindowLocation.Width / 2;
-                    this.WindowLocation.Y = (this.SonicToon.Y) - this.WindowLocation.Height / 2;
-                    this.BigWindowLocation.X = (this.SonicToon.X) - this.BigWindowLocation.Width / 2;
-                    this.BigWindowLocation.Y = (this.SonicToon.Y) - this.BigWindowLocation.Height / 2;
-                    this.BigWindowLocation.X = (this.BigWindowLocation.X - this.WindowLocation.Width * 0.2);
-                    this.BigWindowLocation.Y = (this.BigWindowLocation.Y - this.WindowLocation.Height * 0.2);
-                    this.BigWindowLocation.Width = (this.WindowLocation.Width * 1.8);
-                    this.BigWindowLocation.Height = (this.WindowLocation.Height * 1.8);
+                    this.windowLocation.X = (this.sonicToon.X) - this.windowLocation.Width / 2;
+                    this.windowLocation.Y = (this.sonicToon.Y) - this.windowLocation.Height / 2;
+                    this.BigWindowLocation.X = (this.sonicToon.X) - this.BigWindowLocation.Width / 2;
+                    this.BigWindowLocation.Y = (this.sonicToon.Y) - this.BigWindowLocation.Height / 2;
+                    this.BigWindowLocation.X = (this.BigWindowLocation.X - this.windowLocation.Width * 0.2);
+                    this.BigWindowLocation.Y = (this.BigWindowLocation.Y - this.windowLocation.Height * 0.2);
+                    this.BigWindowLocation.Width = (this.windowLocation.Width * 1.8);
+                    this.BigWindowLocation.Height = (this.windowLocation.Height * 1.8);
                 };
                 SonicManager.drawLoading = function (canvas) {
                     canvas.fillStyle = "white";
@@ -4738,8 +4738,8 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         var chunk = this.SonicLevel.GetChunkAt(_xP, _yP);
                         if (chunk == null)
                             continue;
-                        localPoint.X = (_xPreal * 128) - this.WindowLocation.X;
-                        localPoint.Y = (_yPreal * 128) - this.WindowLocation.Y;
+                        localPoint.X = (_xPreal * 128) - this.windowLocation.X;
+                        localPoint.Y = (_yPreal * 128) - this.windowLocation.Y;
                         if (!chunk.IsEmpty() && !chunk.OnlyForeground())
                             chunk.Draw(canvas, localPoint, Enums_7.ChunkLayerState.Low);
                     }
@@ -4756,8 +4756,8 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         var chunk = this.SonicLevel.GetChunkAt(_xP, _yP);
                         if (chunk == null)
                             continue;
-                        localPoint.X = (_xPreal * 128) - this.WindowLocation.X;
-                        localPoint.Y = (_yPreal * 128) - this.WindowLocation.Y;
+                        localPoint.X = (_xPreal * 128) - this.windowLocation.X;
+                        localPoint.Y = (_yPreal * 128) - this.windowLocation.Y;
                         if (!chunk.IsEmpty() && !chunk.OnlyBackground())
                             chunk.Draw(canvas, localPoint, Enums_7.ChunkLayerState.High);
                         if (this.ShowHeightMap) {
@@ -4767,7 +4767,7 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                             }
                             canvas.drawImage(fd.Canvas, localPoint.X, localPoint.Y);
                         }
-                        if (this.CurrentGameState == Enums_7.GameState.Editing) {
+                        if (this.currentGameState == Enums_7.GameState.Editing) {
                             canvas.strokeStyle = "#DD0033";
                             canvas.lineWidth = 3;
                             canvas.strokeRect(localPoint.X, localPoint.Y, 128, 128);
@@ -4786,8 +4786,8 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         var chunk = this.SonicLevel.GetChunkAt(_xP, _yP);
                         if (chunk == null)
                             continue;
-                        localPoint.X = (_xPreal * 128) - this.WindowLocation.X;
-                        localPoint.Y = (_yPreal * 128) - this.WindowLocation.Y;
+                        localPoint.X = (_xPreal * 128) - this.windowLocation.X;
+                        localPoint.Y = (_yPreal * 128) - this.windowLocation.Y;
                         if (!chunk.IsEmpty() && !chunk.OnlyForeground())
                             chunk.DrawAnimationDebug(canvas, localPoint, Enums_7.ChunkLayerState.Low, this.TileChunkDebugDrawOptions);
                         if (!chunk.IsEmpty() && !chunk.OnlyBackground())
@@ -4828,32 +4828,32 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     return this.SpriteCache.HeightMapChunks[(this.SonicLevel.CurHeightMap ? 1 : 2) + " " + md.Index] = canv;
                 };
                 SonicManager.prototype.drawSonic = function (canvas) {
-                    if (this.CurrentGameState == Enums_7.GameState.Playing) {
-                        this.SonicToon.Draw(canvas);
+                    if (this.currentGameState == Enums_7.GameState.Playing) {
+                        this.sonicToon.Draw(canvas);
                     }
                 };
                 SonicManager.prototype.drawRings = function (canvas, localPoint) {
                     for (var index = 0; index < this.SonicLevel.Rings.length; index++) {
                         var r = this.SonicLevel.Rings[index];
-                        switch (this.CurrentGameState) {
+                        switch (this.currentGameState) {
                             case Enums_7.GameState.Playing:
-                                if (!this.SonicToon.obtainedRing[index]) {
+                                if (!this.sonicToon.obtainedRing[index]) {
                                     if (this.BigWindowLocation.Intersects(r))
-                                        this.GoodRing.Draw(canvas, r.Negate(this.WindowLocation.X, this.WindowLocation.Y));
+                                        this.GoodRing.Draw(canvas, r.Negate(this.windowLocation.X, this.windowLocation.Y));
                                 }
                                 break;
                             case Enums_7.GameState.Editing:
                                 if (this.BigWindowLocation.Intersects(r))
-                                    this.GoodRing.Draw(canvas, r.Negate(this.WindowLocation.X, this.WindowLocation.Y));
+                                    this.GoodRing.Draw(canvas, r.Negate(this.windowLocation.X, this.windowLocation.Y));
                                 break;
                         }
                     }
-                    switch (this.CurrentGameState) {
+                    switch (this.currentGameState) {
                         case Enums_7.GameState.Playing:
                             for (var i = this.ActiveRings.length - 1; i >= 0; i--) {
                                 var ac = this.ActiveRings[i];
-                                localPoint.X = ac.X - this.WindowLocation.X;
-                                localPoint.Y = ac.Y - this.WindowLocation.Y;
+                                localPoint.X = ac.X - this.windowLocation.X;
+                                localPoint.Y = ac.Y - this.windowLocation.Y;
                                 ac.Draw(canvas, localPoint);
                                 if (ac.TickCount > 256)
                                     this.ActiveRings.splice(i, 1);
@@ -4866,7 +4866,7 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                 SonicManager.prototype.drawAnimations = function (canvas) {
                     for (var _i = 0, _a = this.AnimationInstances; _i < _a.length; _i++) {
                         var ano = _a[_i];
-                        ano.Draw(canvas, -this.WindowLocation.X, -this.WindowLocation.Y);
+                        ano.Draw(canvas, -this.windowLocation.X, -this.windowLocation.Y);
                     }
                 };
                 SonicManager.prototype.drawObjects = function (canvas, localPoint) {
@@ -4876,7 +4876,7 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         localPoint.X = o.X;
                         localPoint.Y = o.Y;
                         if (o.Dead || this.BigWindowLocation.Intersects(localPoint)) {
-                            o.Draw(canvas, ((localPoint.X - this.WindowLocation.X)), ((localPoint.Y - this.WindowLocation.Y)), this.ShowHeightMap);
+                            o.Draw(canvas, ((localPoint.X - this.windowLocation.X)), ((localPoint.Y - this.windowLocation.Y)), this.ShowHeightMap);
                         }
                     }
                 };
@@ -4952,12 +4952,12 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         chunk.WarmCache();
                     }
                     console.timeEnd("tileCache");
-                    if (this.SonicToon != null) {
+                    if (this.sonicToon != null) {
                         console.time("collisionCache");
                         for (var _b = 0, _c = this.SonicLevel.TileChunks; _b < _c.length; _b++) {
                             var chunk = _c[_b];
-                            this.SonicToon.SensorManager.BuildChunk(chunk, false);
-                            this.SonicToon.SensorManager.BuildChunk(chunk, true);
+                            this.sonicToon.SensorManager.BuildChunk(chunk, false);
+                            this.sonicToon.SensorManager.BuildChunk(chunk, true);
                         }
                         console.timeEnd("collisionCache");
                     }
@@ -5335,7 +5335,7 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                     }, function () {
                     });
                     keyboardJS.bind("o", function () {
-                        if (_this.sonicManager.CurrentGameState == Enums_8.GameState.Playing)
+                        if (_this.sonicManager.currentGameState == Enums_8.GameState.Playing)
                             _this.sonicManager.InHaltMode = !_this.sonicManager.InHaltMode;
                     }, function () {
                     });
@@ -5349,14 +5349,14 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                     }, function () {
                     });
                     keyboardJS.bind("p", function () {
-                        if (_this.sonicManager.CurrentGameState == Enums_8.GameState.Playing)
+                        if (_this.sonicManager.currentGameState == Enums_8.GameState.Playing)
                             if (_this.sonicManager.InHaltMode)
                                 _this.sonicManager.waitingForTickContinue = false;
                     }, function () {
                     });
                     keyboardJS.bind("h", function () {
-                        if (_this.sonicManager.CurrentGameState == Enums_8.GameState.Playing)
-                            _this.sonicManager.SonicToon.Hit(_this.sonicManager.SonicToon.X, _this.sonicManager.SonicToon.Y);
+                        if (_this.sonicManager.currentGameState == Enums_8.GameState.Playing)
+                            _this.sonicManager.sonicToon.Hit(_this.sonicManager.sonicToon.X, _this.sonicManager.sonicToon.Y);
                     }, function () {
                     });
                     keyboardJS.bind("u", function () {
@@ -5365,98 +5365,98 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                     }, function () {
                     });
                     keyboardJS.bind("c", function () {
-                        if (_this.sonicManager.CurrentGameState == Enums_8.GameState.Playing)
-                            _this.sonicManager.SonicToon.Debug();
+                        if (_this.sonicManager.currentGameState == Enums_8.GameState.Playing)
+                            _this.sonicManager.sonicToon.Debug();
                     }, function () {
                     });
                     keyboardJS.bind("up", function () {
-                        switch (_this.sonicManager.CurrentGameState) {
+                        switch (_this.sonicManager.currentGameState) {
                             case Enums_8.GameState.Playing:
-                                _this.sonicManager.SonicToon.PressUp();
+                                _this.sonicManager.sonicToon.PressUp();
                                 break;
                             case Enums_8.GameState.Editing:
-                                _this.sonicManager.WindowLocation.Y -= 128;
+                                _this.sonicManager.windowLocation.Y -= 128;
                                 _this.sonicManager.BigWindowLocation.Y -= 128;
                                 break;
                         }
                     }, function () {
-                        switch (_this.sonicManager.CurrentGameState) {
+                        switch (_this.sonicManager.currentGameState) {
                             case Enums_8.GameState.Playing:
-                                _this.sonicManager.SonicToon.ReleaseUp();
+                                _this.sonicManager.sonicToon.ReleaseUp();
                                 break;
                             case Enums_8.GameState.Editing:
                                 break;
                         }
                     });
                     keyboardJS.bind("down", function () {
-                        switch (_this.sonicManager.CurrentGameState) {
+                        switch (_this.sonicManager.currentGameState) {
                             case Enums_8.GameState.Playing:
-                                _this.sonicManager.SonicToon.PressCrouch();
+                                _this.sonicManager.sonicToon.PressCrouch();
                                 break;
                             case Enums_8.GameState.Editing:
-                                _this.sonicManager.WindowLocation.Y += 128;
+                                _this.sonicManager.windowLocation.Y += 128;
                                 _this.sonicManager.BigWindowLocation.Y += 128;
                                 break;
                         }
                     }, function () {
-                        switch (_this.sonicManager.CurrentGameState) {
+                        switch (_this.sonicManager.currentGameState) {
                             case Enums_8.GameState.Playing:
-                                _this.sonicManager.SonicToon.ReleaseCrouch();
+                                _this.sonicManager.sonicToon.ReleaseCrouch();
                                 break;
                             case Enums_8.GameState.Editing:
                                 break;
                         }
                     });
                     keyboardJS.bind("left", function () {
-                        switch (_this.sonicManager.CurrentGameState) {
+                        switch (_this.sonicManager.currentGameState) {
                             case Enums_8.GameState.Playing:
-                                _this.sonicManager.SonicToon.PressLeft();
+                                _this.sonicManager.sonicToon.PressLeft();
                                 break;
                             case Enums_8.GameState.Editing:
-                                _this.sonicManager.WindowLocation.X -= 128;
+                                _this.sonicManager.windowLocation.X -= 128;
                                 _this.sonicManager.BigWindowLocation.X -= 128;
                                 break;
                         }
                     }, function () {
-                        switch (_this.sonicManager.CurrentGameState) {
+                        switch (_this.sonicManager.currentGameState) {
                             case Enums_8.GameState.Playing:
-                                _this.sonicManager.SonicToon.ReleaseLeft();
+                                _this.sonicManager.sonicToon.ReleaseLeft();
                                 break;
                             case Enums_8.GameState.Editing:
                                 break;
                         }
                     });
                     keyboardJS.bind("right", function () {
-                        switch (_this.sonicManager.CurrentGameState) {
+                        switch (_this.sonicManager.currentGameState) {
                             case Enums_8.GameState.Playing:
-                                _this.sonicManager.SonicToon.PressRight();
+                                _this.sonicManager.sonicToon.PressRight();
                                 break;
                             case Enums_8.GameState.Editing:
-                                _this.sonicManager.WindowLocation.X += 128;
+                                _this.sonicManager.windowLocation.X += 128;
                                 _this.sonicManager.BigWindowLocation.X += 128;
                                 break;
                         }
                     }, function () {
-                        switch (_this.sonicManager.CurrentGameState) {
+                        switch (_this.sonicManager.currentGameState) {
                             case Enums_8.GameState.Playing:
-                                _this.sonicManager.SonicToon.ReleaseRight();
+                                _this.sonicManager.sonicToon.ReleaseRight();
                                 break;
                             case Enums_8.GameState.Editing:
                                 break;
                         }
                     });
                     keyboardJS.bind("space", function () {
-                        switch (_this.sonicManager.CurrentGameState) {
+                        switch (_this.sonicManager.currentGameState) {
                             case Enums_8.GameState.Playing:
-                                _this.sonicManager.SonicToon.PressJump();
+                                _this.sonicManager.sonicToon.PressJump();
                                 break;
                             case Enums_8.GameState.Editing:
                                 break;
                         }
                     }, function () {
-                        switch (_this.sonicManager.CurrentGameState) {
+                        switch (_this.sonicManager.currentGameState) {
                             case Enums_8.GameState.Playing:
-                                _this.sonicManager.SonicToon.ReleaseJump();
+                                _this.sonicManager.sonicToon.ReleaseJump();
                                 break;
                             case Enums_8.GameState.Editing:
                                 break;
@@ -5487,15 +5487,15 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                 SonicEngine.prototype.RunSonic = function (level) {
                     this.sonicManager.ClearCache();
                     this.sonicManager.Load(level);
-                    this.sonicManager.WindowLocation.X = 0;
-                    this.sonicManager.WindowLocation.Y = 0;
-                    this.sonicManager.BigWindowLocation.X = (this.sonicManager.WindowLocation.X - this.sonicManager.WindowLocation.Width * 0.2) | 0;
-                    this.sonicManager.BigWindowLocation.Y = (this.sonicManager.WindowLocation.Y - this.sonicManager.WindowLocation.Height * 0.2) | 0;
-                    this.sonicManager.BigWindowLocation.Width = (this.sonicManager.WindowLocation.Width * 1.8) | 0;
-                    this.sonicManager.BigWindowLocation.Height = (this.sonicManager.WindowLocation.Height * 1.8) | 0;
+                    this.sonicManager.windowLocation.X = 0;
+                    this.sonicManager.windowLocation.Y = 0;
+                    this.sonicManager.BigWindowLocation.X = (this.sonicManager.windowLocation.X - this.sonicManager.windowLocation.Width * 0.2) | 0;
+                    this.sonicManager.BigWindowLocation.Y = (this.sonicManager.windowLocation.Y - this.sonicManager.windowLocation.Height * 0.2) | 0;
+                    this.sonicManager.BigWindowLocation.Width = (this.sonicManager.windowLocation.Width * 1.8) | 0;
+                    this.sonicManager.BigWindowLocation.Height = (this.sonicManager.windowLocation.Height * 1.8) | 0;
                     var dl = Help_7.Help.GetQueryString();
                     if (dl["run"]) {
-                        if (this.sonicManager.CurrentGameState == Enums_8.GameState.Playing)
+                        if (this.sonicManager.currentGameState == Enums_8.GameState.Playing)
                             this.runGame();
                         this.runGame();
                     }
@@ -5503,18 +5503,18 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                 };
                 SonicEngine.prototype.runGame = function () {
                     var sonicManager = SonicManager_16.SonicManager.Instance;
-                    switch (sonicManager.CurrentGameState) {
+                    switch (sonicManager.currentGameState) {
                         case Enums_8.GameState.Playing:
-                            sonicManager.CurrentGameState = Enums_8.GameState.Editing;
+                            sonicManager.currentGameState = Enums_8.GameState.Editing;
                             sonicManager.scale = new Utils_11.Point(4, 4);
-                            sonicManager.WindowLocation = Help_7.Help.DefaultWindowLocation(sonicManager.CurrentGameState, sonicManager.scale);
-                            sonicManager.SonicToon = null;
+                            sonicManager.windowLocation = Help_7.Help.DefaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
+                            sonicManager.sonicToon = null;
                             break;
                         case Enums_8.GameState.Editing:
-                            sonicManager.CurrentGameState = Enums_8.GameState.Playing;
+                            sonicManager.currentGameState = Enums_8.GameState.Playing;
                             sonicManager.scale = new Utils_11.Point(4, 4);
-                            sonicManager.WindowLocation = Help_7.Help.DefaultWindowLocation(sonicManager.CurrentGameState, sonicManager.scale);
-                            sonicManager.SonicToon = new Sonic_1.Sonic();
+                            sonicManager.windowLocation = Help_7.Help.DefaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
+                            sonicManager.sonicToon = new Sonic_1.Sonic();
                             break;
                     }
                     sonicManager.DestroyCanvases();
@@ -5535,7 +5535,7 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                 SonicEngine.prototype.resizeCanvas = function (resetOverride) {
                     this.canvasWidth = $(window).width();
                     this.canvasHeight = $(window).height();
-                    this.sonicManager.WindowLocation = Help_7.Help.DefaultWindowLocation(this.sonicManager.CurrentGameState, this.sonicManager.scale);
+                    this.sonicManager.windowLocation = Help_7.Help.DefaultWindowLocation(this.sonicManager.currentGameState, this.sonicManager.scale);
                     var wide = new Utils_11.DoublePoint((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y));
                     var even = new Utils_11.DoublePoint(Math.min((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y)), Math.min((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y)));
                     this.sonicManager.RealScale = !this.fullscreenMode ? new Utils_11.DoublePoint(1, 1) : (this.WideScreen ? wide : even);
@@ -5543,10 +5543,10 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                         this.sonicManager.overrideRealScale = Utils_11.DoublePoint.create(this.sonicManager.RealScale);
                     else
                         this.sonicManager.RealScale = Utils_11.DoublePoint.create(this.sonicManager.overrideRealScale);
-                    this.gameCanvas.DomCanvas.attr("width", (this.sonicManager.WindowLocation.Width * (this.sonicManager.CurrentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.X * this.sonicManager.RealScale.X : 1)).toString());
-                    this.gameCanvas.DomCanvas.attr("height", (this.sonicManager.WindowLocation.Height * (this.sonicManager.CurrentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.Y * this.sonicManager.RealScale.Y : 1)).toString());
-                    this.gameGoodWidth = (this.sonicManager.WindowLocation.Width * (this.sonicManager.CurrentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.X * this.sonicManager.RealScale.X : 1));
-                    var screenOffset = this.sonicManager.CurrentGameState == Enums_8.GameState.Playing ? new Utils_11.DoublePoint(((this.canvasWidth / 2 - this.sonicManager.WindowLocation.Width * this.sonicManager.scale.X * this.sonicManager.RealScale.X / 2)), (this.canvasHeight / 2 - this.sonicManager.WindowLocation.Height * this.sonicManager.scale.Y * this.sonicManager.RealScale.Y / 2)) : new Utils_11.DoublePoint(0, 0);
+                    this.gameCanvas.DomCanvas.attr("width", (this.sonicManager.windowLocation.Width * (this.sonicManager.currentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.X * this.sonicManager.RealScale.X : 1)).toString());
+                    this.gameCanvas.DomCanvas.attr("height", (this.sonicManager.windowLocation.Height * (this.sonicManager.currentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.Y * this.sonicManager.RealScale.Y : 1)).toString());
+                    this.gameGoodWidth = (this.sonicManager.windowLocation.Width * (this.sonicManager.currentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.X * this.sonicManager.RealScale.X : 1));
+                    var screenOffset = this.sonicManager.currentGameState == Enums_8.GameState.Playing ? new Utils_11.DoublePoint(((this.canvasWidth / 2 - this.sonicManager.windowLocation.Width * this.sonicManager.scale.X * this.sonicManager.RealScale.X / 2)), (this.canvasHeight / 2 - this.sonicManager.windowLocation.Height * this.sonicManager.scale.Y * this.sonicManager.RealScale.Y / 2)) : new Utils_11.DoublePoint(0, 0);
                     this.gameCanvas.DomCanvas.css("left", screenOffset.X + 'px');
                     this.gameCanvas.DomCanvas.css("top", screenOffset.Y + 'px');
                     this.sonicManager.DestroyCanvases();

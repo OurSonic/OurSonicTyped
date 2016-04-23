@@ -59,7 +59,7 @@ export class HeightMap {
             pos.Y = -pos.Y - 16;
             canvas.scale(1, -1);
         }
-        let fd = SonicManager.Instance.SpriteCache.HeightMaps[this.Index + (solid << 20)];
+        let fd = SonicManager.instance.spriteCache.HeightMaps[this.Index + (solid << 20)];
         if (this.Index != -1 && fd)
             canvas.drawImage(fd.Canvas, pos.X, pos.Y);
         else {
@@ -90,7 +90,7 @@ export class HeightMap {
                     }
                 }
             }
-            SonicManager.Instance.SpriteCache.HeightMaps[this.Index + (solid << 20)] = ntcanvas;
+            SonicManager.instance.spriteCache.HeightMaps[this.Index + (solid << 20)] = ntcanvas;
             canvas.drawImage(ntcanvas.Canvas, pos.X, pos.Y);
         }
         canvas.restore();

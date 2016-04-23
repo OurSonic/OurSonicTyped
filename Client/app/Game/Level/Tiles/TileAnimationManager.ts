@@ -10,8 +10,8 @@ export class TileAnimationManager {
     }
     private Init(): void {
         this.Animations = {};
-        for (let animatedTileIndex: number = 0; animatedTileIndex < this.SonicManager.SonicLevel.TileAnimations.length; animatedTileIndex++) {
-            this.Animations[animatedTileIndex] = new TileAnimation(this, this.SonicManager.SonicLevel.TileAnimations[animatedTileIndex]);
+        for (let animatedTileIndex: number = 0; animatedTileIndex < this.SonicManager.sonicLevel.TileAnimations.length; animatedTileIndex++) {
+            this.Animations[animatedTileIndex] = new TileAnimation(this, this.SonicManager.sonicLevel.TileAnimations[animatedTileIndex]);
             this.Animations[animatedTileIndex].Init();
         }
     }
@@ -56,8 +56,8 @@ export class TileAnimation {
             anni.LastAnimatedFrame = 0;
             anni.LastAnimatedIndex = 0;
         }
-        if (anni.DataFrames[anni.LastAnimatedIndex].Ticks == 0 || (SonicManager.Instance.DrawTickCount - anni.LastAnimatedFrame) >= ((anni.AutomatedTiming > 0) ? anni.AutomatedTiming : anni.DataFrames[anni.LastAnimatedIndex].Ticks)) {
-            anni.LastAnimatedFrame = SonicManager.Instance.DrawTickCount;
+        if (anni.DataFrames[anni.LastAnimatedIndex].Ticks == 0 || (SonicManager.instance.drawTickCount - anni.LastAnimatedFrame) >= ((anni.AutomatedTiming > 0) ? anni.AutomatedTiming : anni.DataFrames[anni.LastAnimatedIndex].Ticks)) {
+            anni.LastAnimatedFrame = SonicManager.instance.drawTickCount;
             anni.LastAnimatedIndex = (anni.LastAnimatedIndex + 1) % anni.DataFrames.length;
             this.CurrentFrame = anni.LastAnimatedIndex;
         }

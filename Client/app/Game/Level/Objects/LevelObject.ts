@@ -45,9 +45,9 @@ export class LevelObject {
         return <boolean>this.evalMe("HurtScript").apply($object, [$object, level, sonic, sensor, piece])
     }
     public Tick($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): boolean {
-        if ($object.lastDrawTick != SonicManager.Instance.tickCount - 1)
+        if ($object.lastDrawTick != SonicManager.instance.tickCount - 1)
             this.Init($object, level, sonic);
-        $object.lastDrawTick = SonicManager.Instance.tickCount;
+        $object.lastDrawTick = SonicManager.instance.tickCount;
         this.evalMe("TickScript").apply($object, [$object, level, sonic]);
         if ($object.State) {
             $object.Xsp = $object.State.Xsp;

@@ -5,7 +5,7 @@ export class CanvasInformation {
     
     public Context: CanvasRenderingContext2D;
     
-    public DomCanvas: JQuery;
+    public domCanvas: JQuery;
     
     public Canvas: HTMLCanvasElement;
     public static get BlackPixel(): HTMLCanvasElement {
@@ -19,7 +19,7 @@ export class CanvasInformation {
     }
     constructor(context: CanvasRenderingContext2D, domCanvas: JQuery) {
         this.Context = context;
-        this.DomCanvas = domCanvas;
+        this.domCanvas = domCanvas;
         this.Canvas = <HTMLCanvasElement>domCanvas[0];
     }
     public static Create(w: number, h: number, pixelated: boolean): CanvasInformation {

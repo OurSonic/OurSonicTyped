@@ -19,7 +19,7 @@ export class TileAnimationData {
             return null;
         })(animationIndex, this.images);
         
-        canvas.drawImage(sonicManager.SpriteCache.animationSprites[animationIndex + " " + name + scale.x + scale.y],
+        canvas.drawImage(sonicManager.spriteCache.animationSprites[animationIndex + " " + name + scale.x + scale.y],
             (x - this.images[jv].width / 2) * scale.x, (y - this.images[jv].height / 2) * scale.y);
         canvas.restore();
     };
@@ -37,7 +37,7 @@ export class TileAnimationData {
 
     }
     public GetAnimationFile(): Tile[] {
-        return SonicManager.Instance.SonicLevel.AnimatedTileFiles[this.AnimationTileFile];
+        return SonicManager.instance.sonicLevel.AnimatedTileFiles[this.AnimationTileFile];
     }
 }
 export class TileAnimationDataFrame {

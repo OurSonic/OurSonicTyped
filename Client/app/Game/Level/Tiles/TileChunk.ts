@@ -149,7 +149,7 @@ export class TileChunk {
                     let paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex];
                     if (paletteAnimationCanvasFrames == null)
                         continue;
-                    let currentFrame = SonicManager.Instance.TilePaletteAnimationManager.GetCurrentFrame(paletteAnimationIndex);
+                    let currentFrame = SonicManager.instance.tilePaletteAnimationManager.GetCurrentFrame(paletteAnimationIndex);
                     this.  CurrentPaletteAnimationFrameIndexCache[paletteAnimationIndex] = currentFrame.FrameIndex;
                     let paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.Frames[currentFrame.FrameIndex];
                     let canvasLayerToDraw = paletteAnimationCanvasFrame.Canvas.Canvas;
@@ -162,7 +162,7 @@ export class TileChunk {
                     let tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex];
                     if (tileAnimationCanvasFrames == null)
                         continue;
-                    let currentFrame = SonicManager.Instance.TileAnimationManager.GetCurrentFrame(tileAnimationIndex);
+                    let currentFrame = SonicManager.instance.tileAnimationManager.GetCurrentFrame(tileAnimationIndex);
                     this.CurrentTileAnimationFrameIndexCache[tileAnimationIndex] = currentFrame.FrameIndex;
                     let tileAnimationCanvasFrame = tileAnimationCanvasFrames.Frames[currentFrame.FrameIndex];
                     let canvasLayerToDraw = tileAnimationCanvasFrame.Canvas.Canvas;
@@ -273,7 +273,7 @@ export class TileChunk {
                 continue;
             }
             let paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex] = new PaletteAnimationCanvasFrames(paletteAnimationIndex);
-            let tilePaletteAnimation: TilePaletteAnimation = SonicManager.Instance.TilePaletteAnimationManager.Animations[paletteAnimationIndex];
+            let tilePaletteAnimation: TilePaletteAnimation = SonicManager.instance.tilePaletteAnimationManager.Animations[paletteAnimationIndex];
             paletteAnimationCanvasFrames.Position = new Point(rect.X * TileChunk.TilePiecesSquareSize, rect.Y * TileChunk.TilePiecesSquareSize);
             for (let currentFrame of tilePaletteAnimation.Frames) {
                 tilePaletteAnimation.CurrentFrame = currentFrame.FrameIndex;
@@ -298,7 +298,7 @@ export class TileChunk {
                 continue;
             }
             let tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex] = new TileAnimationCanvasFrames(tileAnimationIndex);
-            let tileAnimation: TileAnimation = SonicManager.Instance.TileAnimationManager.Animations[tileAnimationIndex];
+            let tileAnimation: TileAnimation = SonicManager.instance.tileAnimationManager.Animations[tileAnimationIndex];
             tileAnimationCanvasFrames.Position = new Point(rect.X * TileChunk.TilePiecesSquareSize, rect.Y * TileChunk.TilePiecesSquareSize);
             for (let currentFrame of tileAnimation.Frames) {
                 let tileAnimationCanvasFrame = tileAnimationCanvasFrames.Frames[currentFrame.FrameIndex] = new TileAnimationCanvasFrame();
@@ -391,7 +391,7 @@ export class TileChunk {
                         let paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex];
                         if (paletteAnimationCanvasFrames == null)
                             continue;
-                        let currentFrame = SonicManager.Instance.TilePaletteAnimationManager.GetCurrentFrame(paletteAnimationIndex);
+                        let currentFrame = SonicManager.instance.tilePaletteAnimationManager.GetCurrentFrame(paletteAnimationIndex);
                         canvas.fillText("Palette " + paletteAnimationIndex + "-" + currentFrame.FrameIndex, position.X + 25, position.Y + yOffset + (paletteAnimationIndex * 13));
                     }
                 }
@@ -403,7 +403,7 @@ export class TileChunk {
                         let tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex];
                         if (tileAnimationCanvasFrames == null)
                             continue;
-                        let currentFrame = SonicManager.Instance.TileAnimationManager.GetCurrentFrame(tileAnimationIndex);
+                        let currentFrame = SonicManager.instance.tileAnimationManager.GetCurrentFrame(tileAnimationIndex);
                         canvas.fillText("Tile " + tileAnimationIndex + "-" + currentFrame.FrameIndex, position.X + 75, position.Y + yOffset + (tileAnimationIndex * 13));
                     }
                 }

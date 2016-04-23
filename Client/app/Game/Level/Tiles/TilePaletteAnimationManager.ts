@@ -10,8 +10,8 @@ export class TilePaletteAnimationManager {
     }
     private Init(): void {
         this.Animations = {};
-        for (let animatedPaletteIndex: number = 0; animatedPaletteIndex < this.SonicManager.SonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
-            this.Animations[animatedPaletteIndex] = new TilePaletteAnimation(this, this.SonicManager.SonicLevel.AnimatedPalettes[animatedPaletteIndex]);
+        for (let animatedPaletteIndex: number = 0; animatedPaletteIndex < this.SonicManager.sonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
+            this.Animations[animatedPaletteIndex] = new TilePaletteAnimation(this, this.SonicManager.sonicLevel.AnimatedPalettes[animatedPaletteIndex]);
             this.Animations[animatedPaletteIndex].Init();
         }
     }
@@ -53,7 +53,7 @@ export class TilePaletteAnimation {
         if (pal.TotalLength == 0)
             return
         for (let j: number = 0; j <= pal.TotalLength; j += pal.SkipIndex) {
-            if (this.Manager.SonicManager.DrawTickCount % (pal.TotalLength + pal.SkipIndex) == j) {
+            if (this.Manager.SonicManager.drawTickCount % (pal.TotalLength + pal.SkipIndex) == j) {
                 this.CurrentFrame = j / pal.SkipIndex;
             }
         }
@@ -82,7 +82,7 @@ export class TilePaletteAnimationFrame {
     }
     private tempPalette: string[][];
     public SetPalette(): void {
-        let levelPalette = this.Animation.Manager.SonicManager.SonicLevel.Palette;
+        let levelPalette = this.Animation.Manager.SonicManager.sonicLevel.Palette;
         this.clonePalette(levelPalette);
         let pal = this.Animation.AnimatedPaletteData;
         for (let index: number = 0; index < pal.Pieces.length; index++) {
@@ -106,7 +106,7 @@ export class TilePaletteAnimationFrame {
         }
     }
     public ClearPalette(): void {
-        this.Animation.Manager.SonicManager.SonicLevel.Palette = this.tempPalette;
+        this.Animation.Manager.SonicManager.sonicLevel.Palette = this.tempPalette;
         this.tempPalette = null;
     }
 }
