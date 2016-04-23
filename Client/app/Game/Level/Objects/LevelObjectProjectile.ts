@@ -1,14 +1,14 @@
 export class LevelObjectProjectile {
-    public X: number;
-    public Y: number;
-    public Xsp: number;
-    public Ysp: number;
-    public Xflip: boolean;
-    public Yflip: boolean;
-    public AssetIndex: number;
-    public FrameIndex: number;
-    public Name: string;
+    public x: number;
+    public y: number;
+    public xsp: number;
+    public ysp: number;
+    public xflip: boolean;
+    public yflip: boolean;
+    public assetIndex: number;
+    public frameIndex: number;
+    public name: string;
     constructor(name: string) {
-        this.Name = name;
+        this.name = name;
     }
 }

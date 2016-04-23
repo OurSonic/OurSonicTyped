@@ -55,7 +55,7 @@ export class LevelObjectInfo {
     }
     public SetPieceLayoutIndex(ind: number): void {
         this.PieceLayoutIndex = ind;
-        let pcs = this.ObjectData.PieceLayouts[this.PieceLayoutIndex].Pieces;
+        let pcs = this.ObjectData.PieceLayouts[this.PieceLayoutIndex].pieces;
         this.Pieces = [];
         for (let t of pcs) {
             //todo look into this...
@@ -64,7 +64,7 @@ export class LevelObjectInfo {
     }
     public SetObjectData(obj: LevelObject): void {
         this.ObjectData = obj;
-        if (this.ObjectData.PieceLayouts.length > this.PieceLayoutIndex && this.ObjectData.PieceLayouts[this.PieceLayoutIndex].Pieces.length > 0)
+        if (this.ObjectData.PieceLayouts.length > this.PieceLayoutIndex && this.ObjectData.PieceLayouts[this.PieceLayoutIndex].pieces.length > 0)
             this.SetPieceLayoutIndex(this.PieceLayoutIndex);
     }
     public Tick($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): boolean {
@@ -103,7 +103,13 @@ export class LevelObjectInfo {
                 ObjectManager.broken.height);
             return;
         }
-        this.MainPieceLayout().Draw(canvas, x, y, this.ObjectData, this, showHeightMap);
+        let levelObjectPieceLayout = this.MainPieceLayout();
+        if (!levelObjectPieceLayout) {
+            //should not happens
+            this.MainPieceLayout();
+            return;
+        }
+        levelObjectPieceLayout.Draw(canvas, x, y, this.ObjectData, this, showHeightMap);
         if (this.ConsoleLog != null) {
             let gr = this.GetRect();
             canvas.save();
@@ -129,7 +135,7 @@ export class LevelObjectInfo {
         this.Subdata = this.O.SubType;
         this.UpperNibble = this.Subdata >> 4;
         this.LowerNibble = this.Subdata & 0xf;
-        if (this.ObjectData.PieceLayouts.length > this.PieceLayoutIndex && this.ObjectData.PieceLayouts[this.PieceLayoutIndex].Pieces.length > 0)
+        if (this.ObjectData.PieceLayouts.length > this.PieceLayoutIndex && this.ObjectData.PieceLayouts[this.PieceLayoutIndex].pieces.length > 0)
             this.SetPieceLayoutIndex(this.PieceLayoutIndex);
     }
     public Collides(sonic: Point): LevelObjectPiece {
@@ -148,12 +154,12 @@ export class LevelObjectInfo {
         let mX: number = ((sonic.X) - this.X) | 0;
         let mY: number = ((sonic.Y) - this.Y)|0;
         for (let j of pcs) {
-            let piece = this.ObjectData.Pieces[j.PieceIndex];
-            let asset = this.ObjectData.Assets[piece.AssetIndex];
-            if (asset.Frames.length > 0) {
-                let frm = asset.Frames[j.FrameIndex];
-                let map = isHurtMap ? frm.HurtSonicMap : frm.CollisionMap;
-                if (this.twoDArray(map, (mX + frm.OffsetX), (mY + frm.OffsetY), this.Xflip !== piece.Xflip, this.Yflip !== piece.Yflip) == true)
+            let piece = this.ObjectData.Pieces[j.pieceIndex];
+            let asset = this.ObjectData.Assets[piece.assetIndex];
+            if (asset.frames.length > 0) {
+                let frm = asset.frames[j.frameIndex];
+                let map = isHurtMap ? frm.hurtSonicMap : frm.collisionMap;
+                if (this.twoDArray(map, (mX + frm.offsetX), (mY + frm.offsetY), this.Xflip !== !!piece.xflip, this.Yflip !== !!piece.xflip) == true)
                     return j;
             }
         }

@@ -11,7 +11,7 @@ import {Help} from "../Common/Help";
 
 export class SonicEngine {
     private WideScreen: boolean = true;
-    //    public client: SocketIOClient;
+    public Client: SocketIOClient.Socket;
     private fullscreenMode: boolean;
     private gameCanvas: CanvasInformation;
     private gameGoodWidth: number;
@@ -40,7 +40,7 @@ export class SonicEngine {
     private bindInput(): void {
         this.gameCanvas.DomCanvas.mousedown((e: JQueryEventObject) => this.canvasOnClick(e));
         this.gameCanvas.DomCanvas.mouseup((e: JQueryEventObject) => this.canvasMouseUp(e));
-        this.gameCanvas.DomCanvas.mousemove((e: JQueryEventObject)=>this.canvasMouseMove(e));
+        this.gameCanvas.DomCanvas.mousemove((e: JQueryEventObject) => this.canvasMouseMove(e));
         this.gameCanvas.DomCanvas.bind("touchstart", (e: JQueryEventObject) => this.canvasOnClick(e));
         this.gameCanvas.DomCanvas.bind("touchend", (e: JQueryEventObject) => this.canvasMouseUp(e));
         this.gameCanvas.DomCanvas.bind("touchmove", (e: JQueryEventObject) => this.canvasMouseMove(e));
@@ -220,21 +220,22 @@ export class SonicEngine {
 
             });
         setTimeout(() => {
+
+            this.Client.emit("LoadLevel.Request", { Data:'Angel Island Zone Act 1'});
+
             //            if (neverGot) {
-            this.LoadLevel((<any>window).STATICLEVEL);
+//            this.LoadLevel((<any>window).STATICLEVEL);
             //        }
         }, 1);
 
-
-
-        /*        client = SocketIOClient.Connect("159.203.118.77:8998");
-                client.On<DataObject<string>>("SonicLevel",
-                    data => {
-                        Help.DecodeString<SlData.SLData>(data.Data, RunSonic);
-                    });
-                client.On<DataObject<KeyValuePair<string, string>[]>>("GetObjects.Response", data => {
-                    this.sonicManager.loadObjects(data.Data);
-                });*/
+        this.Client = io.connect("159.203.118.77:8998");
+        this.Client.on("LoadLevel.Response",
+            data => {
+                this.LoadLevel(data.Data);
+            });
+        this.Client.on("GetObjects.Response", data => {
+                this.sonicManager.loadObjects(data.Data);
+        });
     }
     private LoadLevel(data: string): void {
         let l = JSON.parse(Help.DecodeString(data));

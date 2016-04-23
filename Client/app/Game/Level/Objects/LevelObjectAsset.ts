@@ -2,10 +2,10 @@
 import {LevelObjectAssetFrame} from "LevelObjectAssetFrame";
 
 export class LevelObjectAsset {
-    public Frames: LevelObjectAssetFrame[];
-    public Name: string;
+    public frames: LevelObjectAssetFrame[];
+    public name: string;
     constructor(name: string) {
-        this.Frames = new Array<LevelObjectAssetFrame>();
-        this.Name = name;
+        this.frames = new Array<LevelObjectAssetFrame>();
+        this.name = name;
     }
 }

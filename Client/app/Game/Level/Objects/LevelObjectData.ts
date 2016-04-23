@@ -11,29 +11,28 @@ import {LevelObjectInfo} from "./LevelObjectInfo";
 import {LevelObjectPiece } from "./LevelObjectPiece";
 import {LevelObjectPieceLayout} from "./LevelObjectPieceLayout";
 
-/*[Serializable]*/
 export class LevelObjectData {
-    public Key: string;
-    public Description: string;
-    public Assets: LevelObjectAsset[];
-    public Pieces: LevelObjectPiece[];
-    public PieceLayouts: LevelObjectPieceLayout[];
-    public Projectiles: LevelObjectProjectile[];
-    public InitScript: string;
-    public TickScript: string;
-    public CollideScript: string;
-    public HurtScript: string;
+    public key: string;
+    public description: string;
+    public assets: LevelObjectAsset[];
+    public pieces: LevelObjectPiece[];
+    public pieceLayouts: LevelObjectPieceLayout[];
+    public projectiles: LevelObjectProjectile[];
+    public initScript: string;
+    public tickScript: string;
+    public collideScript: string;
+    public hurtScript: string;
     constructor() {
-        this.Assets = [];
-        this.Pieces = [];
-        this.Projectiles = [];
-        this.PieceLayouts = [];
-        this.Key = "";
-        this.Description = "";
-        this.InitScript = "";
-        this.TickScript = "";
-        this.CollideScript = "";
-        this.HurtScript = "";
+        this.assets = [];
+        this.pieces = [];
+        this.projectiles = [];
+        this.pieceLayouts = [];
+        this.key = "";
+        this.description = "";
+        this.initScript = "";
+        this.tickScript = "";
+        this.collideScript = "";
+        this.hurtScript = "";
     }
 }
 

@@ -68,8 +68,8 @@ export class TilePiece {
             let tile = tileItem.GetTile();
             if (tile) {
                 if (tileItem.Priority == (layer == 1)) {
-                    let _xf = xFlip !== tileItem.XFlip;
-                    let _yf = yFlip !== tileItem.YFlip;
+                    let _xf = !!xFlip !== !!tileItem.XFlip;
+                    let _yf = !!yFlip !== !!tileItem.YFlip;
                     let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
                     localPoint.X = df[0] * tilePieceLength;
                     localPoint.Y = df[1] * tilePieceLength;
@@ -98,8 +98,8 @@ export class TilePiece {
                 let tile = tileItem.GetTile();
                 if (tile) {
                     if (tileItem.Priority == (layer == 1)) {
-                        let _xf = xFlip !== tileItem.XFlip;
-                        let _yf = yFlip !== tileItem.YFlip;
+                        let _xf = !!xFlip !== !!tileItem.XFlip;
+                        let _yf = !!yFlip !== !!tileItem.YFlip;
                         let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
                         localPoint.X = df[0] * tilePieceLength;
                         localPoint.Y = df[1] * tilePieceLength;
@@ -123,8 +123,8 @@ export class TilePiece {
             let tile = tileItem.GetTile();
             if (tile) {
                 if (tileItem.Priority == (layer == 1)) {
-                    let _xf = xFlip !== tileItem.XFlip;
-                    let _yf = yFlip !== tileItem.YFlip;
+                    let _xf = !!xFlip !== !!tileItem.XFlip;
+                    let _yf = !!yFlip !== !!tileItem.YFlip;
                     let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
                     localPoint.X = df[0] * tilePieceLength;
                     localPoint.Y = df[1] * tilePieceLength;

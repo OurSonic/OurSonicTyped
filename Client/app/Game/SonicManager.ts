@@ -184,7 +184,7 @@ export class SonicManager {
         let levelObjectInfos = this.SonicLevel.Objects;
         for (let obj of levelObjectInfos) {
             localPoint.X = obj.X | 0;
-            localPoint.Y = obj.Y|0;
+            localPoint.Y = obj.Y | 0;
             if (this.BigWindowLocation.Intersects(localPoint)) {
                 this.InFocusObjects.push(obj);
                 obj.Tick(obj, this.SonicLevel, this.SonicToon);
@@ -693,31 +693,34 @@ export class SonicManager {
 
     /*load*/
     public cachedObjects: { [key: string]: LevelObject };
-    /* public loadObjects(objects: KeyValuePair<string, string>[]): void {
-         this.cachedObjects = {};
-         this.SonicLevel.Objects.forEach(function (t) {
-             let o = t.Key;
-             if (this.cachedObjects.ContainsKey(o)) {
-                 t.SetObjectData(this.cachedObjects[o]);
-                 continue;
-             }
-             let d = objects.First(p => p.Key == o);
-             if (d.Falsey()) {
-                 t.SetObjectData(new LevelObject(o));
-                 continue;
-             }
-             let dat: LevelObjectData;
-             if (d.Value.length == 0)
-                 dat = new LevelObjectData();
-             else dat = <LevelObjectData>JSON.parse(d.Value);
-             let dr = ObjectManager.ExtendObject(dat);
-             this.cachedObjects[o] = dr;
-             t.SetObjectData(dr);
-         });
-     }
-     public loadObjects(objects: string[]): void {
-         SonicEngine.Instance.client.Emit("GetObjects", objects);
-     }*/
+    public loadObjects(objects: { key: string, value: string }[]): void {
+        this.cachedObjects = {};
+        for (var t of this.SonicLevel.Objects) {
+            let o = t.Key;
+
+            if (this.cachedObjects[o]) {
+                t.SetObjectData(this.cachedObjects[o]);
+                continue;
+            }
+            let d = objects.filter(p => p.key == o)[0];
+            if (!d) {
+                t.SetObjectData(new LevelObject(o));
+                continue;
+            }
+            let dat: LevelObjectData;
+            if (d.value.length == 0)
+                dat = new LevelObjectData();
+            else dat = <LevelObjectData>JSON.parse(d.value);
+            let dr = ObjectManager.ExtendObject(dat);
+            this.cachedObjects[o] = dr;
+            t.SetObjectData(dr);
+
+        }
+
+    }
+    public downloadObjects(objects: string[]): void {
+        SonicEngine.Instance.Client.emit("GetObjects", objects);
+    }
     public Load(sonicLevel: SlData): void {
         this.Loading = true;
         this.SonicLevel = new SonicLevel();
@@ -735,13 +738,12 @@ export class SonicManager {
             this.SonicLevel.Objects[l].Index = l;
         }
         let objectKeys = new Array<string>();
-        this.SonicLevel.Objects.forEach(function (t) {
+        this.SonicLevel.Objects.forEach(t => {
             let o = t.Key;
             if (objectKeys.filter(p => p != o).length == objectKeys.length)
                 objectKeys.push(o);
         });
-        //TODO OBJECTS
-        //        this.loadObjects(objectKeys);
+        this.downloadObjects(objectKeys);
         for (let j: number = 0; j < sonicLevel.Tiles.length; j++) {
             let fc = sonicLevel.Tiles[j];
             let tiles = fc;

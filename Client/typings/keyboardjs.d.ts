@@ -128,6 +128,6 @@ declare namespace keyboardJS {
 }
 
 declare module 'keyboardjs' {
-    export = keyboardjs;
+    export = keyboardJS;
 }
 

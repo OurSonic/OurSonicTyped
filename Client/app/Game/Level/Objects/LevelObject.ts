@@ -36,19 +36,19 @@ export class LevelObject {
     }
     public Init($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): void {
         $object.Reset();
-        this.evalMe("initScript").apply($object, [$object, level, sonic]);
+        this.evalMe("InitScript").apply($object, [$object, level, sonic]);
     }
     public OnCollide($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic, sensor: string, piece: LevelObjectPiece): boolean {
-        return <boolean>this.evalMe("collideScript").apply($object, [$object, level, sonic, sensor, piece])
+        return <boolean>this.evalMe("CollideScript").apply($object, [$object, level, sonic, sensor, piece])
     }
     public OnHurtSonic($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic, sensor: string, piece: LevelObjectPiece): boolean {
-        return <boolean>this.evalMe("hurtScript").apply($object, [$object, level, sonic, sensor, piece])
+        return <boolean>this.evalMe("HurtScript").apply($object, [$object, level, sonic, sensor, piece])
     }
     public Tick($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): boolean {
         if ($object.lastDrawTick != SonicManager.Instance.tickCount - 1)
             this.Init($object, level, sonic);
         $object.lastDrawTick = SonicManager.Instance.tickCount;
-        this.evalMe("tickScript").apply($object, [$object, level, sonic]);
+        this.evalMe("TickScript").apply($object, [$object, level, sonic]);
         if ($object.State) {
             $object.Xsp = $object.State.Xsp;
             $object.Ysp = $object.State.Ysp;
