@@ -6,6 +6,7 @@ import {HeightMap } from "../Level/HeightMap";
 import {Help } from "../../Common/Help";
 import {SonicManager } from "../SonicManager";
 import {RotationMode } from "../../Common/Enums";
+import {TileChunk} from "../Level/Tiles/TileChunk";
 
 export class SensorManager {
     
@@ -45,7 +46,7 @@ export class SensorManager {
     }
     public BuildChunk(chunk: TileChunk, isLayerOne: boolean): void {
         if (isLayerOne) {
-            if (chunk.HeightBlocks1.Truthy())
+            if (chunk.HeightBlocks1)
                 return
             var hb1 = chunk.HeightBlocks1 = new Array(128);
             var ab1 = chunk.AngleMap1 = new Array(8);
@@ -79,9 +80,9 @@ export class SensorManager {
                     var heightMaskItems: number[] = null;
                     if (heightMask == null)
                         continue;
-                    var mj: Solidity;
-                    if (heightMask.Full != null) {
-                        mj = !heightMask.Full.Value ? 0 : tp.Solid1;
+                    var mj: Solidity; 
+                    if (heightMask.Full !==undefined) {
+                        mj = heightMask.Full===false ? 0 : tp.Solid1;
                         for (; __y < 16; __y++) {
                             for (; __x < 16; __x++) {
                                 hb1[(_x * 16 + __x)][(_y * 16 + __y)] = mj;
@@ -113,7 +114,7 @@ export class SensorManager {
                                     jy = __y;
                                 }
                             }
-                            if (heightMask.Full == null) {
+                            if (heightMask.Full === undefined) {
                                 switch (tp.Solid1) {
                                     case 0:
                                         hb1[(_x * 16 + jx)][(_y * 16 + jy)] = 0;
@@ -131,7 +132,7 @@ export class SensorManager {
             }
         }
         else {
-            if (chunk.HeightBlocks2.Truthy())
+            if (chunk.HeightBlocks2)
                 return
             var hb2 = chunk.HeightBlocks2 = new Array(128);
             var ab2 = chunk.AngleMap2 = new Array(8);
@@ -166,8 +167,8 @@ export class SensorManager {
                         continue;
                     var mj: Solidity;
                     var hd2Items: number[] = null;
-                    if (hd2.Full != null) {
-                        mj = hd2.Full == false ? 0 : tp.Solid2;
+                    if (hd2.Full !== undefined) {
+                        mj = hd2.Full === false ? 0 : tp.Solid2;
                         for (; __y < 16; __y++) {
                             for (; __x < 16; __x++) {
                                 hb2[(_x * 16 + __x)][(_y * 16 + __y)] = mj;
@@ -199,7 +200,7 @@ export class SensorManager {
                                     jy = __y;
                                 }
                             }
-                            if (hd2.Full == null) {
+                            if (hd2.Full === undefined) {
                                 switch (tp.Solid2) {
                                     case <Solidity>0:
                                         hb2[(_x * 16 + jx)][(_y * 16 + jy)] = Solidity.NotSolid;
@@ -242,8 +243,8 @@ export class Sensor {
         this.Letter = letter;
     }
     private checkCollisionLineWrap(x1: number, x2: number, y1: number, y2: number, ignoreSolid: boolean): SensorM {
-        var _x = x1 / 128;
-        var _y = Help.Mod(y1 / 128, SonicManager.Instance.SonicLevel.LevelHeight);
+        var _x = (x1 / 128)|0;
+        var _y = Help.Mod((y1 / 128)|0, SonicManager.Instance.SonicLevel.LevelHeight);
         var tc = SonicManager.Instance.SonicLevel.GetChunkAt(_x, _y);
         this.Manager.BuildChunk(tc, SonicManager.Instance.SonicLevel.CurHeightMap);
         var curh = SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
@@ -279,7 +280,7 @@ export class Sensor {
                         }
                         if (curh[(__x - i)][__y] >= <Solidity>1 || SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1 - i, y1, this.Letter)) {
                             this.__currentM.Value = x1 - i;
-                            this.__currentM.Angle = cura[(__x - i) / 16][(__y) / 16];
+                            this.__currentM.Angle = cura[(__x - i) / 16 | 0][(__y) / 16 | 0];
                             return this.__currentM;
                         }
                     }
@@ -297,7 +298,7 @@ export class Sensor {
                     }
                     if (curh[(__x + i)][__y] >= <Solidity>1 || SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1 + i, y1, this.Letter)) {
                         this.__currentM.Value = x1 + i;
-                        this.__currentM.Angle = cura[(__x + i) / 16][(__y) / 16];
+                        this.__currentM.Angle = cura[(__x + i) / 16 | 0][(__y) / 16 | 0];
                         return this.__currentM;
                     }
                 }
@@ -318,7 +319,7 @@ export class Sensor {
                         }
                         if (curh[(__x + i)][__y] >= <Solidity>1 || SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1 + i, y1, this.Letter)) {
                             this.__currentM.Value = x1 + i;
-                            this.__currentM.Angle = cura[(__x + i) / 16][(__y) / 16];
+                            this.__currentM.Angle = cura[(__x + i) / 16 | 0][(__y) / 16 | 0];
                             return this.__currentM;
                         }
                     }
@@ -341,7 +342,7 @@ export class Sensor {
                     }
                     if (curh[(__x - i)][__y] >= <Solidity>1 || SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1 - i, y1, this.Letter)) {
                         this.__currentM.Value = x1 - i;
-                        this.__currentM.Angle = cura[(__x - i) / 16][(__y) / 16];
+                        this.__currentM.Angle = cura[(__x - i) / 16 | 0][(__y) / 16 | 0];
                         return this.__currentM;
                     }
                 }
@@ -364,7 +365,7 @@ export class Sensor {
                         }
                         if (curh[__x][__y - i] > <Solidity>1 || SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1, y1 - i, this.Letter)) {
                             this.__currentM.Value = y1 - i;
-                            this.__currentM.Angle = cura[(__x) / 16][(__y - i) / 16];
+                            this.__currentM.Angle = cura[(__x) / 16 | 0][(__y - i) / 16 | 0];
                             return this.__currentM;
                         }
                     }
@@ -384,7 +385,7 @@ export class Sensor {
                         if (curh[__x][__y + i] == <Solidity>1 && SonicManager.Instance.SonicToon.InAir && SonicManager.Instance.SonicToon.Ysp < 0)
                             continue;
                         this.__currentM.Value = y1 + i;
-                        this.__currentM.Angle = cura[(__x) / 16][(__y + i) / 16];
+                        this.__currentM.Angle = cura[(__x) / 16 | 0]  [(__y + i) / 16 | 0];
                         return this.__currentM;
                     }
                 }
@@ -405,7 +406,7 @@ export class Sensor {
                         }
                         if (curh[__x][__y + i] >= <Solidity>1 || SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
                             this.__currentM.Value = y1 + i;
-                            this.__currentM.Angle = cura[(__x) / 16][(__y + i) / 16];
+                            this.__currentM.Angle = cura[(__x) / 16 | 0][(__y + i) / 16 | 0];
                             return this.__currentM;
                         }
                     }
@@ -423,7 +424,7 @@ export class Sensor {
                     }
                     if (curh[__x][__y - i] > <Solidity>1 || SonicManager.Instance.SonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
                         this.__currentM.Value = y1 - i;
-                        this.__currentM.Angle = cura[(__x) / 16][(__y - i) / 16];
+                        this.__currentM.Angle = cura[(__x) / 16 | 0][(__y - i) / 16 | 0];
                         return this.__currentM;
                     }
                 }
@@ -432,8 +433,8 @@ export class Sensor {
         return null;
     }
     public Draw(canvas: CanvasRenderingContext2D, character: Sonic, sensorResult: SensorM): void {
-        var x = Help.Floor(character.x) - SonicManager.Instance.WindowLocation.X;
-        var y = Help.Floor(character.y) - SonicManager.Instance.WindowLocation.Y;
+        var x = Help.Floor(character.X) - SonicManager.Instance.WindowLocation.X;
+        var y = Help.Floor(character.Y) - SonicManager.Instance.WindowLocation.Y;
         canvas.beginPath();
         if (sensorResult && sensorResult.Chosen) {
             canvas.strokeStyle = "#FFF76D";

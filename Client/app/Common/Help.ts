@@ -60,9 +60,9 @@ export class Help {
     }
     public static ScalePixelData(scale: Point, data: ImageData): ImageData {
         var Uint8ClampedArray: Uint8ClampedArray = data.data;
-        var colors = new Array(Uint8ClampedArray.length / 4);
+        var colors = new Array(Uint8ClampedArray.length / 4|0);
         for (var f: number = 0; f < Uint8ClampedArray.length; f += 4) {
-            colors[f / 4] = (Help.ColorObjectFromData(Uint8ClampedArray, f));
+            colors[f / 4|0] = (Help.ColorObjectFromData(Uint8ClampedArray, f));
         }
         var d = CanvasInformation.Create(1, 1, false).Context.createImageData(data.width * scale.X, data.height * scale.Y);
         Help.SetDataFromColors(d.data, colors, scale, data.width, colors[0]);
@@ -71,7 +71,7 @@ export class Help {
     private static SetDataFromColors(data: Uint8ClampedArray, colors: Color[], scale: Point, width: number, transparent: Color): void {
         for (var i: number = 0; i < colors.length; i++) {
             var curX = i % width;
-            var curY = i / width;
+            var curY = i / width|0;
             var g = colors[i];
             var isTrans = false;
             if (transparent) {
@@ -90,9 +90,9 @@ export class Help {
                         data[c + 3] = 0;
                         continue;
                     }
-                    data[c] = <number>g.R;
-                    data[c + 1] = <number>g.G;
-                    data[c + 2] = <number>g.B;
+                    data[c] = g.R|0;
+                    data[c + 1] = g.G | 0;
+                    data[c + 2] = g.B | 0;
                     data[c + 3] = 255;
                 }
             }
@@ -154,7 +154,7 @@ export class Help {
         return new Compressor().DecompressText(lvl);
     }
     public static FixAngle(angle: number): number {
-        var fixedAng = <number>Math.floor((256 - angle) * 1.4062) % 360;
+        var fixedAng = Math.floor((256 - angle) * 1.4062) % 360 | 0;
         var flop = 360 - fixedAng;
         return Help.DegToRad(flop);
     }
@@ -167,7 +167,7 @@ export class Help {
     public static Floor(spinDashSpeed: number): number {
         if (spinDashSpeed > 0)
             return ~~spinDashSpeed;
-        return <number>Math.floor(spinDashSpeed);
+        return Math.floor(spinDashSpeed) | 0;
     }
     public static Max(f1: number, f2: number): number {
         return f1 < f2 ? f2 : f1;

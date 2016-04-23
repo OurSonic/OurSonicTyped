@@ -1,8 +1,8 @@
-﻿import {RotationMode} from "../Sonic/SensorManager";
-import {Point } from "../../Common/Utils";
+﻿import {Point } from "../../Common/Utils";
 import {SonicManager} from "../SonicManager";
 import {CanvasInformation} from "../../Common/CanvasInformation";
 import {Help} from "../../Common/Help";
+import {RotationMode  } from "../../Common/Enums";
 
 export class HeightMap {
     public static colors: string[] = new Array("", "rgba(255,98,235,0.6)", "rgba(24,218,235,0.6)", "rgba(24,98,235,0.6)");
@@ -17,9 +17,11 @@ export class HeightMap {
         this.Height = 16;
         this.Index = i;
     }
-/*    constructor(full: boolean) {
-        this.Full = full;
-    }*/
+    static FullHeight(full: boolean): HeightMap {
+        var h = new HeightMap(null, 0);
+        h.Full = full;
+        return h;
+    }
     public SetItem(x: number, y: number, rotationMode: RotationMode): void {
         var jx = 0;
         var jy = 0;
@@ -47,7 +49,7 @@ export class HeightMap {
         if (this.Items == null)
             return
         canvas.save();
-        var oPos = Point.create(pos);
+        var oPos = Point.Create(pos);
         if (xflip) {
             pos.X = -pos.X - 16;
             canvas.scale(-1, 1);
@@ -57,7 +59,7 @@ export class HeightMap {
             canvas.scale(1, -1);
         }
         var fd = SonicManager.Instance.SpriteCache.HeightMaps[this.Index + (solid << 20)];
-        if (this.Index != -1 && fd.Truthy())
+        if (this.Index != -1 && fd)
             canvas.drawImage(fd.Canvas, pos.X, pos.Y);
         else {
             var ntcanvas = CanvasInformation.Create(16, 16, false);

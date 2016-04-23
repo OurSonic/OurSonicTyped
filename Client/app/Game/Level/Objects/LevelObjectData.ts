@@ -5,11 +5,11 @@ import {SonicManager} from "../../SonicManager";
 import {LevelObjectProjectile} from "LevelObjectProjectile";
 import {SensorM } from "../../Sonic/SensorManager";
 import {SLDataObjectEntry  } from "../../../SLData";
-import {ObjectManager } from "ObjectManager";
+import {ObjectManager } from "./ObjectManager";
 import {Sonic} from "../../Sonic/Sonic";
-import {LevelObjectInfo} from "LevelObjectInfo";
-import {LevelObjectPiece } from "LevelObjectPiece";
-import {LevelObjectPieceLayout} from "LevelObjectPieceLayout";
+import {LevelObjectInfo} from "./LevelObjectInfo";
+import {LevelObjectPiece } from "./LevelObjectPiece";
+import {LevelObjectPieceLayout} from "./LevelObjectPieceLayout";
 
 /*[Serializable]*/
 export class LevelObjectData {

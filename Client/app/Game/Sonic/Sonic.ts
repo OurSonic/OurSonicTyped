@@ -13,71 +13,42 @@ export class Sonic {
     private oldSign: number;
     private physicsVariables: SonicConstants;
     private runningTick: number;
-    
+
     public SensorManager: SensorManager;
     public sonicLastHitTick: number;
     private sonicLevel: SonicLevel;
-    
+
     public Watcher: Watcher;
-    
     public Ticking: boolean;
-    
-    public X: number;
-    
-    public Y: number;
-    
-    public Rings: number;
-    
+    public X: number=0;
+    public Y: number = 0;
+    public Rings: number = 0;
     public Debugging: boolean;
-    
     public Jumping: boolean;
-    
     public Crouching: boolean;
-    
     public HoldingLeft: boolean;
-    
     public HoldingRight: boolean;
-    
     public HoldingUp: boolean;
-    
-    public Xsp: number;
-    
-    public Ysp: number;
-    
-    public Gsp: number;
-    
+    public Xsp: number = 0;
+    public Ysp: number = 0;
+    public Gsp: number = 0;
     public Rolling: boolean;
-    
     public InAir: boolean;
-    
     public WasInAir: boolean;
-    
     public HoldingJump: boolean;
-    
     public JustHit: boolean;
-    
-    public HLock: number;
-    
+    public HLock: number = 0;
     public Mode: RotationMode;
-    
     public Facing: boolean;
-    
-    public Breaking: number;
-    
+    public Breaking: number = 0;
     public Ducking: boolean;
-    
     public SpinDash: boolean;
-    
-    public SpinDashSpeed: number;
-    
-    public Angle: number;
-    
+    public SpinDashSpeed: number = 0;
+    public Angle: number = 0;
     protected CurrentlyBall: boolean;
-    
     protected SpriteState: string;
-    
     protected HaltSmoke: Point[];
-    
+
     public WasJumping: boolean;
     constructor() {
         this.Watcher = new Watcher();
@@ -689,9 +660,8 @@ export class Sonic {
             return
         var cur = SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
         if (cur == null) {
-
         }
-        if (Help.Loaded(cur)){
+        if (Help.Loaded(cur)) {
             canvas.save();
             var offset = this.GetOffsetFromImage();
             canvas.translate((fx - SonicManager.Instance.WindowLocation.X + offset.X),
@@ -722,7 +692,7 @@ export class Sonic {
                     canvas.rotate(-Help.FixAngle(this.Angle));
                 canvas.drawImage(cur, -cur.width / 2, -cur.height / 2);
                 if (this.SpinDash) {
-                    canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("spinsmoke" + (SonicManager.Instance.DrawTickCount % 14) / 2)],
+                    canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("spinsmoke" + ((SonicManager.Instance.DrawTickCount % 14) / 2 | 0))],
                         (-cur.width / 2) - 25,
                         -cur.height / 2 + (offset.Y) - 14,
                         cur.width,
@@ -734,7 +704,7 @@ export class Sonic {
                     canvas.rotate(Help.FixAngle(this.Angle));
                 canvas.drawImage(cur, -cur.width / 2, -cur.height / 2);
                 if (this.SpinDash) {
-                    canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("spinsmoke" + (SonicManager.Instance.DrawTickCount % 14) / 2)],
+                    canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("spinsmoke" + ((SonicManager.Instance.DrawTickCount % 14) / 2 | 0))],
                         (-cur.width / 2) - 25,
                         -cur.height / 2 + (offset.Y) - 14,
                         cur.width,
@@ -749,7 +719,7 @@ export class Sonic {
                 canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("haltsmoke" + (SonicManager.Instance.DrawTickCount % (4 * 6)) / 6)],
                     ((lo.X - SonicManager.Instance.WindowLocation.X - 25)),
                     ((lo.Y + 12 - SonicManager.Instance.WindowLocation.Y + offset.Y)));
-                if (((SonicManager.Instance.DrawTickCount + 6) % (4 * 6)) / 6 == 0)
+                if ((((SonicManager.Instance.DrawTickCount + 6) % (4 * 6)) / 6 | 0 )== 0)
                     this.HaltSmoke = this.HaltSmoke.slice(i, 1);
             }
         }
@@ -896,7 +866,7 @@ export class Watcher {
             offset = 16;
         else offset = ticks - this.lastTick;
         this.lastTick = ticks;
-        this.mult = offset / 16;
+        this.mult = (offset / 16)|0;
     }
     public Multiply(v: number): number {
         return this.mult * v;

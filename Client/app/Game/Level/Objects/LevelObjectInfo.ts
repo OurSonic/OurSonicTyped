@@ -1,15 +1,15 @@
 ﻿import {Rectangle, Point } from "../../../Common/Utils";
 import {LevelObjectAsset} from "LevelObjectAsset";
 import {SonicManager} from "../../SonicManager";
-import {LevelObjectProjectile} from "LevelObjectProjectile";
+import {LevelObjectProjectile} from "./LevelObjectProjectile";
 import {SensorM } from "../../Sonic/SensorManager";
 import {SLDataObjectEntry  } from "../../../SLData";
-import {ObjectManager } from "ObjectManager";
+import {ObjectManager } from "./ObjectManager";
 import {Sonic} from "../../Sonic/Sonic";
-import {LevelObject } from "LevelObject";
-import {LevelObjectPiece } from "LevelObjectPiece";
+import {LevelObject } from "./LevelObject";
+import {LevelObjectPiece } from "./LevelObjectPiece";
 import {SonicLevel} from "../../SonicLevel";
-import {LevelObjectPieceLayout} from "LevelObjectPieceLayout";
+import {LevelObjectPieceLayout} from "./LevelObjectPieceLayout";
 
 export class LevelObjectInfo {
     private _rect: Rectangle = new Rectangle(0, 0, 0, 0);
@@ -145,8 +145,8 @@ export class LevelObjectInfo {
         if (this.Dead || !this.ObjectData || this.ObjectData.PieceLayouts.length == 0)
             return null;
         var pcs = this.Pieces;
-        var mX: number = <number>((sonic.X) - this.X);
-        var mY: number = <number>((sonic.Y) - this.Y);
+        var mX: number = ((sonic.X) - this.X) | 0;
+        var mY: number = ((sonic.Y) - this.Y)|0;
         for (var j of pcs) {
             var piece = this.ObjectData.Pieces[j.PieceIndex];
             var asset = this.ObjectData.Assets[piece.AssetIndex];

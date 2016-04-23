@@ -132,8 +132,7 @@ export class Tile {
                     var col = color[_y];
                     if (col == 0)
                         continue;
-                    //todo test
-//                    if (d.All(a => a != col))
+                    if (d.filter(a => a != col).length==d.length)
                         d.push(col);
                 }
             }

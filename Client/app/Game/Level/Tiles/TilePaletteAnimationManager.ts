@@ -88,7 +88,7 @@ export class TilePaletteAnimationFrame {
         for (var index: number = 0; index < pal.Pieces.length; index++) {
             var palettePiece = pal.Pieces[index];
             var colorIndex: number = this.FrameIndex + (pal.Pieces.length * index);
-            var replaceIndex: number = (palettePiece.PaletteOffset) / 2;
+            var replaceIndex: number = (palettePiece.PaletteOffset) / 2|0;
             var color = pal.Palette[colorIndex];
             if (color != null)
                 levelPalette[palettePiece.PaletteIndex][replaceIndex] = color;

@@ -41,7 +41,7 @@ export class TileChunk {
     }
     public GetTilePieceInfo(x: number, y: number, large: boolean): TilePieceInfo {
         if (large) {
-            return this.TilePieces[x / TileChunk.TilePiecesSquareSize][y / TileChunk.TilePiecesSquareSize];
+            return this.TilePieces[(x / TileChunk.TilePiecesSquareSize) | 0][(y / TileChunk.TilePiecesSquareSize)|0];
         }
         else {
             return this.TilePieces[x][y];
@@ -468,7 +468,7 @@ export class TileChunk {
                 }
             }
         }
-        var canvas = CanvasInformation.Create((numWide * 128), <number>Math.ceil(numOfChunks / numWide) * 128, false);
+        var canvas = CanvasInformation.Create((numWide * 128), (Math.ceil(numOfChunks / numWide) | 0) * 128, false);
         canvas.Context.fillStyle = "#111111";
         canvas.Context.fillRect(0, 0, canvas.Canvas.width, canvas.Canvas.height);
         numOfChunks = 0;
@@ -480,8 +480,8 @@ export class TileChunk {
             if (this.BaseCanvasCache[chunkLayer] != null) {
                 var context = canvas.Context;
                 context.save();
-                var x = <number>((numOfChunks % numWide) * 128);
-                var y = <number>Math.floor(numOfChunks / numWide) * 128;
+                var x = ((numOfChunks % numWide) * 128)|0;
+                var y = (Math.floor(numOfChunks / numWide)|0) * 128;
                 context.translate(x, y);
                 canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                 context.fillRect(0, 0, 128, 128);

@@ -5,12 +5,12 @@ import {SonicManager} from "../../SonicManager";
 import {LevelObjectProjectile} from "LevelObjectProjectile";
 import {SensorM } from "../../Sonic/SensorManager";
 import {SLDataObjectEntry  } from "../../../SLData";
-import {ObjectManager } from "ObjectManager";
+import {ObjectManager } from "./ObjectManager";
 import {Sonic} from "../../Sonic/Sonic";
 import {LevelObjectInfo} from "LevelObjectInfo";
 import {LevelObjectPiece } from "LevelObjectPiece"; 
 import {SonicLevel } from "../../SonicLevel";
-import {LevelObjectPieceLayout} from "LevelObjectPieceLayout";
+import {LevelObjectPieceLayout} from "./LevelObjectPieceLayout";
 
 export class LevelObject {
     private cacheCompiled: { [key: string]: (_: LevelObjectInfo, __: SonicLevel, ___: Sonic, ____: SensorM, _____: LevelObjectPiece) => boolean } = {};
@@ -45,9 +45,9 @@ export class LevelObject {
         return <boolean>this.evalMe("hurtScript").apply($object, [$object, level, sonic, sensor, piece])
     }
     public Tick($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): boolean {
-        if ($object.lastDrawTick != SonicManager.Instance.ticklength - 1)
+        if ($object.lastDrawTick != SonicManager.Instance.tickCount - 1)
             this.Init($object, level, sonic);
-        $object.lastDrawTick = SonicManager.Instance.ticklength;
+        $object.lastDrawTick = SonicManager.Instance.tickCount;
         this.evalMe("tickScript").apply($object, [$object, level, sonic]);
         if ($object.State) {
             $object.Xsp = $object.State.Xsp;

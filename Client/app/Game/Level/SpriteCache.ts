@@ -26,13 +26,13 @@ export class SpriteCache {
     }
 }
 export class SpriteCacheIndexes {
-    public Sprites: number;
-    public Tps: number;
-    public Tcs: number;
-    public Ss: number;
-    public Hms: number;
-    public Hmc: number;
-    public Tls: number;
-    public Px: number;
-    public Aes: number;
+    public Sprites: number=0;
+    public Tps: number = 0;
+    public Tcs: number = 0;
+    public Ss: number = 0;
+    public Hms: number = 0;
+    public Hmc: number = 0;
+    public Tls: number = 0;
+    public Px: number = 0;
+    public Aes: number = 0;
 }

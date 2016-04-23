@@ -32,7 +32,7 @@ export class Ring extends Point {
             this.TickCount++;
         }
         if (SonicManager.Instance.CurrentGameState == GameState.Playing)
-            this.AnimationIndex = (SonicManager.Instance.DrawTickCount % ((this.Active ? 4 : 8) * 4)) / (this.Active ? 4 : 8);
+            this.AnimationIndex = ((SonicManager.Instance.DrawTickCount % ((this.Active ? 4 : 8) * 4)) / (this.Active ? 4 : 8))|0;
         else this.AnimationIndex = 0;
         var sprites: CanvasInformation[] = null;
         if (SonicManager.Instance.SpriteCache.Rings)
