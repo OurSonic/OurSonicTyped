@@ -135,7 +135,10 @@ export class Help {
         Help.SetDataFromColors(d.data, colors, scale, image.Width, colors[0]);
         return Help.LoadSprite(Help.GetBase64Image(d), complete);
     }
-    public static Loaded(element: HTMLImageElement, set: boolean = true): void {
+    public static IsLoaded(element: HTMLImageElement): boolean {
+        return element.getAttribute("loaded") == "true";
+    }
+    public static Loaded(element: HTMLImageElement, set: boolean ): void {
         element.setAttribute("loaded", set ? "true" : "false");
     }
     public static LoadSprite(src: string, complete: (_: HTMLImageElement) => void): HTMLImageElement {

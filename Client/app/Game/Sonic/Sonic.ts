@@ -661,7 +661,7 @@ export class Sonic {
         var cur = SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
         if (cur == null) {
         }
-        if (Help.Loaded(cur)) {
+        if (Help.IsLoaded(cur)) {
             canvas.save();
             var offset = this.GetOffsetFromImage();
             canvas.translate((fx - SonicManager.Instance.WindowLocation.X + offset.X),

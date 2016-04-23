@@ -20,15 +20,15 @@ export class Tile {
     private animatedPaletteCaches: { [key: number]: CanvasInformation } = {};
     public DrawBase(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, isAnimatedTile: boolean = false): void {
         if (this.AnimatedTileIndexes != null && (!isAnimatedTile && this.AnimatedTileIndexes.length > 0))
-            return
+            return;
         var baseCacheIndex = this.getBaseCacheIndex(xflip, yflip, palette);
         var baseCache: CanvasInformation = this.baseCaches[baseCacheIndex];
         if (baseCache == null) {
-            var squareSize = this.Colors.length;
+        var squareSize = this.Colors.length;
             var j: CanvasInformation;
             j = CanvasInformation.Create(squareSize, squareSize, false);
             if (pos.X < 0 || pos.Y < 0)
-                return
+                return;
             var oPos = new Point(0, 0);
             if (xflip) {
                 oPos.X = -squareSize;
