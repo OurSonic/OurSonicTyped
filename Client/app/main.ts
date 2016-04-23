@@ -1,10 +1,15 @@
-﻿import {SLData} from "./SLData";
+﻿/// <reference path="../typings/Compress.d.ts" />
 
-class Main {
+
+import {SLData} from "./SLData";
+import {SonicEngine} from "./Game/SonicEngine";
+
+export class Main {
     static run() {
-        var j:string = ((<any>window).STATICLEVEL);
+        var j: string = ((<any>window).STATICLEVEL);
         var message = new Compressor().DecompressText(j);
-        var sl:SLData=JSON.parse(message);
+        var sl: SLData = JSON.parse(message);
+        new SonicEngine();
     }
 }
 
