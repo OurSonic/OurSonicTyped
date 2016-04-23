@@ -2,67 +2,67 @@ import {CanvasInformation } from "../../../Common/CanvasInformation";
 import {Point } from "../../../Common/Utils";
 
 export class LevelObjectAssetFrame {
-    public offsetX: number;
-    public width: number;
-    public height: number;
-    public offsetY: number;
-    public hurtSonicMap: number[][];
-    public collisionMap: number[][];
-    public colorMap: number[][];
-    public palette: string[];
-    public name: string;
-    private image: { [key: number]: CanvasInformation };
-    public transparentColor: string;
+    public OffsetX: number;
+    public Width: number;
+    public Height: number;
+    public OffsetY: number;
+    public HurtSonicMap: number[][];
+    public CollisionMap: number[][];
+    public ColorMap: number[][];
+    public Palette: string[];
+    public Name: string;
+    private Image: { [key: number]: CanvasInformation};
+    public TransparentColor: string;
     constructor(name: string) {
-        this.image = {};
-        this.name = name;
-        this.collisionMap = new Array(100);
-        this.hurtSonicMap = new Array(100);
+        this.Image = {};
+        this.Name = name;
+        this.CollisionMap = new Array(100);
+        this.HurtSonicMap = new Array(100);
         for (var i = 0; i < 100; i++) {
-            this.collisionMap[i] = new Array(100);
-            this.hurtSonicMap[i] = new Array(100);
+            this.CollisionMap[i] = new Array(100);
+            this.HurtSonicMap[i] = new Array(100);
         }
     }
-    public setWidth(w: number): void {
-        this.width = w;
-        this.collisionMap = this.collisionMap.slice(0, w);
-        this.clearCache();
+    public SetWidth(w: number): void {
+        this.Width = w;
+        this.CollisionMap = this.CollisionMap.slice(0, w);
+        this.ClearCache();
     }
-    public setHeight(h: number): void {
-        this.height = h;
-        for (var j = 0; j < this.width; j++) {
-            this.collisionMap[j] = this.collisionMap[j].slice(0, h);
+    public SetHeight(h: number): void {
+        this.Height = h;
+        for (var j = 0; j < this.Width; j++) {
+            this.CollisionMap[j] = this.CollisionMap[j].slice(0, h);
         }
-        this.clearCache();
+        this.ClearCache();
     }
-    public setOffset(ex: number, ey: number): void {
-        this.offsetX = ex;
-        this.offsetY = ey;
-        this.clearCache();
+    public SetOffset(ex: number, ey: number): void {
+        this.OffsetX = ex;
+        this.OffsetY = ey;
+        this.ClearCache();
     }
-    public drawSimple(mainCanvas: CanvasRenderingContext2D, pos: Point, width: number, height: number, xflip: boolean, yflip: boolean): void {
-        var c = this.getCache(false, false, false);
+    public DrawSimple(mainCanvas: CanvasRenderingContext2D, pos: Point, width: number, height: number, xflip: boolean, yflip: boolean): void {
+        var c = this.GetCache(false, false, false);
         mainCanvas.save();
-        mainCanvas.translate(pos.x, pos.y);
-        mainCanvas.scale((<number>width / width), (<number>height / height));
-        mainCanvas.drawImage(c.canvas, 0, 0);
+        mainCanvas.translate(pos.X, pos.Y);
+        mainCanvas.scale((<number>width / this.Width), (<number>height / this.Height));
+        mainCanvas.drawImage(c.Canvas, 0, 0);
         mainCanvas.restore();
     }
-    public getCache(showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): CanvasInformation {
-        var m = this.image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
+    public GetCache(showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): CanvasInformation {
+        var m = this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
         if (m == null) {
-            var mj = CanvasInformation.create(this.width, this.height, false);
-            var canvas = mj.context;
+            var mj = CanvasInformation.Create(this.Width, this.Height, false);
+            var canvas = mj.Context;
             canvas.save();
             canvas.strokeStyle = "#000000";
             canvas.lineWidth = 1;
-            for (var x = 0; x < this.width; x++) {
-                for (var y = 0; y < this.height; y++) {
+            for (var x = 0; x < this.Width; x++) {
+                for (var y = 0; y < this.Height; y++) {
                     var ex = x;
                     var ey = y;
-                    var d = this.colorMap[ex][ey];
-                    var color = this.palette[d];
-                    if (color == this.transparentColor) {
+                    var d = this.ColorMap[ex][ey];
+                    var color = this.Palette[d];
+                    if (color == this.TransparentColor) {
                         canvas.fillStyle = "rgba(0,0,0,0)";
                     }
                     else {
@@ -70,13 +70,13 @@ export class LevelObjectAssetFrame {
                     }
                     canvas.fillRect(ex, ey, 1, 1);
                     if (showCollideMap) {
-                        if (this.collisionMap[ex][ey] > 0) {
+                        if (this.CollisionMap[ex][ey] > 0) {
                             canvas.fillStyle = "rgba(30,34,255,0.6)";
                             canvas.fillRect(ex, ey, 1, 1);
                         }
                     }
                     if (showHurtMap) {
-                        if (this.hurtSonicMap[ex][ey] > 0) {
+                        if (this.HurtSonicMap[ex][ey] > 0) {
                             canvas.fillStyle = "rgba(211,12,55,0.6)";
                             canvas.fillRect(ex, ey, 1, 1);
                         }
@@ -85,17 +85,17 @@ export class LevelObjectAssetFrame {
             }
             canvas.restore();
             m = mj;
-            this.setCache(mj, showOutline, showCollideMap, showHurtMap);
+            this.SetCache(mj, showOutline, showCollideMap, showHurtMap);
         }
         return m;
     }
-    public clearCache(): void {
-        this.image = {};
+    public ClearCache(): void {
+        this.Image = {};
     }
-    public setCache(image: CanvasInformation, showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): void {
-        this.image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)] = image;
+    public SetCache(image: CanvasInformation, showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): void {
+        this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)] = image;
     }
-    public drawUI(_canvas: CanvasRenderingContext2D,
+    public DrawUI(_canvas: CanvasRenderingContext2D,
         pos: Point,
         showOutline: boolean,
         showCollideMap: boolean,
@@ -103,43 +103,43 @@ export class LevelObjectAssetFrame {
         showOffset: boolean,
         xflip: boolean,
         yflip: boolean): void {
-        var fd = this.getCache(showOutline, showCollideMap, showHurtMap);
+        var fd = this.GetCache(showOutline, showCollideMap, showHurtMap);
         _canvas.save();
-        _canvas.translate(pos.x, pos.y);
+        _canvas.translate(pos.X, pos.Y);
         if (xflip) {
             if (yflip) {
-                _canvas.translate(fd.canvas.width / 2, fd.canvas.height / 2);
+                _canvas.translate(fd.Canvas.width / 2, fd.Canvas.height / 2);
                 _canvas.rotate(-90 * Math.PI / 180);
-                _canvas.translate(-fd.canvas.width / 2, -fd.canvas.height / 2);
-                _canvas.translate(0, this.height);
+                _canvas.translate(-fd.Canvas.width / 2, -fd.Canvas.height / 2);
+                _canvas.translate(0, this.Height);
                 _canvas.scale(1, -1);
             }
             else {
-                _canvas.translate(fd.canvas.width / 2, fd.canvas.height / 2);
+                _canvas.translate(fd.Canvas.width / 2, fd.Canvas.height / 2);
                 _canvas.rotate(-90 * Math.PI / 180);
-                _canvas.translate(-fd.canvas.width / 2, -fd.canvas.height / 2);
+                _canvas.translate(-fd.Canvas.width / 2, -fd.Canvas.height / 2);
             }
         }
         else {
             if (yflip) {
-                _canvas.translate(0, this.height);
+                _canvas.translate(0, this.Height);
                 _canvas.scale(1, -1);
             }
             else {
 
             }
         }
-        _canvas.drawImage(fd.canvas, 0, 0);
+        _canvas.drawImage(fd.Canvas, 0, 0);
         if (showOffset) {
             _canvas.beginPath();
-            _canvas.moveTo(this.offsetX, 0);
-            _canvas.lineTo(this.offsetX, this.height);
+            _canvas.moveTo(this.OffsetX, 0);
+            _canvas.lineTo(this.OffsetX, this.Height);
             _canvas.lineWidth = 1;
             _canvas.strokeStyle = "#000000";
             _canvas.stroke();
             _canvas.beginPath();
-            _canvas.moveTo(0, this.offsetY);
-            _canvas.lineTo(this.width, this.offsetY);
+            _canvas.moveTo(0, this.OffsetY);
+            _canvas.lineTo(this.Width, this.OffsetY);
             _canvas.lineWidth = 1;
             _canvas.strokeStyle = "#000000";
             _canvas.stroke();

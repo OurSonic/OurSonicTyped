@@ -6,21 +6,21 @@ import {Help} from "../../Common/Help";
 
 export class HeightMap {
     public static colors: string[] = new Array("", "rgba(255,98,235,0.6)", "rgba(24,218,235,0.6)", "rgba(24,98,235,0.6)");
-    protected width: number;
-    protected height: number;
-    public items: number[];
-    protected index: number;
-    public full: boolean;
+    protected Width: number;
+    protected Height: number;
+    public Items: number[];
+    protected Index: number;
+    public Full: boolean;
     constructor(heightMap: number[], i: number) {
-        this.items = heightMap;
-        this.width = 16;
-        this.height = 16;
-        this.index = i;
+        this.Items = heightMap;
+        this.Width = 16;
+        this.Height = 16;
+        this.Index = i;
     }
-    /* constructor(full: boolean) {
-         full = full;
-     }*/
-    public setItem(x: number, y: number, rotationMode: RotationMode): void {
+/*    constructor(full: boolean) {
+        this.Full = full;
+    }*/
+    public SetItem(x: number, y: number, rotationMode: RotationMode): void {
         var jx = 0;
         var jy = 0;
         switch (rotationMode) {
@@ -41,33 +41,33 @@ export class HeightMap {
                 jy = x;
                 break;
         }
-        this.items[jx] = 16 - jy;
+        this.Items[jx] = 16 - jy;
     }
-    public draw(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, solid: number, angle: number): void {
-        if (this.items == null)
+    public Draw(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, solid: number, angle: number): void {
+        if (this.Items == null)
             return
         canvas.save();
         var oPos = Point.create(pos);
         if (xflip) {
-            pos.x = -pos.x - 16;
+            pos.X = -pos.X - 16;
             canvas.scale(-1, 1);
         }
         if (yflip) {
-            pos.y = -pos.y - 16;
+            pos.Y = -pos.Y - 16;
             canvas.scale(1, -1);
         }
-        var fd = SonicManager.instance.spriteCache.heightMaps[this.index + (solid << 20)];
-        if (this.index != -1 && fd)
-            canvas.drawImage(fd.canvas, pos.x, pos.y);
+        var fd = SonicManager.Instance.SpriteCache.HeightMaps[this.Index + (solid << 20)];
+        if (this.Index != -1 && fd.Truthy())
+            canvas.drawImage(fd.Canvas, pos.X, pos.Y);
         else {
-            var ntcanvas = CanvasInformation.create(16, 16, false);
-            var ncanvas = ntcanvas.context;
+            var ntcanvas = CanvasInformation.Create(16, 16, false);
+            var ncanvas = ntcanvas.Context;
             if (solid > 0) {
                 for (var x: number = 0; x < 16; x++) {
                     for (var y: number = 0; y < 16; y++) {
                         var jx = 0;
                         var jy = 0;
-                        if (HeightMap.itemsGood(this.items, x, y)) {
+                        if (HeightMap.ItemsGood(this.Items, x, y)) {
                             jx = x;
                             jy = y;
                             var _x = jx;
@@ -80,21 +80,21 @@ export class HeightMap {
                                 ncanvas.lineWidth = 1;
                                 ncanvas.strokeStyle = "rgba(163,241,255,0.8)";
                                 ncanvas.moveTo(16 / 2, 16 / 2);
-                                ncanvas.lineTo(16 / 2 - Help.sin(angle) * 8, 16 / 2 - Help.cos(angle) * 8);
+                                ncanvas.lineTo(16 / 2 - Help.Sin(angle) * 8, 16 / 2 - Help.Cos(angle) * 8);
                                 ncanvas.stroke();
                             }
                         }
                     }
                 }
             }
-            SonicManager.instance.spriteCache.heightMaps[this.index + (solid << 20)] = ntcanvas;
-            canvas.drawImage(ntcanvas.canvas, pos.x, pos.y);
+            SonicManager.Instance.SpriteCache.HeightMaps[this.Index + (solid << 20)] = ntcanvas;
+            canvas.drawImage(ntcanvas.Canvas, pos.X, pos.Y);
         }
         canvas.restore();
-        pos.x = oPos.x;
-        pos.y = oPos.y;
+        pos.X = oPos.X;
+        pos.Y = oPos.Y;
     }
-    public static itemsGood(items: number[], x: number, y: number): boolean {
+    public static ItemsGood(items: number[], x: number, y: number): boolean {
         if (items[x] < 0)
             return Math.abs(items[x]) >= y;
         return items[x] >= 16 - y;

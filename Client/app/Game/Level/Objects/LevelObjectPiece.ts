@@ -1,13 +1,13 @@
-export class LevelObjectPiece {
-    public assetIndex: number;
-    public frameIndex: number;
-    public pieceIndex: number;
-    public collided: boolean;
-    public xflip: boolean;
-    public yflip: boolean;
-    public visible: boolean;
-    public name: string;
+﻿export class LevelObjectPiece {
+    public AssetIndex: number;
+    public FrameIndex: number;
+    public PieceIndex: number;
+    public Collided: boolean;
+    public Xflip: boolean;
+    public Yflip: boolean;
+    public Visible: boolean;
+    public Name: string;
     constructor(name: string) {
-        name = name;
+        this.Name = name;
     }
 }

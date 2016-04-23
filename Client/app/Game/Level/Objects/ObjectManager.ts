@@ -1,75 +1,85 @@
 ﻿import {Help } from "../../../Common/Help";
-import {SonicManager } from "../../SonicManager";
+import {SonicManager } from "../../SonicManager"; 
+import {LevelObjectAsset } from "LevelObjectAsset";
+import {LevelObjectAssetFrame } from "LevelObjectAssetFrame";
+import {LevelObjectProjectile } from "LevelObjectProjectile";
+import {LevelObjectData} from "LevelObjectData";
+import {LevelObject } from "LevelObject";
+import {LevelObjectPiece} from "LevelObjectPiece";
+import {LevelObjectPieceLayout } from "LevelObjectPieceLayout";
+import {LevelObjectPieceLayoutPiece} from "LevelObjectPieceLayoutPiece";
 
 export class ObjectManager {
-    private static broken  = Help.loadSprite("assets/Sprites/broken.png", (e) => {});
+    public static broken = Help.LoadSprite("assets/Sprites/broken.png", (e) => {
+
+    });
     private sonicManager: SonicManager;
     constructor(sonicManager: SonicManager) {
         this.sonicManager = sonicManager;
     }
-    public init(): void {
-        
+    public Init(): void {
+
     }
-    public static extendObject(d: LevelObjectData): LevelObject {
-        var obj = Help.merge(new LevelObject(d.key), {
-            collideScript: d.collideScript,
-            hurtScript: d.hurtScript,
-            initScript: d.initScript,
-            tickScript: d.tickScript
+    public static ExtendObject(d: LevelObjectData): LevelObject {
+        var obj: LevelObject = Help.Merge(new LevelObject(d.Key), {
+            CollideScript: d.CollideScript,
+            HurtScript: d.HurtScript,
+            InitScript: d.InitScript,
+            TickScript: d.TickScript
         });
-        obj.description = d.description;
-        obj.assets = [];
-        for (var i: number = 0; i < d.assets.count; i++) {
-            var asset = d.assets[i];
-            var levelObjectAsset = Help.merge(new LevelObjectAsset(asset.name), { name: asset.name });
-            levelObjectAsset.frames = [];
-            for (var index: number = 0; index < asset.frames.count; index++) {
-                var fr = asset.frames[index];
-                levelObjectAsset.frames[index] = Help.merge(new LevelObjectAssetFrame(fr.name), {
-                    offsetX: fr.offsetX,
-                    width: fr.width,
-                    transparentColor: fr.transparentColor,
-                    height: fr.height,
-                    offsetY: fr.offsetY,
-                    hurtSonicMap: fr.hurtSonicMap,
-                    collisionMap: fr.collisionMap,
-                    colorMap: fr.colorMap,
-                    palette: fr.palette
+        obj.Description = d.Description;
+        obj.Assets = new Array<LevelObjectAsset>();
+        for (var i: number = 0; i < d.Assets.length; i++) {
+            var asset = d.Assets[i];
+            var levelObjectAsset = Help.Merge(new LevelObjectAsset(asset.Name), { Name: asset.Name });
+            levelObjectAsset.Frames = new Array<LevelObjectAssetFrame>();
+            for (var index: number = 0; index < asset.Frames.length; index++) {
+                var fr = asset.Frames[index];
+                levelObjectAsset.Frames[index] = Help.Merge(new LevelObjectAssetFrame(fr.Name), {
+                    OffsetX: fr.OffsetX,
+                    Width: fr.Width,
+                    TransparentColor: fr.TransparentColor,
+                    Height: fr.Height,
+                    OffsetY: fr.OffsetY,
+                    HurtSonicMap: fr.HurtSonicMap,
+                    CollisionMap: fr.CollisionMap,
+                    ColorMap: fr.ColorMap,
+                    Palette: fr.Palette
                 });
             }
-            obj.assets[i] = levelObjectAsset;
+            obj.Assets[i] = levelObjectAsset;
         }
-        obj.pieces = [];
-        for (var index: number = 0; index < d.pieces.count; index++) {
-            var piece = d.pieces[index];
-            obj.pieces[index] = piece;
+        obj.Pieces = new Array<LevelObjectPiece>();
+        for (var index: number = 0; index < d.Pieces.length; index++) {
+            var piece = d.Pieces[index];
+            obj.Pieces[index] = piece;
         }
-        obj.pieceLayouts = [];
-        for (var index: number = 0; index < d.pieceLayouts.count; index++) {
-            var pl = d.pieceLayouts[index];
-            obj.pieceLayouts[index] = Help.merge(new LevelObjectPieceLayout(pl.name), {
-                height: pl.height,
-                width: pl.width
+        obj.PieceLayouts = new Array<LevelObjectPieceLayout>();
+        for (var index: number = 0; index < d.PieceLayouts.length; index++) {
+            var pl = d.PieceLayouts[index];
+            obj.PieceLayouts[index] = Help.Merge(new LevelObjectPieceLayout(pl.Name), {
+                Height: pl.Height,
+                Width: pl.Width
             });
-            obj.pieceLayouts[index].pieces = [];
-            for (var i: number = 0; i < d.pieceLayouts[index].pieces.count; i++) {
-                obj.pieceLayouts[index].pieces[i] = d.pieceLayouts[index].pieces[i];
+            obj.PieceLayouts[index].Pieces = new Array<LevelObjectPieceLayoutPiece>();
+            for (var i: number = 0; i < d.PieceLayouts[index].Pieces.length; i++) {
+                obj.PieceLayouts[index].Pieces[i] = d.PieceLayouts[index].Pieces[i];
             }
         }
-        obj.projectiles = [];
-        for (var index: number = 0; index < d.projectiles.count; index++) {
-            var proj = d.projectiles[index];
-            proj = Help.merge(new LevelObjectProjectile(proj.name), {
-                x: proj.x,
-                y: proj.y,
-                xsp: proj.xsp,
-                ysp: proj.ysp,
-                xflip: proj.xflip,
-                yflip: proj.yflip,
-                assetIndex: proj.assetIndex,
-                frameIndex: proj.frameIndex
+        obj.Projectiles = new Array<LevelObjectProjectile>();
+        for (var index: number = 0; index < d.Projectiles.length; index++) {
+            var proj = d.Projectiles[index];
+            proj = Help.Merge(new LevelObjectProjectile(proj.Name), {
+                X: proj.X,
+                Y: proj.Y,
+                Xsp: proj.Xsp,
+                Ysp: proj.Ysp,
+                Xflip: proj.Xflip,
+                Yflip: proj.Yflip,
+                AssetIndex: proj.AssetIndex,
+                FrameIndex: proj.FrameIndex
             });
-            obj.projectiles[index] = proj;
+            obj.Projectiles[index] = proj;
         }
         return obj;
     }

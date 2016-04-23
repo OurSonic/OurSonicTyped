@@ -1,12 +1,12 @@
 ﻿export class SonicImage {
-    public bytes: number[];
-    public palette: number[][];
-    public width: number;
-    public height: number;
+    public Bytes: number[];
+    public Palette: number[][];
+    public Width: number;
+    public Height: number;
     constructor(bytes: number[], palette: number[][], width: number, height: number) {
-        this.bytes = bytes;
-        this.palette = palette;
-        this.width = width;
-        this.height = height;
+        this.Bytes = bytes;
+        this.Palette = palette;
+        this.Width = width;
+        this.Height = height;
     }
 }

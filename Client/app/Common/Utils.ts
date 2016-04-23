@@ -1,98 +1,97 @@
 ﻿export class Point {
     private _x: number;
     private _y: number;
-    public get x(): number {
+    public get X(): number {
         return this._x | 0;
     }
-    public set x(val: number) {
+    public set X(val: number) {
         this._x = val | 0;
     }
 
-    public get y(): number {
+    public get Y(): number {
         return this._y | 0;
     }
-    public set y(val: number) {
+    public set Y(val: number) {
         this._y = val | 0;
     }
     public static create(pos: Point): Point {
-        return new Point(pos.x, pos.y);
+        return new Point(pos.X, pos.Y);
     }
 
     constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+        this.X = x;
+        this.Y = y;
     }
     public offset(windowLocation: Point): Point {
-        return new Point(this.x + windowLocation.x, this.y + windowLocation.y);
+        return new Point(this.X + windowLocation.X, this.Y + windowLocation.Y);
     }
     public negatePoint(windowLocation: Point): Point {
-        return new Point(this.x - windowLocation.x, this.y - windowLocation.y);
+        return new Point(this.X - windowLocation.X, this.Y - windowLocation.Y);
     }
     public negate(x: number, y: number): Point {
-        return new Point(this.x - (x | 0), this.y - (y | 0));
+        return new Point(this.X - (x | 0), this.Y - (y | 0));
     }
     public set(x: number, y: number): void {
-        this.x = x;
-        this.y = y;
+        this.X = x;
+        this.Y = y;
     }
 }
 
 export class DoublePoint {
-    public x: number;
-    public y: number;
+    public X: number;
+    public Y: number;
     public static create(pos: DoublePoint): DoublePoint {
-        return new DoublePoint(pos.x, pos.y);
+        return new DoublePoint(pos.X, pos.Y);
     }
 
     constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+        this.X = x;
+        this.Y = y;
     }
     public offset(windowLocation: DoublePoint): DoublePoint {
-        return new DoublePoint(this.x + windowLocation.x, this.y + windowLocation.y);
+        return new DoublePoint(this.X + windowLocation.X, this.Y + windowLocation.Y);
     }
     public negatePoint(windowLocation: DoublePoint): DoublePoint {
-        return new DoublePoint(this.x - windowLocation.x, this.y - windowLocation.y);
+        return new DoublePoint(this.X - windowLocation.X, this.Y - windowLocation.Y);
     }
     public negate(x: number, y: number): DoublePoint {
-        return new DoublePoint(this.x - (x | 0), this.y - (y | 0));
+        return new DoublePoint(this.X - (x | 0), this.Y - (y | 0));
     }
     public set(x: number, y: number): void {
-        this.x = x;
-        this.y = y;
+        this.X = x;
+        this.Y = y;
     }
 }
 
 
 export class IntersectingRectangle {
-    public x: number;
-    public y: number;
-    public width: number;
-    public height: number;
+    public X: number;
+    public Y: number;
+    public Width: number;
+    public Height: number;
     constructor(x: number, y: number, width: number, height: number) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.X = x;
+        this.Y = y;
+        this.Width = width;
+        this.Height = height;
     }
-    public intersects(p: Point): boolean {
-        return this.x < p.x && this.x + this.width > p.x && this.y < p.y && this.y + this.height > p.y;
+    public Intersects(p: Point): boolean {
+        return this.X < p.X && this.X + this.Width > p.X && this.Y < p.Y && this.Y + this.Height > p.Y;
     }
-    public static intersectsRect(r: Rectangle, p: Point): boolean {
-        return r.x < p.x && r.x + r.width > p.x && r.y < p.y && r.y + r.height > p.y;
+    public static IntersectsRect(r: Rectangle, p: Point): boolean {
+        return r.X < p.X && r.X + r.Width > p.X && r.Y < p.Y && r.Y + r.Height > p.Y;
     }
-    public static intersectRect(r1: Rectangle, r2: Rectangle): boolean {
-        return !(r2.x > r1.x + r1.width || r2.x + 0 < r1.x || r2.y > r1.y + r1.height || r2.y + 0 < r1.y);
+    public static IntersectRect(r1: Rectangle, r2: Rectangle): boolean {
+        return !(r2.X > r1.X + r1.Width || r2.X + 0 < r1.X || r2.Y > r1.Y + r1.Height || r2.Y + 0 < r1.Y);
     }
 }
 
 export class Rectangle extends Point {
-    public width: number;
-    public height: number;
-
-    constructor(x: number = 0, y: number = 0, width: number = 0, height: number = 0) {
+    public Width: number;
+    public Height: number;
+    constructor(x: number=0, y: number=0, width: number=0, height: number=0) {
         super(x, y);
-        this.width = width;
-        this.height = height;
+        this.Width = width;
+        this.Height = height;
     }
 }

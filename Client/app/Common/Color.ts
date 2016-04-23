@@ -1,12 +1,13 @@
-﻿export class Color {
-    public r: number;
-    public g: number;
-    public b: number;
-    public a: number;
+﻿/*[Serializable]*/
+export class Color {
+    public R: number;
+    public G: number;
+    public B: number;
+    public A: number;
     constructor(r: number, g: number, b: number, a: number=1) {
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
+        this.R = r;
+        this.G = g;
+        this.B = b;
+        this.A = a;
     } 
 }

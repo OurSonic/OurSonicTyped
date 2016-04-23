@@ -1,42 +1,42 @@
 ///<reference path="../../typings/jQuery.d.ts"/>
 
-
-
 export class CanvasInformation {
-    private static _blackPixel: HTMLCanvasElement;
-    public context: CanvasRenderingContext2D;
-    public domCanvas: JQuery;
-    public canvas: HTMLCanvasElement;
-    public static get blackPixel(): HTMLCanvasElement {
-        if (CanvasInformation._blackPixel == null) {
-            var m = CanvasInformation.create(0, 0, false);
-            m.context.fillStyle = "black";
-            m.context.fillRect(0, 0, 1, 1);
-            CanvasInformation._blackPixel = m.canvas;
+    private static blackPixel: HTMLCanvasElement;
+    /*[IntrinsicProperty]*/
+    public Context: CanvasRenderingContext2D;
+    /*[IntrinsicProperty]*/
+    public DomCanvas: JQuery;
+    /*[IntrinsicProperty]*/
+    public Canvas: HTMLCanvasElement;
+    public static get BlackPixel(): HTMLCanvasElement {
+        if (CanvasInformation.blackPixel == null) {
+            var m = CanvasInformation.Create(0, 0, false);
+            m.Context.fillStyle = "black";
+            m.Context.fillRect(0, 0, 1, 1);
+            CanvasInformation.blackPixel = m.Canvas;
         }
-        return CanvasInformation._blackPixel;
+        return CanvasInformation.blackPixel;
     }
     constructor(context: CanvasRenderingContext2D, domCanvas: JQuery) {
-        this.context = context;
-        this.domCanvas = domCanvas;
-
-        this.canvas = <HTMLCanvasElement>domCanvas[0]; 
+        this.Context = context;
+        this.DomCanvas = domCanvas;
+        this.Canvas = <HTMLCanvasElement>domCanvas[0];
     }
-    public static create(w: number, h: number, pixelated: boolean): CanvasInformation {
+    public static Create(w: number, h: number, pixelated: boolean): CanvasInformation {
         var canvas = document.createElement("canvas");
-        return CanvasInformation.createFromElement(canvas, w, h, pixelated);
+        return CanvasInformation.CreateFromElement(canvas, w, h, pixelated);
     }
-    public static createFromElement(canvas: HTMLCanvasElement, w: number, h: number, pixelated: boolean): CanvasInformation {
+    public static CreateFromElement(canvas: HTMLCanvasElement, w: number, h: number, pixelated: boolean): CanvasInformation {
         if (w == 0)
             w = 1;
         if (h == 0)
             h = 1;
         canvas.width = w;
         canvas.height = h;
-        var ctx = canvas.getContext("2d");
+        var ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
         if (pixelated) {
             (<any>ctx).imageSmoothingEnabled = false;
         }
-        return new CanvasInformation(ctx, jQuery(canvas));
+        return new CanvasInformation(ctx, $(canvas));
     }
 }
