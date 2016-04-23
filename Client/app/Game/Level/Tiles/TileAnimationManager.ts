@@ -10,7 +10,7 @@ export class TileAnimationManager {
     }
     private Init(): void {
         this.Animations = {};
-        for (var animatedTileIndex: number = 0; animatedTileIndex < this.SonicManager.SonicLevel.TileAnimations.length; animatedTileIndex++) {
+        for (let animatedTileIndex: number = 0; animatedTileIndex < this.SonicManager.SonicLevel.TileAnimations.length; animatedTileIndex++) {
             this.Animations[animatedTileIndex] = new TileAnimation(this, this.SonicManager.SonicLevel.TileAnimations[animatedTileIndex]);
             this.Animations[animatedTileIndex].Init();
         }
@@ -18,9 +18,9 @@ export class TileAnimationManager {
     public TickAnimatedTiles(): void {
         if (this.Animations == null)
             this.Init();
-        for (var animation in this.Animations) {
+        for (let animation in this.Animations) {
             if (this.Animations.hasOwnProperty(animation)) {
-                var tilePaletteAnimation = this.Animations[animation];
+                let tilePaletteAnimation = this.Animations[animation];
                 tilePaletteAnimation.Tick();
             }
         }
@@ -51,7 +51,7 @@ export class TileAnimation {
         return this.Frames[this.CurrentFrame];
     }
     public Tick(): void {
-        var anni = this.AnimatedTileData;
+        let anni = this.AnimatedTileData;
         if (anni.LastAnimatedFrame == null) {
             anni.LastAnimatedFrame = 0;
             anni.LastAnimatedIndex = 0;
@@ -63,7 +63,7 @@ export class TileAnimation {
         }
     }
     public Init(): void {
-        for (var index: number = 0; index < this.AnimatedTileData.DataFrames.length; index++) {
+        for (let index: number = 0; index < this.AnimatedTileData.DataFrames.length; index++) {
             this.Frames[index] = new TileAnimationFrame(index, this);
         }
     }

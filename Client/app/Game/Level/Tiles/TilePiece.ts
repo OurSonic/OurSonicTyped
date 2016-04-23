@@ -28,7 +28,7 @@ export class TilePiece {
     public OnlyBackground(): boolean {
         if (this.onlyBackgroundSet)
             return this.onlyBackground;
-        for (var mj of this.Tiles) {
+        for (let mj of this.Tiles) {
             if (mj) {
                 if (mj.Priority) {
                     this.onlyBackgroundSet = true;
@@ -42,7 +42,7 @@ export class TilePiece {
     public OnlyForeground(): boolean {
         if (this.onlyForegroundSet)
             return this.onlyForeground;
-        for (var mj of this.Tiles) {
+        for (let mj of this.Tiles) {
             if (mj) {
                 if (!mj.Priority) {
                     this.onlyForegroundSet = true;
@@ -58,19 +58,19 @@ export class TilePiece {
         layer: ChunkLayerState,
         xFlip: boolean,
         yFlip: boolean): void {
-        var drawOrderIndex = 0;
+        let drawOrderIndex = 0;
         drawOrderIndex = xFlip ? (yFlip ? 0 : 1) : (yFlip ? 2 : 3);
-        var tilePieceLength: number = 8;
-        var ac = CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
-        var i = 0;
-        var localPoint = new Point(0, 0);
-        for (var tileItem of this.Tiles) {
-            var tile = tileItem.GetTile();
+        let tilePieceLength: number = 8;
+        let ac = CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
+        let i = 0;
+        let localPoint = new Point(0, 0);
+        for (let tileItem of this.Tiles) {
+            let tile = tileItem.GetTile();
             if (tile) {
                 if (tileItem.Priority == (layer == 1)) {
-                    var _xf = xFlip !== tileItem.XFlip;
-                    var _yf = yFlip !== tileItem.YFlip;
-                    var df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
+                    let _xf = xFlip !== tileItem.XFlip;
+                    let _yf = yFlip !== tileItem.YFlip;
+                    let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
                     localPoint.X = df[0] * tilePieceLength;
                     localPoint.Y = df[1] * tilePieceLength;
                     tile.DrawBase(ac.Context, localPoint, _xf, _yf, tileItem.Palette);
@@ -85,22 +85,22 @@ export class TilePiece {
     }
     private animatedPaletteCaches: { [key: number]: CanvasInformation}= {};
     public DrawAnimatedPalette(canvas: CanvasRenderingContext2D, position: Point, layer: ChunkLayerState, xFlip: boolean, yFlip: boolean, animatedPaletteIndex: number): void {
-        var animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xFlip, yFlip, animatedPaletteIndex, SonicManager.Instance.TilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
-        var animatedPaletteCache: CanvasInformation = this.animatedPaletteCaches[animatedPaletteCacheIndex];
+        let animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xFlip, yFlip, animatedPaletteIndex, SonicManager.Instance.TilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
+        let animatedPaletteCache: CanvasInformation = this.animatedPaletteCaches[animatedPaletteCacheIndex];
         if (animatedPaletteCache == null) {
-            var drawOrderIndex = 0;
+            let drawOrderIndex = 0;
             drawOrderIndex = xFlip ? (yFlip ? 0 : 1) : (yFlip ? 2 : 3);
-            var tilePieceLength: number = 8;
-            var ac = CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
-            var i = 0;
-            var localPoint = new Point(0, 0);
-            for (var tileItem of this.Tiles) {
-                var tile = tileItem.GetTile();
+            let tilePieceLength: number = 8;
+            let ac = CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
+            let i = 0;
+            let localPoint = new Point(0, 0);
+            for (let tileItem of this.Tiles) {
+                let tile = tileItem.GetTile();
                 if (tile) {
                     if (tileItem.Priority == (layer == 1)) {
-                        var _xf = xFlip !== tileItem.XFlip;
-                        var _yf = yFlip !== tileItem.YFlip;
-                        var df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
+                        let _xf = xFlip !== tileItem.XFlip;
+                        let _yf = yFlip !== tileItem.YFlip;
+                        let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
                         localPoint.X = df[0] * tilePieceLength;
                         localPoint.Y = df[1] * tilePieceLength;
                         tile.DrawAnimatedPalette(ac.Context, localPoint, _xf, _yf, tileItem.Palette, animatedPaletteIndex);
@@ -113,19 +113,19 @@ export class TilePiece {
         canvas.drawImage(animatedPaletteCache.Canvas, position.X, position.Y);
     }
     public DrawAnimatedTile(canvas: CanvasRenderingContext2D, position: Point, layer: ChunkLayerState, xFlip: boolean, yFlip: boolean, animatedTileIndex: number): void {
-        var drawOrderIndex = 0;
+        let drawOrderIndex = 0;
         drawOrderIndex = xFlip ? (yFlip ? 0 : 1) : (yFlip ? 2 : 3);
-        var tilePieceLength: number = 8;
-        var ac = CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
-        var i = 0;
-        var localPoint = new Point(0, 0);
-        for (var tileItem of this.Tiles) {
-            var tile = tileItem.GetTile();
+        let tilePieceLength: number = 8;
+        let ac = CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
+        let i = 0;
+        let localPoint = new Point(0, 0);
+        for (let tileItem of this.Tiles) {
+            let tile = tileItem.GetTile();
             if (tile) {
                 if (tileItem.Priority == (layer == 1)) {
-                    var _xf = xFlip !== tileItem.XFlip;
-                    var _yf = yFlip !== tileItem.YFlip;
-                    var df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
+                    let _xf = xFlip !== tileItem.XFlip;
+                    let _yf = yFlip !== tileItem.YFlip;
+                    let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
                     localPoint.X = df[0] * tilePieceLength;
                     localPoint.Y = df[1] * tilePieceLength;
                     tile.DrawAnimatedTile(ac.Context, localPoint, _xf, _yf, tileItem.Palette, animatedTileIndex);
@@ -137,8 +137,8 @@ export class TilePiece {
     }
     public ShouldAnimate(): boolean {
         if (this.shouldAnimate == null) {
-            for (var t of this.Tiles) {
-                var tile = t.GetTile();
+            for (let t of this.Tiles) {
+                let tile = t.GetTile();
                 if (tile) {
                     if (tile.ShouldTileAnimate())
                         return (this.shouldAnimate = true);

@@ -48,10 +48,10 @@ export class SonicLevel {
         return this.TileChunks[this.ChunkMap[x][y]];
     }
     public ClearCache(): void {
-        for (var tile of this.Tiles) {
+        for (let tile of this.Tiles) {
             tile.ClearCache();
         }
-        for (var chunk of this.TileChunks) {
+        for (let chunk of this.TileChunks) {
             chunk.ClearCache();
         }
     }

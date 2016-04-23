@@ -14,7 +14,7 @@ export class SonicConstants {
     public SlpRollingUp: number;
     public TopSpeed: number;
     public static Sonic(): SonicConstants {
-        var sc = Help.Merge(new SonicConstants(), {
+        let sc = Help.Merge(new SonicConstants(), {
             Acc: 0.046875,
             Dec: 0.5,
             Slp: 0.125,

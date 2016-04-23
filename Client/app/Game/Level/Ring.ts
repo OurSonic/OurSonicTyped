@@ -18,7 +18,7 @@ export class Ring extends Point {
             this.Ysp += 0.09375;
             this.X += <number>this.Xsp;
             this.Y += <number>this.Ysp;
-            var wl = SonicManager.Instance.WindowLocation;
+            let wl = SonicManager.Instance.WindowLocation;
             if (this.X < wl.X || this.Y < wl.Y || this.X > wl.X + wl.Width || this.Y > wl.Y + wl.Height) {
                 this.TickCount = 0xfffffff;
                 return
@@ -34,11 +34,11 @@ export class Ring extends Point {
         if (SonicManager.Instance.CurrentGameState == GameState.Playing)
             this.AnimationIndex = ((SonicManager.Instance.DrawTickCount % ((this.Active ? 4 : 8) * 4)) / (this.Active ? 4 : 8))|0;
         else this.AnimationIndex = 0;
-        var sprites: CanvasInformation[] = null;
+        let sprites: CanvasInformation[] = null;
         if (SonicManager.Instance.SpriteCache.Rings)
             sprites = SonicManager.Instance.SpriteCache.Rings;
         else throw ("bad ring animation");
-        var sps = sprites[this.AnimationIndex];
+        let sps = sprites[this.AnimationIndex];
         canvas.drawImage(sps.Canvas, (pos.X - 8), (pos.Y - 8));
     }
 }

@@ -49,7 +49,7 @@ export class TileChunk {
     }
     public OnlyBackground(): boolean {
         if (!this.IsOnlyBackground) {
-            for (var tilePiece of this.EachPiece()) {
+            for (let tilePiece of this.EachPiece()) {
                 if (!tilePiece.OnlyBackground())
                     return (this.IsOnlyBackground = false);
             }
@@ -60,7 +60,7 @@ export class TileChunk {
     }
     public OnlyForeground(): boolean {
         if (!this.IsOnlyForeground) {
-            for (var tilePiece of this.EachPiece()) {
+            for (let tilePiece of this.EachPiece()) {
                 if (!tilePiece.OnlyForeground()) {
                     return (this.IsOnlyForeground = false);
                 }
@@ -72,7 +72,7 @@ export class TileChunk {
     }
     public IsEmpty(): boolean {
         if (!this.Empty) {
-            for (var tilePiece of this.EachPiece()) {
+            for (let tilePiece of this.EachPiece()) {
                 if (tilePiece.Index != 0) {
                     return (this.Empty = false);
                 }
@@ -83,10 +83,10 @@ export class TileChunk {
     }
 //todo look at this
     private EachPiece(): TilePiece[] {
-        var __result = new Array<TilePiece>();
-        for (var pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
-            for (var pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
-                var tilePiece: TilePiece = this.TilePieces[pieceX][pieceY].GetTilePiece();
+        let __result = new Array<TilePiece>();
+        for (let pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
+            for (let pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
+                let tilePiece: TilePiece = this.TilePieces[pieceX][pieceY].GetTilePiece();
                 if (tilePiece != null) {
                     __result.push(tilePiece);
                     /*yield return tilePiece;*/
@@ -104,10 +104,10 @@ export class TileChunk {
     private GetAllPaletteAnimationIndexes(): number[] {
         if (this.paletteAnimationIndexes == null) {
             this.paletteAnimationIndexes = new Array<number>();
-            for (var tilePiece of this.EachPiece()) {
+            for (let tilePiece of this.EachPiece()) {
                 if (tilePiece.AnimatedPaletteIndexes == null)
                     continue;
-                for (var animatedPaletteIndex of tilePiece.AnimatedPaletteIndexes) {
+                for (let animatedPaletteIndex of tilePiece.AnimatedPaletteIndexes) {
                     if (this.paletteAnimationIndexes.indexOf(animatedPaletteIndex) == -1) {
                         this.paletteAnimationIndexes.push(animatedPaletteIndex);
                     }
@@ -119,14 +119,14 @@ export class TileChunk {
     private GetAllTileAnimationIndexes(): number[] {
         if (this.tileAnimationIndexes == null) {
             this.tileAnimationIndexes = new Array<number>();
-            for (var tilePiece of this.EachPiece()) {
-                for (var tileInfo of tilePiece.Tiles) {
-                    var tile = tileInfo.GetTile();
+            for (let tilePiece of this.EachPiece()) {
+                for (let tileInfo of tilePiece.Tiles) {
+                    let tile = tileInfo.GetTile();
                     if (tile == null)
                         continue;
                     if (tile.AnimatedTileIndexes == null)
                         continue;
-                    for (var animatedTileIndex of tile.AnimatedTileIndexes) {
+                    for (let animatedTileIndex of tile.AnimatedTileIndexes) {
                         if (this.tileAnimationIndexes.indexOf(animatedTileIndex) == -1) {
                             this.tileAnimationIndexes.push(animatedTileIndex);
                         }
@@ -144,27 +144,27 @@ export class TileChunk {
         {
             canvas.drawImage(this.BaseCanvasCache[layer].Canvas, position.X, position.Y);
             if (this.HasPixelAnimations()) {
-                var paletteAnimationCanvases = this.PaletteAnimationCanvasesCache[layer];
-                for (var paletteAnimationIndex of this.GetAllPaletteAnimationIndexes()) {
-                    var paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex];
+                let paletteAnimationCanvases = this.PaletteAnimationCanvasesCache[layer];
+                for (let paletteAnimationIndex of this.GetAllPaletteAnimationIndexes()) {
+                    let paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex];
                     if (paletteAnimationCanvasFrames == null)
                         continue;
                     let currentFrame = SonicManager.Instance.TilePaletteAnimationManager.GetCurrentFrame(paletteAnimationIndex);
                     this.  CurrentPaletteAnimationFrameIndexCache[paletteAnimationIndex] = currentFrame.FrameIndex;
-                    var paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.Frames[currentFrame.FrameIndex];
+                    let paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.Frames[currentFrame.FrameIndex];
                     let canvasLayerToDraw = paletteAnimationCanvasFrame.Canvas.Canvas;
                     canvas.drawImage(canvasLayerToDraw, position.X + paletteAnimationCanvasFrames.Position.X, position.Y + paletteAnimationCanvasFrames.Position.Y);
                 }
             }
             if (this.HasTileAnimations()) {
-                var tileAnimationCanvases = this.TileAnimationCanvasesCache[layer];
-                for (var tileAnimationIndex of this.GetAllTileAnimationIndexes()) {
-                    var tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex];
+                let tileAnimationCanvases = this.TileAnimationCanvasesCache[layer];
+                for (let tileAnimationIndex of this.GetAllTileAnimationIndexes()) {
+                    let tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex];
                     if (tileAnimationCanvasFrames == null)
                         continue;
                     let currentFrame = SonicManager.Instance.TileAnimationManager.GetCurrentFrame(tileAnimationIndex);
                     this.CurrentTileAnimationFrameIndexCache[tileAnimationIndex] = currentFrame.FrameIndex;
-                    var tileAnimationCanvasFrame = tileAnimationCanvasFrames.Frames[currentFrame.FrameIndex];
+                    let tileAnimationCanvasFrame = tileAnimationCanvasFrames.Frames[currentFrame.FrameIndex];
                     let canvasLayerToDraw = tileAnimationCanvasFrame.Canvas.Canvas;
                     canvas.drawImage(canvasLayerToDraw, position.X + tileAnimationCanvasFrames.Position.X, position.Y + tileAnimationCanvasFrames.Position.Y);
                 }
@@ -173,10 +173,10 @@ export class TileChunk {
         canvas.restore();
     }
     private drawTilePiecesAnimatedPalette(canvas: CanvasRenderingContext2D, layer: ChunkLayerState, piecesSquareSize: number, animatedPaletteIndex: number): void {
-        for (var pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
-            for (var pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
-                var pieceInfo = this.TilePieces[pieceX][pieceY];
-                var piece = pieceInfo.GetTilePiece();
+        for (let pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
+            for (let pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
+                let pieceInfo = this.TilePieces[pieceX][pieceY];
+                let piece = pieceInfo.GetTilePiece();
                 if (piece == null)
                     continue;
                 if (piece.AnimatedPaletteIndexes.indexOf(animatedPaletteIndex) == -1)
@@ -190,10 +190,10 @@ export class TileChunk {
         }
     }
     private drawTilePiecesAnimatedTile(canvas: CanvasRenderingContext2D, layer: ChunkLayerState, piecesSquareSize: number, animatedTileIndex: number): void {
-        for (var pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
-            for (var pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
-                var pieceInfo = this.TilePieces[pieceX][pieceY];
-                var piece = pieceInfo.GetTilePiece();
+        for (let pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
+            for (let pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
+                let pieceInfo = this.TilePieces[pieceX][pieceY];
+                let piece = pieceInfo.GetTilePiece();
                 if (piece == null)
                     continue;
                 if (piece.AnimatedTileIndexes.indexOf(animatedTileIndex) == -1)
@@ -207,10 +207,10 @@ export class TileChunk {
         }
     }
     private drawTilePiecesBase(canvas: CanvasRenderingContext2D, layer: ChunkLayerState, piecesSquareSize: number): void {
-        for (var pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
-            for (var pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
-                var pieceInfo = this.TilePieces[pieceX][pieceY];
-                var piece = pieceInfo.GetTilePiece();
+        for (let pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
+            for (let pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
+                let pieceInfo = this.TilePieces[pieceX][pieceY];
+                let piece = pieceInfo.GetTilePiece();
                 if (piece == null)
                     continue;
                 if (layer == ChunkLayerState.Low ? (piece.OnlyForeground()) : (piece.OnlyBackground()))
@@ -266,20 +266,20 @@ export class TileChunk {
         this.drawTilePiecesBase(this.BaseCanvasCache[layer].Context, layer, TileChunk. TilePiecesSquareSize);
     }
     public CachePaletteAnimation(layer: ChunkLayerState): void {
-        var paletteAnimationCanvases = this.PaletteAnimationCanvasesCache[layer];
-        for (var paletteAnimationIndex of this.GetAllPaletteAnimationIndexes()) {
-            var rect = this. getAnimationPaletteSurfaceInformation(paletteAnimationIndex, layer);
+        let paletteAnimationCanvases = this.PaletteAnimationCanvasesCache[layer];
+        for (let paletteAnimationIndex of this.GetAllPaletteAnimationIndexes()) {
+            let rect = this. getAnimationPaletteSurfaceInformation(paletteAnimationIndex, layer);
             if (rect == null) {
                 continue;
             }
-            var paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex] = new PaletteAnimationCanvasFrames(paletteAnimationIndex);
-            var tilePaletteAnimation: TilePaletteAnimation = SonicManager.Instance.TilePaletteAnimationManager.Animations[paletteAnimationIndex];
+            let paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex] = new PaletteAnimationCanvasFrames(paletteAnimationIndex);
+            let tilePaletteAnimation: TilePaletteAnimation = SonicManager.Instance.TilePaletteAnimationManager.Animations[paletteAnimationIndex];
             paletteAnimationCanvasFrames.Position = new Point(rect.X * TileChunk.TilePiecesSquareSize, rect.Y * TileChunk.TilePiecesSquareSize);
-            for (var currentFrame of tilePaletteAnimation.Frames) {
+            for (let currentFrame of tilePaletteAnimation.Frames) {
                 tilePaletteAnimation.CurrentFrame = currentFrame.FrameIndex;
-                var paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.Frames[currentFrame.FrameIndex] = new PaletteAnimationCanvasFrame();
+                let paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.Frames[currentFrame.FrameIndex] = new PaletteAnimationCanvasFrame();
                 currentFrame.SetPalette();
-                var tilePaletteCanvas = CanvasInformation.Create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
+                let tilePaletteCanvas = CanvasInformation.Create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
                 paletteAnimationCanvasFrame.Canvas = tilePaletteCanvas;
                 paletteAnimationCanvasFrame.Canvas.Context.save();
                 paletteAnimationCanvasFrame.Canvas.Context.translate(-rect.X * TileChunk.TilePiecesSquareSize, -rect.Y * TileChunk.TilePiecesSquareSize);
@@ -291,18 +291,18 @@ export class TileChunk {
         }
     }
     public CacheTileAnimation(layer: ChunkLayerState): void {
-        var tileAnimationCanvases = this.TileAnimationCanvasesCache[layer];
-        for (var tileAnimationIndex of this.GetAllTileAnimationIndexes()) {
-            var rect = this.getAnimationTileSurfaceInformation(tileAnimationIndex, layer);
+        let tileAnimationCanvases = this.TileAnimationCanvasesCache[layer];
+        for (let tileAnimationIndex of this.GetAllTileAnimationIndexes()) {
+            let rect = this.getAnimationTileSurfaceInformation(tileAnimationIndex, layer);
             if (rect == null) {
                 continue;
             }
-            var tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex] = new TileAnimationCanvasFrames(tileAnimationIndex);
-            var tileAnimation: TileAnimation = SonicManager.Instance.TileAnimationManager.Animations[tileAnimationIndex];
+            let tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex] = new TileAnimationCanvasFrames(tileAnimationIndex);
+            let tileAnimation: TileAnimation = SonicManager.Instance.TileAnimationManager.Animations[tileAnimationIndex];
             tileAnimationCanvasFrames.Position = new Point(rect.X * TileChunk.TilePiecesSquareSize, rect.Y * TileChunk.TilePiecesSquareSize);
-            for (var currentFrame of tileAnimation.Frames) {
-                var tileAnimationCanvasFrame = tileAnimationCanvasFrames.Frames[currentFrame.FrameIndex] = new TileAnimationCanvasFrame();
-                var tileTileCanvas = CanvasInformation.Create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
+            for (let currentFrame of tileAnimation.Frames) {
+                let tileAnimationCanvasFrame = tileAnimationCanvasFrames.Frames[currentFrame.FrameIndex] = new TileAnimationCanvasFrame();
+                let tileTileCanvas = CanvasInformation.Create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
                 tileAnimationCanvasFrame.Canvas = tileTileCanvas;
                 tileAnimation.CurrentFrame = currentFrame.FrameIndex;
                 tileAnimationCanvasFrame.Canvas.Context.save();
@@ -314,14 +314,14 @@ export class TileChunk {
         }
     }
     private getAnimationTileSurfaceInformation(tileAnimationIndex: number, layer: ChunkLayerState): Rectangle {
-        var lowestX: number = 10000000;
-        var highestX: number = -10000000;
-        var lowestY: number = 10000000;
-        var highestY: number = -10000000;
-        for (var pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
-            for (var pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
-                var pieceInfo = this.TilePieces[pieceX][pieceY];
-                var piece = pieceInfo.GetTilePiece();
+        let lowestX: number = 10000000;
+        let highestX: number = -10000000;
+        let lowestY: number = 10000000;
+        let highestY: number = -10000000;
+        for (let pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
+            for (let pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
+                let pieceInfo = this.TilePieces[pieceX][pieceY];
+                let piece = pieceInfo.GetTilePiece();
                 if (piece == null)
                     continue;
                 if (layer == ChunkLayerState.Low ? (piece.OnlyForeground()) : (piece.OnlyBackground()))
@@ -343,13 +343,13 @@ export class TileChunk {
         return new Rectangle(lowestX, lowestY, highestX - lowestX + 1, highestY - lowestY + 1);
     }
     private getAnimationPaletteSurfaceInformation(paletteAnimationIndex: number, layer: ChunkLayerState): Rectangle {
-        var lowestX: number = 10000000;
-        var highestX: number = -10000000;
-        var lowestY: number = 10000000;
-        var highestY: number = -10000000;
-        for (var pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
-            for (var pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
-                var piece = this.TilePieces[pieceX][pieceY].GetTilePiece();
+        let lowestX: number = 10000000;
+        let highestX: number = -10000000;
+        let lowestY: number = 10000000;
+        let highestY: number = -10000000;
+        for (let pieceY: number = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
+            for (let pieceX: number = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
+                let piece = this.TilePieces[pieceX][pieceY].GetTilePiece();
                 if (piece == null)
                     continue;
                 if (layer == ChunkLayerState.Low ? (piece.OnlyForeground()) : (piece.OnlyBackground()))
@@ -380,15 +380,15 @@ export class TileChunk {
         canvas.fillStyle = "White";
         canvas.textBaseline = "top";
         {
-            var yOffset: number = layer == ChunkLayerState.Low ? 0 : 64;
+            let yOffset: number = layer == ChunkLayerState.Low ? 0 : 64;
             if (debugDrawOptions.ShowBaseData) {
                 canvas.fillText("Base", position.X + 0, position.Y + yOffset);
             }
             if (debugDrawOptions.ShowPaletteAnimationData) {
                 if (this.HasPixelAnimations()) {
-                    var paletteAnimationCanvases = this.PaletteAnimationCanvasesCache[layer];
-                    for (var paletteAnimationIndex of this.GetAllPaletteAnimationIndexes()) {
-                        var paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex];
+                    let paletteAnimationCanvases = this.PaletteAnimationCanvasesCache[layer];
+                    for (let paletteAnimationIndex of this.GetAllPaletteAnimationIndexes()) {
+                        let paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex];
                         if (paletteAnimationCanvasFrames == null)
                             continue;
                         let currentFrame = SonicManager.Instance.TilePaletteAnimationManager.GetCurrentFrame(paletteAnimationIndex);
@@ -398,9 +398,9 @@ export class TileChunk {
             }
             if (debugDrawOptions.ShowTileAnimationData) {
                 if (this.HasTileAnimations()) {
-                    var tileAnimationCanvases = this. TileAnimationCanvasesCache[layer];
-                    for (var tileAnimationIndex of this.GetAllTileAnimationIndexes()) {
-                        var tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex];
+                    let tileAnimationCanvases = this. TileAnimationCanvasesCache[layer];
+                    for (let tileAnimationIndex of this.GetAllTileAnimationIndexes()) {
+                        let tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex];
                         if (tileAnimationCanvasFrames == null)
                             continue;
                         let currentFrame = SonicManager.Instance.TileAnimationManager.GetCurrentFrame(tileAnimationIndex);
@@ -415,16 +415,16 @@ export class TileChunk {
         }
         if (debugDrawOptions.OutlineTiles) {
             canvas.strokeStyle = "green";
-            for (var x: number = 0; x < TileChunk.TileSideLength; x++) {
-                for (var y: number = 0; y < TileChunk.TileSideLength; y++) {
+            for (let x: number = 0; x < TileChunk.TileSideLength; x++) {
+                for (let y: number = 0; y < TileChunk.TileSideLength; y++) {
                     canvas.strokeRect(position.X + (x * TileChunk.TileSquareSize), position.Y + (y * TileChunk.TileSquareSize), TileChunk.TileSquareSize, TileChunk.TileSquareSize);
                 }
             }
         }
         if (debugDrawOptions.OutlineTilePieces) {
             canvas.strokeStyle = "purple";
-            for (var x: number = 0; x < TileChunk.TilePieceSideLength; x++) {
-                for (var y: number = 0; y < TileChunk.TilePieceSideLength; y++) {
+            for (let x: number = 0; x < TileChunk.TilePieceSideLength; x++) {
+                for (let y: number = 0; y < TileChunk.TilePieceSideLength; y++) {
                     canvas.strokeRect(position.X + (x * TileChunk.TilePiecesSquareSize), position.Y + (y * TileChunk.TilePiecesSquareSize), TileChunk. TilePiecesSquareSize, TileChunk.TilePiecesSquareSize);
                 }
             }
@@ -434,12 +434,12 @@ export class TileChunk {
         }
         if (debugDrawOptions.OutlineTilePiece != null) {
             canvas.strokeStyle = "yellow";
-            for (var x: number = 0; x < TileChunk.TilePieceSideLength; x++) {
-                for (var y: number = 0; y < TileChunk.TilePieceSideLength; y++) {
-                    var tilePieceInfo = this.GetTilePieceInfo(x, y, false);
+            for (let x: number = 0; x < TileChunk.TilePieceSideLength; x++) {
+                for (let y: number = 0; y < TileChunk.TilePieceSideLength; y++) {
+                    let tilePieceInfo = this.GetTilePieceInfo(x, y, false);
                     if (tilePieceInfo == null)
                         continue;
-                    var tilePiece = tilePieceInfo.GetTilePiece();
+                    let tilePiece = tilePieceInfo.GetTilePiece();
                     if (tilePiece == null)
                         continue;
                     if (tilePiece.Index == debugDrawOptions.OutlineTilePiece.Block) {
@@ -451,37 +451,37 @@ export class TileChunk {
         canvas.restore();
     }
     public Debug_DrawCache(): CanvasInformation {
-        var numWide: number = 10;
-        var numOfChunks: number = 0;
-        for (var i: number = 0; i < 2; i++) {
-            var chunkLayer = <ChunkLayerState>i;
+        let numWide: number = 10;
+        let numOfChunks: number = 0;
+        for (let i: number = 0; i < 2; i++) {
+            let chunkLayer = <ChunkLayerState>i;
             if (this.BaseCanvasCache[chunkLayer] != null)
                 numOfChunks++;
-            for (var paletteAnimationCanvasCache in this.PaletteAnimationCanvasesCache[chunkLayer]) {
-                for (var frame in this.PaletteAnimationCanvasesCache[chunkLayer][paletteAnimationCanvasCache].Frames) {
+            for (let paletteAnimationCanvasCache in this.PaletteAnimationCanvasesCache[chunkLayer]) {
+                for (let frame in this.PaletteAnimationCanvasesCache[chunkLayer][paletteAnimationCanvasCache].Frames) {
                     numOfChunks++;
                 }
             }
-            for (var tileAnimationCanvasCache in this.TileAnimationCanvasesCache[chunkLayer]) {
-                for (var frame in this.TileAnimationCanvasesCache[chunkLayer][tileAnimationCanvasCache].Frames) {
+            for (let tileAnimationCanvasCache in this.TileAnimationCanvasesCache[chunkLayer]) {
+                for (let frame in this.TileAnimationCanvasesCache[chunkLayer][tileAnimationCanvasCache].Frames) {
                     numOfChunks++;
                 }
             }
         }
-        var canvas = CanvasInformation.Create((numWide * 128), (Math.ceil(numOfChunks / numWide) | 0) * 128, false);
+        let canvas = CanvasInformation.Create((numWide * 128), (Math.ceil(numOfChunks / numWide) | 0) * 128, false);
         canvas.Context.fillStyle = "#111111";
         canvas.Context.fillRect(0, 0, canvas.Canvas.width, canvas.Canvas.height);
         numOfChunks = 0;
         canvas.Context.strokeStyle = "#FFFFFF";
         canvas.Context.lineWidth = 4;
-        for (var i: number = 0; i < 2; i++) {
-            var chunkLayer = <ChunkLayerState>i;
+        for (let i: number = 0; i < 2; i++) {
+            let chunkLayer = <ChunkLayerState>i;
             canvas.Context.strokeStyle = chunkLayer == ChunkLayerState.Low ? "Green" : "Yellow";
             if (this.BaseCanvasCache[chunkLayer] != null) {
-                var context = canvas.Context;
+                let context = canvas.Context;
                 context.save();
-                var x = ((numOfChunks % numWide) * 128)|0;
-                var y = (Math.floor(numOfChunks / numWide)|0) * 128;
+                let x = ((numOfChunks % numWide) * 128)|0;
+                let y = (Math.floor(numOfChunks / numWide)|0) * 128;
                 context.translate(x, y);
                 canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                 context.fillRect(0, 0, 128, 128);
@@ -491,14 +491,14 @@ export class TileChunk {
                 numOfChunks++;
             }
             canvas.Context.strokeStyle = chunkLayer == ChunkLayerState.Low ? "pink" : "purple";
-            for (var paletteAnimationCanvasCache in this.PaletteAnimationCanvasesCache[chunkLayer]) {
-                var m = this.PaletteAnimationCanvasesCache[chunkLayer][paletteAnimationCanvasCache];
-                for (var f in m.Frames) {
+            for (let paletteAnimationCanvasCache in this.PaletteAnimationCanvasesCache[chunkLayer]) {
+                let m = this.PaletteAnimationCanvasesCache[chunkLayer][paletteAnimationCanvasCache];
+                for (let f in m.Frames) {
                     let frame = m.Frames[f];
-                    var context = canvas.Context;
+                    let context = canvas.Context;
                     context.save();
-                    var x = ((numOfChunks % numWide) * 128) | 0;
-                    var y = (Math.floor(numOfChunks / numWide) | 0) * 128;
+                    let x = ((numOfChunks % numWide) * 128) | 0;
+                    let y = (Math.floor(numOfChunks / numWide) | 0) * 128;
                     context.translate(x, y);
                     canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                     context.fillRect(0, 0, 128, 128);
@@ -509,14 +509,14 @@ export class TileChunk {
                 }
             }
             canvas.Context.strokeStyle = chunkLayer == ChunkLayerState.Low ? "red" : "orange";
-            for (var tileAnimationCanvasCache in this.TileAnimationCanvasesCache[chunkLayer]) {
+            for (let tileAnimationCanvasCache in this.TileAnimationCanvasesCache[chunkLayer]) {
                 let m = this.TileAnimationCanvasesCache[chunkLayer][tileAnimationCanvasCache];
-                for (var f in m.Frames) {
+                for (let f in m.Frames) {
                     let frame = m.Frames[f];
-                    var context = canvas.Context;
+                    let context = canvas.Context;
                     context.save();
-                    var x = ((numOfChunks % numWide) * 128) | 0;
-                    var y = (Math.floor(numOfChunks / numWide) | 0) * 128;
+                    let x = ((numOfChunks % numWide) * 128) | 0;
+                    let y = (Math.floor(numOfChunks / numWide) | 0) * 128;
                     context.translate(x, y);
                     canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                     context.fillRect(0, 0, 128, 128);

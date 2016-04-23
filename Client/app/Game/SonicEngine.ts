@@ -237,7 +237,7 @@ export class SonicEngine {
                 });*/
     }
     private LoadLevel(data: string): void {
-        var l = JSON.parse(Help.DecodeString(data));
+        let l = JSON.parse(Help.DecodeString(data));
         SonicEngine.Instance.RunSonic(l);
     }
 
@@ -251,7 +251,7 @@ export class SonicEngine {
         this.sonicManager.BigWindowLocation.Y = (this.sonicManager.WindowLocation.Y - this.sonicManager.WindowLocation.Height * 0.2) | 0;
         this.sonicManager.BigWindowLocation.Width = (this.sonicManager.WindowLocation.Width * 1.8) | 0;
         this.sonicManager.BigWindowLocation.Height = (this.sonicManager.WindowLocation.Height * 1.8) | 0;
-        var dl = Help.GetQueryString();
+        let dl = Help.GetQueryString();
         if (dl["run"]) {
             if (this.sonicManager.CurrentGameState == GameState.Playing)
                 this.runGame();
@@ -260,7 +260,7 @@ export class SonicEngine {
         this.sonicManager.CacheTiles();
     }
     public runGame(): void {
-        var sonicManager = SonicManager.Instance;
+        let sonicManager = SonicManager.Instance;
         switch (sonicManager.CurrentGameState) {
             case GameState.Playing:
                 sonicManager.CurrentGameState = GameState.Editing;
@@ -294,8 +294,8 @@ export class SonicEngine {
         this.canvasWidth = $(window).width();
         this.canvasHeight = $(window).height();
         this.sonicManager.WindowLocation = Help.DefaultWindowLocation(this.sonicManager.CurrentGameState, this.sonicManager.scale);
-        var wide = new DoublePoint((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y));
-        var even = new DoublePoint(Math.min((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y)), Math.min((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y)));
+        let wide = new DoublePoint((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y));
+        let even = new DoublePoint(Math.min((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y)), Math.min((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y)));
         this.sonicManager.RealScale = !this.fullscreenMode ? new DoublePoint(1, 1) : (this.WideScreen ? wide : even);
         if (resetOverride || this.sonicManager.overrideRealScale == null)
             this.sonicManager.overrideRealScale = DoublePoint.create(this.sonicManager.RealScale);
@@ -305,7 +305,7 @@ export class SonicEngine {
         this.gameCanvas.DomCanvas.attr("height",
             (this.sonicManager.WindowLocation.Height * (this.sonicManager.CurrentGameState == GameState.Playing ? this.sonicManager.scale.Y * this.sonicManager.RealScale.Y : 1)).toString());
         this.gameGoodWidth = <number>(this.sonicManager.WindowLocation.Width * (this.sonicManager.CurrentGameState == GameState.Playing ? this.sonicManager.scale.X * this.sonicManager.RealScale.X : 1));
-        var screenOffset = this.sonicManager.CurrentGameState == GameState.Playing ? new DoublePoint(((this.canvasWidth / 2 - this.sonicManager.WindowLocation.Width * this.sonicManager.scale.X * this.sonicManager.RealScale.X / 2)),
+        let screenOffset = this.sonicManager.CurrentGameState == GameState.Playing ? new DoublePoint(((this.canvasWidth / 2 - this.sonicManager.WindowLocation.Width * this.sonicManager.scale.X * this.sonicManager.RealScale.X / 2)),
             (this.canvasHeight / 2 - this.sonicManager.WindowLocation.Height * this.sonicManager.scale.Y * this.sonicManager.RealScale.Y / 2)) : new DoublePoint(0, 0);
         this.gameCanvas.DomCanvas.css("left", screenOffset.X + 'px');
         this.gameCanvas.DomCanvas.css("top", screenOffset.Y + 'px');
@@ -313,7 +313,7 @@ export class SonicEngine {
         this.sonicManager.ResetCanvases();
     }
     public Clear(canv: CanvasInformation): void {
-        var w: number;
+        let w: number;
         (<any>canv.DomCanvas[0]).width = this.gameGoodWidth;
         (<any>this.gameCanvas.Context).imageSmoothingEnabled = false;
     }

@@ -21,7 +21,7 @@ export class ObjectManager {
 
     }
     public static ExtendObject(d: LevelObjectData): LevelObject {
-        var obj: LevelObject = Help.Merge(new LevelObject(d.Key), {
+        let obj: LevelObject = Help.Merge(new LevelObject(d.Key), {
             CollideScript: d.CollideScript,
             HurtScript: d.HurtScript,
             InitScript: d.InitScript,
@@ -29,12 +29,12 @@ export class ObjectManager {
         });
         obj.Description = d.Description;
         obj.Assets = new Array<LevelObjectAsset>();
-        for (var i: number = 0; i < d.Assets.length; i++) {
-            var asset = d.Assets[i];
-            var levelObjectAsset = Help.Merge(new LevelObjectAsset(asset.Name), { Name: asset.Name });
+        for (let i: number = 0; i < d.Assets.length; i++) {
+            let asset = d.Assets[i];
+            let levelObjectAsset = Help.Merge(new LevelObjectAsset(asset.Name), { Name: asset.Name });
             levelObjectAsset.Frames = new Array<LevelObjectAssetFrame>();
-            for (var index: number = 0; index < asset.Frames.length; index++) {
-                var fr = asset.Frames[index];
+            for (let index: number = 0; index < asset.Frames.length; index++) {
+                let fr = asset.Frames[index];
                 levelObjectAsset.Frames[index] = Help.Merge(new LevelObjectAssetFrame(fr.Name), {
                     OffsetX: fr.OffsetX,
                     Width: fr.Width,
@@ -50,25 +50,25 @@ export class ObjectManager {
             obj.Assets[i] = levelObjectAsset;
         }
         obj.Pieces = new Array<LevelObjectPiece>();
-        for (var index: number = 0; index < d.Pieces.length; index++) {
-            var piece = d.Pieces[index];
+        for (let index: number = 0; index < d.Pieces.length; index++) {
+            let piece = d.Pieces[index];
             obj.Pieces[index] = piece;
         }
         obj.PieceLayouts = new Array<LevelObjectPieceLayout>();
-        for (var index: number = 0; index < d.PieceLayouts.length; index++) {
-            var pl = d.PieceLayouts[index];
+        for (let index: number = 0; index < d.PieceLayouts.length; index++) {
+            let pl = d.PieceLayouts[index];
             obj.PieceLayouts[index] = Help.Merge(new LevelObjectPieceLayout(pl.Name), {
                 Height: pl.Height,
                 Width: pl.Width
             });
             obj.PieceLayouts[index].Pieces = new Array<LevelObjectPieceLayoutPiece>();
-            for (var i: number = 0; i < d.PieceLayouts[index].Pieces.length; i++) {
+            for (let i: number = 0; i < d.PieceLayouts[index].Pieces.length; i++) {
                 obj.PieceLayouts[index].Pieces[i] = d.PieceLayouts[index].Pieces[i];
             }
         }
         obj.Projectiles = new Array<LevelObjectProjectile>();
-        for (var index: number = 0; index < d.Projectiles.length; index++) {
-            var proj = d.Projectiles[index];
+        for (let index: number = 0; index < d.Projectiles.length; index++) {
+            let proj = d.Projectiles[index];
             proj = Help.Merge(new LevelObjectProjectile(proj.Name), {
                 X: proj.X,
                 Y: proj.Y,

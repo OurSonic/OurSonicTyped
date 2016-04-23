@@ -10,7 +10,7 @@ export class CanvasInformation {
     public Canvas: HTMLCanvasElement;
     public static get BlackPixel(): HTMLCanvasElement {
         if (CanvasInformation.blackPixel == null) {
-            var m = CanvasInformation.Create(0, 0, false);
+            let m = CanvasInformation.Create(0, 0, false);
             m.Context.fillStyle = "black";
             m.Context.fillRect(0, 0, 1, 1);
             CanvasInformation.blackPixel = m.Canvas;
@@ -23,7 +23,7 @@ export class CanvasInformation {
         this.Canvas = <HTMLCanvasElement>domCanvas[0];
     }
     public static Create(w: number, h: number, pixelated: boolean): CanvasInformation {
-        var canvas = document.createElement("canvas");
+        let canvas = document.createElement("canvas");
         return CanvasInformation.CreateFromElement(canvas, w, h, pixelated);
     }
     public static CreateFromElement(canvas: HTMLCanvasElement, w: number, h: number, pixelated: boolean): CanvasInformation {
@@ -33,7 +33,7 @@ export class CanvasInformation {
             h = 1;
         canvas.width = w;
         canvas.height = h;
-        var ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
+        let ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
         if (pixelated) {
             (<any>ctx).imageSmoothingEnabled = false;
         }

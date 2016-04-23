@@ -8,9 +8,9 @@ export class TileAnimationData {
     this.name = name;
     this.draw = function (canvas, x, y, scale, animationIndex) {
         canvas.save(); 
-        var jv = (function (ind, imgs) {
-            var dj = 0;
-            for (var vm in imgs) {
+        let jv = (function (ind, imgs) {
+            let dj = 0;
+            for (let vm in imgs) {
                 if (dj == ind)
                     return vm;
                 dj++;

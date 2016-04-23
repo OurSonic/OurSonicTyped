@@ -55,9 +55,9 @@ export class LevelObjectInfo {
     }
     public SetPieceLayoutIndex(ind: number): void {
         this.PieceLayoutIndex = ind;
-        var pcs = this.ObjectData.PieceLayouts[this.PieceLayoutIndex].Pieces;
+        let pcs = this.ObjectData.PieceLayouts[this.PieceLayoutIndex].Pieces;
         this.Pieces = [];
-        for (var t of pcs) {
+        for (let t of pcs) {
             //todo look into this...
             this.Pieces.push(<LevelObjectPiece><any>t);
         }
@@ -105,10 +105,10 @@ export class LevelObjectInfo {
         }
         this.MainPieceLayout().Draw(canvas, x, y, this.ObjectData, this, showHeightMap);
         if (this.ConsoleLog != null) {
-            var gr = this.GetRect();
+            let gr = this.GetRect();
             canvas.save();
             canvas.fillStyle = "rgba(228,228,12,0.4)";
-            var wd = 1;
+            let wd = 1;
             canvas.fillRect(gr.X - this.X + x - (gr.Width / 2) - wd,
                 gr.Y - this.Y + y - (gr.Height / 2) - wd,
                 gr.Width - (gr.X - this.X) + wd * 2,
@@ -144,15 +144,15 @@ export class LevelObjectInfo {
     public Collision(sonic: Point, isHurtMap: boolean): LevelObjectPiece {
         if (this.Dead || !this.ObjectData || this.ObjectData.PieceLayouts.length == 0)
             return null;
-        var pcs = this.Pieces;
-        var mX: number = ((sonic.X) - this.X) | 0;
-        var mY: number = ((sonic.Y) - this.Y)|0;
-        for (var j of pcs) {
-            var piece = this.ObjectData.Pieces[j.PieceIndex];
-            var asset = this.ObjectData.Assets[piece.AssetIndex];
+        let pcs = this.Pieces;
+        let mX: number = ((sonic.X) - this.X) | 0;
+        let mY: number = ((sonic.Y) - this.Y)|0;
+        for (let j of pcs) {
+            let piece = this.ObjectData.Pieces[j.PieceIndex];
+            let asset = this.ObjectData.Assets[piece.AssetIndex];
             if (asset.Frames.length > 0) {
-                var frm = asset.Frames[j.FrameIndex];
-                var map = isHurtMap ? frm.HurtSonicMap : frm.CollisionMap;
+                let frm = asset.Frames[j.FrameIndex];
+                let map = isHurtMap ? frm.HurtSonicMap : frm.CollisionMap;
                 if (this.twoDArray(map, (mX + frm.OffsetX), (mY + frm.OffsetY), this.Xflip !== piece.Xflip, this.Yflip !== piece.Yflip) == true)
                     return j;
             }
@@ -162,7 +162,7 @@ export class LevelObjectInfo {
     public twoDArray(map: number[][], x: number, y: number, xflip: boolean, yflip: boolean): boolean {
         if (!map || x < 0 || y < 0 || x > map.length)
             return false;
-        var d = map[x];
+        let d = map[x];
         if (!d || y > d.length)
             return false;
         return d[y] > 0;

@@ -9,9 +9,9 @@ import {RotationMode } from "../../Common/Enums";
 import {TileChunk} from "../Level/Tiles/TileChunk";
 
 export class SensorManager {
-    
+
     protected Sensors: { [sensorKey: string]: Sensor };
-    
+
     protected SensorResults: { [sensorKey: string]: SensorM };
     constructor() {
         this.Sensors = {};
@@ -29,8 +29,8 @@ export class SensorManager {
         return this.AddSensor(letter, new Sensor(x1, x2, y, y, this, color, ignoreSolid, letter));
     }
     public Check(character: Sonic): boolean {
-        var none: boolean = false;
-        for (var i in this.Sensors) {
+        let none: boolean = false;
+        for (let i in this.Sensors) {
             this.SensorResults[i] = this.Sensors[i].Check(character);
             none = none || (this.SensorResults[i] != null);
         }
@@ -40,7 +40,7 @@ export class SensorManager {
         return this.SensorResults[mn];
     }
     public Draw(canvas: CanvasRenderingContext2D, sonic: Sonic): void {
-        for (var sensor in this.Sensors) {
+        for (let sensor in this.Sensors) {
             this.Sensors[sensor].Draw(canvas, sonic, this.SensorResults[sensor]);
         }
     }
@@ -48,23 +48,23 @@ export class SensorManager {
         if (isLayerOne) {
             if (chunk.HeightBlocks1)
                 return
-            var hb1 = chunk.HeightBlocks1 = new Array(128);
-            var ab1 = chunk.AngleMap1 = new Array(8);
-            for (var _1 = 0; _1 < 128; _1++) {
+            let hb1 = chunk.HeightBlocks1 = new Array(128);
+            let ab1 = chunk.AngleMap1 = new Array(8);
+            for (let _1 = 0; _1 < 128; _1++) {
                 hb1[_1] = new Array(128);
-                for (var _2 = 0; _2 < 128; _2++) {
+                for (let _2 = 0; _2 < 128; _2++) {
                     hb1[_1][_2] = 0;
                 }
             }
-            for (var _1 = 0; _1 < 8; _1++) {
+            for (let _1 = 0; _1 < 8; _1++) {
                 ab1[_1] = new Array(8);
-                for (var _2 = 0; _2 < 8; _2++) {
+                for (let _2 = 0; _2 < 8; _2++) {
                     ab1[_1][_2] = 0;
                 }
             }
-            for (var _y = 0; _y < 8; _y++) {
-                for (var _x = 0; _x < 8; _x++) {
-                    var tp = chunk.TilePieces[_x][_y];
+            for (let _y = 0; _y < 8; _y++) {
+                for (let _x = 0; _x < 8; _x++) {
+                    let tp = chunk.TilePieces[_x][_y];
                     ab1[_x][_y] = tp.GetLayer1Angles();
                     if (!(ab1[_x][_y] == 0 || ab1[_x][_y] == 255 || ab1[_x][_y] == 1)) {
                         if (tp.XFlip) {
@@ -80,28 +80,26 @@ export class SensorManager {
                             else ab1[_x][_y] = (ab1[_x][_y]);
                         }
                     }
-                    var __x = 0;
-                    var __y = 0;
-                    var heightMask = tp.GetLayer1HeightMaps();
-                    var heightMaskItems: number[] = null;
+
+                    let heightMask = tp.GetLayer1HeightMaps();
+                    let heightMaskItems: number[] = null;
                     if (heightMask == null)
                         continue;
-                    var mj: Solidity;
+                    let mj: Solidity;
                     if (heightMask.Full !== undefined) {
                         mj = heightMask.Full === false ? 0 : tp.Solid1;
-                        for (; __y < 16; __y++) {
-                            for (; __x < 16; __x++) {
+                        for (let __y = 0; __y < 16; __y++) {
+                            for (let __x = 0; __x < 16; __x++) {
                                 hb1[(_x * 16 + __x)][(_y * 16 + __y)] = mj;
                             }
                         }
                     } else {
-                        console.log(heightMask.Items)
                         heightMaskItems = heightMask.Items;
                     }
-                    for (; __y < 16; __y++) {
-                        for (; __x < 16; __x++) {
-                            var jx = 0;
-                            var jy = 0;
+                    for (let __y = 0; __y < 16; __y++) {
+                        for (let __x = 0; __x < 16; __x++) {
+                            let jx = 0;
+                            let jy = 0;
                             if (tp.XFlip) {
                                 if (tp.YFlip) {
                                     jx = 15 - __x;
@@ -142,17 +140,17 @@ export class SensorManager {
         else {
             if (chunk.HeightBlocks2)
                 return
-            var hb2 = chunk.HeightBlocks2 = new Array(128);
-            var ab2 = chunk.AngleMap2 = new Array(8);
-            for (var _1 = 0; _1 < 128; _1++) {
+            let hb2 = chunk.HeightBlocks2 = new Array(128);
+            let ab2 = chunk.AngleMap2 = new Array(8);
+            for (let _1 = 0; _1 < 128; _1++) {
                 hb2[_1] = new Array(128);
             }
-            for (var _1 = 0; _1 < 8; _1++) {
+            for (let _1 = 0; _1 < 8; _1++) {
                 ab2[_1] = new Array(8);
             }
-            for (var _y = 0; _y < 8; _y++) {
-                for (var _x = 0; _x < 8; _x++) {
-                    var tp = chunk.TilePieces[_x][_y];
+            for (let _y = 0; _y < 8; _y++) {
+                for (let _x = 0; _x < 8; _x++) {
+                    let tp = chunk.TilePieces[_x][_y];
                     ab2[_x][_y] = tp.GetLayer2Angles();
                     if (!(ab2[_x][_y] == 0 || ab2[_x][_y] == 255 || ab2[_x][_y] == 1)) {
                         if (tp.XFlip) {
@@ -168,28 +166,26 @@ export class SensorManager {
                             else ab2[_x][_y] = (ab2[_x][_y]);
                         }
                     }
-                    var __x: number;
-                    var __y: number;
-                    var hd2 = tp.GetLayer2HeightMaps();
+                    let hd2 = tp.GetLayer2HeightMaps();
                     if (hd2 == null)
                         continue;
-                    var mj: Solidity;
-                    var hd2Items: number[] = null;
-                     
+                    let mj: Solidity;
+                    let hd2Items: number[] = null;
+
 
                     if (hd2.Full !== undefined) {
                         mj = hd2.Full === false ? 0 : tp.Solid2;
-                        for (; __y < 16; __y++) {
-                            for (; __x < 16; __x++) {
+                        for (let __y = 0; __y < 16; __y++) {
+                            for (let __x = 0; __x < 16; __x++) {
                                 hb2[(_x * 16 + __x)][(_y * 16 + __y)] = mj;
                             }
                         }
                     }
                     else hd2Items = hd2.Items;
-                    for (; __y < 16; __y++) {
-                        for (; __x < 16; __x++) {
-                            var jx = 0;
-                            var jy = 0;
+                    for (let __y = 0; __y < 16; __y++) {
+                        for (let __x = 0; __x < 16; __x++) {
+                            let jx = 0;
+                            let jy = 0;
                             if (tp.XFlip) {
                                 if (tp.YFlip) {
                                     jx = 15 - __x;
@@ -253,16 +249,16 @@ export class Sensor {
         this.Letter = letter;
     }
     private checkCollisionLineWrap(x1: number, x2: number, y1: number, y2: number, ignoreSolid: boolean): SensorM {
-        var _x = (x1 / 128)|0;
-        var _y = Help.Mod((y1 / 128)|0, SonicManager.Instance.SonicLevel.LevelHeight);
-        var tc = SonicManager.Instance.SonicLevel.GetChunkAt(_x, _y);
+        let _x = (x1 / 128) | 0;
+        let _y = Help.Mod((y1 / 128) | 0, SonicManager.Instance.SonicLevel.LevelHeight);
+        let tc = SonicManager.Instance.SonicLevel.GetChunkAt(_x, _y);
         this.Manager.BuildChunk(tc, SonicManager.Instance.SonicLevel.CurHeightMap);
-        var curh = SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-        var cura = SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
-        var __x = x1 - _x * 128;
-        var __y = y1 - _y * 128;
-        var i = 0;
-        var length = 0;
+        let curh = SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
+        let cura = SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
+        let __x = x1 - _x * 128;
+        let __y = y1 - _y * 128;
+
+        let length = 0;
         if (y1 == y2) {
             if (Math.max(x1, x2) > SonicManager.Instance.SonicLevel.LevelWidth * 128) {
                 this.__currentM.Value = SonicManager.Instance.SonicLevel.LevelWidth * 128 - 20;
@@ -272,7 +268,7 @@ export class Sensor {
             if (x1 < x2) {
                 length = x2 - x1;
                 if (curh[(__x)][__y] >= <Solidity>2) {
-                    for (; i < 128 * 2; i++) {
+                    for (let i = 0; i < 128 * 2; i++) {
                         while (true) {
                             if (__x - i < 0) {
                                 if (_x - 1 < 0) {
@@ -295,7 +291,7 @@ export class Sensor {
                         }
                     }
                 }
-                for (; i < length; i++) {
+                for (let i = 0; i < length; i++) {
                     while (true) {
                         if (__x + i >= 128) {
                             tc = SonicManager.Instance.SonicLevel.GetChunkAt(_x + 1, _y);
@@ -316,7 +312,7 @@ export class Sensor {
             else {
                 length = x1 - x2;
                 if (curh[(__x)][__y] >= <Solidity>2) {
-                    for (; i < 128 * 2; i++) {
+                    for (let i = 0; i < 128 * 2; i++) {
                         while (true) {
                             if (__x + i >= 128) {
                                 tc = SonicManager.Instance.SonicLevel.GetChunkAt(_x + 1, _y);
@@ -334,7 +330,7 @@ export class Sensor {
                         }
                     }
                 }
-                for (; i < length; i++) {
+                for (let i = 0; i < length; i++) {
                     while (true) {
                         if (__x - i < 0) {
                             if (_x - 1 < 0) {
@@ -362,7 +358,7 @@ export class Sensor {
             if (y1 < y2) {
                 length = y2 - y1;
                 if (curh[(__x)][__y] >= <Solidity>2) {
-                    for (; i < 128 * 2; i++) {
+                    for (let i = 0; i < 128 * 2; i++) {
                         while (true) {
                             if (__y - i < 0) {
                                 tc = SonicManager.Instance.SonicLevel.GetChunkAt(_x, Help.Mod((_y - 1), SonicManager.Instance.SonicLevel.LevelHeight));
@@ -380,7 +376,7 @@ export class Sensor {
                         }
                     }
                 }
-                for (; i < length; i++) {
+                for (let i = 0; i < length; i++) {
                     while (true) {
                         if (__y + i >= 128) {
                             tc = SonicManager.Instance.SonicLevel.GetChunkAt(_x, (_y + 1) % SonicManager.Instance.SonicLevel.LevelHeight);
@@ -395,7 +391,7 @@ export class Sensor {
                         if (curh[__x][__y + i] == <Solidity>1 && SonicManager.Instance.SonicToon.InAir && SonicManager.Instance.SonicToon.Ysp < 0)
                             continue;
                         this.__currentM.Value = y1 + i;
-                        this.__currentM.Angle = cura[(__x) / 16 | 0]  [(__y + i) / 16 | 0];
+                        this.__currentM.Angle = cura[(__x) / 16 | 0][(__y + i) / 16 | 0];
                         return this.__currentM;
                     }
                 }
@@ -403,7 +399,7 @@ export class Sensor {
             else {
                 length = y1 - y2;
                 if (curh[(__x)][__y] >= <Solidity>2) {
-                    for (; i < 128 * 2; i++) {
+                    for (let i = 0; i < 128 * 2; i++) {
                         while (true) {
                             if (__y + i >= 128) {
                                 tc = SonicManager.Instance.SonicLevel.GetChunkAt(_x, (_y + 1) % SonicManager.Instance.SonicLevel.LevelHeight);
@@ -421,7 +417,7 @@ export class Sensor {
                         }
                     }
                 }
-                for (; i < length; i++) {
+                for (let i = 0; i < length; i++) {
                     while (true) {
                         if (__y - i < 0) {
                             tc = SonicManager.Instance.SonicLevel.GetChunkAt(_x, Help.Mod((_y - 1), SonicManager.Instance.SonicLevel.LevelHeight));
@@ -443,8 +439,8 @@ export class Sensor {
         return null;
     }
     public Draw(canvas: CanvasRenderingContext2D, character: Sonic, sensorResult: SensorM): void {
-        var x = Help.Floor(character.X) - SonicManager.Instance.WindowLocation.X;
-        var y = Help.Floor(character.Y) - SonicManager.Instance.WindowLocation.Y;
+        let x = Help.Floor(character.X) - SonicManager.Instance.WindowLocation.X;
+        let y = Help.Floor(character.Y) - SonicManager.Instance.WindowLocation.Y;
         canvas.beginPath();
         if (sensorResult && sensorResult.Chosen) {
             canvas.strokeStyle = "#FFF76D";
@@ -476,10 +472,10 @@ export class Sensor {
         canvas.stroke();
     }
     public Check(character: Sonic): SensorM {
-        var _y2 = character.InAir ? this.Y2 : this.Y2;
-        var m: SensorM = null;
-        var x = Help.Floor(character.X);
-        var y = Help.Floor(character.Y);
+        let _y2 = character.InAir ? this.Y2 : this.Y2;
+        let m: SensorM = null;
+        let x = Help.Floor(character.X);
+        let y = Help.Floor(character.Y);
         switch (character.Mode) {
             case RotationMode.Floor:
                 m = this.checkCollisionLineWrap(x + this.X1, x + this.X2, y + this.Y1, y + _y2, this.IgnoreSolid);

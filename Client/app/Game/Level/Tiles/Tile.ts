@@ -21,15 +21,15 @@ export class Tile {
     public DrawBase(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, isAnimatedTile: boolean = false): void {
         if (this.AnimatedTileIndexes != null && (!isAnimatedTile && this.AnimatedTileIndexes.length > 0))
             return;
-        var baseCacheIndex = this.getBaseCacheIndex(xflip, yflip, palette);
-        var baseCache: CanvasInformation = this.baseCaches[baseCacheIndex];
+        let baseCacheIndex = this.getBaseCacheIndex(xflip, yflip, palette);
+        let baseCache: CanvasInformation = this.baseCaches[baseCacheIndex];
         if (baseCache == null) {
-        var squareSize = this.Colors.length;
-            var j: CanvasInformation;
+        let squareSize = this.Colors.length;
+            let j: CanvasInformation;
             j = CanvasInformation.Create(squareSize, squareSize, false);
             if (pos.X < 0 || pos.Y < 0)
                 return;
-            var oPos = new Point(0, 0);
+            let oPos = new Point(0, 0);
             if (xflip) {
                 oPos.X = -squareSize;
                 j.Context.scale(-1, 1);
@@ -38,13 +38,13 @@ export class Tile {
                 oPos.Y = -squareSize;
                 j.Context.scale(1, -1);
             }
-            var palette_ = SonicManager.Instance.SonicLevel.Palette;
-            var colorPaletteIndex: number = (palette + SonicManager.Instance.IndexedPalette) % palette_.length;
-            var x = oPos.X;
-            var y = oPos.Y;
-            for (var _x: number = 0; _x < squareSize; _x++) {
-                for (var _y: number = 0; _y < squareSize; _y++) {
-                    var colorIndex = this.Colors[_x][_y];
+            let palette_ = SonicManager.Instance.SonicLevel.Palette;
+            let colorPaletteIndex: number = (palette + SonicManager.Instance.IndexedPalette) % palette_.length;
+            let x = oPos.X;
+            let y = oPos.Y;
+            for (let _x: number = 0; _x < squareSize; _x++) {
+                for (let _y: number = 0; _y < squareSize; _y++) {
+                    let colorIndex = this.Colors[_x][_y];
                     if (colorIndex == 0)
                         continue;
                     j.Context.fillStyle = palette_[colorPaletteIndex][colorIndex];
@@ -64,15 +64,15 @@ export class Tile {
     public DrawAnimatedPalette(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, animatedPaletteIndex: number, isAnimatedTile: boolean = false): void {
         if (this.AnimatedTileIndexes != null && (!isAnimatedTile && this.AnimatedTileIndexes.length > 0))
             return
-        var animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xflip, yflip, palette, animatedPaletteIndex, SonicManager.Instance.TilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
-        var animatedPaletteCache: CanvasInformation = this.animatedPaletteCaches[animatedPaletteCacheIndex];
+        let animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xflip, yflip, palette, animatedPaletteIndex, SonicManager.Instance.TilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
+        let animatedPaletteCache: CanvasInformation = this.animatedPaletteCaches[animatedPaletteCacheIndex];
         if (animatedPaletteCache == null) {
-            var squareSize = this.Colors.length;
-            var j: CanvasInformation;
+            let squareSize = this.Colors.length;
+            let j: CanvasInformation;
             j = CanvasInformation.Create(squareSize, squareSize, false);
             if (pos.X < 0 || pos.Y < 0)
                 return
-            var oPos = new Point(0, 0);
+            let oPos = new Point(0, 0);
             if (xflip) {
                 oPos.X = -squareSize;
                 j.Context.scale(-1, 1);
@@ -81,13 +81,13 @@ export class Tile {
                 oPos.Y = -squareSize;
                 j.Context.scale(1, -1);
             }
-            var palette_ = SonicManager.Instance.SonicLevel.Palette;
-            var colorPaletteIndex: number = (palette + SonicManager.Instance.IndexedPalette) % palette_.length;
-            var x = oPos.X;
-            var y = oPos.Y;
-            for (var _x: number = 0; _x < squareSize; _x++) {
-                for (var _y: number = 0; _y < squareSize; _y++) {
-                    var colorIndex = this.Colors[_x][_y];
+            let palette_ = SonicManager.Instance.SonicLevel.Palette;
+            let colorPaletteIndex: number = (palette + SonicManager.Instance.IndexedPalette) % palette_.length;
+            let x = oPos.X;
+            let y = oPos.Y;
+            for (let _x: number = 0; _x < squareSize; _x++) {
+                for (let _y: number = 0; _y < squareSize; _y++) {
+                    let colorIndex = this.Colors[_x][_y];
                     if (colorIndex == 0)
                         continue;
                     if (this.PaletteIndexesToBeAnimated[animatedPaletteIndex].indexOf(colorIndex) == -1)
@@ -103,16 +103,16 @@ export class Tile {
     public DrawAnimatedTile(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, animatedTileIndex: number): void {
         if (this.AnimatedTileIndexes.indexOf(animatedTileIndex) == -1)
             return
-        var tileAnimationFrame = SonicManager.Instance.TileAnimationManager.GetCurrentFrame(animatedTileIndex);
-        var tileAnimation = tileAnimationFrame.Animation;
-        var tileAnimationData = tileAnimation.AnimatedTileData;
-        var animationIndex = tileAnimationData.AnimationTileIndex;
-        var frame = tileAnimationFrame.FrameData();
+        let tileAnimationFrame = SonicManager.Instance.TileAnimationManager.GetCurrentFrame(animatedTileIndex);
+        let tileAnimation = tileAnimationFrame.Animation;
+        let tileAnimationData = tileAnimation.AnimatedTileData;
+        let animationIndex = tileAnimationData.AnimationTileIndex;
+        let frame = tileAnimationFrame.FrameData();
         if (!frame) {
             frame = tileAnimation.AnimatedTileData.DataFrames[0];
         }
-        var file = tileAnimationData.GetAnimationFile();
-        var va = file[frame.StartingTileIndex + (this.Index - animationIndex)];
+        let file = tileAnimationData.GetAnimationFile();
+        let va = file[frame.StartingTileIndex + (this.Index - animationIndex)];
         if (va != null) {
             va.DrawBase(canvas, pos, xflip, yflip, palette, true);
         }
@@ -125,11 +125,11 @@ export class Tile {
     }
     public GetAllPaletteIndexes(): number[] {
         if (this.CurPaletteIndexes == null) {
-            var d = new Array<number>();
-            for (var _x: number = 0; _x < this.Colors.length; _x++) {
-                var color = this.Colors[_x];
-                for (var _y: number = 0; _y < color.length; _y++) {
-                    var col = color[_y];
+            let d = new Array<number>();
+            for (let _x: number = 0; _x < this.Colors.length; _x++) {
+                let color = this.Colors[_x];
+                for (let _y: number = 0; _y < color.length; _y++) {
+                    let col = color[_y];
                     if (col == 0)
                         continue;
                     if (d.filter(a => a != col).length==d.length)

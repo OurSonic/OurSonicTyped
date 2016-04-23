@@ -17,7 +17,7 @@
             }
             return true;
         }
-        var stp = this.steps[this.stepIndex];
+        let stp = this.steps[this.stepIndex];
         if (!stp)
             return true;
         if ((this.tickIndex % stp.Iterations.length / 12 |0)== 0)

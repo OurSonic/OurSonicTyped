@@ -19,13 +19,13 @@ export class HeightMap {
         this.Full = undefined;
     }
     static FullHeight(full: boolean): HeightMap {
-        var h = new HeightMap(null, 0);
+        let h = new HeightMap(null, 0);
         h.Full = full;
         return h;
     }
     public SetItem(x: number, y: number, rotationMode: RotationMode): void {
-        var jx = 0;
-        var jy = 0;
+        let jx = 0;
+        let jy = 0;
         switch (rotationMode) {
             case RotationMode.Floor:
                 jx = x;
@@ -50,7 +50,7 @@ export class HeightMap {
         if (this.Items == null)
             return
         canvas.save();
-        var oPos = Point.Create(pos);
+        let oPos = Point.Create(pos);
         if (xflip) {
             pos.X = -pos.X - 16;
             canvas.scale(-1, 1);
@@ -59,22 +59,22 @@ export class HeightMap {
             pos.Y = -pos.Y - 16;
             canvas.scale(1, -1);
         }
-        var fd = SonicManager.Instance.SpriteCache.HeightMaps[this.Index + (solid << 20)];
+        let fd = SonicManager.Instance.SpriteCache.HeightMaps[this.Index + (solid << 20)];
         if (this.Index != -1 && fd)
             canvas.drawImage(fd.Canvas, pos.X, pos.Y);
         else {
-            var ntcanvas = CanvasInformation.Create(16, 16, false);
-            var ncanvas = ntcanvas.Context;
+            let ntcanvas = CanvasInformation.Create(16, 16, false);
+            let ncanvas = ntcanvas.Context;
             if (solid > 0) {
-                for (var x: number = 0; x < 16; x++) {
-                    for (var y: number = 0; y < 16; y++) {
-                        var jx = 0;
-                        var jy = 0;
+                for (let x: number = 0; x < 16; x++) {
+                    for (let y: number = 0; y < 16; y++) {
+                        let jx = 0;
+                        let jy = 0;
                         if (HeightMap.ItemsGood(this.Items, x, y)) {
                             jx = x;
                             jy = y;
-                            var _x = jx;
-                            var _y = jy;
+                            let _x = jx;
+                            let _y = jy;
                             ncanvas.lineWidth = 1;
                             ncanvas.fillStyle = HeightMap.colors[solid];
                             ncanvas.fillRect(_x, _y, 1, 1);

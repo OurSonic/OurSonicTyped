@@ -18,7 +18,7 @@ export class LevelObjectAssetFrame {
         this.Name = name;
         this.CollisionMap = new Array(100);
         this.HurtSonicMap = new Array(100);
-        for (var i = 0; i < 100; i++) {
+        for (let i = 0; i < 100; i++) {
             this.CollisionMap[i] = new Array(100);
             this.HurtSonicMap[i] = new Array(100);
         }
@@ -30,7 +30,7 @@ export class LevelObjectAssetFrame {
     }
     public SetHeight(h: number): void {
         this.Height = h;
-        for (var j = 0; j < this.Width; j++) {
+        for (let j = 0; j < this.Width; j++) {
             this.CollisionMap[j] = this.CollisionMap[j].slice(0, h);
         }
         this.ClearCache();
@@ -41,7 +41,7 @@ export class LevelObjectAssetFrame {
         this.ClearCache();
     }
     public DrawSimple(mainCanvas: CanvasRenderingContext2D, pos: Point, width: number, height: number, xflip: boolean, yflip: boolean): void {
-        var c = this.GetCache(false, false, false);
+        let c = this.GetCache(false, false, false);
         mainCanvas.save();
         mainCanvas.translate(pos.X, pos.Y);
         mainCanvas.scale((width / this.Width) | 0, (height / this.Height) | 0);
@@ -49,19 +49,19 @@ export class LevelObjectAssetFrame {
         mainCanvas.restore();
     }
     public GetCache(showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): CanvasInformation {
-        var m = this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
+        let m = this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
         if (m == null) {
-            var mj = CanvasInformation.Create(this.Width, this.Height, false);
-            var canvas = mj.Context;
+            let mj = CanvasInformation.Create(this.Width, this.Height, false);
+            let canvas = mj.Context;
             canvas.save();
             canvas.strokeStyle = "#000000";
             canvas.lineWidth = 1;
-            for (var x = 0; x < this.Width; x++) {
-                for (var y = 0; y < this.Height; y++) {
-                    var ex = x;
-                    var ey = y;
-                    var d = this.ColorMap[ex][ey];
-                    var color = this.Palette[d];
+            for (let x = 0; x < this.Width; x++) {
+                for (let y = 0; y < this.Height; y++) {
+                    let ex = x;
+                    let ey = y;
+                    let d = this.ColorMap[ex][ey];
+                    let color = this.Palette[d];
                     if (color == this.TransparentColor) {
                         canvas.fillStyle = "rgba(0,0,0,0)";
                     }
@@ -103,7 +103,7 @@ export class LevelObjectAssetFrame {
         showOffset: boolean,
         xflip: boolean,
         yflip: boolean): void {
-        var fd = this.GetCache(showOutline, showCollideMap, showHurtMap);
+        let fd = this.GetCache(showOutline, showCollideMap, showHurtMap);
         _canvas.save();
         _canvas.translate(pos.X, pos.Y);
         if (xflip) {

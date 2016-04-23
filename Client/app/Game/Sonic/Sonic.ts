@@ -53,7 +53,7 @@ export class Sonic {
     constructor() {
         this.Watcher = new Watcher();
         this.physicsVariables = SonicConstants.Sonic();
-        var sonicManager = SonicManager.Instance;
+        let sonicManager = SonicManager.Instance;
         this.sonicLevel = sonicManager.SonicLevel;
         this.X = this.sonicLevel.StartPositions[0].X;
         this.Y = this.sonicLevel.StartPositions[0].Y;
@@ -88,7 +88,7 @@ export class Sonic {
     }
     public Tick(sonicLevel: SonicLevel): void {
         if (this.Debugging) {
-            var debugSpeed = this.Watcher.Multiply(15);
+            let debugSpeed = this.Watcher.Multiply(15);
             if (this.HoldingRight)
                 this.X += debugSpeed;
             if (this.HoldingLeft)
@@ -118,9 +118,9 @@ export class Sonic {
         this.CheckCollisionWithRings();
         this.UpdateSprite();
         this.SensorManager.Check(this);
-        var sensorM1 = this.SensorManager.GetResult("m1");
-        var sensorM2 = this.SensorManager.GetResult("m2");
-        var best = this.GetBestSensor(sensorM1, sensorM2, this.Mode);
+        let sensorM1 = this.SensorManager.GetResult("m1");
+        let sensorM2 = this.SensorManager.GetResult("m2");
+        let best = this.GetBestSensor(sensorM1, sensorM2, this.Mode);
         if (best != null) {
             switch (this.Mode) {
                 case RotationMode.Floor:
@@ -149,11 +149,11 @@ export class Sonic {
             }
         }
         this.SensorManager.Check(this);
-        var sensorA = this.SensorManager.GetResult("a");
-        var sensorB = this.SensorManager.GetResult("b");
-        var fy: number;
-        var fx: number;
-        var hSize = this.GetHalfImageSize();
+        let sensorA = this.SensorManager.GetResult("a");
+        let sensorB = this.SensorManager.GetResult("b");
+        let fy: number;
+        let fx: number;
+        let hSize = this.GetHalfImageSize();
         if (!this.InAir) {
             best = this.GetBestSensor(sensorA, sensorB, this.Mode);
             if (best == null)
@@ -227,11 +227,11 @@ export class Sonic {
                 }
             }
             this.UpdateMode();
-            var cur = SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
-            var __h = cur.height / 2;
+            let cur = SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
+            let __h = cur.height / 2;
             this.SensorManager.Check(this);
-            var sensorC = this.SensorManager.GetResult("c");
-            var sensorD = this.SensorManager.GetResult("d");
+            let sensorC = this.SensorManager.GetResult("c");
+            let sensorD = this.SensorManager.GetResult("d");
             if ((sensorC == null && sensorD == null)) {
 
             }
@@ -318,7 +318,7 @@ export class Sonic {
         return null;
     }
     public Invulnerable(): boolean {
-        var mc = SonicManager.Instance.DrawTickCount - this.sonicLastHitTick;
+        let mc = SonicManager.Instance.DrawTickCount - this.sonicLastHitTick;
         if (mc < 120) {
             if (mc % 8 < 4)
                 return true;
@@ -331,11 +331,11 @@ export class Sonic {
     }
     private offsetFromImage: Point = new Point(0, 0);
     private GetOffsetFromImage(): Point {
-        var cur = SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
-        var xOffset = 0;
-        var yOffset = 0;
+        let cur = SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
+        let xOffset = 0;
+        let yOffset = 0;
         if (cur.height != 40) {
-            var n: number;
+            let n: number;
             switch (this.Mode) {
                 case RotationMode.Floor:
                     n = 0;
@@ -360,9 +360,9 @@ export class Sonic {
         return this.offsetFromImage;
     }
     private UpdateSprite(): void {
-        var absgsp = Math.abs(this.Gsp);
-        var word = this.SpriteState.substring(0, this.SpriteState.length - 1);
-        var j = parseInt(this.SpriteState.substring(this.SpriteState.length - 1, this.SpriteState.length));
+        let absgsp = Math.abs(this.Gsp);
+        let word = this.SpriteState.substring(0, this.SpriteState.length - 1);
+        let j = parseInt(this.SpriteState.substring(this.SpriteState.length - 1, this.SpriteState.length));
         if (this.Breaking > 0) {
             if (this.Gsp > 0 || this.Gsp == 0 || this.SpriteState == "breaking3") {
                 this.Facing = false;
@@ -375,7 +375,7 @@ export class Sonic {
                 this.Facing = true;
             }
         }
-        var epsilon = 0.00001;
+        let epsilon = 0.00001;
         if (this.JustHit) {
             if (word != "hit") {
                 this.SpriteState = "hit0";
@@ -454,15 +454,15 @@ export class Sonic {
     }
     private EffectPhysics(): void {
         this.Watcher.Tick();
-        var physics = this.physicsVariables;
-        var max = physics.TopSpeed;
+        let physics = this.physicsVariables;
+        let max = physics.TopSpeed;
         if (!this.Jumping) {
             if (!this.InAir && this.WasJumping)
                 this.WasJumping = false;
         }
         if (this.InAir && !this.WasInAir) {
             this.WasInAir = true;
-            var offset = this.GetOffsetFromImage();
+            let offset = this.GetOffsetFromImage();
         }
         if (!this.InAir && this.WasInAir) {
             this.WasInAir = false;
@@ -549,7 +549,7 @@ export class Sonic {
             }
             this.Gsp -= (Math.min(Math.abs(this.Gsp), this.Watcher.Multiply(physics.Rfrc)) * (this.Gsp > 0 ? 1 : -1));
             this.oldSign = Help.Sign(this.Gsp);
-            var ang = Help.Sin(this.Angle);
+            let ang = Help.Sin(this.Angle);
             if ((ang > 0) == (this.Gsp > 0))
                 this.Gsp += this.Watcher.Multiply(-physics.SlpRollingUp) * ang;
             else this.Gsp += this.Watcher.Multiply(-physics.SlpRollingDown) * ang;
@@ -635,7 +635,7 @@ export class Sonic {
                     this.X += 0;
                 else if (this.Mode == RotationMode.Ceiling)
                     this.Y += 0;
-                var oldMode = this.Mode;
+                let oldMode = this.Mode;
                 this.UpdateMode();
                 this.Mode = RotationMode.Floor;
                 this.HLock = 30;
@@ -654,23 +654,23 @@ export class Sonic {
         this.Y = ((this.sonicLevel.LevelHeight * 128) + (this.Y + this.Ysp)) % (this.sonicLevel.LevelHeight * 128);
     }
     public Draw(canvas: CanvasRenderingContext2D): void {
-        var fx = (this.X);
-        var fy = (this.Y);
+        let fx = (this.X);
+        let fy = (this.Y);
         if (this.Invulnerable())
             return
-        var cur = SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
+        let cur = SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
         if (cur == null) {
         }
         if (Help.IsLoaded(cur)) {
             canvas.save();
-            var offset = this.GetOffsetFromImage();
+            let offset = this.GetOffsetFromImage();
             canvas.translate((fx - SonicManager.Instance.WindowLocation.X + offset.X),
                 ((fy - SonicManager.Instance.WindowLocation.Y + offset.Y)));
             if (SonicManager.Instance.ShowHeightMap) {
                 canvas.save();
-                var mul = 6;
-                var xj = this.Xsp * mul;
-                var yj = this.Ysp * mul;
+                let mul = 6;
+                let xj = this.Xsp * mul;
+                let yj = this.Ysp * mul;
                 canvas.beginPath();
                 canvas.moveTo(0, 0);
                 canvas.lineTo(xj, yj);
@@ -714,8 +714,8 @@ export class Sonic {
             canvas.restore();
             if (SonicManager.Instance.ShowHeightMap)
                 this.SensorManager.Draw(canvas, this);
-            for (var i = 0; i < this.HaltSmoke.length; i++) {
-                var lo = this.HaltSmoke[i];
+            for (let i = 0; i < this.HaltSmoke.length; i++) {
+                let lo = this.HaltSmoke[i];
                 canvas.drawImage(SonicManager.Instance.SpriteCache.SonicSprites[("haltsmoke" + ((SonicManager.Instance.DrawTickCount % (4 * 6)) / 6 | 0))],
                     ((lo.X - SonicManager.Instance.WindowLocation.X - 25)),
                     ((lo.Y + 12 - SonicManager.Instance.WindowLocation.Y + offset.Y)));
@@ -750,12 +750,12 @@ export class Sonic {
         this.Ysp = -4;
         this.Xsp = 2 * ((this.X - x) < 0 ? -1 : 1);
         this.sonicLastHitTick = SonicManager.Instance.DrawTickCount;
-        var t = 0;
-        var angle = 101.25;
-        var n = false;
-        var speed = 4;
+        let t = 0;
+        let angle = 101.25;
+        let n = false;
+        let speed = 4;
         while (t < this.Rings) {
-            var ring = new Ring(true);
+            let ring = new Ring(true);
             SonicManager.Instance.ActiveRings.push(ring);
             ring.X = this.X | 0;
             ring.Y = this.Y - 10 | 0;
@@ -815,11 +815,11 @@ export class Sonic {
     public CheckCollisionWithObjects(x: number, y: number, letter: string): boolean {
         this.objectCollision.X = x;
         this.objectCollision.Y = y;
-        var me = this.objectCollision;
-        var levelObjectInfos = SonicManager.Instance.InFocusObjects;
-        for (var ob of levelObjectInfos) {
-            var dj = ob.Collides(me);
-            var dj2 = ob.HurtsSonic(me);
+        let me = this.objectCollision;
+        let levelObjectInfos = SonicManager.Instance.InFocusObjects;
+        for (let ob of levelObjectInfos) {
+            let dj = ob.Collides(me);
+            let dj2 = ob.HurtsSonic(me);
             if (dj)
                 return ob.Collide(this, letter, dj);
             if (dj2)
@@ -829,15 +829,15 @@ export class Sonic {
     }
     private ringCollisionRect: Rectangle = new Rectangle(0, 0, 0, 0);
     public CheckCollisionWithRings(): void {
-        var me = this.myRec;
+        let me = this.myRec;
         this.ringCollisionRect.X = 0;
         this.ringCollisionRect.Y = 0;
         this.ringCollisionRect.Width = 8 * 2;
         this.ringCollisionRect.Height = 8 * 2;
-        var rings: Ring[] = SonicManager.Instance.SonicLevel.Rings;
-        for (var index: number = 0; index < rings.length; index++) {
-            var ring = rings[index];
-            var pos = ring;
+        let rings: Ring[] = SonicManager.Instance.SonicLevel.Rings;
+        for (let index: number = 0; index < rings.length; index++) {
+            let ring = rings[index];
+            let pos = ring;
             if (this.obtainedRing[index])
                 continue;
             this.ringCollisionRect.X = pos.X;
@@ -860,8 +860,8 @@ export class Watcher {
             this.mult = 1;
             return
         }
-        var ticks = new Date().getTime();
-        var offset: number = 0;
+        let ticks = new Date().getTime();
+        let offset: number = 0;
         if (this.lastTick == 0)
             offset = 16;
         else offset = ticks - this.lastTick;

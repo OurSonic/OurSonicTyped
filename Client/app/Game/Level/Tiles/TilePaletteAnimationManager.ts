@@ -10,7 +10,7 @@ export class TilePaletteAnimationManager {
     }
     private Init(): void {
         this.Animations = {};
-        for (var animatedPaletteIndex: number = 0; animatedPaletteIndex < this.SonicManager.SonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
+        for (let animatedPaletteIndex: number = 0; animatedPaletteIndex < this.SonicManager.SonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
             this.Animations[animatedPaletteIndex] = new TilePaletteAnimation(this, this.SonicManager.SonicLevel.AnimatedPalettes[animatedPaletteIndex]);
             this.Animations[animatedPaletteIndex].Init();
         }
@@ -21,8 +21,8 @@ export class TilePaletteAnimationManager {
     public TickAnimatedPalettes(): void {
         if (this.Animations == null)
             this.Init();
-        for (var animation in this.Animations) {
-            var tilePaletteAnimation: TilePaletteAnimation = this.Animations[animation];
+        for (let animation in this.Animations) {
+            let tilePaletteAnimation: TilePaletteAnimation = this.Animations[animation];
             tilePaletteAnimation.Tick();
         }
     }
@@ -47,25 +47,25 @@ export class TilePaletteAnimation {
         return this.Frames[this.CurrentFrame];
     }
     public Tick(): void {
-        var pal = this.AnimatedPaletteData;
+        let pal = this.AnimatedPaletteData;
         if (pal.SkipIndex == 0)
             return
         if (pal.TotalLength == 0)
             return
-        for (var j: number = 0; j <= pal.TotalLength; j += pal.SkipIndex) {
+        for (let j: number = 0; j <= pal.TotalLength; j += pal.SkipIndex) {
             if (this.Manager.SonicManager.DrawTickCount % (pal.TotalLength + pal.SkipIndex) == j) {
                 this.CurrentFrame = j / pal.SkipIndex;
             }
         }
     }
     public Init(): void {
-        var pal = this.AnimatedPaletteData;
+        let pal = this.AnimatedPaletteData;
         if (pal.SkipIndex == 0)
             return
         if (pal.TotalLength == 0)
             return
-        for (var j: number = 0; j <= pal.TotalLength; j += pal.SkipIndex) {
-            var frameIndex: number = j / pal.SkipIndex;
+        for (let j: number = 0; j <= pal.TotalLength; j += pal.SkipIndex) {
+            let frameIndex: number = j / pal.SkipIndex;
             if (this.Frames[frameIndex] == null) {
                 this.Frames[frameIndex] = new TilePaletteAnimationFrame(frameIndex, this);
             }
@@ -82,14 +82,14 @@ export class TilePaletteAnimationFrame {
     }
     private tempPalette: string[][];
     public SetPalette(): void {
-        var levelPalette = this.Animation.Manager.SonicManager.SonicLevel.Palette;
+        let levelPalette = this.Animation.Manager.SonicManager.SonicLevel.Palette;
         this.clonePalette(levelPalette);
-        var pal = this.Animation.AnimatedPaletteData;
-        for (var index: number = 0; index < pal.Pieces.length; index++) {
-            var palettePiece = pal.Pieces[index];
-            var colorIndex: number = this.FrameIndex + (pal.Pieces.length * index);
-            var replaceIndex: number = (palettePiece.PaletteOffset) / 2|0;
-            var color = pal.Palette[colorIndex];
+        let pal = this.Animation.AnimatedPaletteData;
+        for (let index: number = 0; index < pal.Pieces.length; index++) {
+            let palettePiece = pal.Pieces[index];
+            let colorIndex: number = this.FrameIndex + (pal.Pieces.length * index);
+            let replaceIndex: number = (palettePiece.PaletteOffset) / 2|0;
+            let color = pal.Palette[colorIndex];
             if (color != null)
                 levelPalette[palettePiece.PaletteIndex][replaceIndex] = color;
             else levelPalette[palettePiece.PaletteIndex][replaceIndex] = "#000000";
@@ -97,10 +97,10 @@ export class TilePaletteAnimationFrame {
     }
     private clonePalette(levelPalette: string[][]): void {
         this.tempPalette = new Array(levelPalette.length);
-        for (var index: number = 0; index < levelPalette.length; index++) {
-            var canvasElements = levelPalette[index];
+        for (let index: number = 0; index < levelPalette.length; index++) {
+            let canvasElements = levelPalette[index];
             this.tempPalette[index] = new Array(canvasElements.length);
-            for (var index2: number = 0; index2 < canvasElements.length; index2++) {
+            for (let index2: number = 0; index2 < canvasElements.length; index2++) {
                 this.tempPalette[index][index2] = canvasElements[index2];
             }
         }

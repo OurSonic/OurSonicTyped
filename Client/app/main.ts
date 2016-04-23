@@ -6,9 +6,9 @@ import {SonicEngine} from "./Game/SonicEngine";
 
 export class Main {
     static run() {
-        var j: string = ((<any>window).STATICLEVEL);
-        var message = new Compressor().DecompressText(j);
-        var sl: SLData = JSON.parse(message);
+        let j: string = ((<any>window).STATICLEVEL);
+        let message = new Compressor().DecompressText(j);
+        let sl: SLData = JSON.parse(message);
         new SonicEngine();
     }
 }
