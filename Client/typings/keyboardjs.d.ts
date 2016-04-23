@@ -12,7 +12,7 @@
 // a different type of keyboard KeyboardJS provides custom locale support so you can create
 // with a locale that better matches your needs.
 
-declare namespace keyboardjs {
+declare namespace keyboardJS {
 
     /**
 	 * Information and functions in the current callback.

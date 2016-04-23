@@ -35,8 +35,6 @@ export class CanvasInformation {
         canvas.height = h;
         var ctx = canvas.getContext("2d");
         if (pixelated) {
-            (<any>ctx).webkitImageSmoothingEnabled = false;
-            (<any>ctx).mozImageSmoothingEnabled = false;
             (<any>ctx).imageSmoothingEnabled = false;
         }
         return new CanvasInformation(ctx, jQuery(canvas));

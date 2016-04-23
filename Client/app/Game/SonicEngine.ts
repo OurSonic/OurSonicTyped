@@ -16,10 +16,10 @@ export class SonicEngine {
 
     wideScreen: boolean;
     gameGoodWidth: number;
-    public Engine() {
+    constructor() {
         const gameCanvasName = "gameLayer";
         const uiCanvasName = "uiLayer";
-
+        debugger;
         this.gameCanvas = CanvasInformation.createFromElement(<HTMLCanvasElement>document.getElementById(gameCanvasName), 0, 0, true);
         this.uiCanvas = CanvasInformation.createFromElement(<HTMLCanvasElement>document.getElementById(uiCanvasName), 0, 0, true);
         this.canvasWidth = 0;
@@ -31,7 +31,7 @@ export class SonicEngine {
 
         window.addEventListener("resize", e => this.resizeCanvas(true));
 
-//        this.sonicManager = new SonicManager(this, this.gameCanvas, () => this.resizeCanvas(true));
+        this.sonicManager = new SonicManager(this, this.gameCanvas, () => this.resizeCanvas(true));
         this.sonicManager.indexedPalette = 0;
         window.setInterval(this.sonicManager.tick, 1000 / 60);
         window.setInterval(this.gameDraw, 1000 / 60);
@@ -48,14 +48,14 @@ export class SonicEngine {
         this.uiCanvas.domCanvas.bind("touchend", this.canvasMouseUp);
         this.uiCanvas.domCanvas.bind("touchmove", this.canvasMouseMove);
         this.uiCanvas.domCanvas.bind("contextmenu", (e) => e.preventDefault());
-        keyboardjs.bind("f",
+        keyboardJS.bind("f",
             () => {
                 this.sonicManager.showHeightMap = !this.sonicManager.showHeightMap;
             },
             () => {
 
             });
-        keyboardjs.bind("o",
+        keyboardJS.bind("o",
             () => {
                 if (this.sonicManager.currentGameState == GameState.Playing)
                     this.sonicManager.inHaltMode = !this.sonicManager.inHaltMode;
@@ -64,7 +64,7 @@ export class SonicEngine {
 
             });
 
-        keyboardjs.bind("1",
+        keyboardJS.bind("1",
             () => {
                 this.sonicManager.indexedPalette++;
                 this.sonicManager.clearCache();
@@ -72,14 +72,14 @@ export class SonicEngine {
             () => {
 
             });
-        keyboardjs.bind("q",
+        keyboardJS.bind("q",
             () => {
                 this.runGame();
             },
             () => {
 
             });
-        keyboardjs.bind("p",
+        keyboardJS.bind("p",
             () => {
                 if (this.sonicManager.currentGameState == GameState.Playing)
                     if (this.sonicManager.inHaltMode)
@@ -88,7 +88,7 @@ export class SonicEngine {
             () => {
 
             });
-        keyboardjs.bind("h",
+        keyboardJS.bind("h",
             () => {
                 if (this.sonicManager.currentGameState == GameState.Playing)
                     this.sonicManager.sonicToon.Hit(this.sonicManager.sonicToon.x, this.sonicManager.sonicToon.y);
@@ -96,7 +96,7 @@ export class SonicEngine {
             () => {
 
             });
-        keyboardjs.bind("u",
+        keyboardJS.bind("u",
             () => {
                 this.wideScreen = !this.wideScreen;
                 this.resizeCanvas(true);
@@ -104,7 +104,7 @@ export class SonicEngine {
             () => {
 
             });
-        keyboardjs.bind("c",
+        keyboardJS.bind("c",
             () => {
                 if (this.sonicManager.currentGameState == GameState.Playing)
                     this.sonicManager.sonicToon.Debug();
@@ -112,7 +112,7 @@ export class SonicEngine {
             () => {
 
             });
-        keyboardjs.bind("up",
+        keyboardJS.bind("up",
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
@@ -133,7 +133,7 @@ export class SonicEngine {
                         break;
                 }
             });
-        keyboardjs.bind("down",
+        keyboardJS.bind("down",
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
@@ -154,7 +154,7 @@ export class SonicEngine {
                         break;
                 }
             });
-        keyboardjs.bind("left",
+        keyboardJS.bind("left",
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
@@ -175,7 +175,7 @@ export class SonicEngine {
                         break;
                 }
             });
-        keyboardjs.bind("right",
+        keyboardJS.bind("right",
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
@@ -196,7 +196,7 @@ export class SonicEngine {
                         break;
                 }
             });
-        keyboardjs.bind("space",
+        keyboardJS.bind("space",
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
@@ -215,7 +215,7 @@ export class SonicEngine {
                         break;
                 }
             });
-        keyboardjs.bind("e",
+        keyboardJS.bind("e",
             () => {
                 this.sonicManager.sonicLevel.curHeightMap = !this.sonicManager.sonicLevel.curHeightMap;
             },
