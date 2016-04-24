@@ -7,22 +7,22 @@ export class CanvasInformation {
     
     public domCanvas: JQuery;
     
-    public Canvas: HTMLCanvasElement;
+    public canvas: HTMLCanvasElement;
     public static get BlackPixel(): HTMLCanvasElement {
         if (CanvasInformation.blackPixel == null) {
-            let m = CanvasInformation.Create(0, 0, false);
+            let m = CanvasInformation.create(0, 0, false);
             m.Context.fillStyle = "black";
             m.Context.fillRect(0, 0, 1, 1);
-            CanvasInformation.blackPixel = m.Canvas;
+            CanvasInformation.blackPixel = m.canvas;
         }
         return CanvasInformation.blackPixel;
     }
     constructor(context: CanvasRenderingContext2D, domCanvas: JQuery) {
         this.Context = context;
         this.domCanvas = domCanvas;
-        this.Canvas = <HTMLCanvasElement>domCanvas[0];
+        this.canvas = <HTMLCanvasElement>domCanvas[0];
     }
-    public static Create(w: number, h: number, pixelated: boolean): CanvasInformation {
+    public static create(w: number, h: number, pixelated: boolean): CanvasInformation {
         let canvas = document.createElement("canvas");
         return CanvasInformation.CreateFromElement(canvas, w, h, pixelated);
     }

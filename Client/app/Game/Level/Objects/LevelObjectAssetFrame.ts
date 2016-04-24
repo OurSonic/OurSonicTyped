@@ -43,15 +43,15 @@ export class LevelObjectAssetFrame {
     public DrawSimple(mainCanvas: CanvasRenderingContext2D, pos: Point, width: number, height: number, xflip: boolean, yflip: boolean): void {
         let c = this.GetCache(false, false, false);
         mainCanvas.save();
-        mainCanvas.translate(pos.X, pos.Y);
+        mainCanvas.translate(pos.x, pos.y);
         mainCanvas.scale((width / this.width) | 0, (height / this.height) | 0);
-        mainCanvas.drawImage(c.Canvas, 0, 0);
+        mainCanvas.drawImage(c.canvas, 0, 0);
         mainCanvas.restore();
     }
     public GetCache(showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): CanvasInformation {
         let m = this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
         if (m == null) {
-            let mj = CanvasInformation.Create(this.width, this.height, false);
+            let mj = CanvasInformation.create(this.width, this.height, false);
             let canvas = mj.Context;
             canvas.save();
             canvas.strokeStyle = "#000000";
@@ -105,19 +105,19 @@ export class LevelObjectAssetFrame {
         yflip: boolean): void {
         let fd = this.GetCache(showOutline, showCollideMap, showHurtMap);
         _canvas.save();
-        _canvas.translate(pos.X, pos.Y);
+        _canvas.translate(pos.x, pos.y);
         if (xflip) {
             if (yflip) {
-                _canvas.translate(fd.Canvas.width / 2, fd.Canvas.height / 2);
+                _canvas.translate(fd.canvas.width / 2, fd.canvas.height / 2);
                 _canvas.rotate(-90 * Math.PI / 180);
-                _canvas.translate(-fd.Canvas.width / 2, -fd.Canvas.height / 2);
+                _canvas.translate(-fd.canvas.width / 2, -fd.canvas.height / 2);
                 _canvas.translate(0, this.height);
                 _canvas.scale(1, -1);
             }
             else {
-                _canvas.translate(fd.Canvas.width / 2, fd.Canvas.height / 2);
+                _canvas.translate(fd.canvas.width / 2, fd.canvas.height / 2);
                 _canvas.rotate(-90 * Math.PI / 180);
-                _canvas.translate(-fd.Canvas.width / 2, -fd.Canvas.height / 2);
+                _canvas.translate(-fd.canvas.width / 2, -fd.canvas.height / 2);
             }
         }
         else {
@@ -129,7 +129,7 @@ export class LevelObjectAssetFrame {
 
             }
         }
-        _canvas.drawImage(fd.Canvas, 0, 0);
+        _canvas.drawImage(fd.canvas, 0, 0);
         if (showOffset) {
             _canvas.beginPath();
             _canvas.moveTo(this.offsetX, 0);

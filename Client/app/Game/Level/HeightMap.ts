@@ -52,18 +52,18 @@ export class HeightMap {
         canvas.save();
         let oPos = Point.Create(pos);
         if (xflip) {
-            pos.X = -pos.X - 16;
+            pos.x = -pos.x - 16;
             canvas.scale(-1, 1);
         }
         if (yflip) {
-            pos.Y = -pos.Y - 16;
+            pos.y = -pos.y - 16;
             canvas.scale(1, -1);
         }
         let fd = SonicManager.instance.spriteCache.HeightMaps[this.Index + (solid << 20)];
         if (this.Index != -1 && fd)
-            canvas.drawImage(fd.Canvas, pos.X, pos.Y);
+            canvas.drawImage(fd.canvas, pos.x, pos.y);
         else {
-            let ntcanvas = CanvasInformation.Create(16, 16, false);
+            let ntcanvas = CanvasInformation.create(16, 16, false);
             let ncanvas = ntcanvas.Context;
             if (solid > 0) {
                 for (let x: number = 0; x < 16; x++) {
@@ -83,7 +83,7 @@ export class HeightMap {
                                 ncanvas.lineWidth = 1;
                                 ncanvas.strokeStyle = "rgba(163,241,255,0.8)";
                                 ncanvas.moveTo(16 / 2, 16 / 2);
-                                ncanvas.lineTo(16 / 2 - Help.Sin(angle) * 8, 16 / 2 - Help.Cos(angle) * 8);
+                                ncanvas.lineTo(16 / 2 - Help.sin(angle) * 8, 16 / 2 - Help.cos(angle) * 8);
                                 ncanvas.stroke();
                             }
                         }
@@ -91,11 +91,11 @@ export class HeightMap {
                 }
             }
             SonicManager.instance.spriteCache.HeightMaps[this.Index + (solid << 20)] = ntcanvas;
-            canvas.drawImage(ntcanvas.Canvas, pos.X, pos.Y);
+            canvas.drawImage(ntcanvas.canvas, pos.x, pos.y);
         }
         canvas.restore();
-        pos.X = oPos.X;
-        pos.Y = oPos.Y;
+        pos.x = oPos.x;
+        pos.y = oPos.y;
     }
     public static ItemsGood(items: number[], x: number, y: number): boolean {
         if (items[x] < 0)

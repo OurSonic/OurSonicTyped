@@ -1,32 +1,32 @@
 ﻿import {Help} from "../../Common/Help";
 
 export class SonicConstants {
-    public Acc: number;
-    public Air: number;
-    public Dec: number;
-    public Frc: number;
-    public Grv: number;
-    public Jmp: number;
-    public Rdec: number;
-    public Rfrc: number;
-    public Slp: number;
-    public SlpRollingDown: number;
-    public SlpRollingUp: number;
-    public TopSpeed: number;
+    public acc: number;
+    public air: number;
+    public dec: number;
+    public frc: number;
+    public grv: number;
+    public jmp: number;
+    public rdec: number;
+    public rfrc: number;
+    public slp: number;
+    public slpRollingDown: number;
+    public slpRollingUp: number;
+    public topSpeed: number;
     public static Sonic(): SonicConstants {
-        let sc = Help.Merge(new SonicConstants(), {
-            Acc: 0.046875,
-            Dec: 0.5,
-            Slp: 0.125,
-            Frc: 0.046875,
-            Rdec: 0.125,
-            Rfrc: 0.0234375,
-            SlpRollingUp: 0.078125,
-            SlpRollingDown: 0.3125,
-            Jmp: -6.5,
-            Grv: 0.21875,
-            Air: 0.09375,
-            TopSpeed: 6
+        let sc = Help.merge(new SonicConstants(), {
+            acc: 0.046875,
+            dec: 0.5,
+            slp: 0.125,
+            frc: 0.046875,
+            rdec: 0.125,
+            rfrc: 0.0234375,
+            slpRollingUp: 0.078125,
+            slpRollingDown: 0.3125,
+            jmp: -6.5,
+            grv: 0.21875,
+            air: 0.09375,
+            topSpeed: 6
         });
         return sc;
     }

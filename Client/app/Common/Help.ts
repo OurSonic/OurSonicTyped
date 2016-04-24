@@ -1,4 +1,7 @@
-﻿import {Point, IntersectingRectangle } from "./Utils";
+﻿///<reference path="../../typings/Compress.d.ts"/>
+
+
+import {Point, IntersectingRectangle } from "./Utils";
 import {CanvasInformation  } from "./CanvasInformation";
 import {Color} from "./Color";
 import {SonicImage} from "../Game/Level/SonicImage";
@@ -38,37 +41,35 @@ export class Help {
         0.83147, 0.84485, 0.85773, 0.87009, 0.88192, 0.89322, 0.90399, 0.91421,
         0.92388, 0.93299, 0.94154, 0.94953, 0.95694, 0.96378, 0.97003, 0.97570,
         0.98079, 0.98528, 0.98918, 0.99248, 0.99518, 0.99729, 0.99880, 0.99970);
-    public static ToPx(number: number): string {
-        return number + "px";
-    }
-    public static Sin(f: number): number {
+
+    public static sin(f: number): number {
         return Help.cos_table[(f + 0x40) & 0xFF];
     }
-    public static Cos(f: number): number {
+    public static cos(f: number): number {
         return Help.cos_table[(f) & 0xFF];
     }
-    public static Mod(j: number, n: number): number {
+    public static mod(j: number, n: number): number {
         return ((j % n) + n) % n;
     }
-    public static ScaleSprite(image: HTMLImageElement, scale: Point): CanvasInformation {
-        let canv = CanvasInformation.Create(image.width * scale.X, image.height * scale.Y, true);
+    public static scaleSprite(image: HTMLImageElement, scale: Point): CanvasInformation {
+        let canv = CanvasInformation.create(image.width * scale.x, image.height * scale.y, true);
         canv.Context.save();
-        canv.Context.scale(scale.X, scale.Y);
+        canv.Context.scale(scale.x, scale.y);
         canv.Context.drawImage(image, 0, 0);
         canv.Context.restore();
         return canv;
     }
-    public static ScalePixelData(scale: Point, data: ImageData): ImageData {
+    public static scalePixelData(scale: Point, data: ImageData): ImageData {
         let Uint8ClampedArray: Uint8ClampedArray = data.data;
         let colors = new Array(Uint8ClampedArray.length / 4|0);
         for (let f: number = 0; f < Uint8ClampedArray.length; f += 4) {
-            colors[f / 4|0] = (Help.ColorObjectFromData(Uint8ClampedArray, f));
+            colors[f / 4|0] = (Help.colorObjectFromData(Uint8ClampedArray, f));
         }
-        let d = CanvasInformation.Create(1, 1, false).Context.createImageData(data.width * scale.X, data.height * scale.Y);
-        Help.SetDataFromColors(d.data, colors, scale, data.width, colors[0]);
+        let d = CanvasInformation.create(1, 1, false).Context.createImageData(data.width * scale.x, data.height * scale.y);
+        Help.setDataFromColors(d.data, colors, scale, data.width, colors[0]);
         return d;
     }
-    private static SetDataFromColors(data: Uint8ClampedArray, colors: Color[], scale: Point, width: number, transparent: Color): void {
+    private static setDataFromColors(data: Uint8ClampedArray, colors: Color[], scale: Point, width: number, transparent: Color): void {
         for (let i: number = 0; i < colors.length; i++) {
             let curX = i % width;
             let curY = i / width|0;
@@ -78,11 +79,11 @@ export class Help {
                 if (g.R == transparent.R && g.G == transparent.G && g.B == transparent.B)
                     isTrans = true;
             }
-            for (let j: number = 0; j < scale.X; j++) {
-                for (let k: number = 0; k < scale.Y; k++) {
-                    let x = (curX * scale.X + j);
-                    let y = (curY * scale.Y + k);
-                    let c = (x + y * (scale.X * width)) * 4;
+            for (let j: number = 0; j < scale.x; j++) {
+                for (let k: number = 0; k < scale.y; k++) {
+                    let x = (curX * scale.x + j);
+                    let y = (curY * scale.y + k);
+                    let c = (x + y * (scale.x * width)) * 4;
                     if (isTrans) {
                         data[c + 0] = 0;
                         data[c + 1] = 0;
@@ -98,7 +99,7 @@ export class Help {
             }
         }
     }
-    private static GetBase64Image(data: ImageData): string {
+    private static getBase64Image(data: ImageData): string {
         let canvas = document.createElement("canvas");
         canvas.width = data.width;
         canvas.height = data.height;
@@ -107,14 +108,14 @@ export class Help {
         let dataURL = canvas.toDataURL("image/png");
         return dataURL;
     }
-    private static ColorObjectFromData(data: Uint8ClampedArray, c: number): Color {
+    private static colorObjectFromData(data: Uint8ClampedArray, c: number): Color {
         let r = data[c];
         let g = data[c + 1];
         let b = data[c + 2];
         let a = data[c + 3];
         return new Color(r, g, b, a);
     }
-    public static GetImageData(image: HTMLImageElement): ImageData {
+    public static getImageData(image: HTMLImageElement): ImageData {
         let canvas = document.createElement("canvas");
         canvas.width = image.width;
         canvas.height = image.height;
@@ -123,29 +124,29 @@ export class Help {
         let data = ctx.getImageData(0, 0, image.width, image.height);
         return data;
     }
-    public static ScaleCsImage(image: SonicImage, scale: Point, complete: (_: HTMLImageElement) => void): HTMLImageElement {
+    public static scaleCsImage(image: SonicImage, scale: Point, complete: (_: HTMLImageElement) => void): HTMLImageElement {
         let df = image.Bytes;
         let colors = new Array(df.length);
         for (let f: number = 0; f < df.length; f++) {
             let c = image.Palette[df[f]];
             colors[f] = new Color(c[0], c[1], c[2], c[3]);
         }
-        let dc = CanvasInformation.Create(1, 1, false);
-        let d = dc.Context.createImageData(image.Width * scale.X, image.Height * scale.Y);
-        Help.SetDataFromColors(d.data, colors, scale, image.Width, colors[0]);
-        return Help.LoadSprite(Help.GetBase64Image(d), complete);
+        let dc = CanvasInformation.create(1, 1, false);
+        let d = dc.Context.createImageData(image.Width * scale.x, image.Height * scale.y);
+        Help.setDataFromColors(d.data, colors, scale, image.Width, colors[0]);
+        return Help.loadSprite(Help.getBase64Image(d), complete);
     }
-    public static IsLoaded(element: HTMLImageElement): boolean {
+    public static isLoaded(element: HTMLImageElement): boolean {
         return element.getAttribute("loaded") == "true";
     }
-    public static Loaded(element: HTMLImageElement, set: boolean ): void {
+    public static loaded(element: HTMLImageElement, set: boolean ): void {
         element.setAttribute("loaded", set ? "true" : "false");
     }
-    public static LoadSprite(src: string, complete: (_: HTMLImageElement) => void): HTMLImageElement {
+    public static loadSprite(src: string, complete: (_: HTMLImageElement) => void): HTMLImageElement {
         let sprite1 = new Image();
         sprite1.addEventListener("load",
             e => {
-                Help.Loaded(sprite1, true);
+                Help.loaded(sprite1, true);
                 if (complete)
                     complete(sprite1);
             },
@@ -153,59 +154,39 @@ export class Help {
         sprite1.src = src;
         return sprite1;
     }
-    public static DecodeString(lvl: string): string {
+    public static decodeString(lvl: string): string {
         return new Compressor().DecompressText(lvl);
     }
-    public static FixAngle(angle: number): number {
+    public static fixAngle(angle: number): number {
         let fixedAng = Math.floor((256 - angle) * 1.4062) % 360 | 0;
         let flop = 360 - fixedAng;
-        return Help.DegToRad(flop);
+        return Help.degToRad(flop);
     }
-    public static DegToRad(angle: number): number {
+    public static degToRad(angle: number): number {
         return angle * Math.PI / 180;
     }
-    public static Sign(m: number): number {
+    public static sign(m: number): number {
         return m == 0 ? 0 : (m < 0 ? -1 : 1);
     }
-    public static Floor(spinDashSpeed: number): number {
+    public static floor(spinDashSpeed: number): number {
         if (spinDashSpeed > 0)
             return ~~spinDashSpeed;
         return Math.floor(spinDashSpeed) | 0;
     }
-    public static Max(f1: number, f2: number): number {
+    public static max(f1: number, f2: number): number {
         return f1 < f2 ? f2 : f1;
     }
-    public static Min(f1: number, f2: number): number {
+    public static min(f1: number, f2: number): number {
         return f1 > f2 ? f2 : f1;
     }
-    public static Clone<T>(o: T): T {
-        return null;
-    }
-    public static RoundRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number = 5, fill: boolean = true, stroke: boolean = false): void {
-        ctx.save();
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(x + radius, y);
-        ctx.lineTo(x + width, y);
-        ctx.lineTo(x + width, y + height);
-        ctx.lineTo(x, y + height);
-        ctx.lineTo(x, y + radius);
-        ctx.quadraticCurveTo(x, y, x + radius, y);
-        ctx.closePath();
-        if (stroke)
-            ctx.stroke();
-        if (fill)
-            ctx.fill();
-        ctx.restore();
-    }
-    public static GetCursorPosition(ev: JQueryEventObject): Point {
+    public static getCursorPosition(ev: JQueryEventObject): Point {
         if (ev.originalEvent && (<any>ev.originalEvent).targetTouches && (<any>ev.originalEvent).targetTouches.length > 0)
-            ev = (<any>ev.originalEvent).targetTouches[0];
+            ev = <any>((<any>ev.originalEvent).targetTouches[0]);
         if (ev.pageX && ev.pageY)
             return new Point(ev.pageX, ev.pageY);
         return new Point(ev.clientX, ev.clientY/*, 0, ev.Which == 3*/);
     }
-    public static Stringify(obj: Object): string {
+    public static stringify(obj: Object): string {
         return JSON.stringify(obj,
             (key, value) => {
                 if (key.indexOf("$") == 0)
@@ -227,12 +208,12 @@ export class Help {
                 else return value;
             });
     }
-    public static SafeResize(block: CanvasInformation, width: number, height: number): CanvasInformation {
-        let m = CanvasInformation.Create(width, height, false);
-        m.Context.drawImage(block.Canvas, 0, 0);
+    public static safeResize(block: CanvasInformation, width: number, height: number): CanvasInformation {
+        let m = CanvasInformation.create(width, height, false);
+        m.Context.drawImage(block.canvas, 0, 0);
         return m;
     }
-    public static GetQueryString(): { [key: string]: string } {
+    public static getQueryString(): { [key: string]: string } {
         let result: { [key: string]: string } = {};
         let queryString: string = window.location.search.substring(1);
         let re = new RegExp("/([^&=]+)=([^&]*)/g");
@@ -242,14 +223,14 @@ export class Help {
         }
         return result;
     }
-    static Merge<T>(base: T, update: any ): T {
+    static merge<T>(base: T, update: any ): T {
         for (let i in update) {
             base[i] = update[i];
         }
         return base;
     }
 
-    static DefaultWindowLocation(gameState: GameState, scale: Point) {
+    static defaultWindowLocation(gameState: GameState, scale: Point) {
 
         switch (gameState) {
             case GameState.Playing:
@@ -258,8 +239,8 @@ export class Help {
                 let x = 0;
                 let y = 0;
                 if (SonicManager.instance.sonicLevel && SonicManager.instance.sonicLevel.StartPositions && SonicManager.instance.sonicLevel.StartPositions[0]) {
-                    x = SonicManager.instance.sonicLevel.StartPositions[0].X - 128 * scale.X;
-                    y = SonicManager.instance.sonicLevel.StartPositions[0].Y - 128 * scale.Y;
+                    x = SonicManager.instance.sonicLevel.StartPositions[0].x - 128 * scale.x;
+                    y = SonicManager.instance.sonicLevel.StartPositions[0].y - 128 * scale.y;
                 }
                 return new IntersectingRectangle(x, y, window.innerWidth, window.innerHeight);
         }

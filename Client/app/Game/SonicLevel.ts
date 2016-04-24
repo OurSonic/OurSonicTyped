@@ -44,7 +44,7 @@ export class SonicLevel {
         this.LevelWidth = 0;
         this.LevelHeight = 0;
     }
-    public GetChunkAt(x: number, y: number): TileChunk {
+    public getChunkAt(x: number, y: number): TileChunk {
         return this.TileChunks[this.ChunkMap[x][y]];
     }
     public ClearCache(): void {

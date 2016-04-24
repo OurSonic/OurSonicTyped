@@ -10,7 +10,7 @@ import {LevelObjectPieceLayout } from "./LevelObjectPieceLayout";
 import {LevelObjectPieceLayoutPiece} from "./LevelObjectPieceLayoutPiece";
 
 export class ObjectManager {
-    public static broken = Help.LoadSprite("assets/sprites/broken.png", (e) => {
+    public static broken = Help.loadSprite("assets/sprites/broken.png", (e) => {
 
     });
     private sonicManager: SonicManager;
@@ -21,7 +21,7 @@ export class ObjectManager {
 
     }
     public static ExtendObject(d: LevelObjectData): LevelObject {
-        let obj: LevelObject = Help.Merge(new LevelObject(d.key), {
+        let obj: LevelObject = Help.merge(new LevelObject(d.key), {
             CollideScript: d.collideScript,
             HurtScript: d.hurtScript,
             InitScript: d.initScript,
@@ -31,11 +31,11 @@ export class ObjectManager {
         obj.Assets = new Array<LevelObjectAsset>();
         for (let i: number = 0; i < d.assets.length; i++) {
             let asset = d.assets[i];
-            let levelObjectAsset = Help.Merge(new LevelObjectAsset(asset.name), { name: asset.name });
+            let levelObjectAsset = Help.merge(new LevelObjectAsset(asset.name), { name: asset.name });
             levelObjectAsset.frames = new Array<LevelObjectAssetFrame>();
             for (let index: number = 0; index < asset.frames.length; index++) {
                 let fr = asset.frames[index];
-                levelObjectAsset.frames[index] = Help.Merge(new LevelObjectAssetFrame(fr.name), {
+                levelObjectAsset.frames[index] = Help.merge(new LevelObjectAssetFrame(fr.name), {
                     offsetX: fr.offsetX,
                     width: fr.width,
                     transparentColor: fr.transparentColor,
@@ -57,7 +57,7 @@ export class ObjectManager {
         obj.PieceLayouts = new Array<LevelObjectPieceLayout>();
         for (let index: number = 0; index < d.pieceLayouts.length; index++) {
             let pl = d.pieceLayouts[index];
-            obj.PieceLayouts[index] = Help.Merge(new LevelObjectPieceLayout(pl.name), {
+            obj.PieceLayouts[index] = Help.merge(new LevelObjectPieceLayout(pl.name), {
                 height: pl.height,
                 width: pl.width
             });
@@ -69,7 +69,7 @@ export class ObjectManager {
         obj.Projectiles = new Array<LevelObjectProjectile>();
         for (let index: number = 0; index < d.projectiles.length; index++) {
             let proj = d.projectiles[index];
-            proj = Help.Merge(new LevelObjectProjectile(proj.name), {
+            proj = Help.merge(new LevelObjectProjectile(proj.name), {
                 x: proj.x,
                 y: proj.y,
                 xsp: proj.xsp,

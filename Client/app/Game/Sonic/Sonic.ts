@@ -1,76 +1,78 @@
-﻿import {Rectangle, Point, IntersectingRectangle } from "../../Common/Utils";
-import {SensorManager, SensorM } from "./SensorManager";
-import {SonicLevel, } from "../SonicLevel";
-import {RotationMode } from "../../Common/Enums";
-import {SonicManager } from "../SonicManager";
+﻿import {Rectangle, Point, IntersectingRectangle} from "../../Common/Utils";
+import {SensorManager, SensorM} from "./SensorManager";
+import {SonicLevel,} from "../SonicLevel";
+import {RotationMode} from "../../Common/Enums";
+import {SonicManager} from "../SonicManager";
 import {Help} from "../../Common/Help";
-import {Ring } from "../Level/Ring";
-import {SonicConstants } from "./SonicConstants";
+import {Ring} from "../Level/Ring";
+import {SonicConstants} from "./SonicConstants";
 
 export class Sonic {
-    public myRec: Rectangle;
-    public obtainedRing: { [key: number]: boolean } = {};
-    private oldSign: number;
-    private physicsVariables: SonicConstants;
-    private runningTick: number;
+    public myRec:Rectangle;
+    public obtainedRing:{ [key:number]:boolean } = {};
+    private oldSign:number;
+    private physicsVariables:SonicConstants;
+    private runningTick:number;
 
-    public SensorManager: SensorManager;
-    public sonicLastHitTick: number;
-    private sonicLevel: SonicLevel;
+    public sensorManager:SensorManager;
+    public sonicLastHitTick:number;
+    private sonicLevel:SonicLevel;
 
-    public watcher: Watcher;
-    public ticking: boolean=false;
-    public x: number = 0;
-    public y: number = 0;
-    public rings: number = 0;
-    public debugging: boolean=false;
-    public jumping: boolean = false;
-    public crouching: boolean = false;
-    public holdingLeft: boolean = false;
-    public holdingRight: boolean = false;
-    public holdingUp: boolean = false;
-    public xsp: number = 0;
-    public ysp: number = 0;
-    public gsp: number = 0;
-    public rolling: boolean = false;
-    public inAir: boolean = false;
-    public wasInAir: boolean = false;
-    public holdingJump: boolean = false;
-    public justHit: boolean = false;
-    public hLock: number = 0;
-    public mode: RotationMode=RotationMode.Floor;
-    public facing: boolean = false;
-    public breaking: number = 0;
-    public ducking: boolean = false;
-    public spinDash: boolean = false;
-    public spinDashSpeed: number = 0;
-    public angle: number = 0;
-    protected currentlyBall: boolean = false;
-    protected spriteState: string;
-    protected haltSmoke: Point[];
+    public watcher:Watcher;
+    public ticking:boolean = false;
+    public x:number = 0;
+    public y:number = 0;
+    public rings:number = 0;
+    public debugging:boolean = false;
+    public jumping:boolean = false;
+    public crouching:boolean = false;
+    public holdingLeft:boolean = false;
+    public holdingRight:boolean = false;
+    public holdingUp:boolean = false;
+    public xsp:number = 0;
+    public ysp:number = 0;
+    public gsp:number = 0;
+    public rolling:boolean = false;
+    public inAir:boolean = false;
+    public wasInAir:boolean = false;
+    public holdingJump:boolean = false;
+    public justHit:boolean = false;
+    public hLock:number = 0;
+    public mode:RotationMode = RotationMode.Floor;
+    public facing:boolean = false;
+    public breaking:number = 0;
+    public ducking:boolean = false;
+    public spinDash:boolean = false;
+    public spinDashSpeed:number = 0;
+    public angle:number = 0;
+    protected currentlyBall:boolean = false;
+    protected spriteState:string;
+    protected haltSmoke:Point[];
 
-    public wasJumping: boolean;
+    public wasJumping:boolean;
+
     constructor() {
         this.watcher = new Watcher();
         this.physicsVariables = SonicConstants.Sonic();
         let sonicManager = SonicManager.instance;
         this.sonicLevel = sonicManager.sonicLevel;
-        this.x = this.sonicLevel.StartPositions[0].X;
-        this.y = this.sonicLevel.StartPositions[0].Y;
-        this.SensorManager = new SensorManager();
+        this.x = this.sonicLevel.StartPositions[0].x;
+        this.y = this.sonicLevel.StartPositions[0].y;
+        this.sensorManager = new SensorManager();
         this.haltSmoke = new Array<Point>();
         this.rings = 7;
-        this.SensorManager.CreateVerticalSensor("a", -9, 0, 36, "#F202F2");
-        this.SensorManager.CreateVerticalSensor("b", 9, 0, 36, "#02C2F2");
-        this.SensorManager.CreateVerticalSensor("c", -9, 0, -20, "#2D2C21");
-        this.SensorManager.CreateVerticalSensor("d", 9, 0, -20, "#C24222");
-        this.SensorManager.CreateHorizontalSensor("m1", 4, 0, -12, "#212C2E");
-        this.SensorManager.CreateHorizontalSensor("m2", 4, 0, 13, "#22Ffc1");
+        this.sensorManager.createVerticalSensor("a", -9, 0, 36, "#F202F2");
+        this.sensorManager.createVerticalSensor("b", 9, 0, 36, "#02C2F2");
+        this.sensorManager.createVerticalSensor("c", -9, 0, -20, "#2D2C21");
+        this.sensorManager.createVerticalSensor("d", 9, 0, -20, "#C24222");
+        this.sensorManager.createHorizontalSensor("m1", 4, 0, -12, "#212C2E");
+        this.sensorManager.createHorizontalSensor("m2", 4, 0, 13, "#22Ffc1");
         this.spriteState = "normal";
         this.myRec = new Rectangle(0, 0, 0, 0);
         this.sonicLastHitTick = -100000;
     }
-    public UpdateMode(): void {
+
+    public updateMode():void {
         if (this.angle <= 0x22 || this.angle >= 0xDE)
             this.mode = RotationMode.Floor;
         else if (this.angle > 0x22 && this.angle < 0x59)
@@ -79,16 +81,17 @@ export class Sonic {
             this.mode = RotationMode.Ceiling;
         else if (this.angle > 0xA1 && this.angle < 0xDE)
             this.mode = RotationMode.RightWall;
-        this.myRec.X = (this.x - 10) | 0;
-        this.myRec.Y = (this.y - 20) | 0;
+        this.myRec.x = (this.x - 10) | 0;
+        this.myRec.y = (this.y - 20) | 0;
         this.myRec.Width = 10 * 2;
         this.myRec.Height = 20 * 2;
         if (this.inAir)
             this.mode = RotationMode.Floor;
     }
-    public Tick(sonicLevel: SonicLevel): void {
+
+    public tick(sonicLevel:SonicLevel):void {
         if (this.debugging) {
-            let debugSpeed = this.watcher.Multiply(15);
+            let debugSpeed = this.watcher.Multiply(1);
             if (this.holdingRight)
                 this.x += debugSpeed;
             if (this.holdingLeft)
@@ -97,11 +100,13 @@ export class Sonic {
                 this.y += debugSpeed;
             if (this.holdingUp)
                 this.y -= debugSpeed;
+
+            this.holdingRight=this.holdingLeft=this.crouching=this.holdingUp=false;
             this.x = ((sonicLevel.LevelWidth * 128) + (this.x)) % (sonicLevel.LevelWidth * 128);
             this.y = ((sonicLevel.LevelHeight * 128) + (this.y)) % (sonicLevel.LevelHeight * 128);
             return
         }
-        this.UpdateMode();
+        this.updateMode();
         if (this.hLock > 0) {
             this.hLock--;
             this.holdingRight = false;
@@ -114,191 +119,192 @@ export class Sonic {
                     this.angle = 0xff;
             }
         }
-        this.EffectPhysics();
-        this.CheckCollisionWithRings();
-        this.UpdateSprite();
-        this.SensorManager.Check(this);
-        let sensorM1 = this.SensorManager.GetResult("m1");
-        let sensorM2 = this.SensorManager.GetResult("m2");
-        let best = this.GetBestSensor(sensorM1, sensorM2, this.mode);
+        this.effectPhysics();
+        this.checkCollisionWithRings();
+        this.updateSprite();
+        this.sensorManager.check(this);
+        let sensorM1 = this.sensorManager.getResult("m1");
+        let sensorM2 = this.sensorManager.getResult("m2");
+        let best = this.getBestSensor(sensorM1, sensorM2, this.mode);
         if (best != null) {
             switch (this.mode) {
                 case RotationMode.Floor:
-                    this.x = (best.Value + (sensorM2 != null && sensorM1 != null && (sensorM1.Value == sensorM2.Value) ? 12 : (best.Letter == "m1" ? 12 : -12)));
+                    this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? 12 : -12)));
                     this.gsp = 0;
                     if (this.inAir)
                         this.xsp = 0;
                     break;
                 case RotationMode.LeftWall:
-                    this.y = (best.Value + (sensorM2 != null && sensorM1 != null && (sensorM1.Value == sensorM2.Value) ? 12 : (best.Letter == "m1" ? 12 : -12)));
+                    this.y = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? 12 : -12)));
                     if (this.inAir)
                         this.xsp = 0;
                     break;
                 case RotationMode.Ceiling:
-                    this.x = (best.Value + (sensorM2 != null && sensorM1 != null && (sensorM1.Value == sensorM2.Value) ? 12 : (best.Letter == "m1" ? -12 : 12)));
+                    this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? -12 : 12)));
                     this.gsp = 0;
                     if (this.inAir)
                         this.xsp = 0;
                     break;
                 case RotationMode.RightWall:
-                    this.y = (best.Value + (sensorM2 != null && sensorM1 != null && (sensorM1.Value == sensorM2.Value) ? 12 : (best.Letter == "m1" ? -12 : 12)));
+                    this.y = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? -12 : 12)));
                     this.gsp = 0;
                     if (this.inAir)
                         this.xsp = 0;
                     break;
             }
         }
-        this.SensorManager.Check(this);
-        let sensorA = this.SensorManager.GetResult("a");
-        let sensorB = this.SensorManager.GetResult("b");
-        let fy: number;
-        let fx: number;
-        let hSize = this.GetHalfImageSize();
+        this.sensorManager.check(this);
+        let sensorA = this.sensorManager.getResult("a");
+        let sensorB = this.sensorManager.getResult("b");
+        let fy:number;
+        let fx:number;
+        let hSize = this.getHalfImageSize();
         if (!this.inAir) {
-            best = this.GetBestSensor(sensorA, sensorB, this.mode);
+            best = this.getBestSensor(sensorA, sensorB, this.mode);
             if (best == null)
                 this.inAir = true;
             else {
                 this.justHit = false;
                 switch (this.mode) {
                     case RotationMode.Floor:
-                        best.Chosen = true;
-                        this.angle = best.Angle;
-                        this.y = fy = best.Value - hSize.Y;
+                        best.chosen = true;
+                        this.angle = best.angle;
+                        this.y = fy = best.value - hSize.y;
                         break;
                     case RotationMode.LeftWall:
-                        best.Chosen = true;
-                        this.angle = best.Angle;
-                        this.x = fx = best.Value + hSize.X;
+                        best.chosen = true;
+                        this.angle = best.angle;
+                        this.x = fx = best.value + hSize.x;
                         break;
                     case RotationMode.Ceiling:
-                        best.Chosen = true;
-                        this.angle = best.Angle;
-                        this.y = fy = best.Value + hSize.Y;
+                        best.chosen = true;
+                        this.angle = best.angle;
+                        this.y = fy = best.value + hSize.y;
                         break;
                     case RotationMode.RightWall:
-                        best.Chosen = true;
-                        this.angle = best.Angle;
-                        this.x = fx = best.Value - hSize.X;
+                        best.chosen = true;
+                        this.angle = best.angle;
+                        this.x = fx = best.value - hSize.x;
                         break;
                 }
             }
-            this.UpdateMode();
+            this.updateMode();
         }
         else {
             if (sensorA == null && sensorB == null)
                 this.inAir = true;
             else {
-                if ((sensorA != null && sensorA.Value >= 0) && (sensorB != null && sensorB.Value >= 0)) {
-                    if (sensorA.Value < sensorB.Value) {
-                        if (this.y + (20) >= sensorA.Value) {
-                            this.angle = sensorA.Angle;
-                            this.y = fy = sensorA.Value - hSize.Y;
+                if ((sensorA != null && sensorA.value >= 0) && (sensorB != null && sensorB.value >= 0)) {
+                    if (sensorA.value < sensorB.value) {
+                        if (this.y + (20) >= sensorA.value) {
+                            this.angle = sensorA.angle;
+                            this.y = fy = sensorA.value - hSize.y;
                             this.rolling = this.currentlyBall = false;
                             this.inAir = false;
                         }
                     }
                     else {
-                        if (sensorB.Value > -1) {
-                            if (this.y + (20) >= sensorB.Value) {
-                                this.angle = sensorB.Angle;
-                                this.y = fy = sensorB.Value - hSize.Y;
+                        if (sensorB.value > -1) {
+                            if (this.y + (20) >= sensorB.value) {
+                                this.angle = sensorB.angle;
+                                this.y = fy = sensorB.value - hSize.y;
                                 this.rolling = this.currentlyBall = false;
                                 this.inAir = false;
                             }
                         }
                     }
                 }
-                else if ((sensorA != null) && sensorA.Value > -1) {
-                    if (this.y + (20) >= sensorA.Value) {
-                        this.angle = sensorA.Angle;
-                        this.y = fy = sensorA.Value - hSize.Y;
+                else if ((sensorA != null) && sensorA.value > -1) {
+                    if (this.y + (20) >= sensorA.value) {
+                        this.angle = sensorA.angle;
+                        this.y = fy = sensorA.value - hSize.y;
                         this.rolling = this.currentlyBall = false;
                         this.inAir = false;
                     }
                 }
-                else if (sensorB != null && sensorB.Value > -1) {
-                    if (this.y + (20) >= sensorB.Value) {
-                        this.angle = sensorB.Angle;
-                        this.y = fy = sensorB.Value - hSize.Y;
+                else if (sensorB != null && sensorB.value > -1) {
+                    if (this.y + (20) >= sensorB.value) {
+                        this.angle = sensorB.angle;
+                        this.y = fy = sensorB.value - hSize.y;
                         this.rolling = this.currentlyBall = false;
                         this.inAir = false;
                     }
                 }
             }
-            this.UpdateMode();
+            this.updateMode();
             let cur = SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
             let __h = cur.height / 2;
-            this.SensorManager.Check(this);
-            let sensorC = this.SensorManager.GetResult("c");
-            let sensorD = this.SensorManager.GetResult("d");
+            this.sensorManager.check(this);
+            let sensorC = this.sensorManager.getResult("c");
+            let sensorD = this.sensorManager.getResult("d");
             if ((sensorC == null && sensorD == null)) {
 
             }
             else {
-                if (sensorD != null && (sensorC != null) && (sensorC.Value >= 0 && sensorD.Value >= 0)) {
-                    if (sensorC.Value < sensorD.Value) {
-                        if (this.y + (__h) >= sensorC.Value) {
+                if (sensorD != null && (sensorC != null) && (sensorC.value >= 0 && sensorD.value >= 0)) {
+                    if (sensorC.value < sensorD.value) {
+                        if (this.y + (__h) >= sensorC.value) {
                             if (this.ysp < 0) {
-                                if (sensorC.Angle > 0x40 && sensorC.Angle < 0xC0) {
-                                    this.angle = sensorC.Angle;
+                                if (sensorC.angle > 0x40 && sensorC.angle < 0xC0) {
+                                    this.angle = sensorC.angle;
                                     this.gsp = this.ysp;
                                     this.inAir = false;
                                     this.wasInAir = false;
                                 }
                                 else this.ysp = 0;
-                                this.y = fy = sensorC.Value + __h;
+                                this.y = fy = sensorC.value + __h;
                             }
                         }
                     }
                     else {
-                        if (this.y + (__h) >= sensorD.Value) {
+                        if (this.y + (__h) >= sensorD.value) {
                             if (this.ysp < 0) {
-                                if (sensorD.Angle > 0x40 && sensorD.Angle < 0xC0) {
-                                    this.angle = sensorD.Angle;
+                                if (sensorD.angle > 0x40 && sensorD.angle < 0xC0) {
+                                    this.angle = sensorD.angle;
                                     this.gsp = -this.ysp;
                                     this.inAir = false;
                                     this.wasInAir = false;
                                 }
                                 else this.ysp = 0;
-                                this.y = fy = sensorD.Value + __h;
+                                this.y = fy = sensorD.value + __h;
                             }
                         }
                     }
                 }
-                else if (sensorC != null && sensorC.Value > -1) {
-                    if (this.y + (__h) >= sensorC.Value) {
+                else if (sensorC != null && sensorC.value > -1) {
+                    if (this.y + (__h) >= sensorC.value) {
                         if (this.ysp < 0) {
-                            if (sensorC.Angle > 0x40 && sensorC.Angle < 0xC0) {
-                                this.angle = sensorC.Angle;
+                            if (sensorC.angle > 0x40 && sensorC.angle < 0xC0) {
+                                this.angle = sensorC.angle;
                                 this.gsp = this.ysp;
                                 this.inAir = false;
                                 this.wasInAir = false;
                             }
                             else this.ysp = 0;
-                            this.y = fy = sensorC.Value + __h;
+                            this.y = fy = sensorC.value + __h;
                         }
                     }
                 }
-                else if (sensorD != null && sensorD.Value > -1) {
-                    if (this.y + (__h) >= sensorD.Value) {
+                else if (sensorD != null && sensorD.value > -1) {
+                    if (this.y + (__h) >= sensorD.value) {
                         if (this.ysp < 0) {
-                            if (sensorD.Angle > 0x40 && sensorD.Angle < 0xC0) {
-                                this.angle = sensorD.Angle;
+                            if (sensorD.angle > 0x40 && sensorD.angle < 0xC0) {
+                                this.angle = sensorD.angle;
                                 this.gsp = -this.ysp;
                                 this.inAir = false;
                                 this.wasInAir = false;
                             }
                             else this.ysp = 0;
-                            this.y = fy = sensorD.Value + __h;
+                            this.y = fy = sensorD.value + __h;
                         }
                     }
                 }
-                this.UpdateMode();
+                this.updateMode();
             }
         }
     }
-    private GetBestSensor(sensor1: SensorM, sensor2: SensorM, mode: RotationMode): SensorM {
+
+    private getBestSensor(sensor1:SensorM, sensor2:SensorM, mode:RotationMode):SensorM {
         if (sensor1 == null && sensor2 == null)
             return null;
         if (sensor1 == null)
@@ -307,17 +313,18 @@ export class Sonic {
             return sensor1;
         switch (mode) {
             case RotationMode.Floor:
-                return sensor1.Value < sensor2.Value ? sensor1 : sensor2;
+                return sensor1.value < sensor2.value ? sensor1 : sensor2;
             case RotationMode.LeftWall:
-                return sensor1.Value > sensor2.Value ? sensor1 : sensor2;
+                return sensor1.value > sensor2.value ? sensor1 : sensor2;
             case RotationMode.Ceiling:
-                return sensor1.Value > sensor2.Value ? sensor1 : sensor2;
+                return sensor1.value > sensor2.value ? sensor1 : sensor2;
             case RotationMode.RightWall:
-                return sensor1.Value < sensor2.Value ? sensor1 : sensor2;
+                return sensor1.value < sensor2.value ? sensor1 : sensor2;
         }
         return null;
     }
-    public Invulnerable(): boolean {
+
+    public invulnerable():boolean {
         let mc = SonicManager.instance.drawTickCount - this.sonicLastHitTick;
         if (mc < 120) {
             if (mc % 8 < 4)
@@ -325,17 +332,21 @@ export class Sonic {
         }
         return false;
     }
-    private halfSize: Point = new Point(20, 20);
-    private GetHalfImageSize(): Point {
+
+    private halfSize:Point = new Point(20, 20);
+
+    private getHalfImageSize():Point {
         return this.halfSize;
     }
-    private offsetFromImage: Point = new Point(0, 0);
-    private GetOffsetFromImage(): Point {
+
+    private offsetFromImage:Point = new Point(0, 0);
+
+    private getOffsetFromImage():Point {
         let cur = SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
         let xOffset = 0;
         let yOffset = 0;
         if (cur.height != 40) {
-            let n: number;
+            let n:number;
             switch (this.mode) {
                 case RotationMode.Floor:
                     n = 0;
@@ -355,11 +366,12 @@ export class Sonic {
                     break;
             }
         }
-        this.offsetFromImage.X = xOffset;
-        this.offsetFromImage.Y = yOffset;
+        this.offsetFromImage.x = xOffset;
+        this.offsetFromImage.y = yOffset;
         return this.offsetFromImage;
     }
-    private UpdateSprite(): void {
+
+    private updateSprite():void {
         let absgsp = Math.abs(this.gsp);
         let word = this.spriteState.substring(0, this.spriteState.length - 1);
         let j = parseInt(this.spriteState.substring(this.spriteState.length - 1, this.spriteState.length));
@@ -452,17 +464,18 @@ export class Sonic {
                 this.spriteState = "fastrunning" + ((j + 1) % 4);
         }
     }
-    private EffectPhysics(): void {
+
+    private effectPhysics():void {
         this.watcher.Tick();
         let physics = this.physicsVariables;
-        let max = physics.TopSpeed;
+        let max = physics.topSpeed;
         if (!this.jumping) {
             if (!this.inAir && this.wasJumping)
                 this.wasJumping = false;
         }
         if (this.inAir && !this.wasInAir) {
             this.wasInAir = true;
-            let offset = this.GetOffsetFromImage();
+            let offset = this.getOffsetFromImage();
         }
         if (!this.inAir && this.wasInAir) {
             this.wasInAir = false;
@@ -479,21 +492,21 @@ export class Sonic {
         }
         if (!this.inAir && !this.rolling && !this.spinDash) {
             if (!this.holdingLeft && !this.holdingRight && !this.justHit) {
-                this.gsp -= (Math.min(Math.abs(this.gsp), this.watcher.Multiply(physics.Frc)) * (this.gsp > 0 ? 1 : -1));
+                this.gsp -= (Math.min(Math.abs(this.gsp), this.watcher.Multiply(physics.frc)) * (this.gsp > 0 ? 1 : -1));
             }
-            this.oldSign = Help.Sign(this.gsp);
-            this.gsp += this.watcher.Multiply(physics.Slp) * -Help.Sin(this.angle);
-            if (this.oldSign != Help.Sign(this.gsp) && this.oldSign != 0)
+            this.oldSign = Help.sign(this.gsp);
+            this.gsp += this.watcher.Multiply(physics.slp) * -Help.sin(this.angle);
+            if (this.oldSign != Help.sign(this.gsp) && this.oldSign != 0)
                 this.hLock = 30;
             if (this.holdingRight && !this.holdingLeft && !this.justHit) {
                 this.facing = true;
                 if (this.gsp >= 0) {
-                    this.gsp += this.watcher.Multiply(physics.Acc);
+                    this.gsp += this.watcher.Multiply(physics.acc);
                     if (this.gsp > max)
                         this.gsp = max;
                 }
                 else {
-                    this.gsp += this.watcher.Multiply(physics.Dec);
+                    this.gsp += this.watcher.Multiply(physics.dec);
                     if (Math.abs(this.gsp) > 4.5) {
                         this.facing = false;
                         this.breaking = 1;
@@ -504,12 +517,12 @@ export class Sonic {
             if (this.holdingLeft && !this.holdingRight && !this.justHit) {
                 this.facing = false;
                 if (this.gsp <= 0) {
-                    this.gsp -= this.watcher.Multiply(physics.Acc);
+                    this.gsp -= this.watcher.Multiply(physics.acc);
                     if (this.gsp < -max)
                         this.gsp = -max;
                 }
                 else {
-                    this.gsp -= this.watcher.Multiply(physics.Dec);
+                    this.gsp -= this.watcher.Multiply(physics.dec);
                     if (Math.abs(this.gsp) > 4.5) {
                         this.facing = true;
                         this.breaking = -1;
@@ -528,7 +541,7 @@ export class Sonic {
         }
         else {
             if (this.spinDash) {
-                this.gsp = (8 + Help.Floor(this.spinDashSpeed) / 2) * (this.facing ? 1 : -1);
+                this.gsp = (8 + Help.floor(this.spinDashSpeed) / 2) * (this.facing ? 1 : -1);
                 this.spinDash = false;
                 this.rolling = true;
                 this.currentlyBall = true;
@@ -538,26 +551,26 @@ export class Sonic {
             if (this.holdingLeft && !this.justHit) {
                 if (this.gsp > 0) {
                     if (this.rolling)
-                        this.gsp = (Help.Max(0, this.gsp - this.watcher.Multiply(physics.Rdec)));
+                        this.gsp = (Help.max(0, this.gsp - this.watcher.Multiply(physics.rdec)));
                 }
             }
             if (this.holdingRight && !this.justHit) {
                 if (this.gsp < 0) {
                     if (this.rolling)
-                        this.gsp = (Help.Min(0, this.gsp + this.watcher.Multiply(physics.Rdec)));
+                        this.gsp = (Help.min(0, this.gsp + this.watcher.Multiply(physics.rdec)));
                 }
             }
-            this.gsp -= (Math.min(Math.abs(this.gsp), this.watcher.Multiply(physics.Rfrc)) * (this.gsp > 0 ? 1 : -1));
-            this.oldSign = Help.Sign(this.gsp);
-            let ang = Help.Sin(this.angle);
+            this.gsp -= (Math.min(Math.abs(this.gsp), this.watcher.Multiply(physics.rfrc)) * (this.gsp > 0 ? 1 : -1));
+            this.oldSign = Help.sign(this.gsp);
+            let ang = Help.sin(this.angle);
             if ((ang > 0) == (this.gsp > 0))
-                this.gsp += this.watcher.Multiply(-physics.SlpRollingUp) * ang;
-            else this.gsp += this.watcher.Multiply(-physics.SlpRollingDown) * ang;
+                this.gsp += this.watcher.Multiply(-physics.slpRollingUp) * ang;
+            else this.gsp += this.watcher.Multiply(-physics.slpRollingDown) * ang;
             if (this.gsp > max * 2.5)
                 this.gsp = max * 2.5;
             if (this.gsp < -max * 2.5)
                 this.gsp = -max * 2.5;
-            if (this.oldSign != Help.Sign(this.gsp) && this.oldSign != 0)
+            if (this.oldSign != Help.sign(this.gsp) && this.oldSign != 0)
                 this.hLock = 30;
             if (Math.abs(this.gsp) < 0.53125) {
                 this.rolling = false;
@@ -568,18 +581,18 @@ export class Sonic {
             if (this.holdingRight && !this.holdingLeft && !this.justHit) {
                 this.facing = true;
                 if (this.xsp >= 0) {
-                    this.xsp += this.watcher.Multiply(physics.Air);
+                    this.xsp += this.watcher.Multiply(physics.air);
                     if (this.xsp > max)
                         this.xsp = max;
                 }
                 else {
-                    this.xsp += this.watcher.Multiply(physics.Air);
+                    this.xsp += this.watcher.Multiply(physics.air);
                 }
             }
             if (this.holdingLeft && !this.holdingRight && !this.justHit) {
                 this.facing = false;
                 if (this.xsp <= 0) {
-                    this.xsp -= this.watcher.Multiply(physics.Air);
+                    this.xsp -= this.watcher.Multiply(physics.air);
                     if (this.xsp < -max)
                         this.xsp = -max;
                 }
@@ -594,7 +607,7 @@ export class Sonic {
                 else {
 
                 }
-            this.ysp += this.justHit ? 0.1875 : physics.Grv;
+            this.ysp += this.justHit ? 0.1875 : physics.grv;
             if (this.ysp < 0 && this.ysp > -4) {
                 if (Math.abs(this.xsp) > 0.125)
                     this.xsp *= 0.96875;
@@ -617,8 +630,8 @@ export class Sonic {
             else {
                 this.inAir = true;
                 this.currentlyBall = true;
-                this.xsp = physics.Jmp * Help.Sin(this.angle) + this.gsp * Help.Cos(this.angle);
-                this.ysp = physics.Jmp * Help.Cos(this.angle);
+                this.xsp = physics.jmp * Help.sin(this.angle) + this.gsp * Help.cos(this.angle);
+                this.ysp = physics.jmp * Help.cos(this.angle);
                 if (Math.abs(this.xsp) < .17)
                     this.xsp = 0;
             }
@@ -626,8 +639,8 @@ export class Sonic {
         if (!this.inAir) {
             if (this.spinDash)
                 this.gsp = 0;
-            this.xsp = this.gsp * Help.Cos(this.angle);
-            this.ysp = this.gsp * -Help.Sin(this.angle);
+            this.xsp = this.gsp * Help.cos(this.angle);
+            this.ysp = this.gsp * -Help.sin(this.angle);
             if (Math.abs(this.gsp) < 2.5 && this.mode != RotationMode.Floor) {
                 if (this.mode == RotationMode.RightWall)
                     this.x += 0;
@@ -636,7 +649,7 @@ export class Sonic {
                 else if (this.mode == RotationMode.Ceiling)
                     this.y += 0;
                 let oldMode = this.mode;
-                this.UpdateMode();
+                this.updateMode();
                 this.mode = RotationMode.Floor;
                 this.hLock = 30;
                 this.inAir = true;
@@ -653,19 +666,20 @@ export class Sonic {
         this.x = ((this.sonicLevel.LevelWidth * 128) + (this.x + this.xsp)) % (this.sonicLevel.LevelWidth * 128);
         this.y = ((this.sonicLevel.LevelHeight * 128) + (this.y + this.ysp)) % (this.sonicLevel.LevelHeight * 128);
     }
-    public Draw(canvas: CanvasRenderingContext2D): void {
-        let fx = (this.x);
-        let fy = (this.y);
-        if (this.Invulnerable())
+
+    public draw(canvas:CanvasRenderingContext2D):void {
+        let fx = (this.x)|0;
+        let fy = (this.y)|0;
+        if (this.invulnerable())
             return
         let cur = SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
         if (cur == null) {
         }
-        if (Help.IsLoaded(cur)) {
+        if (Help.isLoaded(cur)) {
             canvas.save();
-            let offset = this.GetOffsetFromImage();
-            canvas.translate((fx - SonicManager.instance.windowLocation.X + offset.X),
-                ((fy - SonicManager.instance.windowLocation.Y + offset.Y)));
+            let offset = this.getOffsetFromImage();
+            canvas.translate((fx - SonicManager.instance.windowLocation.x + offset.x),
+                ((fy - SonicManager.instance.windowLocation.y + offset.y)));
             if (SonicManager.instance.showHeightMap) {
                 canvas.save();
                 let mul = 6;
@@ -689,62 +703,64 @@ export class Sonic {
             if (!this.facing) {
                 canvas.scale(-1, 1);
                 if (!this.currentlyBall && !this.spinDash)
-                    canvas.rotate(-Help.FixAngle(this.angle));
+                    canvas.rotate(-Help.fixAngle(this.angle));
                 canvas.drawImage(cur, -cur.width / 2, -cur.height / 2);
                 if (this.spinDash) {
                     canvas.drawImage(SonicManager.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager.instance.drawTickCount % 14) / 2 | 0))],
                         (-cur.width / 2) - 19,
-                        -cur.height / 2 + (offset.Y) - 6,
+                        -cur.height / 2 + (offset.y) - 6,
                         cur.width,
                         cur.height);
                 }
             }
             else {
                 if (!this.currentlyBall && !this.spinDash)
-                    canvas.rotate(Help.FixAngle(this.angle));
+                    canvas.rotate(Help.fixAngle(this.angle));
                 canvas.drawImage(cur, -cur.width / 2, -cur.height / 2);
                 if (this.spinDash) {
                     canvas.drawImage(SonicManager.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager.instance.drawTickCount % 14) / 2 | 0))],
                         (-cur.width / 2) - 19,
-                        -cur.height / 2 + (offset.Y) - 6,
+                        -cur.height / 2 + (offset.y) - 6,
                         cur.width,
                         cur.height);
                 }
             }
             canvas.restore();
             if (SonicManager.instance.showHeightMap)
-                this.SensorManager.Draw(canvas, this);
+                this.sensorManager.draw(canvas, this);
             for (let i = 0; i < this.haltSmoke.length; i++) {
                 let lo = this.haltSmoke[i];
                 canvas.drawImage(SonicManager.instance.spriteCache.SonicSprites[("haltsmoke" + ((SonicManager.instance.drawTickCount % (4 * 6)) / 6 | 0))],
-                    ((lo.X - SonicManager.instance.windowLocation.X - 15)),
-                    ((lo.Y + 12 - SonicManager.instance.windowLocation.Y + offset.Y)));
+                    ((lo.x - SonicManager.instance.windowLocation.x - 15)),
+                    ((lo.y + 12 - SonicManager.instance.windowLocation.y + offset.y)));
                 if ((((SonicManager.instance.drawTickCount + 6) % (4 * 6)) / 6 | 0) == 0) {
-                     this.haltSmoke.splice(i, 1);
+                    this.haltSmoke.splice(i, 1);
                 }
             }
         }
     }
-    public DrawUI(canvas: CanvasRenderingContext2D, pos: Point): void {
+
+    public DrawUI(canvas:CanvasRenderingContext2D, pos:Point):void {
         canvas.save();
         {
             if (canvas.font != "13pt Arial bold")
                 canvas.font = "13pt Arial bold";
             canvas.fillStyle = "White";
-            canvas.fillText("Rings: " + this.rings, pos.X + 90, pos.Y + 45);
-            canvas.fillText("Angle: " + this.angle.toString(16), pos.X + 90, pos.Y + 75);
-            canvas.fillText("Position: " + (this.x) + ", " + (this.y), pos.X + 90, pos.Y + 105);
-            canvas.fillText("Speed: g: " + this.gsp.toFixed(3) + " x:" + this.xsp.toFixed(3) + " y:" + this.ysp.toFixed(3), pos.X + 90, pos.Y + 135);
-            canvas.fillText("Mode: " + this.mode.toString(), pos.X + 90, pos.Y + 165);
-            canvas.fillText("Multiplier: " + this.watcher.mult, pos.X + 90, pos.Y + 195);
+            canvas.fillText("Rings: " + this.rings, pos.x + 90, pos.y + 45);
+            canvas.fillText("Angle: " + this.angle.toString(16), pos.x + 90, pos.y + 75);
+            canvas.fillText("Position: " + (this.x) + ", " + (this.y), pos.x + 90, pos.y + 105);
+            canvas.fillText("Speed: g: " + this.gsp.toFixed(3) + " x:" + this.xsp.toFixed(3) + " y:" + this.ysp.toFixed(3), pos.x + 90, pos.y + 135);
+            canvas.fillText("Mode: " + (<number>this.mode).toString(), pos.x + 90, pos.y + 165);
+            canvas.fillText("Multiplier: " + this.watcher.mult, pos.x + 90, pos.y + 195);
             if (this.inAir)
-                canvas.fillText("Air ", pos.X + 220, pos.Y + 45);
+                canvas.fillText("air ", pos.x + 220, pos.y + 45);
             if (this.hLock > 0)
-                canvas.fillText("HLock: " + this.hLock, pos.X + 90, pos.Y + 195);
+                canvas.fillText("HLock: " + this.hLock, pos.x + 90, pos.y + 195);
         }
         canvas.restore();
     }
-    public Hit(x: number, y: number): void {
+
+    public Hit(x:number, y:number):void {
         if (SonicManager.instance.drawTickCount - this.sonicLastHitTick < 120)
             return
         this.justHit = true;
@@ -758,8 +774,8 @@ export class Sonic {
         while (t < this.rings) {
             let ring = new Ring(true);
             SonicManager.instance.activeRings.push(ring);
-            ring.X = this.x | 0;
-            ring.Y = this.y - 10 | 0;
+            ring.x = this.x | 0;
+            ring.y = this.y - 10 | 0;
             ring.Ysp = -Math.sin(angle) * speed;
             ring.Xsp = Math.cos(angle) * speed;
             if (n) {
@@ -775,47 +791,60 @@ export class Sonic {
         }
         this.rings = 0;
     }
-    public Debug(): void {
+
+    public Debug():void {
         this.debugging = !this.debugging;
         this.xsp = 0;
         this.gsp = 0;
         this.ysp = 0;
         this.spriteState = "normal";
     }
-    public PressUp(): void {
+
+    public PressUp():void {
         this.holdingUp = true;
     }
-    public ReleaseUp(): void {
+
+    public ReleaseUp():void {
         this.holdingUp = false;
     }
-    public PressCrouch(): void {
+
+    public PressCrouch():void {
         this.crouching = true;
     }
-    public ReleaseCrouch(): void {
+
+    public ReleaseCrouch():void {
         this.crouching = false;
     }
-    public PressLeft(): void {
+
+    public PressLeft():void {
         this.holdingLeft = true;
     }
-    public ReleaseLeft(): void {
+
+    public ReleaseLeft():void {
         this.holdingLeft = false;
     }
-    public PressRight(): void {
+
+    public PressRight():void {
         this.holdingRight = true;
     }
-    public ReleaseRight(): void {
+
+    public ReleaseRight():void {
         this.holdingRight = false;
     }
-    public PressJump(): void {
+
+    public PressJump():void {
         this.jumping = true;
     }
-    public ReleaseJump(): void {
+
+    public ReleaseJump():void {
         this.jumping = false;
     }
-    private objectCollision: Point = new Point(0, 0);
-    public CheckCollisionWithObjects(x: number, y: number, letter: string): boolean {
-        this.objectCollision.X = x;
-        this.objectCollision.Y = y;
+
+    private objectCollision:Point = new Point(0, 0);
+
+    public CheckCollisionWithObjects(x:number, y:number, letter:string):boolean {
+        this.objectCollision.x = x;
+        this.objectCollision.y = y;
         let me = this.objectCollision;
         let levelObjectInfos = SonicManager.instance.inFocusObjects;
         for (let ob of levelObjectInfos) {
@@ -828,48 +857,53 @@ export class Sonic {
         }
         return false;
     }
-    private ringCollisionRect: Rectangle = new Rectangle(0, 0, 0, 0);
-    public CheckCollisionWithRings(): void {
+
+    private ringCollisionRect:Rectangle = new Rectangle(0, 0, 0, 0);
+
+    public checkCollisionWithRings():void {
         let me = this.myRec;
-        this.ringCollisionRect.X = 0;
-        this.ringCollisionRect.Y = 0;
+        this.ringCollisionRect.x = 0;
+        this.ringCollisionRect.y = 0;
         this.ringCollisionRect.Width = 8 * 2;
         this.ringCollisionRect.Height = 8 * 2;
-        let rings: Ring[] = SonicManager.instance.sonicLevel.Rings;
-        for (let index: number = 0; index < rings.length; index++) {
+        let rings:Ring[] = SonicManager.instance.sonicLevel.Rings;
+        for (let index:number = 0; index < rings.length; index++) {
             let ring = rings[index];
             let pos = ring;
             if (this.obtainedRing[index])
                 continue;
-            this.ringCollisionRect.X = pos.X;
-            this.ringCollisionRect.Y = pos.Y;
+            this.ringCollisionRect.x = pos.x;
+            this.ringCollisionRect.y = pos.y;
             if (IntersectingRectangle.IntersectRect(me, this.ringCollisionRect)) {
                 this.rings++;
                 this.obtainedRing[index] = true;
             }
         }
     }
-    public CheckCollisionLine(p0: number, p1: number, p2: number, p3: number): SensorM {
+
+    public CheckCollisionLine(p0:number, p1:number, p2:number, p3:number):SensorM {
         return null;
     }
 }
 export class Watcher {
-    private lastTick: number = 0;
-    public mult: number = 1;
-    public Tick(): void {
+    private lastTick:number = 0;
+    public mult:number = 1;
+
+    public Tick():void {
         if (true || SonicManager.instance.inHaltMode) {
             this.mult = 1;
             return
         }
         let ticks = new Date().getTime();
-        let offset: number = 0;
+        let offset:number = 0;
         if (this.lastTick == 0)
             offset = 16;
         else offset = ticks - this.lastTick;
         this.lastTick = ticks;
         this.mult = (offset / 16) | 0;
     }
-    public Multiply(v: number): number {
+
+    public Multiply(v:number):number {
         return this.mult * v;
     }
 }

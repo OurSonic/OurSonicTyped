@@ -26,7 +26,7 @@ export class TilePaletteAnimationManager {
             tilePaletteAnimation.Tick();
         }
     }
-    public GetCurrentFrame(paletteAnimationIndex: number): TilePaletteAnimationFrame {
+    public getCurrentFrame(paletteAnimationIndex: number): TilePaletteAnimationFrame {
         return this.Animations[paletteAnimationIndex].GetCurrentFrame();
     }
     public GetPaletteAnimation(paletteAnimationIndex: number): TilePaletteAnimation {

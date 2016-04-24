@@ -12,7 +12,7 @@ export class TileAnimationManager {
         this.Animations = {};
         for (let animatedTileIndex: number = 0; animatedTileIndex < this.SonicManager.sonicLevel.TileAnimations.length; animatedTileIndex++) {
             this.Animations[animatedTileIndex] = new TileAnimation(this, this.SonicManager.sonicLevel.TileAnimations[animatedTileIndex]);
-            this.Animations[animatedTileIndex].Init();
+            this.Animations[animatedTileIndex].init();
         }
     }
     public TickAnimatedTiles(): void {
@@ -21,37 +21,33 @@ export class TileAnimationManager {
         for (let animation in this.Animations) {
             if (this.Animations.hasOwnProperty(animation)) {
                 let tilePaletteAnimation = this.Animations[animation];
-                tilePaletteAnimation.Tick();
+                tilePaletteAnimation.tick();
             }
         }
     }
     public ClearCache(): void {
         this.Animations = null;
     }
-    public GetCurrentFrame(tileAnimationIndex: number): TileAnimationFrame {
-        return this.Animations[tileAnimationIndex].GetCurrentFrame();
+    public getCurrentFrame(tileAnimationIndex: number): TileAnimationFrame {
+        return this.Animations[tileAnimationIndex].getCurrentFrame();
     }
 }
 export class TileAnimation {
-    /*[IntrinsicProperty]*/
-    public Manager: TileAnimationManager;
-    /*[IntrinsicProperty]*/
-    public AnimatedTileData: TileAnimationData;
-    /*[IntrinsicProperty]*/
-    public CurrentFrame: number;
-    /*[IntrinsicProperty]*/
-    public Frames: TileAnimationFrame[];
+    public manager: TileAnimationManager;
+    public animatedTileData: TileAnimationData;
+    public currentFrame: number;
+    public frames: TileAnimationFrame[];
     constructor(manager: TileAnimationManager, animatedTileData: TileAnimationData) {
-        this.Manager = manager;
-        this.AnimatedTileData = animatedTileData;
-        this.Frames = new Array<TileAnimationFrame>();
-        this.CurrentFrame = 0;
+        this.manager = manager;
+        this.animatedTileData = animatedTileData;
+        this.frames = new Array<TileAnimationFrame>();
+        this.currentFrame = 0;
     }
-    public GetCurrentFrame(): TileAnimationFrame {
-        return this.Frames[this.CurrentFrame];
+    public getCurrentFrame(): TileAnimationFrame {
+        return this.frames[this.currentFrame];
     }
-    public Tick(): void {
-        let anni = this.AnimatedTileData;
+    public tick(): void {
+        let anni = this.animatedTileData;
         if (anni.LastAnimatedFrame == null) {
             anni.LastAnimatedFrame = 0;
             anni.LastAnimatedIndex = 0;
@@ -59,24 +55,23 @@ export class TileAnimation {
         if (anni.DataFrames[anni.LastAnimatedIndex].Ticks == 0 || (SonicManager.instance.drawTickCount - anni.LastAnimatedFrame) >= ((anni.AutomatedTiming > 0) ? anni.AutomatedTiming : anni.DataFrames[anni.LastAnimatedIndex].Ticks)) {
             anni.LastAnimatedFrame = SonicManager.instance.drawTickCount;
             anni.LastAnimatedIndex = (anni.LastAnimatedIndex + 1) % anni.DataFrames.length;
-            this.CurrentFrame = anni.LastAnimatedIndex;
+            this.currentFrame = anni.LastAnimatedIndex;
         }
     }
-    public Init(): void {
-        for (let index: number = 0; index < this.AnimatedTileData.DataFrames.length; index++) {
-            this.Frames[index] = new TileAnimationFrame(index, this);
+    public init(): void {
+        for (let index: number = 0; index < this.animatedTileData.DataFrames.length; index++) {
+            this.frames[index] = new TileAnimationFrame(index, this);
         }
     }
 }
 export class TileAnimationFrame {
-    public Animation: TileAnimation;
-    /*[IntrinsicProperty]*/
-    public FrameIndex: number;
+    public animation: TileAnimation;
+    public frameIndex: number;
     constructor(frameIndex: number, animation: TileAnimation) {
-        this.Animation = animation;
-        this.FrameIndex = frameIndex;
+        this.animation = animation;
+        this.frameIndex = frameIndex;
     }
-    public FrameData(): TileAnimationDataFrame {
-        return this.Animation.AnimatedTileData.DataFrames[this.FrameIndex];
+    public frameData(): TileAnimationDataFrame {
+        return this.animation.animatedTileData.DataFrames[this.frameIndex];
     }
 }

@@ -3,7 +3,7 @@ import {SonicManager} from "../../SonicManager";
 
 export class TileAnimationData {
 
-       /*   function Animation(name, images) {
+       /*   function animation(name, images) {
     this.images = images;
     this.name = name;
     this.draw = function (canvas, x, y, scale, animationIndex) {

@@ -16,15 +16,15 @@ export class Ring extends Point {
     public Draw(canvas: CanvasRenderingContext2D, pos: Point): void {
         if (this.Active) {
             this.Ysp += 0.09375;
-            this.X += <number>this.Xsp;
-            this.Y += <number>this.Ysp;
+            this.x += <number>this.Xsp;
+            this.y += <number>this.Ysp;
             let wl = SonicManager.instance.windowLocation;
-            if (this.X < wl.X || this.Y < wl.Y || this.X > wl.X + wl.Width || this.Y > wl.Y + wl.Height) {
+            if (this.x < wl.x || this.y < wl.y || this.x > wl.x + wl.Width || this.y > wl.y + wl.Height) {
                 this.TickCount = 0xfffffff;
                 return
             }
             if (SonicManager.instance.drawTickCount > SonicManager.instance.sonicToon.sonicLastHitTick + 64 && IntersectingRectangle.IntersectsRect(SonicManager.instance.sonicToon.myRec,
-                new Rectangle(this.X - 8, this.Y - 8, 8 * 2, 2 * 8))) {
+                new Rectangle(this.x - 8, this.y - 8, 8 * 2, 2 * 8))) {
                 this.TickCount = 0xfffffff;
                 SonicManager.instance.sonicToon.rings++;
                 return
@@ -39,6 +39,6 @@ export class Ring extends Point {
             sprites = SonicManager.instance.spriteCache.Rings;
         else throw ("bad ring animation");
         let sps = sprites[this.AnimationIndex];
-        canvas.drawImage(sps.Canvas, (pos.X - 8), (pos.Y - 8));
+        canvas.drawImage(sps.canvas, (pos.x - 8), (pos.y - 8));
     }
 }

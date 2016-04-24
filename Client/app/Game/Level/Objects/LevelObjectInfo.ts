@@ -84,8 +84,8 @@ export class LevelObjectInfo {
     }
     public GetRect(): Rectangle {
         if (this.ObjectData.PieceLayouts.length == 0) {
-            this._rect.X = this.X;
-            this._rect.Y = this.Y;
+            this._rect.x = this.X;
+            this._rect.y = this.Y;
             this._rect.Width = ObjectManager.broken.width;
             this._rect.Height = ObjectManager.broken.height;
             return this._rect;
@@ -115,10 +115,10 @@ export class LevelObjectInfo {
             canvas.save();
             canvas.fillStyle = "rgba(228,228,12,0.4)";
             let wd = 1;
-            canvas.fillRect(gr.X - this.X + x - (gr.Width / 2) - wd,
-                gr.Y - this.Y + y - (gr.Height / 2) - wd,
-                gr.Width - (gr.X - this.X) + wd * 2,
-                gr.Height - (gr.Y - this.Y) + wd * 2);
+            canvas.fillRect(gr.x - this.X + x - (gr.Width / 2) - wd,
+                gr.y - this.Y + y - (gr.Height / 2) - wd,
+                gr.Width - (gr.x - this.X) + wd * 2,
+                gr.Height - (gr.y - this.Y) + wd * 2);
             canvas.restore();
         }
     }
@@ -151,8 +151,8 @@ export class LevelObjectInfo {
         if (this.Dead || !this.ObjectData || this.ObjectData.PieceLayouts.length == 0)
             return null;
         let pcs = this.Pieces;
-        let mX: number = ((sonic.X) - this.X) | 0;
-        let mY: number = ((sonic.Y) - this.Y)|0;
+        let mX: number = ((sonic.x) - this.X) | 0;
+        let mY: number = ((sonic.y) - this.Y)|0;
         for (let j of pcs) {
             let piece = this.ObjectData.Pieces[j.pieceIndex];
             let asset = this.ObjectData.Assets[piece.assetIndex];

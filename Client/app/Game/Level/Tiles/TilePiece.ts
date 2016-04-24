@@ -61,7 +61,7 @@ export class TilePiece {
         let drawOrderIndex = 0;
         drawOrderIndex = xFlip ? (yFlip ? 0 : 1) : (yFlip ? 2 : 3);
         let tilePieceLength: number = 8;
-        let ac = CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
+        let ac = CanvasInformation.create(tilePieceLength * 2, tilePieceLength * 2, false);
         let i = 0;
         let localPoint = new Point(0, 0);
         for (let tileItem of this.Tiles) {
@@ -71,14 +71,14 @@ export class TilePiece {
                     let _xf = !!xFlip !== !!tileItem.XFlip;
                     let _yf = !!yFlip !== !!tileItem.YFlip;
                     let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
-                    localPoint.X = df[0] * tilePieceLength;
-                    localPoint.Y = df[1] * tilePieceLength;
+                    localPoint.x = df[0] * tilePieceLength;
+                    localPoint.y = df[1] * tilePieceLength;
                     tile.DrawBase(ac.Context, localPoint, _xf, _yf, tileItem.Palette);
                 }
             }
             i++;
         }
-        canvas.drawImage(ac.Canvas, position.X, position.Y);
+        canvas.drawImage(ac.canvas, position.x, position.y);
     }
     private getAnimatedPaletteCacheIndex(xflip: boolean, yflip: boolean, animatedPaletteIndex: number, frameIndex: number): number {
         return (frameIndex << 8) + (animatedPaletteIndex << 7) + ((xflip ? 1 : 0) << 5) + ((yflip ? 1 : 0) << 4);
@@ -91,7 +91,7 @@ export class TilePiece {
             let drawOrderIndex = 0;
             drawOrderIndex = xFlip ? (yFlip ? 0 : 1) : (yFlip ? 2 : 3);
             let tilePieceLength: number = 8;
-            let ac = CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
+            let ac = CanvasInformation.create(tilePieceLength * 2, tilePieceLength * 2, false);
             let i = 0;
             let localPoint = new Point(0, 0);
             for (let tileItem of this.Tiles) {
@@ -101,8 +101,8 @@ export class TilePiece {
                         let _xf = !!xFlip !== !!tileItem.XFlip;
                         let _yf = !!yFlip !== !!tileItem.YFlip;
                         let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
-                        localPoint.X = df[0] * tilePieceLength;
-                        localPoint.Y = df[1] * tilePieceLength;
+                        localPoint.x = df[0] * tilePieceLength;
+                        localPoint.y = df[1] * tilePieceLength;
                         tile.DrawAnimatedPalette(ac.Context, localPoint, _xf, _yf, tileItem.Palette, animatedPaletteIndex);
                     }
                 }
@@ -110,13 +110,13 @@ export class TilePiece {
             }
             this.animatedPaletteCaches[animatedPaletteCacheIndex] = animatedPaletteCache = ac;
         }
-        canvas.drawImage(animatedPaletteCache.Canvas, position.X, position.Y);
+        canvas.drawImage(animatedPaletteCache.canvas, position.x, position.y);
     }
     public DrawAnimatedTile(canvas: CanvasRenderingContext2D, position: Point, layer: ChunkLayerState, xFlip: boolean, yFlip: boolean, animatedTileIndex: number): void {
         let drawOrderIndex = 0;
         drawOrderIndex = xFlip ? (yFlip ? 0 : 1) : (yFlip ? 2 : 3);
         let tilePieceLength: number = 8;
-        let ac = CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
+        let ac = CanvasInformation.create(tilePieceLength * 2, tilePieceLength * 2, false);
         let i = 0;
         let localPoint = new Point(0, 0);
         for (let tileItem of this.Tiles) {
@@ -126,14 +126,14 @@ export class TilePiece {
                     let _xf = !!xFlip !== !!tileItem.XFlip;
                     let _yf = !!yFlip !== !!tileItem.YFlip;
                     let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
-                    localPoint.X = df[0] * tilePieceLength;
-                    localPoint.Y = df[1] * tilePieceLength;
+                    localPoint.x = df[0] * tilePieceLength;
+                    localPoint.y = df[1] * tilePieceLength;
                     tile.DrawAnimatedTile(ac.Context, localPoint, _xf, _yf, tileItem.Palette, animatedTileIndex);
                 }
             }
             i++;
         }
-        canvas.drawImage(ac.Canvas, position.X, position.Y);
+        canvas.drawImage(ac.canvas, position.x, position.y);
     }
     public ShouldAnimate(): boolean {
         if (this.shouldAnimate == null) {
