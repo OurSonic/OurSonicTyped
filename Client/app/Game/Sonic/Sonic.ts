@@ -91,7 +91,7 @@ export class Sonic {
 
     public tick(sonicLevel:SonicLevel):void {
         if (this.debugging) {
-            let debugSpeed = this.watcher.Multiply(1);
+            let debugSpeed = this.watcher.Multiply(15);
             if (this.holdingRight)
                 this.x += debugSpeed;
             if (this.holdingLeft)
@@ -671,7 +671,7 @@ export class Sonic {
         let fx = (this.x)|0;
         let fy = (this.y)|0;
         if (this.invulnerable())
-            return
+            return;
         let cur = SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
         if (cur == null) {
         }

@@ -1,15 +1,14 @@
 ﻿/// <reference path="../typings/Compress.d.ts" />
 
+import {bootstrap}    from 'angular2/platform/browser';
+import {AppComponent} from './Layout/app.component';
 
-import {SLData} from "./SLData";
 import {SonicEngine} from "./Game/SonicEngine";
 
 export class Main {
     static run() {
-        let j: string = ((<any>window).STATICLEVEL);
-        let message = new Compressor().DecompressText(j);
-        let sl: SLData = JSON.parse(message);
         new SonicEngine();
+        bootstrap(AppComponent);
     }
 }
 
