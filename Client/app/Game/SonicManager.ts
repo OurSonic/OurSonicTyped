@@ -77,6 +77,7 @@ export class SonicManager {
         this.engine.canvasHeight = $(window).height();
         gameCanvas.domCanvas[0].setAttribute("width", this.engine.canvasWidth.toString());
         gameCanvas.domCanvas[0].setAttribute("height", this.engine.canvasHeight.toString());
+
         jQuery.getJSON("assets/content/sprites/sonic.js", (data:{ [key:string]:SonicImage }) => {
             this.sonicSprites = data;
         });

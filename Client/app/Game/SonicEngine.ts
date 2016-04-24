@@ -232,10 +232,10 @@ export class SonicEngine {
             });
 
 
-        //            this.client.emit("LoadLevel.Request", { Data:'Angel Island Zone Act 1'});
 
 
         this.client = io.connect("159.203.118.77:8998");
+        // this.client.emit("LoadLevel.Request", {Data: 'Angel Island Zone Act 1'});
         this.client.on("LoadLevel.Response",
             data => {
                 this.LoadLevel(data.Data);
@@ -245,7 +245,7 @@ export class SonicEngine {
         });
     }
 
-    private LoadLevel(data:string):void {
+    LoadLevel(data:string):void {
         let l = JSON.parse(Help.decodeString(data));
         SonicEngine.instance.RunSonic(l);
     }
