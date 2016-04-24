@@ -1,4 +1,4 @@
-﻿import {Help } from "../../../Common/Help";
+﻿import {Help } from "../../../common/Help";
 import {SonicManager } from "../../SonicManager"; 
 import {LevelObjectAsset } from "./LevelObjectAsset";
 import {LevelObjectAssetFrame } from "./LevelObjectAssetFrame";

@@ -35,7 +35,7 @@ export class TileAnimationManager {
 export class TileAnimation {
     public manager: TileAnimationManager;
     public animatedTileData: TileAnimationData;
-    public currentFrame: number;
+    public currentFrame: number=0;
     public frames: TileAnimationFrame[];
     constructor(manager: TileAnimationManager, animatedTileData: TileAnimationData) {
         this.manager = manager;
@@ -66,7 +66,7 @@ export class TileAnimation {
 }
 export class TileAnimationFrame {
     public animation: TileAnimation;
-    public frameIndex: number;
+    public frameIndex: number=0;
     constructor(frameIndex: number, animation: TileAnimation) {
         this.animation = animation;
         this.frameIndex = frameIndex;

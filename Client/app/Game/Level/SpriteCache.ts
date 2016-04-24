@@ -1,4 +1,4 @@
-﻿import {CanvasInformation} from "../../Common/CanvasInformation";
+﻿import {CanvasInformation} from "../../common/CanvasInformation";
 
 export class SpriteCache {
     public Rings: CanvasInformation[];

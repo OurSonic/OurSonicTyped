@@ -2,22 +2,22 @@
 /// <reference path="../../typings/socket.io-client.d.ts" />
 
 
-import {CanvasInformation} from "../Common/CanvasInformation";
+import {CanvasInformation} from "../common/CanvasInformation";
 import {SonicManager} from "./SonicManager";
-import {GameState} from "../Common/Enums";
-import {Point, IntersectingRectangle, DoublePoint } from "../Common/Utils";
-import {Sonic} from "./Sonic/Sonic";
+import {GameState} from "../common/Enums";
+import {Point,  DoublePoint } from "../common/Utils";
+import {Sonic} from "./sonic/Sonic";
 import {SLData } from "../SLData";
-import {Help} from "../Common/Help";
+import {Help} from "../common/Help";
 
 export class SonicEngine {
     private wideScreen: boolean = true;
     public client: SocketIOClient.Socket;
-    private fullscreenMode: boolean;
+    private fullscreenMode: boolean=false;
     private gameCanvas: CanvasInformation;
-    private gameGoodWidth: number;
-    public canvasWidth: number;
-    public canvasHeight: number;
+    private gameGoodWidth: number=0;
+    public canvasWidth: number=0;
+    public canvasHeight: number=0;
     public sonicManager: SonicManager;
     public static instance: SonicEngine;
     constructor() {
@@ -315,7 +315,6 @@ export class SonicEngine {
         this.sonicManager.ResetCanvases();
     }
     public Clear(canv: CanvasInformation): void {
-        let w: number;
         (<any>canv.domCanvas[0]).width = this.gameGoodWidth;
         (<any>this.gameCanvas.Context).imageSmoothingEnabled = false;
     }

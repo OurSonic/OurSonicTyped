@@ -1,14 +1,14 @@
-﻿import {Point,IntersectingRectangle, Rectangle } from "../../Common/Utils";
+﻿import {Point,IntersectingRectangle, Rectangle } from "../../common/Utils";
 import {SonicManager} from "../SonicManager";
-import {GameState} from "../../Common/Enums";
-import {CanvasInformation} from "../../Common/CanvasInformation";
+import {GameState} from "../../common/Enums";
+import {CanvasInformation} from "../../common/CanvasInformation";
 
 export class Ring extends Point {
-    public Active: boolean;
-    protected AnimationIndex: number;
-    public TickCount: number;
-    public Ysp: number;
-    public Xsp: number;
+    public Active: boolean=false;
+    protected AnimationIndex: number=0;
+    public TickCount: number=0;
+    public Ysp: number=0;
+    public Xsp: number=0;
     constructor(active: boolean) {
         super(0, 0);
         this.Active = active;

@@ -1,4 +1,4 @@
-﻿import {Help} from "../../Common/Help";
+﻿import {Help} from "../../common/Help";
 
 export class SonicConstants {
     public acc: number;

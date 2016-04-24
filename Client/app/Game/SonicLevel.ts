@@ -1,20 +1,20 @@
-﻿import {LevelObjectInfo } from "Level/Objects/LevelObjectInfo";
-import {Point} from "../Common/Utils";
-import {HeightMap } from "./Level/HeightMap";
-import {Tile } from "./Level/Tiles/Tile";
-import {Ring } from "./Level/Ring";
-import {TilePiece } from "./Level/Tiles/TilePiece";
-import {TileAnimationData} from "./Level/Animations/TileAnimationData";
-import {TileChunk  } from "./Level/Tiles/TileChunk";
+﻿import {LevelObjectInfo } from "./level/Objects/LevelObjectInfo";
+import {Point} from "../common/Utils";
+import {HeightMap } from "./level/HeightMap";
+import {Tile } from "./level/Tiles/Tile";
+import {Ring } from "./level/Ring";
+import {TilePiece } from "./level/Tiles/TilePiece";
+import {TileAnimationData} from "./level/Animations/TileAnimationData";
+import {TileChunk  } from "./level/Tiles/TileChunk";
 
 export class SonicLevel {
     public TileAnimations: TileAnimationData[];
     public AnimatedTileFiles: Tile[][];
     public ChunkMap: number[][];
     public Rings: Ring[];
-    public CurHeightMap: boolean;
-    public LevelWidth: number;
-    public LevelHeight: number;
+    public CurHeightMap: boolean=false;
+    public LevelWidth: number=0;
+    public LevelHeight: number=0;
     public TileChunks: TileChunk[];
     public Tiles: Tile[];
     public TilePieces: TilePiece[];
@@ -22,7 +22,7 @@ export class SonicLevel {
     public AnimatedPalettes: PaletteItem[];
     public Palette: string[][];
     public StartPositions: Point[];
-    public CurPaletteIndex: number;
+    public CurPaletteIndex: number=0;
     public Angles: number[];
     public CollisionIndexes1: number[];
     public CollisionIndexes2: number[];
@@ -52,7 +52,7 @@ export class SonicLevel {
             tile.ClearCache();
         }
         for (let chunk of this.TileChunks) {
-            chunk.ClearCache();
+            chunk.clearCache();
         }
     }
     public GetTile(tile: number): Tile {
@@ -68,12 +68,12 @@ export class SonicLevel {
 
 export class PaletteItem {
     public Palette: string[];
-    public SkipIndex: number;
-    public TotalLength: number;
+    public SkipIndex: number=0;
+    public TotalLength: number=0;
     public Pieces: PaletteItemPieces[];
 }
 export class PaletteItemPieces {
-    public PaletteIndex: number;
-    public PaletteMultiply: number;
-    public PaletteOffset: number;
+    public PaletteIndex: number=0;
+    public PaletteMultiply: number=0;
+    public PaletteOffset: number=0;
 }

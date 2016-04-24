@@ -2,11 +2,11 @@
 
 import {Sonic } from "Sonic";
 import {Solidity} from "../../SLData";
-import {HeightMap } from "../Level/HeightMap";
-import {Help } from "../../Common/Help";
+import {HeightMap } from "../level/HeightMap";
+import {Help } from "../../common/Help";
 import {SonicManager } from "../SonicManager";
-import {RotationMode } from "../../Common/Enums";
-import {TileChunk} from "../Level/Tiles/TileChunk";
+import {RotationMode } from "../../common/Enums";
+import {TileChunk} from "../level/Tiles/TileChunk";
 
 export class SensorManager {
 
@@ -227,17 +227,17 @@ export class SensorManager {
 }
 export class Sensor {
     private __currentM: SensorM = new SensorM(0, 0);
-    public value: number;
-    public angle: number;
+    public value: number=0;
+    public angle: number=0;
     public letter: string;
-    public chosen: boolean;
-    protected ignoreSolid: boolean;
+    public chosen: boolean=false;
+    protected ignoreSolid: boolean=false;
     protected color: string;
     protected manager: SensorManager;
-    protected x1: number;
-    protected x2: number;
-    protected y1: number;
-    protected y2: number;
+    protected x1: number=0;
+    protected x2: number=0;
+    protected y1: number=0;
+    protected y2: number=0;
     constructor(x1: number, x2: number, y1: number, y2: number, manager: SensorManager, color: string, ignoreSolid: boolean, letter: string) {
         this.x1 = x1;
         this.x2 = x2;
@@ -508,10 +508,10 @@ export class Sensor {
 }
 
 export class SensorM {
-    public value: number;
-    public angle: number;
+    public value: number=0;
+    public angle: number=0;
     public letter: string;
-    public chosen: boolean;
+    public chosen: boolean=false;
     constructor(value: number, angle: number) {
         this.value = value;
         this.angle = angle;

@@ -1,5 +1,5 @@
-import {CanvasInformation } from "../../../Common/CanvasInformation";
-import {Point } from "../../../Common/Utils";
+import {CanvasInformation } from "../../../common/CanvasInformation";
+import {Point } from "../../../common/Utils";
 
 export class LevelObjectAssetFrame {
     public offsetX: number;

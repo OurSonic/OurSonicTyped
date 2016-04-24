@@ -1,30 +1,30 @@
-import {Point, DoublePoint, IntersectingRectangle, Rectangle} from "../Common/Utils";
-import {CanvasInformation} from "../Common/CanvasInformation";
+import {Point, DoublePoint, IntersectingRectangle, Rectangle} from "../common/Utils";
+import {CanvasInformation} from "../common/CanvasInformation";
 import {SonicEngine} from "./SonicEngine";
-import {SonicImage} from "./Level/SonicImage";
-import {GameState, ClickState, ChunkLayerState} from "../Common/Enums";
-import {Help} from "../Common/Help";
-import {Sonic} from "./Sonic/Sonic";
-import {HeightMap} from "./Level/HeightMap";
-import {ObjectManager} from "./Level/Objects/ObjectManager";
+import {SonicImage} from "./level/SonicImage";
+import {GameState, ClickState, ChunkLayerState} from "../common/Enums";
+import {Help} from "../common/Help";
+import {Sonic} from "./sonic/Sonic";
+import {HeightMap} from "./level/HeightMap";
+import {ObjectManager} from "./level/Objects/ObjectManager";
 import {SonicLevel, PaletteItem, PaletteItemPieces}from "./SonicLevel";
-import {LevelObjectInfo} from "./Level/Objects/LevelObjectInfo";
-import {Ring} from "./Level/Ring";
-import {SpriteCache} from "./Level/SpriteCache";
-import {TileAnimationData, TileAnimationDataFrame} from "./Level/Animations/TileAnimationData";
-import {AnimationInstance,} from "./Level/Animations/AnimationInstance";
-import {TilePaletteAnimationManager} from "./Level/Tiles/TilePaletteAnimationManager";
-import {TileAnimationManager} from "./Level/Tiles/TileAnimationManager";
-import {TileChunkDebugDrawOptions, TileChunk} from "./Level/Tiles/TileChunk";
-import {SpriteLoader} from "../Common/SpriteLoader";
-import {SonicBackground} from "./Level/SonicBackground";
-import {LevelObject} from "./Level/Objects/LevelObject";
-import {LevelObjectData} from "./Level/Objects/LevelObjectData";
+import {LevelObjectInfo} from "./level/Objects/LevelObjectInfo";
+import {Ring} from "./level/Ring";
+import {SpriteCache} from "./level/SpriteCache";
+import {TileAnimationData, TileAnimationDataFrame} from "./level/Animations/TileAnimationData";
+import {AnimationInstance,} from "./level/Animations/AnimationInstance";
+import {TilePaletteAnimationManager} from "./level/Tiles/TilePaletteAnimationManager";
+import {TileAnimationManager} from "./level/Tiles/TileAnimationManager";
+import {TileChunkDebugDrawOptions, TileChunk} from "./level/Tiles/TileChunk";
+import {SpriteLoader} from "../common/SpriteLoader";
+import {SonicBackground} from "./level/SonicBackground";
+import {LevelObject} from "./level/Objects/LevelObject";
+import {LevelObjectData} from "./level/Objects/LevelObjectData";
 import {SLData as SlData, AnimatedPaletteItem} from "../SLData";
-import {Tile} from "./Level/Tiles/Tile";
-import {TilePiece} from "./Level/Tiles/TilePiece";
-import {TileInfo} from "./Level/Tiles/TileInfo";
-import {TilePieceInfo} from "./Level/Tiles/TilePieceInfo";
+import {Tile} from "./level/Tiles/Tile";
+import {TilePiece} from "./level/Tiles/TilePiece";
+import {TileInfo} from "./level/Tiles/TileInfo";
+import {TilePieceInfo} from "./level/Tiles/TilePieceInfo";
 
 export class SonicManager {
     public static instance:SonicManager;
@@ -402,7 +402,6 @@ export class SonicManager {
         canvas.fillStyle = "white";
         canvas.fillText("loading...   ", 95, 95);
         canvas.restore();
-        return;
     }
 
     private drawHaltMode(canvas:CanvasRenderingContext2D):boolean {
@@ -466,7 +465,6 @@ export class SonicManager {
                 canvas.strokeRect(localPoint.x, localPoint.y, 128, 128);
             }
         }
-        console.log(m);
     }
 
     private drawDebugTextChunks(canvas:CanvasRenderingContext2D, fxP:number, fyP:number, offs:Point[], localPoint:Point):void {
@@ -630,14 +628,14 @@ export class SonicManager {
                         let toChunkX = (to.x + x) / 8;
                         let toChunkY = (to.y + curY) / 8;
                         let tochunk = this.sonicLevel.getChunkAt(toChunkX, toChunkY);
-                        tochunk.ClearCache();
+                        tochunk.clearCache();
                         let totp = tochunk.TilePieces[(to.x + x) - toChunkX * 8][(to.y + curY) - toChunkY * 8];
                         tochunk.IsOnlyBackground = null;
                         tochunk.IsOnlyForeground = null;
                         let fromChunkX = (from.x + x) / 8 | 0;
                         let fromChunkY = (from.y + curY) / 8 | 0;
                         let fromchunk = this.sonicLevel.getChunkAt(fromChunkX, fromChunkY);
-                        fromchunk.ClearCache();
+                        fromchunk.clearCache();
                         fromchunk.IsOnlyBackground = null;
                         fromchunk.IsOnlyForeground = null;
                         let fromtp = fromchunk.TilePieces[(from.x + x) - fromChunkX * 8][(from.y + curY) - fromChunkY * 8];
@@ -654,8 +652,8 @@ export class SonicManager {
         this.tilePaletteAnimationManager = new TilePaletteAnimationManager(this);
         this.tileAnimationManager = new TileAnimationManager(this);
         for (let chunk of this.sonicLevel.TileChunks) {
-            chunk.InitCache();
-            chunk.WarmCache();
+            chunk.initCache();
+            chunk.warmCache();
         }
         console.timeEnd("tileCache");
         if (this.sonicToon != null) {
@@ -786,7 +784,7 @@ export class SonicManager {
                 mfc[n % 8][n / 8 | 0] = mj[n];
             }
             this.sonicLevel.Tiles[j] = new Tile(mfc);
-            this.sonicLevel.Tiles[j].Index = j;
+            this.sonicLevel.Tiles[j].index = j;
         }
         let acs = this.sonicLevel.AnimatedChunks = new Array<TileChunk>();
         if (sonicLevel.AnimatedFiles) {
@@ -811,8 +809,8 @@ export class SonicManager {
                         mfc[n % 8][n / 8 | 0] = mjc[n];
                     }
                     let tile:Tile = new Tile(mfc);
-                    tile.IsTileAnimated = true;
-                    tile.Index = filePiece * 10000 + animatedFileIndex;
+                    tile.isTileAnimated = true;
+                    tile.index = filePiece * 10000 + animatedFileIndex;
                     this.sonicLevel.AnimatedTileFiles[animatedFileIndex][filePiece] = tile;
                 }
             }
@@ -920,31 +918,31 @@ export class SonicManager {
                 for (let mj of tilePiece.Tiles) {
                     let tile:Tile = mj.GetTile();
                     if (tile) {
-                        tile.AnimatedPaletteIndexes = new Array<number>();
+                        tile.animatedPaletteIndexes = new Array<number>();
                         let pl = tile.GetAllPaletteIndexes();
-                        tile.PaletteIndexesToBeAnimated = {};
-                        tile.AnimatedTileIndexes = new Array<number>();
+                        tile.paletteIndexesToBeAnimated = {};
+                        tile.animatedTileIndexes = new Array<number>();
                         for (let tileAnimationIndex:number = 0; tileAnimationIndex < this.sonicLevel.TileAnimations.length; tileAnimationIndex++) {
                             let tileAnimationData = this.sonicLevel.TileAnimations[tileAnimationIndex];
                             let anin = tileAnimationData.AnimationTileIndex;
                             let num = tileAnimationData.NumberOfTiles;
-                            if (tile.Index >= anin && tile.Index < anin + num) {
+                            if (tile.index >= anin && tile.index < anin + num) {
                                 tilePiece.AnimatedTileIndexes.push(tileAnimationIndex);
-                                tile.AnimatedTileIndexes.push(tileAnimationIndex);
+                                tile.animatedTileIndexes.push(tileAnimationIndex);
                             }
                         }
                         for (let animatedPaletteIndex:number = 0; animatedPaletteIndex < this.sonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
                             let pal = this.sonicLevel.AnimatedPalettes[animatedPaletteIndex];
-                            tile.PaletteIndexesToBeAnimated[animatedPaletteIndex] = new Array<number>();
+                            tile.paletteIndexesToBeAnimated[animatedPaletteIndex] = new Array<number>();
                             for (let mjce of pal.Pieces) {
                                 let mje1:PaletteItemPieces = mjce;
                                 if (mj.Palette == mje1.PaletteIndex) {
                                     if (pl.filter(j => j == (mje1.PaletteOffset / 2 | 0) || j == (mje1.PaletteOffset / 2 | 0) + 1).length > 0) {
                                         tilePiece.AnimatedPaletteIndexes.push(animatedPaletteIndex);
-                                        tile.AnimatedPaletteIndexes.push(animatedPaletteIndex);
+                                        tile.animatedPaletteIndexes.push(animatedPaletteIndex);
                                         for (let pIndex of pl) {
                                             if (pIndex == (mje1.PaletteOffset / 2 | 0) || pIndex == (mje1.PaletteOffset / 2 | 0) + 1) {
-                                                tile.PaletteIndexesToBeAnimated[animatedPaletteIndex].push(pIndex);
+                                                tile.paletteIndexesToBeAnimated[animatedPaletteIndex].push(pIndex);
                                             }
                                         }
                                     }

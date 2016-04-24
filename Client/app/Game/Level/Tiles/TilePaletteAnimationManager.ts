@@ -36,7 +36,7 @@ export class TilePaletteAnimationManager {
 export class TilePaletteAnimation {
     public Manager: TilePaletteAnimationManager;
     public AnimatedPaletteData: PaletteItem;
-    public CurrentFrame: number;
+    public CurrentFrame: number=0;
     public Frames: TilePaletteAnimationFrame[];
     constructor(manager: TilePaletteAnimationManager, animatedPaletteData: PaletteItem) {
         this.Manager = manager;
@@ -74,8 +74,7 @@ export class TilePaletteAnimation {
 }
 export class TilePaletteAnimationFrame {
     public Animation: TilePaletteAnimation;
-    /*[IntrinsicProperty]*/
-    public FrameIndex: number;
+    public FrameIndex: number=0;
     constructor(frameIndex: number, animation: TilePaletteAnimation) {
         this.Animation = animation;
         this.FrameIndex = frameIndex;

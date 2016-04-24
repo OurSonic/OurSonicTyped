@@ -1,11 +1,11 @@
-﻿import {Rectangle, Point } from "../../../Common/Utils";
+﻿import {Rectangle, Point } from "../../../common/Utils";
 import {LevelObjectAsset} from "LevelObjectAsset";
 import {SonicManager} from "../../SonicManager";
 import {LevelObjectProjectile} from "./LevelObjectProjectile";
-import {SensorM } from "../../Sonic/SensorManager";
+import {SensorM } from "../../sonic/SensorManager";
 import {SLDataObjectEntry  } from "../../../SLData";
 import {ObjectManager } from "./ObjectManager";
-import {Sonic} from "../../Sonic/Sonic";
+import {Sonic} from "../../sonic/Sonic";
 import {LevelObject } from "./LevelObject";
 import {LevelObjectPiece } from "./LevelObjectPiece";
 import {SonicLevel} from "../../SonicLevel";
@@ -13,24 +13,24 @@ import {LevelObjectPieceLayout} from "./LevelObjectPieceLayout";
 
 export class LevelObjectInfo {
     private _rect: Rectangle = new Rectangle(0, 0, 0, 0);
-    public lastDrawTick: number;
+    public lastDrawTick: number=0;
     public O: SLDataObjectEntry;
-    public X: number;
-    public Y: number;
-    public Xsp: number;
-    public Ysp: number;
-    public Xflip: boolean;
-    public Yflip: boolean;
-    public Subdata: number;
+    public X: number=0;
+    public Y: number=0;
+    public Xsp: number=0;
+    public Ysp: number=0;
+    public Xflip: boolean=false;
+    public Yflip: boolean=false;
+    public Subdata: number=0;
     public Key: string;
     public ObjectData: LevelObject;
-    public UpperNibble: number;
-    public LowerNibble: number;
-    public PieceLayoutIndex: number;
+    public UpperNibble: number=0;
+    public LowerNibble: number=0;
+    public PieceLayoutIndex: number=0;
     public Pieces: LevelObjectPiece[];
-    public Dead: boolean;
+    public Dead: boolean=false;
     public State: LevelObjectInfo;
-    public Index: number;
+    public Index: number=0;
     public Debug: string[];
     public ConsoleLog: (_: string[]) => void;
     constructor(o: SLDataObjectEntry) {
@@ -104,11 +104,7 @@ export class LevelObjectInfo {
             return;
         }
         let levelObjectPieceLayout = this.MainPieceLayout();
-        if (!levelObjectPieceLayout) {
-            //should not happens
-            this.MainPieceLayout();
-            return;
-        }
+
         levelObjectPieceLayout.Draw(canvas, x, y, this.ObjectData, this, showHeightMap);
         if (this.ConsoleLog != null) {
             let gr = this.GetRect();

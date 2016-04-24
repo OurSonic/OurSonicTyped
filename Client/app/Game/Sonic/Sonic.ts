@@ -1,10 +1,10 @@
-﻿import {Rectangle, Point, IntersectingRectangle} from "../../Common/Utils";
+﻿import {Rectangle, Point, IntersectingRectangle} from "../../common/Utils";
 import {SensorManager, SensorM} from "./SensorManager";
 import {SonicLevel,} from "../SonicLevel";
-import {RotationMode} from "../../Common/Enums";
+import {RotationMode} from "../../common/Enums";
 import {SonicManager} from "../SonicManager";
-import {Help} from "../../Common/Help";
-import {Ring} from "../Level/Ring";
+import {Help} from "../../common/Help";
+import {Ring} from "../level/Ring";
 import {SonicConstants} from "./SonicConstants";
 
 export class Sonic {
@@ -101,7 +101,6 @@ export class Sonic {
             if (this.holdingUp)
                 this.y -= debugSpeed;
 
-            this.holdingRight=this.holdingLeft=this.crouching=this.holdingUp=false;
             this.x = ((sonicLevel.LevelWidth * 128) + (this.x)) % (sonicLevel.LevelWidth * 128);
             this.y = ((sonicLevel.LevelHeight * 128) + (this.y)) % (sonicLevel.LevelHeight * 128);
             return

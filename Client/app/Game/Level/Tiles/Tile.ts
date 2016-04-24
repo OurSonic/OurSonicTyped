@@ -1,30 +1,30 @@
-import {CanvasInformation} from "../../../Common/CanvasInformation";
-import {Point } from "../../../Common/Utils";
+import {CanvasInformation} from "../../../common/CanvasInformation";
+import {Point } from "../../../common/Utils";
 import {SonicManager } from "../../SonicManager";
 
 export class Tile {
     private canAnimate: boolean = true;
-    protected CurPaletteIndexes: number[];
-    protected Colors: number[][];
-    public Index: number;
-    public IsTileAnimated: boolean;
-    public AnimatedPaletteIndexes: number[];
-    public AnimatedTileIndexes: number[];
-    public PaletteIndexesToBeAnimated: { [key: number]: number[] };
+    protected curPaletteIndexes: number[];
+    protected colors: number[][];
+    public index: number=0;
+    public isTileAnimated: boolean=false;
+    public animatedPaletteIndexes: number[];
+    public animatedTileIndexes: number[];
+    public paletteIndexesToBeAnimated: { [key: number]: number[] };
 
     constructor(colors: number[][]) {
-        this.Colors = colors;
-        this.CurPaletteIndexes = null;
+        this.colors = colors;
+        this.curPaletteIndexes = null;
     }
     private baseCaches: { [key: number]: CanvasInformation } = {};
     private animatedPaletteCaches: { [key: number]: CanvasInformation } = {};
-    public DrawBase(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, isAnimatedTile: boolean = false): void {
-        if (this.AnimatedTileIndexes != null && (!isAnimatedTile && this.AnimatedTileIndexes.length > 0))
+    public drawBase(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, isAnimatedTile: boolean = false): void {
+        if (this.animatedTileIndexes != null && (!isAnimatedTile && this.animatedTileIndexes.length > 0))
             return;
         let baseCacheIndex = this.getBaseCacheIndex(xflip, yflip, palette);
         let baseCache: CanvasInformation = this.baseCaches[baseCacheIndex];
         if (baseCache == null) {
-        let squareSize = this.Colors.length;
+        let squareSize = this.colors.length;
             let j: CanvasInformation;
             j = CanvasInformation.create(squareSize, squareSize, false);
             if (pos.x < 0 || pos.y < 0)
@@ -44,7 +44,7 @@ export class Tile {
             let y = oPos.y;
             for (let _x: number = 0; _x < squareSize; _x++) {
                 for (let _y: number = 0; _y < squareSize; _y++) {
-                    let colorIndex = this.Colors[_x][_y];
+                    let colorIndex = this.colors[_x][_y];
                     if (colorIndex == 0)
                         continue;
                     j.Context.fillStyle = palette_[colorPaletteIndex][colorIndex];
@@ -62,12 +62,12 @@ export class Tile {
         return (frameIndex << 8) + (animatedPaletteIndex << 7) + (palette << 6) + ((xflip ? 1 : 0) << 5) + ((yflip ? 1 : 0) << 4);
     }
     public DrawAnimatedPalette(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, animatedPaletteIndex: number, isAnimatedTile: boolean = false): void {
-        if (this.AnimatedTileIndexes != null && (!isAnimatedTile && this.AnimatedTileIndexes.length > 0))
+        if (this.animatedTileIndexes != null && (!isAnimatedTile && this.animatedTileIndexes.length > 0))
             return
         let animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xflip, yflip, palette, animatedPaletteIndex, SonicManager.instance.tilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
         let animatedPaletteCache: CanvasInformation = this.animatedPaletteCaches[animatedPaletteCacheIndex];
         if (animatedPaletteCache == null) {
-            let squareSize = this.Colors.length;
+            let squareSize = this.colors.length;
             let j: CanvasInformation;
             j = CanvasInformation.create(squareSize, squareSize, false);
             if (pos.x < 0 || pos.y < 0)
@@ -87,10 +87,10 @@ export class Tile {
             let y = oPos.y;
             for (let _x: number = 0; _x < squareSize; _x++) {
                 for (let _y: number = 0; _y < squareSize; _y++) {
-                    let colorIndex = this.Colors[_x][_y];
+                    let colorIndex = this.colors[_x][_y];
                     if (colorIndex == 0)
                         continue;
-                    if (this.PaletteIndexesToBeAnimated[animatedPaletteIndex].indexOf(colorIndex) == -1)
+                    if (this.paletteIndexesToBeAnimated[animatedPaletteIndex].indexOf(colorIndex) == -1)
                         continue;
                     j.Context.fillStyle = palette_[colorPaletteIndex][colorIndex];
                     j.Context.fillRect(x + _x, y + _y, 1, 1);
@@ -100,8 +100,8 @@ export class Tile {
         }
         canvas.drawImage(animatedPaletteCache.canvas, pos.x, pos.y);
     }
-    public DrawAnimatedTile(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, animatedTileIndex: number): void {
-        if (this.AnimatedTileIndexes.indexOf(animatedTileIndex) == -1)
+    public drawAnimatedTile(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, animatedTileIndex: number): void {
+        if (this.animatedTileIndexes.indexOf(animatedTileIndex) == -1)
             return
         let tileAnimationFrame = SonicManager.instance.tileAnimationManager.getCurrentFrame(animatedTileIndex);
         let tileAnimation = tileAnimationFrame.animation;
@@ -112,22 +112,22 @@ export class Tile {
             frame = tileAnimation.animatedTileData.DataFrames[0];
         }
         let file = tileAnimationData.GetAnimationFile();
-        let va = file[frame.StartingTileIndex + (this.Index - animationIndex)];
+        let va = file[frame.StartingTileIndex + (this.index - animationIndex)];
         if (va != null) {
-            va.DrawBase(canvas, pos, xflip, yflip, palette, true);
+            va.drawBase(canvas, pos, xflip, yflip, palette, true);
         }
         else {
 
         }
     }
     public ShouldTileAnimate(): boolean {
-        return this.IsTileAnimated && this.canAnimate;
+        return this.isTileAnimated && this.canAnimate;
     }
     public GetAllPaletteIndexes(): number[] {
-        if (this.CurPaletteIndexes == null) {
+        if (this.curPaletteIndexes == null) {
             let d = new Array<number>();
-            for (let _x: number = 0; _x < this.Colors.length; _x++) {
-                let color = this.Colors[_x];
+            for (let _x: number = 0; _x < this.colors.length; _x++) {
+                let color = this.colors[_x];
                 for (let _y: number = 0; _y < color.length; _y++) {
                     let col = color[_y];
                     if (col == 0)
@@ -136,11 +136,12 @@ export class Tile {
                         d.push(col);
                 }
             }
-            this.CurPaletteIndexes = d.slice(0);
+            this.curPaletteIndexes = d.slice(0);
         }
-        return this.CurPaletteIndexes;
+        return this.curPaletteIndexes;
     }
     public ClearCache(): void {
-        this.CurPaletteIndexes = null;
+        this.curPaletteIndexes = null;
+        this.baseCaches={};
     }
 }

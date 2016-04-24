@@ -1,15 +1,15 @@
-﻿import {Point } from "../../Common/Utils";
+﻿import {Point } from "../../common/Utils";
 import {SonicManager} from "../SonicManager";
-import {CanvasInformation} from "../../Common/CanvasInformation";
-import {Help} from "../../Common/Help";
-import {RotationMode  } from "../../Common/Enums";
+import {CanvasInformation} from "../../common/CanvasInformation";
+import {Help} from "../../common/Help";
+import {RotationMode  } from "../../common/Enums";
 
 export class HeightMap {
     public static colors: string[] = new Array("", "rgba(255,98,235,0.6)", "rgba(24,218,235,0.6)", "rgba(24,98,235,0.6)");
-    protected Width: number;
-    protected Height: number;
+    protected Width: number=0;
+    protected Height: number=0;
     public Items: number[];
-    protected Index: number;
+    protected Index: number=0;
     public Full: boolean=undefined;
     constructor(heightMap: number[], i: number) {
         this.Items = heightMap;

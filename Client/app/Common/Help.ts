@@ -4,9 +4,9 @@
 import {Point, IntersectingRectangle } from "./Utils";
 import {CanvasInformation  } from "./CanvasInformation";
 import {Color} from "./Color";
-import {SonicImage} from "../Game/Level/SonicImage";
+import {SonicImage} from "../game/level/SonicImage";
 import {GameState} from "./Enums";
-import {SonicManager} from "../Game/SonicManager";
+import {SonicManager} from "../game/SonicManager";
 
 export class Help {
     private static cos_table: number[] = new Array(1.00000, 0.99970, 0.99880, 0.99729, 0.99518, 0.99248, 0.98918, 0.98528,

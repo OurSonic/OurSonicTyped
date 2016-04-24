@@ -1,4 +1,4 @@
-﻿import {Help } from "../../../Common/Help";
+﻿import {Help } from "../../../common/Help";
 import {SonicManager } from "../../SonicManager";
 import {LevelObjectAsset } from "./LevelObjectAsset";
 import {LevelObjectAssetFrame } from "./LevelObjectAssetFrame";
@@ -7,7 +7,7 @@ import {LevelObjectData} from "./LevelObjectData";
 import {LevelObject } from "./LevelObject";
 import {LevelObjectPiece} from "./LevelObjectPiece";
 import {LevelObjectPieceLayoutPiece} from "./LevelObjectPieceLayoutPiece";
-import {Point, Rectangle } from "../../../Common/Utils";
+import {Point, Rectangle } from "../../../common/Utils";
 import {LevelObjectInfo} from "./LevelObjectInfo";
 
 export class LevelObjectPieceLayout {

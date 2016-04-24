@@ -26,13 +26,13 @@ export class TileAnimationData {
 }*/
 
 
-    public AnimationTileFile: number;
-    public NumberOfTiles: number;
-    public LastAnimatedIndex: number;
-    public LastAnimatedFrame: number;
-    public AnimationTileIndex: number;
+    public AnimationTileFile: number=0;
+    public NumberOfTiles: number=0;
+    public LastAnimatedIndex: number=0;
+    public LastAnimatedFrame: number=0;
+    public AnimationTileIndex: number=0;
     public DataFrames: TileAnimationDataFrame[];
-    public AutomatedTiming: number;
+    public AutomatedTiming: number=0;
     constructor() {
 
     }
@@ -41,8 +41,6 @@ export class TileAnimationData {
     }
 }
 export class TileAnimationDataFrame {
-    /*[IntrinsicProperty]*/
-    public Ticks: number;
-    /*[IntrinsicProperty]*/
-    public StartingTileIndex: number;
+    public Ticks: number=0;
+    public StartingTileIndex: number=0;
 }

@@ -5,17 +5,17 @@ import {HeightMap } from "../HeightMap";
 
 export class TilePieceInfo {
     
-    public Block: number;
+    public Block: number=0;
     
-    public XFlip: boolean;
+    public XFlip: boolean=false;
     
-    public YFlip: boolean;
+    public YFlip: boolean=false;
     
-    public Solid1: Solidity;
+    public Solid1: Solidity=Solidity.NotSolid;
     
-    public Solid2: Solidity;
+    public Solid2: Solidity=Solidity.NotSolid;
     
-    public Index: number;
+    public Index: number=0;
     public GetTilePiece(): TilePiece {
         return SonicManager.instance.sonicLevel.GetTilePiece(this.Block);
     }
