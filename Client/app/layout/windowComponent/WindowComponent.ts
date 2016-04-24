@@ -15,7 +15,6 @@ export class WindowComponent {
     @Input() public height:string;
     @Input() public left:string;
     @Input() public top:string;
-    @Input() public visible:boolean;
     @Input() public windowTitle:string;
 
     @Output() public onclose:EventEmitter<boolean> = new EventEmitter();

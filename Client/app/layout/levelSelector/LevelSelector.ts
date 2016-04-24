@@ -1,16 +1,29 @@
-import {Component} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {WindowComponent} from "../windowComponent/WindowComponent";
+import {LevelService, SonicLevelData} from "../services/LevelService";
 
 @Component({
     selector: 'level-selector',
     templateUrl: 'app/layout/levelSelector/levelSelector.html',
-    directives: [WindowComponent]
+    directives: [WindowComponent],
+    providers:[LevelService]
 })
-export class LevelSelector {
+export class LevelSelector implements OnInit {
+    levels:SonicLevelData[];
 
-    public closedWindow(done:boolean):void{
+    constructor(private _levelService:LevelService) {
+    }
+
+    ngOnInit() {
+        this._levelService.getLevels().subscribe(levels=>{
+            this.levels=levels;
+        });
+    }
+
+    public closedWindow(done:boolean):void {
         console.log(done);
         debugger;
     }
 }
+
  

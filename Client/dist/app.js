@@ -4,100 +4,274 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-System.register("layout/objectSelector/ObjectSelector", ['angular2/core'], function(exports_1, context_1) {
+System.register("layout/directives/draggableDirective", ['angular2/core'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var core_1;
-    var ObjectSelector;
+    var DraggableDirective;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
-            ObjectSelector = (function () {
-                function ObjectSelector() {
+            DraggableDirective = (function () {
+                function DraggableDirective(el) {
+                    $(el.nativeElement).draggable({ cancel: ".window .inner-window" });
                 }
-                ObjectSelector = __decorate([
-                    core_1.Component({
-                        selector: 'object-selector',
-                        templateUrl: 'app/layout/objectSelector/objectSelector.html'
-                    })
-                ], ObjectSelector);
-                return ObjectSelector;
+                DraggableDirective = __decorate([
+                    core_1.Directive({
+                        selector: '[draggable]',
+                    }),
+                    __param(0, (core_1.Inject)), 
+                    __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
+                ], DraggableDirective);
+                return DraggableDirective;
+                var _a;
             }());
-            exports_1("ObjectSelector", ObjectSelector);
+            exports_1("DraggableDirective", DraggableDirective);
         }
     }
 });
-System.register("layout/levelSelector/LevelSelector", ['angular2/core'], function(exports_2, context_2) {
+System.register("layout/windowComponent/WindowComponent", ['angular2/core', "layout/directives/draggableDirective"], function(exports_2, context_2) {
     "use strict";
     var __moduleName = context_2 && context_2.id;
-    var core_2;
-    var LevelSelector;
+    var core_2, draggableDirective_1;
+    var WindowComponent;
     return {
         setters:[
             function (core_2_1) {
                 core_2 = core_2_1;
+            },
+            function (draggableDirective_1_1) {
+                draggableDirective_1 = draggableDirective_1_1;
             }],
         execute: function() {
-            LevelSelector = (function () {
-                function LevelSelector() {
+            WindowComponent = (function () {
+                function WindowComponent(el) {
+                    this.onclose = new core_2.EventEmitter();
+                    this.visible = true;
                 }
-                LevelSelector = __decorate([
+                WindowComponent.prototype.minimize = function () {
+                    this.visible = false;
+                };
+                WindowComponent.prototype.maximize = function () {
+                    this.visible = false;
+                };
+                WindowComponent.prototype.close = function () {
+                    this.visible = false;
+                    this.onclose.emit(true);
+                };
+                __decorate([
+                    core_2.Input(), 
+                    __metadata('design:type', Boolean)
+                ], WindowComponent.prototype, "visible", void 0);
+                __decorate([
+                    core_2.Input(), 
+                    __metadata('design:type', String)
+                ], WindowComponent.prototype, "width", void 0);
+                __decorate([
+                    core_2.Input(), 
+                    __metadata('design:type', String)
+                ], WindowComponent.prototype, "height", void 0);
+                __decorate([
+                    core_2.Input(), 
+                    __metadata('design:type', String)
+                ], WindowComponent.prototype, "left", void 0);
+                __decorate([
+                    core_2.Input(), 
+                    __metadata('design:type', String)
+                ], WindowComponent.prototype, "top", void 0);
+                __decorate([
+                    core_2.Input(), 
+                    __metadata('design:type', String)
+                ], WindowComponent.prototype, "windowTitle", void 0);
+                __decorate([
+                    core_2.Output(), 
+                    __metadata('design:type', (typeof (_a = typeof core_2.EventEmitter !== 'undefined' && core_2.EventEmitter) === 'function' && _a) || Object)
+                ], WindowComponent.prototype, "onclose", void 0);
+                WindowComponent = __decorate([
                     core_2.Component({
-                        selector: 'level-selector',
-                        templateUrl: 'app/layout/levelSelector/levelSelector.html'
-                    })
-                ], LevelSelector);
-                return LevelSelector;
+                        selector: 'window',
+                        templateUrl: 'app/layout/windowComponent/windowComponent.html',
+                        directives: [draggableDirective_1.DraggableDirective],
+                    }), 
+                    __metadata('design:paramtypes', [(typeof (_b = typeof core_2.ElementRef !== 'undefined' && core_2.ElementRef) === 'function' && _b) || Object])
+                ], WindowComponent);
+                return WindowComponent;
+                var _a, _b;
             }());
-            exports_2("LevelSelector", LevelSelector);
+            exports_2("WindowComponent", WindowComponent);
         }
     }
 });
-System.register("layout/Layout", ['angular2/core', "layout/objectSelector/ObjectSelector", "layout/levelSelector/LevelSelector"], function(exports_3, context_3) {
+System.register("layout/objectSelector/ObjectSelector", ['angular2/core', "layout/windowComponent/WindowComponent"], function(exports_3, context_3) {
     "use strict";
     var __moduleName = context_3 && context_3.id;
-    var core_3, ObjectSelector_1, LevelSelector_1;
-    var Layout;
+    var core_3, WindowComponent_1;
+    var ObjectSelector;
     return {
         setters:[
             function (core_3_1) {
                 core_3 = core_3_1;
+            },
+            function (WindowComponent_1_1) {
+                WindowComponent_1 = WindowComponent_1_1;
+            }],
+        execute: function() {
+            ObjectSelector = (function () {
+                function ObjectSelector() {
+                }
+                ObjectSelector = __decorate([
+                    core_3.Component({
+                        selector: 'object-selector',
+                        templateUrl: 'app/layout/objectSelector/objectSelector.html',
+                        directives: [WindowComponent_1.WindowComponent]
+                    }), 
+                    __metadata('design:paramtypes', [])
+                ], ObjectSelector);
+                return ObjectSelector;
+            }());
+            exports_3("ObjectSelector", ObjectSelector);
+        }
+    }
+});
+System.register("layout/services/LevelService", ['angular2/core', 'angular2/http'], function(exports_4, context_4) {
+    "use strict";
+    var __moduleName = context_4 && context_4.id;
+    var core_4, http_1;
+    var LevelService, SonicLevelData;
+    return {
+        setters:[
+            function (core_4_1) {
+                core_4 = core_4_1;
+            },
+            function (http_1_1) {
+                http_1 = http_1_1;
+            }],
+        execute: function() {
+            LevelService = (function () {
+                function LevelService(http) {
+                    this.http = http;
+                    this._getLevelsUrl = 'http://localhost:8080/levels.json';
+                }
+                LevelService.prototype.getLevels = function () {
+                    return this.http.get(this._getLevelsUrl)
+                        .map(function (res) { return res.json(); });
+                };
+                LevelService = __decorate([
+                    core_4.Injectable(), 
+                    __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+                ], LevelService);
+                return LevelService;
+                var _a;
+            }());
+            exports_4("LevelService", LevelService);
+            SonicLevelData = (function () {
+                function SonicLevelData() {
+                }
+                return SonicLevelData;
+            }());
+            exports_4("SonicLevelData", SonicLevelData);
+        }
+    }
+});
+System.register("layout/levelSelector/LevelSelector", ['angular2/core', "layout/windowComponent/WindowComponent", "layout/services/LevelService"], function(exports_5, context_5) {
+    "use strict";
+    var __moduleName = context_5 && context_5.id;
+    var core_5, WindowComponent_2, LevelService_1;
+    var LevelSelector;
+    return {
+        setters:[
+            function (core_5_1) {
+                core_5 = core_5_1;
+            },
+            function (WindowComponent_2_1) {
+                WindowComponent_2 = WindowComponent_2_1;
+            },
+            function (LevelService_1_1) {
+                LevelService_1 = LevelService_1_1;
+            }],
+        execute: function() {
+            LevelSelector = (function () {
+                function LevelSelector(_levelService) {
+                    this._levelService = _levelService;
+                }
+                LevelSelector.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this._levelService.getLevels().subscribe(function (levels) {
+                        _this.levels = levels;
+                    });
+                };
+                LevelSelector.prototype.closedWindow = function (done) {
+                    console.log(done);
+                    debugger;
+                };
+                LevelSelector = __decorate([
+                    core_5.Component({
+                        selector: 'level-selector',
+                        templateUrl: 'app/layout/levelSelector/levelSelector.html',
+                        directives: [WindowComponent_2.WindowComponent],
+                        providers: [LevelService_1.LevelService]
+                    }), 
+                    __metadata('design:paramtypes', [LevelService_1.LevelService])
+                ], LevelSelector);
+                return LevelSelector;
+            }());
+            exports_5("LevelSelector", LevelSelector);
+        }
+    }
+});
+System.register("layout/Layout", ['angular2/core', "layout/objectSelector/ObjectSelector", "layout/levelSelector/LevelSelector", 'rxjs/Rx'], function(exports_6, context_6) {
+    "use strict";
+    var __moduleName = context_6 && context_6.id;
+    var core_6, ObjectSelector_1, LevelSelector_1;
+    var Layout;
+    return {
+        setters:[
+            function (core_6_1) {
+                core_6 = core_6_1;
             },
             function (ObjectSelector_1_1) {
                 ObjectSelector_1 = ObjectSelector_1_1;
             },
             function (LevelSelector_1_1) {
                 LevelSelector_1 = LevelSelector_1_1;
-            }],
+            },
+            function (_1) {}],
         execute: function() {
             Layout = (function () {
                 function Layout() {
                 }
                 Layout = __decorate([
-                    core_3.Component({
+                    core_6.Component({
                         selector: 'layout',
                         templateUrl: 'app/layout/layout.html',
                         directives: [ObjectSelector_1.ObjectSelector, LevelSelector_1.LevelSelector]
-                    })
+                    }), 
+                    __metadata('design:paramtypes', [])
                 ], Layout);
                 return Layout;
             }());
-            exports_3("Layout", Layout);
+            exports_6("Layout", Layout);
         }
     }
 });
 ///<reference path="../../typings/jQuery.d.ts"/>
-System.register("common/CanvasInformation", [], function(exports_4, context_4) {
+System.register("common/CanvasInformation", [], function(exports_7, context_7) {
     "use strict";
-    var __moduleName = context_4 && context_4.id;
+    var __moduleName = context_7 && context_7.id;
     var CanvasInformation;
     return {
         setters:[],
@@ -142,13 +316,13 @@ System.register("common/CanvasInformation", [], function(exports_4, context_4) {
                 };
                 return CanvasInformation;
             }());
-            exports_4("CanvasInformation", CanvasInformation);
+            exports_7("CanvasInformation", CanvasInformation);
         }
     }
 });
-System.register("common/Utils", [], function(exports_5, context_5) {
+System.register("common/Utils", [], function(exports_8, context_8) {
     "use strict";
-    var __moduleName = context_5 && context_5.id;
+    var __moduleName = context_8 && context_8.id;
     var Point, DoublePoint, IntersectingRectangle, Rectangle;
     return {
         setters:[],
@@ -196,7 +370,7 @@ System.register("common/Utils", [], function(exports_5, context_5) {
                 };
                 return Point;
             }());
-            exports_5("Point", Point);
+            exports_8("Point", Point);
             DoublePoint = (function () {
                 function DoublePoint(x, y) {
                     this.x = x;
@@ -220,7 +394,7 @@ System.register("common/Utils", [], function(exports_5, context_5) {
                 };
                 return DoublePoint;
             }());
-            exports_5("DoublePoint", DoublePoint);
+            exports_8("DoublePoint", DoublePoint);
             IntersectingRectangle = (function (_super) {
                 __extends(IntersectingRectangle, _super);
                 function IntersectingRectangle(x, y, width, height) {
@@ -239,7 +413,7 @@ System.register("common/Utils", [], function(exports_5, context_5) {
                 };
                 return IntersectingRectangle;
             }(Point));
-            exports_5("IntersectingRectangle", IntersectingRectangle);
+            exports_8("IntersectingRectangle", IntersectingRectangle);
             Rectangle = (function (_super) {
                 __extends(Rectangle, _super);
                 function Rectangle(x, y, width, height) {
@@ -253,13 +427,13 @@ System.register("common/Utils", [], function(exports_5, context_5) {
                 }
                 return Rectangle;
             }(Point));
-            exports_5("Rectangle", Rectangle);
+            exports_8("Rectangle", Rectangle);
         }
     }
 });
-System.register("game/level/SonicImage", [], function(exports_6, context_6) {
+System.register("game/level/SonicImage", [], function(exports_9, context_9) {
     "use strict";
-    var __moduleName = context_6 && context_6.id;
+    var __moduleName = context_9 && context_9.id;
     var SonicImage;
     return {
         setters:[],
@@ -273,13 +447,13 @@ System.register("game/level/SonicImage", [], function(exports_6, context_6) {
                 }
                 return SonicImage;
             }());
-            exports_6("SonicImage", SonicImage);
+            exports_9("SonicImage", SonicImage);
         }
     }
 });
-System.register("common/Enums", [], function(exports_7, context_7) {
+System.register("common/Enums", [], function(exports_10, context_10) {
     "use strict";
-    var __moduleName = context_7 && context_7.id;
+    var __moduleName = context_10 && context_10.id;
     var GameState, ClickState, ChunkLayerState, RotationMode;
     return {
         setters:[],
@@ -288,32 +462,32 @@ System.register("common/Enums", [], function(exports_7, context_7) {
                 GameState[GameState["Playing"] = 0] = "Playing";
                 GameState[GameState["Editing"] = 1] = "Editing";
             })(GameState || (GameState = {}));
-            exports_7("GameState", GameState);
+            exports_10("GameState", GameState);
             (function (ClickState) {
                 ClickState[ClickState["Dragging"] = 0] = "Dragging";
                 ClickState[ClickState["PlaceChunk"] = 1] = "PlaceChunk";
                 ClickState[ClickState["PlaceRing"] = 2] = "PlaceRing";
                 ClickState[ClickState["PlaceObject"] = 3] = "PlaceObject";
             })(ClickState || (ClickState = {}));
-            exports_7("ClickState", ClickState);
+            exports_10("ClickState", ClickState);
             (function (ChunkLayerState) {
                 ChunkLayerState[ChunkLayerState["Low"] = 0] = "Low";
                 ChunkLayerState[ChunkLayerState["High"] = 1] = "High";
             })(ChunkLayerState || (ChunkLayerState = {}));
-            exports_7("ChunkLayerState", ChunkLayerState);
+            exports_10("ChunkLayerState", ChunkLayerState);
             (function (RotationMode) {
                 RotationMode[RotationMode["Floor"] = 134] = "Floor";
                 RotationMode[RotationMode["RightWall"] = 224] = "RightWall";
                 RotationMode[RotationMode["Ceiling"] = 314] = "Ceiling";
                 RotationMode[RotationMode["LeftWall"] = 44] = "LeftWall";
             })(RotationMode || (RotationMode = {}));
-            exports_7("RotationMode", RotationMode);
+            exports_10("RotationMode", RotationMode);
         }
     }
 });
-System.register("common/Color", [], function(exports_8, context_8) {
+System.register("common/Color", [], function(exports_11, context_11) {
     "use strict";
-    var __moduleName = context_8 && context_8.id;
+    var __moduleName = context_11 && context_11.id;
     var Color;
     return {
         setters:[],
@@ -329,14 +503,14 @@ System.register("common/Color", [], function(exports_8, context_8) {
                 }
                 return Color;
             }());
-            exports_8("Color", Color);
+            exports_11("Color", Color);
         }
     }
 });
 ///<reference path="../../typings/Compress.d.ts"/>
-System.register("common/Help", ["common/Utils", "common/CanvasInformation", "common/Color", "common/Enums", "game/SonicManager"], function(exports_9, context_9) {
+System.register("common/Help", ["common/Utils", "common/CanvasInformation", "common/Color", "common/Enums", "game/SonicManager"], function(exports_12, context_12) {
     "use strict";
-    var __moduleName = context_9 && context_9.id;
+    var __moduleName = context_12 && context_12.id;
     var Utils_1, CanvasInformation_1, Color_1, Enums_1, SonicManager_1;
     var Help;
     return {
@@ -563,13 +737,13 @@ System.register("common/Help", ["common/Utils", "common/CanvasInformation", "com
                 Help.cos_table = new Array(1.00000, 0.99970, 0.99880, 0.99729, 0.99518, 0.99248, 0.98918, 0.98528, 0.98079, 0.97570, 0.97003, 0.96378, 0.95694, 0.94953, 0.94154, 0.93299, 0.92388, 0.91421, 0.90399, 0.89322, 0.88192, 0.87009, 0.85773, 0.84485, 0.83147, 0.81758, 0.80321, 0.78835, 0.77301, 0.75721, 0.74095, 0.72425, 0.70711, 0.68954, 0.67156, 0.65317, 0.63439, 0.61523, 0.59570, 0.57581, 0.55557, 0.53500, 0.51410, 0.49290, 0.47140, 0.44961, 0.42755, 0.40524, 0.38268, 0.35990, 0.33689, 0.31368, 0.29028, 0.26671, 0.24298, 0.21910, 0.19509, 0.17096, 0.14673, 0.12241, 0.09802, 0.07356, 0.04907, 0.02454, 0.00000, -0.02454, -0.04907, -0.07356, -0.09802, -0.12241, -0.14673, -0.17096, -0.19509, -0.21910, -0.24298, -0.26671, -0.29028, -0.31368, -0.33689, -0.35990, -0.38268, -0.40524, -0.42755, -0.44961, -0.47140, -0.49290, -0.51410, -0.53500, -0.55557, -0.57581, -0.59570, -0.61523, -0.63439, -0.65317, -0.67156, -0.68954, -0.70711, -0.72425, -0.74095, -0.75721, -0.77301, -0.78835, -0.80321, -0.81758, -0.83147, -0.84485, -0.85773, -0.87009, -0.88192, -0.89322, -0.90399, -0.91421, -0.92388, -0.93299, -0.94154, -0.94953, -0.95694, -0.96378, -0.97003, -0.97570, -0.98079, -0.98528, -0.98918, -0.99248, -0.99518, -0.99729, -0.99880, -0.99970, -1.00000, -0.99970, -0.99880, -0.99729, -0.99518, -0.99248, -0.98918, -0.98528, -0.98079, -0.97570, -0.97003, -0.96378, -0.95694, -0.94953, -0.94154, -0.93299, -0.92388, -0.91421, -0.90399, -0.89322, -0.88192, -0.87009, -0.85773, -0.84485, -0.83147, -0.81758, -0.80321, -0.78835, -0.77301, -0.75721, -0.74095, -0.72425, -0.70711, -0.68954, -0.67156, -0.65317, -0.63439, -0.61523, -0.59570, -0.57581, -0.55557, -0.53500, -0.51410, -0.49290, -0.47140, -0.44961, -0.42756, -0.40524, -0.38268, -0.35990, -0.33689, -0.31368, -0.29028, -0.26671, -0.24298, -0.21910, -0.19509, -0.17096, -0.14673, -0.12241, -0.09802, -0.07356, -0.04907, -0.02454, -0.00000, 0.02454, 0.04907, 0.07356, 0.09802, 0.12241, 0.14673, 0.17096, 0.19509, 0.21910, 0.24298, 0.26671, 0.29028, 0.31368, 0.33689, 0.35990, 0.38268, 0.40524, 0.42756, 0.44961, 0.47140, 0.49290, 0.51410, 0.53500, 0.55557, 0.57581, 0.59570, 0.61523, 0.63439, 0.65317, 0.67156, 0.68954, 0.70711, 0.72425, 0.74095, 0.75721, 0.77301, 0.78835, 0.80321, 0.81758, 0.83147, 0.84485, 0.85773, 0.87009, 0.88192, 0.89322, 0.90399, 0.91421, 0.92388, 0.93299, 0.94154, 0.94953, 0.95694, 0.96378, 0.97003, 0.97570, 0.98079, 0.98528, 0.98918, 0.99248, 0.99518, 0.99729, 0.99880, 0.99970);
                 return Help;
             }());
-            exports_9("Help", Help);
+            exports_12("Help", Help);
         }
     }
 });
-System.register("SLData", [], function(exports_10, context_10) {
+System.register("SLData", [], function(exports_13, context_13) {
     "use strict";
-    var __moduleName = context_10 && context_10.id;
+    var __moduleName = context_13 && context_13.id;
     var SLData, AnimatedPaletteItem, AnimatedPalettePiece, SLDataRingEntry, SLDataCNZBumperEntry, Solidity, SLDataChunkBlock, SLDataObjectEntry, SLDataStartPositionEntry, SLDataAnimation, SLDataAnimationFrame, SLDataPatternIndex, ObjectModelData;
     return {
         setters:[],
@@ -579,86 +753,86 @@ System.register("SLData", [], function(exports_10, context_10) {
                 }
                 return SLData;
             }());
-            exports_10("SLData", SLData);
+            exports_13("SLData", SLData);
             AnimatedPaletteItem = (function () {
                 function AnimatedPaletteItem() {
                 }
                 return AnimatedPaletteItem;
             }());
-            exports_10("AnimatedPaletteItem", AnimatedPaletteItem);
+            exports_13("AnimatedPaletteItem", AnimatedPaletteItem);
             AnimatedPalettePiece = (function () {
                 function AnimatedPalettePiece() {
                 }
                 return AnimatedPalettePiece;
             }());
-            exports_10("AnimatedPalettePiece", AnimatedPalettePiece);
+            exports_13("AnimatedPalettePiece", AnimatedPalettePiece);
             SLDataRingEntry = (function () {
                 function SLDataRingEntry() {
                 }
                 return SLDataRingEntry;
             }());
-            exports_10("SLDataRingEntry", SLDataRingEntry);
+            exports_13("SLDataRingEntry", SLDataRingEntry);
             SLDataCNZBumperEntry = (function () {
                 function SLDataCNZBumperEntry() {
                 }
                 return SLDataCNZBumperEntry;
             }());
-            exports_10("SLDataCNZBumperEntry", SLDataCNZBumperEntry);
+            exports_13("SLDataCNZBumperEntry", SLDataCNZBumperEntry);
             (function (Solidity) {
                 Solidity[Solidity["NotSolid"] = 0] = "NotSolid";
                 Solidity[Solidity["TopSolid"] = 1] = "TopSolid";
                 Solidity[Solidity["LRBSolid"] = 2] = "LRBSolid";
                 Solidity[Solidity["AllSolid"] = 3] = "AllSolid";
             })(Solidity || (Solidity = {}));
-            exports_10("Solidity", Solidity);
+            exports_13("Solidity", Solidity);
             SLDataChunkBlock = (function () {
                 function SLDataChunkBlock() {
                 }
                 return SLDataChunkBlock;
             }());
-            exports_10("SLDataChunkBlock", SLDataChunkBlock);
+            exports_13("SLDataChunkBlock", SLDataChunkBlock);
             SLDataObjectEntry = (function () {
                 function SLDataObjectEntry() {
                 }
                 return SLDataObjectEntry;
             }());
-            exports_10("SLDataObjectEntry", SLDataObjectEntry);
+            exports_13("SLDataObjectEntry", SLDataObjectEntry);
             SLDataStartPositionEntry = (function () {
                 function SLDataStartPositionEntry() {
                 }
                 return SLDataStartPositionEntry;
             }());
-            exports_10("SLDataStartPositionEntry", SLDataStartPositionEntry);
+            exports_13("SLDataStartPositionEntry", SLDataStartPositionEntry);
             SLDataAnimation = (function () {
                 function SLDataAnimation() {
                 }
                 return SLDataAnimation;
             }());
-            exports_10("SLDataAnimation", SLDataAnimation);
+            exports_13("SLDataAnimation", SLDataAnimation);
             SLDataAnimationFrame = (function () {
                 function SLDataAnimationFrame() {
                 }
                 return SLDataAnimationFrame;
             }());
-            exports_10("SLDataAnimationFrame", SLDataAnimationFrame);
+            exports_13("SLDataAnimationFrame", SLDataAnimationFrame);
             SLDataPatternIndex = (function () {
                 function SLDataPatternIndex() {
                 }
                 return SLDataPatternIndex;
             }());
-            exports_10("SLDataPatternIndex", SLDataPatternIndex);
+            exports_13("SLDataPatternIndex", SLDataPatternIndex);
             ObjectModelData = (function () {
                 function ObjectModelData() {
                 }
                 return ObjectModelData;
             }());
-            exports_10("ObjectModelData", ObjectModelData);
+            exports_13("ObjectModelData", ObjectModelData);
         }
     }
 });
-System.register("game/level/HeightMap", ["common/Utils", "game/SonicManager", "common/CanvasInformation", "common/Help", "common/Enums"], function(exports_11, context_11) {
+System.register("game/level/HeightMap", ["common/Utils", "game/SonicManager", "common/CanvasInformation", "common/Help", "common/Enums"], function(exports_14, context_14) {
     "use strict";
-    var __moduleName = context_11 && context_11.id;
+    var __moduleName = context_14 && context_14.id;
     var Utils_2, SonicManager_2, CanvasInformation_2, Help_1, Enums_2;
     var HeightMap;
     return {
@@ -778,13 +952,13 @@ System.register("game/level/HeightMap", ["common/Utils", "game/SonicManager", "c
                 HeightMap.colors = new Array("", "rgba(255,98,235,0.6)", "rgba(24,218,235,0.6)", "rgba(24,98,235,0.6)");
                 return HeightMap;
             }());
-            exports_11("HeightMap", HeightMap);
+            exports_14("HeightMap", HeightMap);
         }
     }
 });
-System.register("game/level/Tiles/Tile", ["common/CanvasInformation", "common/Utils", "game/SonicManager"], function(exports_12, context_12) {
+System.register("game/level/Tiles/Tile", ["common/CanvasInformation", "common/Utils", "game/SonicManager"], function(exports_15, context_15) {
     "use strict";
-    var __moduleName = context_12 && context_12.id;
+    var __moduleName = context_15 && context_15.id;
     var CanvasInformation_3, Utils_3, SonicManager_3;
     var Tile;
     return {
@@ -942,13 +1116,13 @@ System.register("game/level/Tiles/Tile", ["common/CanvasInformation", "common/Ut
                 };
                 return Tile;
             }());
-            exports_12("Tile", Tile);
+            exports_15("Tile", Tile);
         }
     }
 });
-System.register("game/level/Tiles/TileInfo", ["game/SonicManager"], function(exports_13, context_13) {
+System.register("game/level/Tiles/TileInfo", ["game/SonicManager"], function(exports_16, context_16) {
     "use strict";
-    var __moduleName = context_13 && context_13.id;
+    var __moduleName = context_16 && context_16.id;
     var SonicManager_4;
     var TileInfo;
     return {
@@ -971,13 +1145,13 @@ System.register("game/level/Tiles/TileInfo", ["game/SonicManager"], function(exp
                 };
                 return TileInfo;
             }());
-            exports_13("TileInfo", TileInfo);
+            exports_16("TileInfo", TileInfo);
         }
     }
 });
-System.register("game/level/Tiles/TilePiece", ["common/Utils", "common/CanvasInformation", "game/SonicManager"], function(exports_14, context_14) {
+System.register("game/level/Tiles/TilePiece", ["common/Utils", "common/CanvasInformation", "game/SonicManager"], function(exports_17, context_17) {
     "use strict";
-    var __moduleName = context_14 && context_14.id;
+    var __moduleName = context_17 && context_17.id;
     var Utils_4, CanvasInformation_4, SonicManager_5;
     var TilePiece;
     return {
@@ -1146,13 +1320,13 @@ System.register("game/level/Tiles/TilePiece", ["common/Utils", "common/CanvasInf
                 TilePiece.DrawOrder = [[3, 2, 1, 0], [1, 0, 3, 2], [2, 3, 0, 1], [0, 1, 2, 3]];
                 return TilePiece;
             }());
-            exports_14("TilePiece", TilePiece);
+            exports_17("TilePiece", TilePiece);
         }
     }
 });
-System.register("game/level/Tiles/TilePieceInfo", ["game/SonicManager", "SLData"], function(exports_15, context_15) {
+System.register("game/level/Tiles/TilePieceInfo", ["game/SonicManager", "SLData"], function(exports_18, context_18) {
     "use strict";
-    var __moduleName = context_15 && context_15.id;
+    var __moduleName = context_18 && context_18.id;
     var SonicManager_6, SLData_1;
     var TilePieceInfo;
     return {
@@ -1196,13 +1370,13 @@ System.register("game/level/Tiles/TilePieceInfo", ["game/SonicManager", "SLData"
                 };
                 return TilePieceInfo;
             }());
-            exports_15("TilePieceInfo", TilePieceInfo);
+            exports_18("TilePieceInfo", TilePieceInfo);
         }
     }
 });
-System.register("game/level/Animations/TileAnimationData", ["game/SonicManager"], function(exports_16, context_16) {
+System.register("game/level/Animations/TileAnimationData", ["game/SonicManager"], function(exports_19, context_19) {
     "use strict";
-    var __moduleName = context_16 && context_16.id;
+    var __moduleName = context_19 && context_19.id;
     var SonicManager_7;
     var TileAnimationData, TileAnimationDataFrame;
     return {
@@ -1246,7 +1420,7 @@ System.register("game/level/Animations/TileAnimationData", ["game/SonicManager"]
                 };
                 return TileAnimationData;
             }());
-            exports_16("TileAnimationData", TileAnimationData);
+            exports_19("TileAnimationData", TileAnimationData);
             TileAnimationDataFrame = (function () {
                 function TileAnimationDataFrame() {
                     this.Ticks = 0;
@@ -1254,13 +1428,13 @@ System.register("game/level/Animations/TileAnimationData", ["game/SonicManager"]
                 }
                 return TileAnimationDataFrame;
             }());
-            exports_16("TileAnimationDataFrame", TileAnimationDataFrame);
+            exports_19("TileAnimationDataFrame", TileAnimationDataFrame);
         }
     }
 });
-System.register("game/level/Objects/LevelObjectAssetFrame", ["common/CanvasInformation"], function(exports_17, context_17) {
+System.register("game/level/Objects/LevelObjectAssetFrame", ["common/CanvasInformation"], function(exports_20, context_20) {
     "use strict";
-    var __moduleName = context_17 && context_17.id;
+    var __moduleName = context_20 && context_20.id;
     var CanvasInformation_5;
     var LevelObjectAssetFrame;
     return {
@@ -1397,13 +1571,13 @@ System.register("game/level/Objects/LevelObjectAssetFrame", ["common/CanvasInfor
                 };
                 return LevelObjectAssetFrame;
             }());
-            exports_17("LevelObjectAssetFrame", LevelObjectAssetFrame);
+            exports_20("LevelObjectAssetFrame", LevelObjectAssetFrame);
         }
     }
 });
-System.register("game/level/Objects/LevelObjectAsset", [], function(exports_18, context_18) {
+System.register("game/level/Objects/LevelObjectAsset", [], function(exports_21, context_21) {
     "use strict";
-    var __moduleName = context_18 && context_18.id;
+    var __moduleName = context_21 && context_21.id;
     var LevelObjectAsset;
     return {
         setters:[],
@@ -1415,13 +1589,13 @@ System.register("game/level/Objects/LevelObjectAsset", [], function(exports_18, 
                 }
                 return LevelObjectAsset;
             }());
-            exports_18("LevelObjectAsset", LevelObjectAsset);
+            exports_21("LevelObjectAsset", LevelObjectAsset);
         }
     }
 });
-System.register("game/level/Objects/LevelObjectProjectile", [], function(exports_19, context_19) {
+System.register("game/level/Objects/LevelObjectProjectile", [], function(exports_22, context_22) {
     "use strict";
-    var __moduleName = context_19 && context_19.id;
+    var __moduleName = context_22 && context_22.id;
     var LevelObjectProjectile;
     return {
         setters:[],
@@ -1432,13 +1606,13 @@ System.register("game/level/Objects/LevelObjectProjectile", [], function(exports
                 }
                 return LevelObjectProjectile;
             }());
-            exports_19("LevelObjectProjectile", LevelObjectProjectile);
+            exports_22("LevelObjectProjectile", LevelObjectProjectile);
         }
     }
 });
-System.register("game/level/Objects/LevelObjectPiece", [], function(exports_20, context_20) {
+System.register("game/level/Objects/LevelObjectPiece", [], function(exports_23, context_23) {
     "use strict";
-    var __moduleName = context_20 && context_20.id;
+    var __moduleName = context_23 && context_23.id;
     var LevelObjectPiece;
     return {
         setters:[],
@@ -1449,13 +1623,13 @@ System.register("game/level/Objects/LevelObjectPiece", [], function(exports_20, 
                 }
                 return LevelObjectPiece;
             }());
-            exports_20("LevelObjectPiece", LevelObjectPiece);
+            exports_23("LevelObjectPiece", LevelObjectPiece);
         }
     }
 });
-System.register("game/level/Objects/LevelObject", ["game/SonicManager"], function(exports_21, context_21) {
+System.register("game/level/Objects/LevelObject", ["game/SonicManager"], function(exports_24, context_24) {
     "use strict";
-    var __moduleName = context_21 && context_21.id;
+    var __moduleName = context_24 && context_24.id;
     var SonicManager_8;
     var LevelObject;
     return {
@@ -1513,13 +1687,13 @@ System.register("game/level/Objects/LevelObject", ["game/SonicManager"], functio
                 };
                 return LevelObject;
             }());
-            exports_21("LevelObject", LevelObject);
+            exports_24("LevelObject", LevelObject);
         }
     }
 });
-System.register("game/level/Objects/LevelObjectPieceLayoutPiece", [], function(exports_22, context_22) {
+System.register("game/level/Objects/LevelObjectPieceLayoutPiece", [], function(exports_25, context_25) {
     "use strict";
-    var __moduleName = context_22 && context_22.id;
+    var __moduleName = context_25 && context_25.id;
     var LevelObjectPieceLayoutPiece;
     return {
         setters:[],
@@ -1530,13 +1704,13 @@ System.register("game/level/Objects/LevelObjectPieceLayoutPiece", [], function(e
                 }
                 return LevelObjectPieceLayoutPiece;
             }());
-            exports_22("LevelObjectPieceLayoutPiece", LevelObjectPieceLayoutPiece);
+            exports_25("LevelObjectPieceLayoutPiece", LevelObjectPieceLayoutPiece);
         }
     }
 });
-System.register("game/level/Objects/LevelObjectPieceLayout", ["game/SonicManager", "common/Utils"], function(exports_23, context_23) {
+System.register("game/level/Objects/LevelObjectPieceLayout", ["game/SonicManager", "common/Utils"], function(exports_26, context_26) {
     "use strict";
-    var __moduleName = context_23 && context_23.id;
+    var __moduleName = context_26 && context_26.id;
     var SonicManager_9, Utils_5;
     var LevelObjectPieceLayout;
     return {
@@ -1655,13 +1829,13 @@ System.register("game/level/Objects/LevelObjectPieceLayout", ["game/SonicManager
                 };
                 return LevelObjectPieceLayout;
             }());
-            exports_23("LevelObjectPieceLayout", LevelObjectPieceLayout);
+            exports_26("LevelObjectPieceLayout", LevelObjectPieceLayout);
         }
     }
 });
-System.register("game/level/Objects/LevelObjectData", [], function(exports_24, context_24) {
+System.register("game/level/Objects/LevelObjectData", [], function(exports_27, context_27) {
     "use strict";
-    var __moduleName = context_24 && context_24.id;
+    var __moduleName = context_27 && context_27.id;
     var LevelObjectData;
     return {
         setters:[],
@@ -1681,13 +1855,13 @@ System.register("game/level/Objects/LevelObjectData", [], function(exports_24, c
                 }
                 return LevelObjectData;
             }());
-            exports_24("LevelObjectData", LevelObjectData);
+            exports_27("LevelObjectData", LevelObjectData);
         }
     }
 });
-System.register("game/level/Objects/ObjectManager", ["common/Help", "game/level/Objects/LevelObjectAsset", "game/level/Objects/LevelObjectAssetFrame", "game/level/Objects/LevelObjectProjectile", "game/level/Objects/LevelObject", "game/level/Objects/LevelObjectPieceLayout"], function(exports_25, context_25) {
+System.register("game/level/Objects/ObjectManager", ["common/Help", "game/level/Objects/LevelObjectAsset", "game/level/Objects/LevelObjectAssetFrame", "game/level/Objects/LevelObjectProjectile", "game/level/Objects/LevelObject", "game/level/Objects/LevelObjectPieceLayout"], function(exports_28, context_28) {
     "use strict";
-    var __moduleName = context_25 && context_25.id;
+    var __moduleName = context_28 && context_28.id;
     var Help_2, LevelObjectAsset_1, LevelObjectAssetFrame_1, LevelObjectProjectile_1, LevelObject_1, LevelObjectPieceLayout_1;
     var ObjectManager;
     return {
@@ -1784,13 +1958,13 @@ System.register("game/level/Objects/ObjectManager", ["common/Help", "game/level/
                 });
                 return ObjectManager;
             }());
-            exports_25("ObjectManager", ObjectManager);
+            exports_28("ObjectManager", ObjectManager);
         }
     }
 });
-System.register("game/level/Objects/LevelObjectInfo", ["common/Utils", "game/SonicManager", "game/level/Objects/ObjectManager"], function(exports_26, context_26) {
+System.register("game/level/Objects/LevelObjectInfo", ["common/Utils", "game/SonicManager", "game/level/Objects/ObjectManager"], function(exports_29, context_29) {
     "use strict";
-    var __moduleName = context_26 && context_26.id;
+    var __moduleName = context_29 && context_29.id;
     var Utils_6, SonicManager_10, ObjectManager_1;
     var LevelObjectInfo;
     return {
@@ -1971,13 +2145,13 @@ System.register("game/level/Objects/LevelObjectInfo", ["common/Utils", "game/Son
                 };
                 return LevelObjectInfo;
             }());
-            exports_26("LevelObjectInfo", LevelObjectInfo);
+            exports_29("LevelObjectInfo", LevelObjectInfo);
         }
     }
 });
-System.register("game/level/Ring", ["common/Utils", "game/SonicManager", "common/Enums"], function(exports_27, context_27) {
+System.register("game/level/Ring", ["common/Utils", "game/SonicManager", "common/Enums"], function(exports_30, context_30) {
     "use strict";
-    var __moduleName = context_27 && context_27.id;
+    var __moduleName = context_30 && context_30.id;
     var Utils_7, SonicManager_11, Enums_3;
     var Ring;
     return {
@@ -2034,13 +2208,13 @@ System.register("game/level/Ring", ["common/Utils", "game/SonicManager", "common
                 };
                 return Ring;
             }(Utils_7.Point));
-            exports_27("Ring", Ring);
+            exports_30("Ring", Ring);
         }
     }
 });
-System.register("game/SonicLevel", [], function(exports_28, context_28) {
+System.register("game/SonicLevel", [], function(exports_31, context_31) {
     "use strict";
-    var __moduleName = context_28 && context_28.id;
+    var __moduleName = context_31 && context_31.id;
     var SonicLevel, PaletteItem, PaletteItemPieces;
     return {
         setters:[],
@@ -2088,7 +2262,7 @@ System.register("game/SonicLevel", [], function(exports_28, context_28) {
                 };
                 return SonicLevel;
             }());
-            exports_28("SonicLevel", SonicLevel);
+            exports_31("SonicLevel", SonicLevel);
             PaletteItem = (function () {
                 function PaletteItem() {
                     this.SkipIndex = 0;
@@ -2096,7 +2270,7 @@ System.register("game/SonicLevel", [], function(exports_28, context_28) {
                 }
                 return PaletteItem;
             }());
-            exports_28("PaletteItem", PaletteItem);
+            exports_31("PaletteItem", PaletteItem);
             PaletteItemPieces = (function () {
                 function PaletteItemPieces() {
                     this.PaletteIndex = 0;
@@ -2105,13 +2279,13 @@ System.register("game/SonicLevel", [], function(exports_28, context_28) {
                 }
                 return PaletteItemPieces;
             }());
-            exports_28("PaletteItemPieces", PaletteItemPieces);
+            exports_31("PaletteItemPieces", PaletteItemPieces);
         }
     }
 });
-System.register("game/level/Tiles/TilePaletteAnimationManager", [], function(exports_29, context_29) {
+System.register("game/level/Tiles/TilePaletteAnimationManager", [], function(exports_32, context_32) {
     "use strict";
-    var __moduleName = context_29 && context_29.id;
+    var __moduleName = context_32 && context_32.id;
     var TilePaletteAnimationManager, TilePaletteAnimation, TilePaletteAnimationFrame;
     return {
         setters:[],
@@ -2147,7 +2321,7 @@ System.register("game/level/Tiles/TilePaletteAnimationManager", [], function(exp
                 };
                 return TilePaletteAnimationManager;
             }());
-            exports_29("TilePaletteAnimationManager", TilePaletteAnimationManager);
+            exports_32("TilePaletteAnimationManager", TilePaletteAnimationManager);
             TilePaletteAnimation = (function () {
                 function TilePaletteAnimation(manager, animatedPaletteData) {
                     this.CurrentFrame = 0;
@@ -2185,7 +2359,7 @@ System.register("game/level/Tiles/TilePaletteAnimationManager", [], function(exp
                 };
                 return TilePaletteAnimation;
             }());
-            exports_29("TilePaletteAnimation", TilePaletteAnimation);
+            exports_32("TilePaletteAnimation", TilePaletteAnimation);
             TilePaletteAnimationFrame = (function () {
                 function TilePaletteAnimationFrame(frameIndex, animation) {
                     this.FrameIndex = 0;
@@ -2223,13 +2397,13 @@ System.register("game/level/Tiles/TilePaletteAnimationManager", [], function(exp
                 };
                 return TilePaletteAnimationFrame;
             }());
-            exports_29("TilePaletteAnimationFrame", TilePaletteAnimationFrame);
+            exports_32("TilePaletteAnimationFrame", TilePaletteAnimationFrame);
         }
     }
 });
-System.register("game/level/Tiles/TileAnimationManager", ["game/SonicManager"], function(exports_30, context_30) {
+System.register("game/level/Tiles/TileAnimationManager", ["game/SonicManager"], function(exports_33, context_33) {
     "use strict";
-    var __moduleName = context_30 && context_30.id;
+    var __moduleName = context_33 && context_33.id;
     var SonicManager_12;
     var TileAnimationManager, TileAnimation, TileAnimationFrame;
     return {
@@ -2268,7 +2442,7 @@ System.register("game/level/Tiles/TileAnimationManager", ["game/SonicManager"], 
                 };
                 return TileAnimationManager;
             }());
-            exports_30("TileAnimationManager", TileAnimationManager);
+            exports_33("TileAnimationManager", TileAnimationManager);
             TileAnimation = (function () {
                 function TileAnimation(manager, animatedTileData) {
                     this.currentFrame = 0;
@@ -2299,7 +2473,7 @@ System.register("game/level/Tiles/TileAnimationManager", ["game/SonicManager"], 
                 };
                 return TileAnimation;
             }());
-            exports_30("TileAnimation", TileAnimation);
+            exports_33("TileAnimation", TileAnimation);
             TileAnimationFrame = (function () {
                 function TileAnimationFrame(frameIndex, animation) {
                     this.frameIndex = 0;
@@ -2311,13 +2485,13 @@ System.register("game/level/Tiles/TileAnimationManager", ["game/SonicManager"], 
                 };
                 return TileAnimationFrame;
             }());
-            exports_30("TileAnimationFrame", TileAnimationFrame);
+            exports_33("TileAnimationFrame", TileAnimationFrame);
         }
     }
 });
-System.register("game/level/Tiles/TileChunk", ["common/Utils", "game/SonicManager", "common/CanvasInformation", "common/Enums"], function(exports_31, context_31) {
+System.register("game/level/Tiles/TileChunk", ["common/Utils", "game/SonicManager", "common/CanvasInformation", "common/Enums"], function(exports_34, context_34) {
     "use strict";
-    var __moduleName = context_31 && context_31.id;
+    var __moduleName = context_34 && context_34.id;
     var Utils_8, SonicManager_13, CanvasInformation_6, Enums_4;
     var TileChunk, TileChunkDebugDrawOptions, ChunkLayer, PaletteAnimationCanvasFrames, PaletteAnimationCanvasFrame, TileAnimationCanvasFrames, TileAnimationCanvasFrame;
     return {
@@ -2850,19 +3024,19 @@ System.register("game/level/Tiles/TileChunk", ["common/Utils", "game/SonicManage
                 TileChunk.TileSideLength = 16;
                 return TileChunk;
             }());
-            exports_31("TileChunk", TileChunk);
+            exports_34("TileChunk", TileChunk);
             TileChunkDebugDrawOptions = (function () {
                 function TileChunkDebugDrawOptions() {
                 }
                 return TileChunkDebugDrawOptions;
             }());
-            exports_31("TileChunkDebugDrawOptions", TileChunkDebugDrawOptions);
+            exports_34("TileChunkDebugDrawOptions", TileChunkDebugDrawOptions);
             ChunkLayer = (function () {
                 function ChunkLayer() {
                 }
                 return ChunkLayer;
             }());
-            exports_31("ChunkLayer", ChunkLayer);
+            exports_34("ChunkLayer", ChunkLayer);
             PaletteAnimationCanvasFrames = (function () {
                 function PaletteAnimationCanvasFrames(paletteAnimationIndex) {
                     this.paletteAnimationIndex = paletteAnimationIndex;
@@ -2870,13 +3044,13 @@ System.register("game/level/Tiles/TileChunk", ["common/Utils", "game/SonicManage
                 }
                 return PaletteAnimationCanvasFrames;
             }());
-            exports_31("PaletteAnimationCanvasFrames", PaletteAnimationCanvasFrames);
+            exports_34("PaletteAnimationCanvasFrames", PaletteAnimationCanvasFrames);
             PaletteAnimationCanvasFrame = (function () {
                 function PaletteAnimationCanvasFrame() {
                 }
                 return PaletteAnimationCanvasFrame;
             }());
-            exports_31("PaletteAnimationCanvasFrame", PaletteAnimationCanvasFrame);
+            exports_34("PaletteAnimationCanvasFrame", PaletteAnimationCanvasFrame);
             TileAnimationCanvasFrames = (function () {
                 function TileAnimationCanvasFrames(tileAnimationIndex) {
                     this.tileAnimationIndex = tileAnimationIndex;
@@ -2884,19 +3058,19 @@ System.register("game/level/Tiles/TileChunk", ["common/Utils", "game/SonicManage
                 }
                 return TileAnimationCanvasFrames;
             }());
-            exports_31("TileAnimationCanvasFrames", TileAnimationCanvasFrames);
+            exports_34("TileAnimationCanvasFrames", TileAnimationCanvasFrames);
             TileAnimationCanvasFrame = (function () {
                 function TileAnimationCanvasFrame() {
                 }
                 return TileAnimationCanvasFrame;
             }());
-            exports_31("TileAnimationCanvasFrame", TileAnimationCanvasFrame);
+            exports_34("TileAnimationCanvasFrame", TileAnimationCanvasFrame);
         }
     }
 });
-System.register("game/sonic/SensorManager", ["SLData", "game/level/HeightMap", "common/Help", "game/SonicManager", "common/Enums"], function(exports_32, context_32) {
+System.register("game/sonic/SensorManager", ["SLData", "game/level/HeightMap", "common/Help", "game/SonicManager", "common/Enums"], function(exports_35, context_35) {
     "use strict";
-    var __moduleName = context_32 && context_32.id;
+    var __moduleName = context_35 && context_35.id;
     var SLData_2, HeightMap_1, Help_3, SonicManager_14, Enums_5;
     var SensorManager, Sensor, SensorM;
     return {
@@ -3136,7 +3310,7 @@ System.register("game/sonic/SensorManager", ["SLData", "game/level/HeightMap", "
                 };
                 return SensorManager;
             }());
-            exports_32("SensorManager", SensorManager);
+            exports_35("SensorManager", SensorManager);
             Sensor = (function () {
                 function Sensor(x1, x2, y1, y2, manager, color, ignoreSolid, letter) {
                     this.__currentM = new SensorM(0, 0);
@@ -3423,7 +3597,7 @@ System.register("game/sonic/SensorManager", ["SLData", "game/level/HeightMap", "
                 };
                 return Sensor;
             }());
-            exports_32("Sensor", Sensor);
+            exports_35("Sensor", Sensor);
             SensorM = (function () {
                 function SensorM(value, angle) {
                     this.value = 0;
@@ -3434,13 +3608,13 @@ System.register("game/sonic/SensorManager", ["SLData", "game/level/HeightMap", "
                 }
                 return SensorM;
             }());
-            exports_32("SensorM", SensorM);
+            exports_35("SensorM", SensorM);
         }
     }
 });
-System.register("game/sonic/SonicConstants", ["common/Help"], function(exports_33, context_33) {
+System.register("game/sonic/SonicConstants", ["common/Help"], function(exports_36, context_36) {
     "use strict";
-    var __moduleName = context_33 && context_33.id;
+    var __moduleName = context_36 && context_36.id;
     var Help_4;
     var SonicConstants;
     return {
@@ -3471,13 +3645,13 @@ System.register("game/sonic/SonicConstants", ["common/Help"], function(exports_3
                 };
                 return SonicConstants;
             }());
-            exports_33("SonicConstants", SonicConstants);
+            exports_36("SonicConstants", SonicConstants);
         }
     }
 });
-System.register("game/sonic/Sonic", ["common/Utils", "game/sonic/SensorManager", "common/Enums", "game/SonicManager", "common/Help", "game/level/Ring", "game/sonic/SonicConstants"], function(exports_34, context_34) {
+System.register("game/sonic/Sonic", ["common/Utils", "game/sonic/SensorManager", "common/Enums", "game/SonicManager", "common/Help", "game/level/Ring", "game/sonic/SonicConstants"], function(exports_37, context_37) {
     "use strict";
-    var __moduleName = context_34 && context_34.id;
+    var __moduleName = context_37 && context_37.id;
     var Utils_9, SensorManager_1, Enums_6, SonicManager_15, Help_5, Ring_1, SonicConstants_1;
     var Sonic, Watcher;
     return {
@@ -4324,7 +4498,7 @@ System.register("game/sonic/Sonic", ["common/Utils", "game/sonic/SensorManager",
                 };
                 return Sonic;
             }());
-            exports_34("Sonic", Sonic);
+            exports_37("Sonic", Sonic);
             Watcher = (function () {
                 function Watcher() {
                     this.lastTick = 0;
@@ -4349,13 +4523,13 @@ System.register("game/sonic/Sonic", ["common/Utils", "game/sonic/SensorManager",
                 };
                 return Watcher;
             }());
-            exports_34("Watcher", Watcher);
+            exports_37("Watcher", Watcher);
         }
     }
 });
-System.register("game/level/SpriteCache", [], function(exports_35, context_35) {
+System.register("game/level/SpriteCache", [], function(exports_38, context_38) {
     "use strict";
-    var __moduleName = context_35 && context_35.id;
+    var __moduleName = context_38 && context_38.id;
     var SpriteCache, SpriteCacheIndexes;
     return {
         setters:[],
@@ -4377,7 +4551,7 @@ System.register("game/level/SpriteCache", [], function(exports_35, context_35) {
                 };
                 return SpriteCache;
             }());
-            exports_35("SpriteCache", SpriteCache);
+            exports_38("SpriteCache", SpriteCache);
             SpriteCacheIndexes = (function () {
                 function SpriteCacheIndexes() {
                     this.Sprites = 0;
@@ -4392,13 +4566,13 @@ System.register("game/level/SpriteCache", [], function(exports_35, context_35) {
                 }
                 return SpriteCacheIndexes;
             }());
-            exports_35("SpriteCacheIndexes", SpriteCacheIndexes);
+            exports_38("SpriteCacheIndexes", SpriteCacheIndexes);
         }
     }
 });
-System.register("game/level/Animations/AnimationInstance", [], function(exports_36, context_36) {
+System.register("game/level/Animations/AnimationInstance", [], function(exports_39, context_39) {
     "use strict";
-    var __moduleName = context_36 && context_36.id;
+    var __moduleName = context_39 && context_39.id;
     var AnimationInstance;
     return {
         setters:[],
@@ -4412,13 +4586,13 @@ System.register("game/level/Animations/AnimationInstance", [], function(exports_
                 };
                 return AnimationInstance;
             }());
-            exports_36("AnimationInstance", AnimationInstance);
+            exports_39("AnimationInstance", AnimationInstance);
         }
     }
 });
-System.register("common/SpriteLoader", [], function(exports_37, context_37) {
+System.register("common/SpriteLoader", [], function(exports_40, context_40) {
     "use strict";
-    var __moduleName = context_37 && context_37.id;
+    var __moduleName = context_40 && context_40.id;
     var SpriteLoader, SpriteLoaderStep;
     return {
         setters:[],
@@ -4469,7 +4643,7 @@ System.register("common/SpriteLoader", [], function(exports_37, context_37) {
                 };
                 return SpriteLoader;
             }());
-            exports_37("SpriteLoader", SpriteLoader);
+            exports_40("SpriteLoader", SpriteLoader);
             SpriteLoaderStep = (function () {
                 function SpriteLoaderStep(title, method, onFinish) {
                     this.Title = title;
@@ -4479,13 +4653,13 @@ System.register("common/SpriteLoader", [], function(exports_37, context_37) {
                 }
                 return SpriteLoaderStep;
             }());
-            exports_37("SpriteLoaderStep", SpriteLoaderStep);
+            exports_40("SpriteLoaderStep", SpriteLoaderStep);
         }
     }
 });
-System.register("game/level/SonicBackground", [], function(exports_38, context_38) {
+System.register("game/level/SonicBackground", [], function(exports_41, context_41) {
     "use strict";
-    var __moduleName = context_38 && context_38.id;
+    var __moduleName = context_41 && context_41.id;
     var SonicBackground;
     return {
         setters:[],
@@ -4499,13 +4673,13 @@ System.register("game/level/SonicBackground", [], function(exports_38, context_3
                 };
                 return SonicBackground;
             }());
-            exports_38("SonicBackground", SonicBackground);
+            exports_41("SonicBackground", SonicBackground);
         }
     }
 });
-System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation", "game/SonicEngine", "common/Enums", "common/Help", "game/level/HeightMap", "game/level/Objects/ObjectManager", "game/SonicLevel", "game/level/Objects/LevelObjectInfo", "game/level/Ring", "game/level/SpriteCache", "game/level/Animations/TileAnimationData", "game/level/Tiles/TilePaletteAnimationManager", "game/level/Tiles/TileAnimationManager", "game/level/Tiles/TileChunk", "common/SpriteLoader", "game/level/Objects/LevelObject", "game/level/Objects/LevelObjectData", "game/level/Tiles/Tile", "game/level/Tiles/TilePiece", "game/level/Tiles/TileInfo", "game/level/Tiles/TilePieceInfo"], function(exports_39, context_39) {
+System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation", "game/SonicEngine", "common/Enums", "common/Help", "game/level/HeightMap", "game/level/Objects/ObjectManager", "game/SonicLevel", "game/level/Objects/LevelObjectInfo", "game/level/Ring", "game/level/SpriteCache", "game/level/Animations/TileAnimationData", "game/level/Tiles/TilePaletteAnimationManager", "game/level/Tiles/TileAnimationManager", "game/level/Tiles/TileChunk", "common/SpriteLoader", "game/level/Objects/LevelObject", "game/level/Objects/LevelObjectData", "game/level/Tiles/Tile", "game/level/Tiles/TilePiece", "game/level/Tiles/TileInfo", "game/level/Tiles/TilePieceInfo"], function(exports_42, context_42) {
     "use strict";
-    var __moduleName = context_39 && context_39.id;
+    var __moduleName = context_42 && context_42.id;
     var Utils_10, CanvasInformation_7, SonicEngine_1, Enums_7, Help_6, HeightMap_2, ObjectManager_2, SonicLevel_1, LevelObjectInfo_1, Ring_2, SpriteCache_1, TileAnimationData_1, TilePaletteAnimationManager_1, TileAnimationManager_1, TileChunk_1, SpriteLoader_1, LevelObject_2, LevelObjectData_1, Tile_1, TilePiece_1, TileInfo_1, TilePieceInfo_1;
     var SonicManager, tempArrays, tempBArrays, tempCnvs, posLookups, colsLookups, imageDataCaches;
     function getArray(size) {
@@ -4742,7 +4916,7 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                     this.engine.canvasHeight = $(window).height();
                     gameCanvas.domCanvas[0].setAttribute("width", this.engine.canvasWidth.toString());
                     gameCanvas.domCanvas[0].setAttribute("height", this.engine.canvasHeight.toString());
-                    jQuery.getJSON("content/sprites/sonic.js", function (data) {
+                    jQuery.getJSON("assets/content/sprites/sonic.js", function (data) {
                         _this.sonicSprites = data;
                     });
                     this.objectManager = new ObjectManager_2.ObjectManager(this);
@@ -5622,7 +5796,7 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                 SonicManager._cachedOffs = {};
                 return SonicManager;
             }());
-            exports_39("SonicManager", SonicManager);
+            exports_42("SonicManager", SonicManager);
             tempArrays = {};
             tempBArrays = {};
             tempCnvs = {};
@@ -5703,9 +5877,9 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
 });
 /// <reference path="../../typings/keyboardjs.d.ts" />
 /// <reference path="../../typings/socket.io-client.d.ts" />
-System.register("game/SonicEngine", ["common/CanvasInformation", "game/SonicManager", "common/Enums", "common/Utils", "game/sonic/Sonic", "common/Help"], function(exports_40, context_40) {
+System.register("game/SonicEngine", ["common/CanvasInformation", "game/SonicManager", "common/Enums", "common/Utils", "game/sonic/Sonic", "common/Help"], function(exports_43, context_43) {
     "use strict";
-    var __moduleName = context_40 && context_40.id;
+    var __moduleName = context_43 && context_43.id;
     var CanvasInformation_8, SonicManager_16, Enums_8, Utils_11, Sonic_1, Help_7;
     var SonicEngine;
     return {
@@ -5903,12 +6077,7 @@ System.register("game/SonicEngine", ["common/CanvasInformation", "game/SonicMana
                         _this.sonicManager.sonicLevel.CurHeightMap = !_this.sonicManager.sonicLevel.CurHeightMap;
                     }, function () {
                     });
-                    setTimeout(function () {
-                        _this.client.emit("LoadLevel.Request", { Data: 'Angel Island Zone Act 1' });
-                        //            if (neverGot) {
-                        //            this.LoadLevel((<any>window).STATICLEVEL);
-                        //        }
-                    }, 1);
+                    //            this.client.emit("LoadLevel.Request", { Data:'Angel Island Zone Act 1'});
                     this.client = io.connect("159.203.118.77:8998");
                     this.client.on("LoadLevel.Response", function (data) {
                         _this.LoadLevel(data.Data);
@@ -6002,15 +6171,18 @@ System.register("game/SonicEngine", ["common/CanvasInformation", "game/SonicMana
                 };
                 return SonicEngine;
             }());
-            exports_40("SonicEngine", SonicEngine);
+            exports_43("SonicEngine", SonicEngine);
         }
     }
 });
 /// <reference path="../typings/Compress.d.ts" />
-System.register("main", ['angular2/platform/browser', "layout/Layout", "game/SonicEngine"], function(exports_41, context_41) {
+/// <reference path="../node_modules/angular2/typings/browser.d.ts" />
+/// <reference path="../node_modules/angular2/core.d.ts" />
+/// <reference path="../node_modules/angular2/http.d.ts" />
+System.register("main", ['angular2/platform/browser', "layout/Layout", 'angular2/http', "game/SonicEngine"], function(exports_44, context_44) {
     "use strict";
-    var __moduleName = context_41 && context_41.id;
-    var browser_1, Layout_1, SonicEngine_2;
+    var __moduleName = context_44 && context_44.id;
+    var browser_1, Layout_1, http_2, SonicEngine_2;
     var Main;
     return {
         setters:[
@@ -6019,6 +6191,9 @@ System.register("main", ['angular2/platform/browser', "layout/Layout", "game/Son
             },
             function (Layout_1_1) {
                 Layout_1 = Layout_1_1;
+            },
+            function (http_2_1) {
+                http_2 = http_2_1;
             },
             function (SonicEngine_2_1) {
                 SonicEngine_2 = SonicEngine_2_1;
@@ -6029,11 +6204,11 @@ System.register("main", ['angular2/platform/browser', "layout/Layout", "game/Son
                 }
                 Main.run = function () {
                     new SonicEngine_2.SonicEngine();
-                    browser_1.bootstrap(Layout_1.Layout);
+                    browser_1.bootstrap(Layout_1.Layout, [http_2.HTTP_PROVIDERS]);
                 };
                 return Main;
             }());
-            exports_41("Main", Main);
+            exports_44("Main", Main);
             Main.run();
         }
     }
