@@ -5,21 +5,22 @@
 import {CanvasInformation} from "../common/CanvasInformation";
 import {SonicManager} from "./SonicManager";
 import {GameState} from "../common/Enums";
-import {Point,  DoublePoint } from "../common/Utils";
+import {Point, DoublePoint} from "../common/Utils";
 import {Sonic} from "./sonic/Sonic";
-import {SLData } from "../SLData";
+import {SLData} from "../SLData";
 import {Help} from "../common/Help";
 
 export class SonicEngine {
-    private wideScreen: boolean = true;
-    public client: SocketIOClient.Socket;
-    private fullscreenMode: boolean=false;
-    private gameCanvas: CanvasInformation;
-    private gameGoodWidth: number=0;
-    public canvasWidth: number=0;
-    public canvasHeight: number=0;
-    public sonicManager: SonicManager;
-    public static instance: SonicEngine;
+    private wideScreen:boolean = true;
+    public client:SocketIOClient.Socket;
+    private fullscreenMode:boolean = false;
+    private gameCanvas:CanvasInformation;
+    private gameGoodWidth:number = 0;
+    public canvasWidth:number = 0;
+    public canvasHeight:number = 0;
+    public sonicManager:SonicManager;
+    public static instance:SonicEngine;
+
     constructor() {
         SonicEngine.instance = this;
 
@@ -38,13 +39,14 @@ export class SonicEngine {
         window.setInterval(() => this.GameDraw(), 1000 / 60);
         this.resizeCanvas(true);
     }
-    private bindInput(): void {
-        this.gameCanvas.domCanvas.mousedown((e: JQueryEventObject) => this.canvasOnClick(e));
-        this.gameCanvas.domCanvas.mouseup((e: JQueryEventObject) => this.canvasMouseUp(e));
-        this.gameCanvas.domCanvas.mousemove((e: JQueryEventObject) => this.canvasMouseMove(e));
-        this.gameCanvas.domCanvas.bind("touchstart", (e: JQueryEventObject) => this.canvasOnClick(e));
-        this.gameCanvas.domCanvas.bind("touchend", (e: JQueryEventObject) => this.canvasMouseUp(e));
-        this.gameCanvas.domCanvas.bind("touchmove", (e: JQueryEventObject) => this.canvasMouseMove(e));
+
+    private bindInput():void {
+        this.gameCanvas.domCanvas.mousedown((e:JQueryEventObject) => this.canvasOnClick(e));
+        this.gameCanvas.domCanvas.mouseup((e:JQueryEventObject) => this.canvasMouseUp(e));
+        this.gameCanvas.domCanvas.mousemove((e:JQueryEventObject) => this.canvasMouseMove(e));
+        this.gameCanvas.domCanvas.bind("touchstart", (e:JQueryEventObject) => this.canvasOnClick(e));
+        this.gameCanvas.domCanvas.bind("touchend", (e:JQueryEventObject) => this.canvasMouseUp(e));
+        this.gameCanvas.domCanvas.bind("touchmove", (e:JQueryEventObject) => this.canvasMouseMove(e));
         this.gameCanvas.domCanvas.bind("contextmenu", (e) => e.preventDefault());
         keyboardJS.bind("f",
             () => {
@@ -72,8 +74,8 @@ export class SonicEngine {
             });
         keyboardJS.bind("2",
             () => {
-                window.doIt+=1;
-                if(window.doIt==5)window.doIt=1;
+                window.doIt += 1;
+                if (window.doIt == 5)window.doIt = 1;
             },
             () => {
 
@@ -228,14 +230,10 @@ export class SonicEngine {
             () => {
 
             });
-        setTimeout(() => {
 
-            this.client.emit("LoadLevel.Request", { Data:'Angel Island Zone Act 1'});
 
-            //            if (neverGot) {
-//            this.LoadLevel((<any>window).STATICLEVEL);
-            //        }
-        }, 1);
+        //            this.client.emit("LoadLevel.Request", { Data:'Angel Island Zone Act 1'});
+
 
         this.client = io.connect("159.203.118.77:8998");
         this.client.on("LoadLevel.Response",
@@ -243,16 +241,17 @@ export class SonicEngine {
                 this.LoadLevel(data.Data);
             });
         this.client.on("GetObjects.Response", data => {
-                this.sonicManager.loadObjects(data.Data);
+            this.sonicManager.loadObjects(data.Data);
         });
     }
-    private LoadLevel(data: string): void {
+
+    private LoadLevel(data:string):void {
         let l = JSON.parse(Help.decodeString(data));
         SonicEngine.instance.RunSonic(l);
     }
 
 
-    public RunSonic(level: SLData): void {
+    public RunSonic(level:SLData):void {
         this.sonicManager.clearCache();
         this.sonicManager.Load(level);
         this.sonicManager.windowLocation.x = 0;
@@ -271,7 +270,8 @@ export class SonicEngine {
 
         this.runGame();
     }
-    public runGame(): void {
+
+    public runGame():void {
         let sonicManager = SonicManager.instance;
         switch (sonicManager.currentGameState) {
             case GameState.Playing:
@@ -290,19 +290,23 @@ export class SonicEngine {
         sonicManager.DestroyCanvases();
         sonicManager.ResetCanvases();
     }
-    private canvasMouseMove(queryEvent: JQueryEventObject): void {
+
+    private canvasMouseMove(queryEvent:JQueryEventObject):void {
         queryEvent.preventDefault();
         this.sonicManager.mouseMove(queryEvent);
     }
-    private canvasOnClick(queryEvent: JQueryEventObject): void {
+
+    private canvasOnClick(queryEvent:JQueryEventObject):void {
         queryEvent.preventDefault();
         this.sonicManager.OnClick(queryEvent);
     }
-    private canvasMouseUp(queryEvent: JQueryEventObject): void {
+
+    private canvasMouseUp(queryEvent:JQueryEventObject):void {
         queryEvent.preventDefault();
         this.sonicManager.mouseUp(queryEvent);
     }
-    public resizeCanvas(resetOverride: boolean): void {
+
+    public resizeCanvas(resetOverride:boolean):void {
         this.canvasWidth = $(window).width();
         this.canvasHeight = $(window).height();
         this.sonicManager.windowLocation = Help.defaultWindowLocation(this.sonicManager.currentGameState, this.sonicManager.scale);
@@ -324,11 +328,16 @@ export class SonicEngine {
         this.sonicManager.DestroyCanvases();
         this.sonicManager.ResetCanvases();
     }
-    public Clear(canv: CanvasInformation): void {
+
+    public Clear(canv:CanvasInformation):void {
         (<any>canv.domCanvas[0]).width = this.gameGoodWidth;
+        (<any>this.gameCanvas.Context).mozImageSmoothingEnabled = false; /// future
+        (<any>this.gameCanvas.Context).msImageSmoothingEnabled = false; /// future
+        (<any>this.gameCanvas.Context).imageSmoothingEnabled = false; /// future
         (<any>this.gameCanvas.Context).imageSmoothingEnabled = false;
     }
-    public GameDraw(): void {
+
+    public GameDraw():void {
         this.sonicManager.MainDraw(this.gameCanvas);
     }
 }

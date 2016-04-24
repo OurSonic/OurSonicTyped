@@ -1049,7 +1049,8 @@ function getCnv(width, height) {
     newCanvas.width = width;
     newCanvas.height = height;
     var newContext = newCanvas.getContext('2d');
-
+    (<any>newContext).mozImageSmoothingEnabled = false; /// future
+    (<any>newContext).msImageSmoothingEnabled = false; /// future
     (<any>newContext).imageSmoothingEnabled = false; /// future
 
     return tempCnvs[s] = {

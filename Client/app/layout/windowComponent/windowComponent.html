@@ -1,0 +1,12 @@
+<div draggable class="window" style="z-index: 10000; position: absolute;" [hidden]="!visible"  [style.left]="left" [style.top]="top">
+    <h1>{{windowTitle}}</h1>
+    <div >
+        <button (click)="close()" class="btn">X</button>
+    </div>
+
+    <div class="inner-window">
+        <div [style.width]="width" [style.height]="height">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>

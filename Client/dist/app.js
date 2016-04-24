@@ -134,7 +134,9 @@ System.register("common/CanvasInformation", [], function(exports_4, context_4) {
                     canvas.height = h;
                     var ctx = canvas.getContext("2d");
                     if (pixelated) {
-                        ctx.imageSmoothingEnabled = false;
+                        ctx.mozImageSmoothingEnabled = false; /// future
+                        ctx.msImageSmoothingEnabled = false; /// future
+                        ctx.imageSmoothingEnabled = false; /// future
                     }
                     return new CanvasInformation(ctx, $(canvas));
                 };
@@ -4155,13 +4157,6 @@ System.register("game/sonic/Sonic", ["common/Utils", "game/sonic/SensorManager",
                             var yj = this.ysp * mul;
                             var distance = Math.sqrt((yj * yj) + (xj * xj));
                             canvas.save();
-                            canvas.moveTo(0, 0);
-                            canvas.lineTo(xj, yj);
-                            canvas.lineWidth = distance / 8;
-                            canvas.strokeStyle = "rgba(163,241,255,1)";
-                            canvas.stroke();
-                            canvas.restore();
-                            canvas.save();
                             canvas.moveTo(xj, yj);
                             canvas.beginPath();
                             canvas.fillStyle = "rgba(163,241,255,1)";
@@ -4541,6 +4536,8 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
         newCanvas.width = width;
         newCanvas.height = height;
         var newContext = newCanvas.getContext('2d');
+        newContext.mozImageSmoothingEnabled = false; /// future
+        newContext.msImageSmoothingEnabled = false; /// future
         newContext.imageSmoothingEnabled = false; /// future
         return tempCnvs[s] = {
             canvas: newCanvas,
@@ -5995,6 +5992,9 @@ System.register("game/SonicEngine", ["common/CanvasInformation", "game/SonicMana
                 };
                 SonicEngine.prototype.Clear = function (canv) {
                     canv.domCanvas[0].width = this.gameGoodWidth;
+                    this.gameCanvas.Context.mozImageSmoothingEnabled = false; /// future
+                    this.gameCanvas.Context.msImageSmoothingEnabled = false; /// future
+                    this.gameCanvas.Context.imageSmoothingEnabled = false; /// future
                     this.gameCanvas.Context.imageSmoothingEnabled = false;
                 };
                 SonicEngine.prototype.GameDraw = function () {

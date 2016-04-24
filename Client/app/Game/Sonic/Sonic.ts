@@ -687,15 +687,6 @@ export class Sonic {
                 var distance=Math.sqrt((yj*yj)+(xj*xj));
 
                 canvas.save();
-                canvas.moveTo(0,0);
-                canvas.lineTo(xj, yj);
-                canvas.lineWidth=distance/8;
-                canvas.strokeStyle = "rgba(163,241,255,1)";
-                canvas.stroke();
-                canvas.restore();
-
-
-                canvas.save();
                 canvas.moveTo(xj, yj);
                 canvas.beginPath();
                 canvas.fillStyle = "rgba(163,241,255,1)";
