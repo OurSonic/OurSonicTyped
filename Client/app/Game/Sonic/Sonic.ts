@@ -680,21 +680,28 @@ export class Sonic {
             canvas.translate((fx - SonicManager.instance.windowLocation.x + offset.x),
                 ((fy - SonicManager.instance.windowLocation.y + offset.y)));
             if (SonicManager.instance.showHeightMap) {
-                canvas.save();
-                let mul = 6;
+                let mul = 10;
                 let xj = this.xsp * mul;
                 let yj = this.ysp * mul;
-                canvas.beginPath();
-                canvas.moveTo(0, 0);
+
+                var distance=Math.sqrt((yj*yj)+(xj*xj));
+
+                canvas.save();
+                canvas.moveTo(0,0);
                 canvas.lineTo(xj, yj);
-                canvas.fillStyle = "rgba(163,241,255,0.8)";
-                canvas.arc(xj, yj, 5, 0, 2 * Math.PI, true);
-                canvas.closePath();
-                canvas.lineWidth = 6;
-                canvas.strokeStyle = "white";
+                canvas.lineWidth=distance/8;
+                canvas.strokeStyle = "rgba(163,241,255,1)";
                 canvas.stroke();
-                canvas.lineWidth = 3;
-                canvas.strokeStyle = "#2448D8";
+                canvas.restore();
+
+
+                canvas.save();
+                canvas.moveTo(xj, yj);
+                canvas.beginPath();
+                canvas.fillStyle = "rgba(163,241,255,1)";
+                canvas.strokeStyle = "rgba(163,241,255,1)";
+                canvas.arc(xj, yj, distance/8, 0, 2 * Math.PI, true);
+                canvas.closePath();
                 canvas.fill();
                 canvas.stroke();
                 canvas.restore();

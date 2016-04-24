@@ -70,6 +70,14 @@ export class SonicEngine {
             () => {
 
             });
+        keyboardJS.bind("2",
+            () => {
+                window.doIt+=1;
+                if(window.doIt==5)window.doIt=1;
+            },
+            () => {
+
+            });
         keyboardJS.bind("q",
             () => {
                 this.runGame();
@@ -260,19 +268,21 @@ export class SonicEngine {
             this.runGame();
         }
         this.sonicManager.cacheTiles();
+
+        this.runGame();
     }
     public runGame(): void {
         let sonicManager = SonicManager.instance;
         switch (sonicManager.currentGameState) {
             case GameState.Playing:
                 sonicManager.currentGameState = GameState.Editing;
-                sonicManager.scale = new Point(4, 4);
+                sonicManager.scale = new Point(1, 1);
                 sonicManager.windowLocation = Help.defaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
                 sonicManager.sonicToon = null;
                 break;
             case GameState.Editing:
                 sonicManager.currentGameState = GameState.Playing;
-                sonicManager.scale = new Point(4, 4);
+                sonicManager.scale = new Point(2, 2);
                 sonicManager.windowLocation = Help.defaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
                 sonicManager.sonicToon = new Sonic();
                 break;

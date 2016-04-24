@@ -4150,21 +4150,24 @@ System.register("game/sonic/Sonic", ["common/Utils", "game/sonic/SensorManager",
                         var offset = this.getOffsetFromImage();
                         canvas.translate((fx - SonicManager_15.SonicManager.instance.windowLocation.x + offset.x), ((fy - SonicManager_15.SonicManager.instance.windowLocation.y + offset.y)));
                         if (SonicManager_15.SonicManager.instance.showHeightMap) {
-                            canvas.save();
-                            var mul = 6;
+                            var mul = 10;
                             var xj = this.xsp * mul;
                             var yj = this.ysp * mul;
-                            canvas.beginPath();
+                            var distance = Math.sqrt((yj * yj) + (xj * xj));
+                            canvas.save();
                             canvas.moveTo(0, 0);
                             canvas.lineTo(xj, yj);
-                            canvas.fillStyle = "rgba(163,241,255,0.8)";
-                            canvas.arc(xj, yj, 5, 0, 2 * Math.PI, true);
-                            canvas.closePath();
-                            canvas.lineWidth = 6;
-                            canvas.strokeStyle = "white";
+                            canvas.lineWidth = distance / 8;
+                            canvas.strokeStyle = "rgba(163,241,255,1)";
                             canvas.stroke();
-                            canvas.lineWidth = 3;
-                            canvas.strokeStyle = "#2448D8";
+                            canvas.restore();
+                            canvas.save();
+                            canvas.moveTo(xj, yj);
+                            canvas.beginPath();
+                            canvas.fillStyle = "rgba(163,241,255,1)";
+                            canvas.strokeStyle = "rgba(163,241,255,1)";
+                            canvas.arc(xj, yj, distance / 8, 0, 2 * Math.PI, true);
+                            canvas.closePath();
                             canvas.fill();
                             canvas.stroke();
                             canvas.restore();
@@ -4509,7 +4512,160 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
     "use strict";
     var __moduleName = context_39 && context_39.id;
     var Utils_10, CanvasInformation_7, SonicEngine_1, Enums_7, Help_6, HeightMap_2, ObjectManager_2, SonicLevel_1, LevelObjectInfo_1, Ring_2, SpriteCache_1, TileAnimationData_1, TilePaletteAnimationManager_1, TileAnimationManager_1, TileChunk_1, SpriteLoader_1, LevelObject_2, LevelObjectData_1, Tile_1, TilePiece_1, TileInfo_1, TilePieceInfo_1;
-    var SonicManager;
+    var SonicManager, tempArrays, tempBArrays, tempCnvs, posLookups, colsLookups, imageDataCaches;
+    function getArray(size) {
+        var tmp = tempArrays[size];
+        if (tmp) {
+            return tmp;
+        }
+        tmp = tempArrays[size] = new Uint8ClampedArray(size * 4);
+        for (var s = 0; s < size * 4; s++) {
+            tmp[s] = 255;
+        }
+        return tmp;
+    }
+    function getInt32Array(size) {
+        var tmp = tempBArrays[size];
+        if (tmp) {
+            return tmp;
+        }
+        return tempBArrays[size] = new Uint32Array(size);
+    }
+    function getCnv(width, height) {
+        var s = (width + " " + height);
+        var tempCnv = tempCnvs[s];
+        if (tempCnv) {
+            return tempCnv;
+        }
+        var newCanvas = document.createElement('canvas');
+        newCanvas.width = width;
+        newCanvas.height = height;
+        var newContext = newCanvas.getContext('2d');
+        newContext.imageSmoothingEnabled = false; /// future
+        return tempCnvs[s] = {
+            canvas: newCanvas,
+            context: newContext
+        };
+    }
+    function getPosLookup(width, height) {
+        var posLookup = posLookups[width * height];
+        if (posLookup)
+            return posLookup;
+        var posLookup = posLookups[width * height] = {
+            left: new Uint32Array(width * height),
+            right: new Uint32Array(width * height),
+            top: new Uint32Array(width * height),
+            bottom: new Uint32Array(width * height),
+            middle: new Uint32Array(width * height)
+        };
+        var cc = 0;
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+                posLookup.top[cc] = _top(x, y, width, height);
+                posLookup.left[cc] = _left(x, y, width, height);
+                posLookup.middle[cc] = ((y) * width + (x)) * 4;
+                posLookup.right[cc] = _right(x, y, width, height);
+                posLookup.bottom[cc] = _bottom(x, y, width, height);
+                cc++;
+            }
+        }
+        return posLookup;
+    }
+    function getColsLookup(imageData, width, height) {
+        var cols = getInt32Array(width * height * 4);
+        var pixels_ = imageData;
+        var cc = 0;
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+                cols[cc] = (((pixels_[(y * width + x) * 4] << 8) + pixels_[(y * width + x) * 4 + 1]) << 8) + pixels_[(y * width + x) * 4 + 2];
+                cc += 4;
+            }
+        }
+        return cols;
+    }
+    function imageDataCache(canvas, width, height) {
+        var s = ((width) + " " + (height));
+        if (imageDataCaches[s]) {
+            return imageDataCaches[s];
+        }
+        return imageDataCaches[s] = canvas.createImageData(width, height);
+    }
+    function _top(x, y, width, height) {
+        if (y <= 0)
+            return ((y) * width + (x)) * 4;
+        else
+            return ((y - 1) * width + (x)) * 4;
+    }
+    function _left(x, y, width, height) {
+        if (x <= 0)
+            return ((y) * width + (x)) * 4;
+        else
+            return ((y) * width + (x - 1)) * 4;
+    }
+    function _right(x, y, width, height) {
+        if (x + 1 >= width)
+            return ((y) * width + (x)) * 4;
+        else
+            return ((y) * width + (x + 1)) * 4;
+    }
+    function _bottom(x, y, width, height) {
+        if (y + 1 >= height)
+            return ((y) * width + (x)) * 4;
+        else
+            return ((y + 1) * width + (x)) * 4;
+    }
+    function doPixelCompare(pixels_, width, height, width2, height2, pixels2_, posLookup, colsLookup) {
+        var cc = 0;
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+                var Bid = posLookup.top[cc];
+                var Did = posLookup.left[cc];
+                var Eid = posLookup.middle[cc];
+                var Fid = posLookup.right[cc];
+                var Hid = posLookup.bottom[cc];
+                cc++;
+                /*
+                 var B = (((pixels_[Bid] << 8) + pixels_[Bid + 1]) << 8) + pixels_[Bid + 2];
+                 var D = (((pixels_[Did] << 8) + pixels_[Did + 1]) << 8) + pixels_[Did + 2];
+                 var F = (((pixels_[Fid] << 8) + pixels_[Fid + 1]) << 8) + pixels_[Fid + 2];
+                 var H = (((pixels_[Hid] << 8) + pixels_[Hid + 1]) << 8) + pixels_[Hid + 2];
+                 */
+                var B = colsLookup[Bid];
+                var D = colsLookup[Did];
+                var F = colsLookup[Fid];
+                var H = colsLookup[Hid];
+                var E0, E1, E2, E3;
+                if (B !== (H) && D !== (F)) {
+                    E0 = D == (B) ? Did : Eid;
+                    E1 = B == (F) ? Fid : Eid;
+                    E2 = D == (H) ? Did : Eid;
+                    E3 = H == (F) ? Fid : Eid;
+                }
+                else {
+                    E0 = Eid;
+                    E1 = Eid;
+                    E2 = Eid;
+                    E3 = Eid;
+                }
+                var tl = (((y * 2) * width2 + (x * 2)) * 4);
+                var tr = (((y * 2) * width2 + (x * 2 + 1)) * 4);
+                var bl = (((y * 2 + 1) * width2 + (x * 2)) * 4);
+                var br = (((y * 2 + 1) * width2 + (x * 2 + 1)) * 4);
+                pixels2_[tl] = pixels_[E0];
+                pixels2_[tr] = pixels_[E1];
+                pixels2_[bl] = pixels_[E2];
+                pixels2_[br] = pixels_[E3];
+                pixels2_[tl + 1] = pixels_[E0 + 1];
+                pixels2_[tr + 1] = pixels_[E1 + 1];
+                pixels2_[bl + 1] = pixels_[E2 + 1];
+                pixels2_[br + 1] = pixels_[E3 + 1];
+                pixels2_[tl + 2] = pixels_[E0 + 2];
+                pixels2_[tr + 2] = pixels_[E1 + 2];
+                pixels2_[bl + 2] = pixels_[E2 + 2];
+                pixels2_[br + 2] = pixels_[E3 + 2];
+            }
+        }
+    }
     return {
         setters:[
             function (Utils_10_1) {
@@ -4594,7 +4750,7 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                     });
                     this.objectManager = new ObjectManager_2.ObjectManager(this);
                     this.objectManager.Init();
-                    var scl = 4;
+                    var scl = 2;
                     this.scale = new Utils_10.Point(scl, scl);
                     this.realScale = new Utils_10.DoublePoint(1, 1);
                     this.mainCanvas = gameCanvas;
@@ -4792,8 +4948,8 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                         return;
                     }
                     this.updatePositions(context);
-                    var w1 = this.windowLocation.Width / 128 + 2;
-                    var h1 = this.windowLocation.Height / 128 + 2;
+                    var w1 = (this.windowLocation.Width / 128 | 0) + 2;
+                    var h1 = (this.windowLocation.Height / 128 | 0) + 2;
                     if (this.currentGameState == Enums_7.GameState.Editing) {
                         w1 += 1;
                         h1 += 1;
@@ -4836,10 +4992,27 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                         this.sonicToon.DrawUI(context, new Utils_10.Point(this.screenOffset.x, this.screenOffset.y));
                 };
                 SonicManager.prototype.drawCanveses = function (canvas, localPoint) {
+                    if (window.doIt > 1) {
+                        canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
+                        canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
+                        canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
+                        canvas.scale(this.realScale.x, this.realScale.y);
+                        canvas.scale(this.scale.x, this.scale.y);
+                        var imageData = window.scaleTwice(canvas, localPoint.x, localPoint.y, this.windowLocation.Width, this.windowLocation.Height);
+                        canvas.drawImage(imageData, localPoint.x, localPoint.y);
+                    }
+                    else {
+                        canvas.scale(this.realScale.x, this.realScale.y);
+                        canvas.scale(this.scale.x, this.scale.y);
+                        canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
+                        canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
+                        canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
+                    } /*
+            
                     canvas.scale(this.scale.x, this.scale.y);
                     canvas.drawImage(this.lowChunkCanvas.canvas, localPoint.x, localPoint.y);
                     canvas.drawImage(this.sonicCanvas.canvas, localPoint.x, localPoint.y);
-                    canvas.drawImage(this.highChuckCanvas.canvas, localPoint.x, localPoint.y);
+                    canvas.drawImage(this.highChuckCanvas.canvas, localPoint.x, localPoint.y);*/
                 };
                 SonicManager.prototype.ResetCanvases = function () {
                     this.lowChunkCanvas = this.lowChunkCanvas != null ? this.lowChunkCanvas : CanvasInformation_7.CanvasInformation.create(this.windowLocation.Width, this.windowLocation.Height, false);
@@ -4872,7 +5045,7 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                         this.updatePositionsForPlaying(canvas);
                 };
                 SonicManager.prototype.updatePositionsForPlaying = function (canvas) {
-                    canvas.scale(this.realScale.x, this.realScale.y);
+                    // canvas.scale(this.realScale.x, this.realScale.y);
                     if (this.sonicToon.ticking) {
                         while (true) {
                             if (this.sonicToon.ticking)
@@ -5453,6 +5626,81 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                 return SonicManager;
             }());
             exports_39("SonicManager", SonicManager);
+            tempArrays = {};
+            tempBArrays = {};
+            tempCnvs = {};
+            posLookups = {};
+            colsLookups = {};
+            window.scaleIt = function scaleMe(imageData, width, height) {
+                var width2 = width * 2;
+                var height2 = height * 2;
+                var pixels2_ = getArray(width2 * height2);
+                var cnv = getCnv(width2, height2);
+                doPixelCompare(imageData, width, height, width2, height2, pixels2_, getPosLookup(width, height), getColsLookup(imageData, width, height));
+                return pixels2_;
+            };
+            imageDataCaches = {};
+            ;
+            window.scaleTwice = function scaleMe(canvas, x, y, width, height) {
+                var a = window.doIt;
+                canvas.scale(1 / Math.pow(2, a - 1), 1 / Math.pow(2, a - 1));
+                if (a == 2) {
+                    var imageData = canvas.getImageData(x, y, width, height).data;
+                    imageData = window.scaleIt(imageData, width, height);
+                    var id = imageDataCache(canvas, width * 2, height * 2);
+                    id.data.set(imageData);
+                    var canvas = getCnv(id.width, id.height);
+                    canvas.context.putImageData(id, 0, 0);
+                    return canvas.canvas;
+                }
+                else if (a == 3) {
+                    var imageData = canvas.getImageData(x, y, width, height).data;
+                    imageData = window.scaleIt(imageData, width, height);
+                    imageData = window.scaleIt(imageData, width * 2, height * 2);
+                    var id = imageDataCache(canvas, width * 2 * 2, height * 2 * 2);
+                    id.data.set(imageData);
+                    var canvas = getCnv(id.width, id.height);
+                    canvas.context.putImageData(id, 0, 0);
+                    return canvas.canvas;
+                }
+                else if (a == 4) {
+                    var imageData = canvas.getImageData(x, y, width, height).data;
+                    imageData = window.scaleIt(imageData, width, height);
+                    imageData = window.scaleIt(imageData, width * 2, height * 2);
+                    imageData = window.scaleIt(imageData, width * 2 * 2, height * 2 * 2);
+                    var id = imageDataCache(canvas, width * 2 * 2 * 2, height * 2 * 2 * 2);
+                    id.data.set(imageData);
+                    var canvas = getCnv(id.width, id.height);
+                    canvas.context.putImageData(id, 0, 0);
+                    return canvas.canvas;
+                }
+                else if (a == 5) {
+                    var imageData = canvas.getImageData(x, y, width, height).data;
+                    imageData = window.scaleIt(imageData, width, height);
+                    imageData = window.scaleIt(imageData, width * 2, height * 2);
+                    imageData = window.scaleIt(imageData, width * 2 * 2, height * 2 * 2);
+                    imageData = window.scaleIt(imageData, width * 2 * 2 * 2, height * 2 * 2 * 2);
+                    var id = imageDataCache(canvas, width * 2 * 2 * 2 * 2, height * 2 * 2 * 2 * 2);
+                    id.data.set(imageData);
+                    var canvas = getCnv(id.width, id.height);
+                    canvas.context.putImageData(id, 0, 0);
+                    return canvas.canvas;
+                }
+                else if (a == 6) {
+                    var imageData = canvas.getImageData(x, y, width, height).data;
+                    imageData = window.scaleIt(imageData, width, height);
+                    imageData = window.scaleIt(imageData, width * 2, height * 2);
+                    imageData = window.scaleIt(imageData, width * 2 * 2, height * 2 * 2);
+                    imageData = window.scaleIt(imageData, width * 2 * 2 * 2, height * 2 * 2 * 2);
+                    imageData = window.scaleIt(imageData, width * 2 * 2 * 2 * 2, height * 2 * 2 * 2 * 2);
+                    var id = imageDataCache(canvas, width * 2 * 2 * 2 * 2 * 2, height * 2 * 2 * 2 * 2 * 2);
+                    id.data.set(imageData);
+                    var canvas = getCnv(id.width, id.height);
+                    canvas.context.putImageData(id, 0, 0);
+                    return canvas.canvas;
+                }
+            };
+            window.doIt = 1;
         }
     }
 });
@@ -5528,6 +5776,12 @@ System.register("game/SonicEngine", ["common/CanvasInformation", "game/SonicMana
                     keyboardJS.bind("1", function () {
                         _this.sonicManager.indexedPalette++;
                         _this.sonicManager.clearCache();
+                    }, function () {
+                    });
+                    keyboardJS.bind("2", function () {
+                        window.doIt += 1;
+                        if (window.doIt == 5)
+                            window.doIt = 1;
                     }, function () {
                     });
                     keyboardJS.bind("q", function () {
@@ -5686,19 +5940,20 @@ System.register("game/SonicEngine", ["common/CanvasInformation", "game/SonicMana
                         this.runGame();
                     }
                     this.sonicManager.cacheTiles();
+                    this.runGame();
                 };
                 SonicEngine.prototype.runGame = function () {
                     var sonicManager = SonicManager_16.SonicManager.instance;
                     switch (sonicManager.currentGameState) {
                         case Enums_8.GameState.Playing:
                             sonicManager.currentGameState = Enums_8.GameState.Editing;
-                            sonicManager.scale = new Utils_11.Point(4, 4);
+                            sonicManager.scale = new Utils_11.Point(1, 1);
                             sonicManager.windowLocation = Help_7.Help.defaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
                             sonicManager.sonicToon = null;
                             break;
                         case Enums_8.GameState.Editing:
                             sonicManager.currentGameState = Enums_8.GameState.Playing;
-                            sonicManager.scale = new Utils_11.Point(4, 4);
+                            sonicManager.scale = new Utils_11.Point(2, 2);
                             sonicManager.windowLocation = Help_7.Help.defaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
                             sonicManager.sonicToon = new Sonic_1.Sonic();
                             break;

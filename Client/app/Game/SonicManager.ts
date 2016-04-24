@@ -82,7 +82,7 @@ export class SonicManager {
         });
         this.objectManager = new ObjectManager(this);
         this.objectManager.Init();
-        let scl:number = 4;
+        let scl:number = 2;
         this.scale = new Point(scl, scl);
         this.realScale = new DoublePoint(1, 1);
         this.mainCanvas = gameCanvas;
@@ -294,8 +294,8 @@ export class SonicManager {
             return;
         }
         this.updatePositions(context);
-        let w1:number = this.windowLocation.Width / 128 + 2;
-        let h1:number = this.windowLocation.Height / 128 + 2;
+        let w1:number = (this.windowLocation.Width / 128|0) + 2;
+        let h1:number = (this.windowLocation.Height / 128|0 )+ 2;
         if (this.currentGameState == GameState.Editing) {
             w1 += 1;
             h1 += 1;
@@ -339,10 +339,31 @@ export class SonicManager {
     }
 
     private drawCanveses(canvas:CanvasRenderingContext2D, localPoint:Point):void {
+
+        if(window.doIt>1){
+            canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
+            canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
+            canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
+
+            canvas.scale(this.realScale.x, this.realScale.y);
+            canvas.scale(this.scale.x,this.scale.y);
+
+            var imageData=window.scaleTwice(canvas, localPoint.x, localPoint.y,this.windowLocation.Width,this.windowLocation.Height);
+            canvas.drawImage(imageData, localPoint.x, localPoint.y);
+        }else{
+            canvas.scale(this.realScale.x, this.realScale.y);
+            canvas.scale(this.scale.x, this.scale.y);
+
+            canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
+            canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
+            canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
+
+        }/*
+
         canvas.scale(this.scale.x, this.scale.y);
         canvas.drawImage(this.lowChunkCanvas.canvas, localPoint.x, localPoint.y);
         canvas.drawImage(this.sonicCanvas.canvas, localPoint.x, localPoint.y);
-        canvas.drawImage(this.highChuckCanvas.canvas, localPoint.x, localPoint.y);
+        canvas.drawImage(this.highChuckCanvas.canvas, localPoint.x, localPoint.y);*/
     }
 
     public ResetCanvases():void {
@@ -380,7 +401,7 @@ export class SonicManager {
     }
 
     private updatePositionsForPlaying(canvas:CanvasRenderingContext2D):void {
-        canvas.scale(this.realScale.x, this.realScale.y);
+        // canvas.scale(this.realScale.x, this.realScale.y);
         if (this.sonicToon.ticking) {
             while (true) {
                 if (this.sonicToon.ticking)
@@ -969,3 +990,321 @@ export class SonicManager {
         this.onLevelLoad && this.onLevelLoad(this.sonicLevel);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var tempArrays = {};
+
+function getArray(size) {
+    var tmp = tempArrays[size];
+    if (tmp) {
+        return tmp;
+    }
+    tmp=tempArrays[size] = new Uint8ClampedArray(size * 4);
+
+    for (var s = 0; s < size*4; s++) {
+        tmp[s]=255;
+    }
+
+    return tmp;
+}
+
+var tempBArrays = {};
+
+function getInt32Array(size) {
+    var tmp = tempBArrays[size];
+    if (tmp) {
+        return tmp;
+    }
+    return tempBArrays[size] = new Uint32Array(size);
+}
+
+var tempCnvs = {};
+
+function getCnv(width, height) {
+
+    var s = (width + " " + height);
+    var tempCnv = tempCnvs[s];
+    if (tempCnv) {
+        return tempCnv;
+    }
+
+
+    var newCanvas = document.createElement('canvas');
+    newCanvas.width = width;
+    newCanvas.height = height;
+    var newContext = newCanvas.getContext('2d');
+
+    (<any>newContext).imageSmoothingEnabled = false; /// future
+
+    return tempCnvs[s] = {
+        canvas: newCanvas,
+        context: newContext
+    };
+}
+
+
+var posLookups={};
+function getPosLookup(width, height) {
+    var posLookup = posLookups[width * height];
+    if(posLookup)return posLookup;
+
+    var posLookup = posLookups[width * height]={
+        left:new Uint32Array (width * height),
+        right:new Uint32Array (width * height),
+        top:new Uint32Array (width * height),
+        bottom:new Uint32Array (width * height),
+        middle:new Uint32Array (width * height)
+    };
+    var cc=0;
+
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+
+
+            posLookup.top[cc]= _top(x, y, width, height);
+            posLookup.left[cc] = _left(x, y, width, height);
+            posLookup.middle[cc] = ((y) * width + (x)) * 4;
+            posLookup.right[cc] = _right(x, y, width, height);
+            posLookup.bottom[cc] = _bottom(x, y, width, height);
+
+
+            cc++;
+
+        }
+    }
+    return posLookup
+}
+
+
+
+var colsLookups={};
+function getColsLookup(imageData,width,height) {
+    var cols = getInt32Array(width * height*4);
+    var pixels_=imageData;
+    var cc=0;
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+
+
+
+            cols[cc]=(((pixels_[(y*width+x)*4] << 8) + pixels_[(y*width+x)*4 + 1]) << 8) + pixels_[(y*width+x)*4 + 2];
+
+
+            cc+=4;
+
+        }
+    }
+    return cols
+}
+
+
+window.scaleIt = function scaleMe(imageData,width,height) {
+    var width2 = width * 2;
+    var height2 = height * 2;
+    var pixels2_ = getArray(width2 * height2);
+    var cnv = getCnv(width2, height2);
+
+    doPixelCompare(imageData, width, height, width2, height2, pixels2_,getPosLookup(width,height),getColsLookup(imageData,width,height));
+    return pixels2_;
+};
+var imageDataCaches={};
+function imageDataCache(canvas,width,height){
+    var s = ((width ) + " " + (height ));
+    if(imageDataCaches[ s]){
+        return imageDataCaches[ s];
+    }
+    return imageDataCaches[ s]=canvas.createImageData(width,height);
+};
+
+window.scaleTwice = function scaleMe(canvas,x,y,width,height) {
+    var a=window.doIt;
+
+    canvas.scale(1/Math.pow(2,a-1), 1/Math.pow(2,a-1));
+
+    if(a==2) {
+        var imageData=canvas.getImageData(x,y,width,height).data;
+        imageData=window.scaleIt(imageData,width,height);
+        var id=imageDataCache(canvas,width*2,height*2);
+        id.data.set(imageData);
+
+        var canvas=getCnv(id.width,id.height);
+        canvas.context.putImageData(id,0,0);
+        return canvas.canvas;
+    }else if(a==3) {
+
+        var imageData=canvas.getImageData(x,y,width,height).data;
+        imageData=window.scaleIt(imageData,width,height);
+        imageData=window.scaleIt(imageData,width*2,height*2);
+        var id=imageDataCache(canvas,width*2*2,height*2*2);
+        id.data.set(imageData);
+
+
+        var canvas=getCnv(id.width,id.height);
+        canvas.context.putImageData(id,0,0);
+        return canvas.canvas;
+    }
+    else if(a==4) {
+
+        var imageData = canvas.getImageData(x, y, width, height).data;
+        imageData = window.scaleIt(imageData, width, height);
+        imageData = window.scaleIt(imageData, width * 2, height * 2);
+        imageData = window.scaleIt(imageData, width * 2 * 2, height * 2 * 2);
+        var id = imageDataCache(canvas, width * 2 * 2 * 2, height * 2 * 2 * 2);
+        id.data.set(imageData);
+
+
+        var canvas = getCnv(id.width, id.height);
+        canvas.context.putImageData(id, 0, 0);
+        return canvas.canvas;
+    } else if(a==5) {
+
+        var imageData = canvas.getImageData(x, y, width, height).data;
+        imageData = window.scaleIt(imageData, width, height);
+        imageData = window.scaleIt(imageData, width * 2, height * 2);
+        imageData = window.scaleIt(imageData, width * 2 * 2, height * 2 * 2);
+        imageData = window.scaleIt(imageData, width * 2 * 2*2, height * 2 * 2*2);
+        var id = imageDataCache(canvas, width * 2 * 2 * 2*2, height * 2 * 2 * 2*2);
+        id.data.set(imageData);
+
+
+        var canvas = getCnv(id.width, id.height);
+        canvas.context.putImageData(id, 0, 0);
+        return canvas.canvas;
+    }else if(a==6) {
+
+        var imageData = canvas.getImageData(x, y, width, height).data;
+        imageData = window.scaleIt(imageData, width, height);
+        imageData = window.scaleIt(imageData, width * 2, height * 2);
+        imageData = window.scaleIt(imageData, width * 2 * 2, height * 2 * 2);
+        imageData = window.scaleIt(imageData, width * 2 * 2*2, height * 2 * 2*2);
+        imageData = window.scaleIt(imageData, width * 2 * 2*2*2, height * 2 * 2*2*2);
+        var id = imageDataCache(canvas, width * 2 * 2 * 2*2*2, height * 2 * 2 * 2*2*2);
+        id.data.set(imageData);
+
+
+        var canvas = getCnv(id.width, id.height);
+        canvas.context.putImageData(id, 0, 0);
+        return canvas.canvas;
+    }
+};
+
+
+function _top(x, y, width, height) {
+    if (y <= 0)
+        return ((y ) * width + (x)) * 4;
+    else
+        return ((y - 1) * width + (x)) * 4;
+}
+
+function _left(x, y, width, height) {
+    if (x <= 0)
+        return ((y) * width + (x )) * 4;
+    else
+        return ((y) * width + (x - 1)) * 4;
+}
+
+function _right(x, y, width, height) {
+    if (x + 1 >= width)
+        return ((y) * width + (x)) * 4;
+    else
+        return ((y) * width + (x + 1)) * 4;
+}
+
+function _bottom(x, y, width, height) {
+    if (y + 1 >= height)
+        return ((y) * width + (x)) * 4;
+    else
+        return ((y + 1) * width + (x)) * 4;
+}
+
+function doPixelCompare(pixels_, width, height, width2, height2, pixels2_,posLookup,colsLookup) {
+
+    var cc=0;
+
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+
+
+
+            var Bid = posLookup.top[cc];
+            var Did = posLookup.left[cc];
+            var Eid = posLookup.middle[cc];
+            var Fid = posLookup.right[cc];
+            var Hid = posLookup.bottom[cc];
+
+
+            cc++;
+
+
+            /*
+             var B = (((pixels_[Bid] << 8) + pixels_[Bid + 1]) << 8) + pixels_[Bid + 2];
+             var D = (((pixels_[Did] << 8) + pixels_[Did + 1]) << 8) + pixels_[Did + 2];
+             var F = (((pixels_[Fid] << 8) + pixels_[Fid + 1]) << 8) + pixels_[Fid + 2];
+             var H = (((pixels_[Hid] << 8) + pixels_[Hid + 1]) << 8) + pixels_[Hid + 2];
+             */
+
+            var B = colsLookup[Bid];
+            var D = colsLookup[Did];
+            var F = colsLookup[Fid];
+            var H = colsLookup[Hid];
+
+            var E0, E1, E2, E3;
+            if (B !== (H) && D !== (F)) {
+                E0 = D == (B) ? Did : Eid;
+                E1 = B == (F) ? Fid : Eid;
+                E2 = D == (H) ? Did : Eid;
+                E3 = H == (F) ? Fid : Eid;
+            } else {
+                E0 = Eid;
+                E1 = Eid;
+                E2 = Eid;
+                E3 = Eid;
+            }
+
+
+            var tl = (((y * 2) * width2 + (x * 2)) * 4);
+            var tr = (((y * 2) * width2 + (x * 2 + 1)) * 4);
+            var bl = (((y * 2 + 1) * width2 + (x * 2)) * 4);
+            var br = (((y * 2 + 1) * width2 + (x * 2 + 1)) * 4);
+
+
+            pixels2_[ tl ] = pixels_[E0 ];
+            pixels2_[ tr ] = pixels_[E1 ];
+            pixels2_[ bl ] = pixels_[E2];
+            pixels2_[ br ] = pixels_[E3 ];
+
+
+            pixels2_[tl + 1] = pixels_[E0 + 1];
+            pixels2_[tr + 1] = pixels_[E1 + 1];
+            pixels2_[bl + 1] = pixels_[E2 + 1];
+            pixels2_[br +1] = pixels_[E3 + 1];
+
+
+            pixels2_[tl + 2] = pixels_[E0 + 2];
+            pixels2_[tr +2] = pixels_[E1 + 2];
+            pixels2_[bl + 2] = pixels_[E2 + 2];
+            pixels2_[br + 2] = pixels_[E3 + 2];
+
+
+
+        }
+    }
+
+}
+window.doIt=1;
