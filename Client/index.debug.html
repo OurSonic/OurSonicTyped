@@ -2,58 +2,55 @@
 
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Our Sonic</title>
-    <link rel="stylesheet" href="app.css" type="text/css" />
+    <link rel="stylesheet" href="app.css" type="text/css"/>
 </head>
 <body style="background-color: #000080;">
 
-
-
-    <canvas id="gameLayer" style="left: 0px; margin: 0px; position: absolute; top: 0px; z-index: 0;"></canvas>
+<canvas id="gameLayer" style="left: 0px; margin: 0px; position: absolute; top: 0px; z-index: 0;"></canvas>
 
 <layout></layout>
 
 
-    <script src="libs/jquery-1.12.3.js"></script>
-    <script src="http://oursonic.org/lib/socket.io.js"></script>
-    <script src="libs/system.js"></script>
-    <script src="libs/typescript.js"></script>
-    <script src="libs/keyboard.js"></script>
-    <script src="libs/RawDeflate.js"></script>
+<script src="libs/jquery-1.12.3.js"></script>
+<script src="http://oursonic.org/lib/socket.io.js"></script>
+<script src="libs/system.js"></script>
+<script src="libs/typescript.js"></script>
+<script src="libs/keyboard.js"></script>
+<script src="libs/RawDeflate.js"></script>
 
 
+<script src="libs/angular2-polyfills.js"></script>
+<script src="libs/Rx.js"></script>
+<script src="libs/angular2.dev.js"></script>
 
-    <script src="libs/angular2-polyfills.js"></script>
-    <script src="libs/Rx.js"></script>
-    <script src="libs/angular2.dev.js"></script>
+<script>
 
-    <script>
-
-        System.config({
-            packages: {
-                // meaning [baseURL]/local/package when no other rules are present
-                // path is normalized using map and paths configuration
-                'app': {
-                    main: 'main.ts',
-                    defaultExtension: 'ts',
-                    meta: {
-                        '*': {
-                            format: 'esm'
-                        }
+    System.config({
+        packages: {
+            // meaning [baseURL]/local/package when no other rules are present
+            // path is normalized using map and paths configuration
+            'app': {
+                main: 'main.ts',
+                defaultExtension: 'ts',
+                meta: {
+                    '*': {
+                        format: 'esm'
                     }
                 }
-            },
-            transpiler: 'typescript',
-            baseURL: '',
-            typescriptOptions: {
-                resolveTypings: true,
-                emitDecoratorMetadata: true,
-                sourceMap: true,
-                inlineSourceMap: true
             }
-        });
-        System.import('app');
-    </script>
+        },
+        transpiler: 'typescript',
+        baseURL: '',
+        typescriptOptions: {
+            resolveTypings: true,
+            emitDecoratorMetadata: true,
+            sourceMap: true,
+            inlineSourceMap: true
+        }
+    });
+    System.import('app');
+</script>
 </body>
 </html>

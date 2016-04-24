@@ -1,101 +1,103 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-System.register("SLData", [], function(exports_1, context_1) {
+System.register("layout/objectSelector/ObjectSelector", ['angular2/core'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var SLData, AnimatedPaletteItem, AnimatedPalettePiece, SLDataRingEntry, SLDataCNZBumperEntry, Solidity, SLDataChunkBlock, SLDataObjectEntry, SLDataStartPositionEntry, SLDataAnimation, SLDataAnimationFrame, SLDataPatternIndex, ObjectModelData;
+    var core_1;
+    var ObjectSelector;
     return {
-        setters:[],
+        setters:[
+            function (core_1_1) {
+                core_1 = core_1_1;
+            }],
         execute: function() {
-            SLData = (function () {
-                function SLData() {
+            ObjectSelector = (function () {
+                function ObjectSelector() {
                 }
-                return SLData;
+                ObjectSelector = __decorate([
+                    core_1.Component({
+                        selector: 'object-selector',
+                        templateUrl: 'app/layout/objectSelector/objectSelector.html'
+                    })
+                ], ObjectSelector);
+                return ObjectSelector;
             }());
-            exports_1("SLData", SLData);
-            AnimatedPaletteItem = (function () {
-                function AnimatedPaletteItem() {
+            exports_1("ObjectSelector", ObjectSelector);
+        }
+    }
+});
+System.register("layout/levelSelector/LevelSelector", ['angular2/core'], function(exports_2, context_2) {
+    "use strict";
+    var __moduleName = context_2 && context_2.id;
+    var core_2;
+    var LevelSelector;
+    return {
+        setters:[
+            function (core_2_1) {
+                core_2 = core_2_1;
+            }],
+        execute: function() {
+            LevelSelector = (function () {
+                function LevelSelector() {
                 }
-                return AnimatedPaletteItem;
+                LevelSelector = __decorate([
+                    core_2.Component({
+                        selector: 'level-selector',
+                        templateUrl: 'app/layout/levelSelector/levelSelector.html'
+                    })
+                ], LevelSelector);
+                return LevelSelector;
             }());
-            exports_1("AnimatedPaletteItem", AnimatedPaletteItem);
-            AnimatedPalettePiece = (function () {
-                function AnimatedPalettePiece() {
+            exports_2("LevelSelector", LevelSelector);
+        }
+    }
+});
+System.register("layout/Layout", ['angular2/core', "layout/objectSelector/ObjectSelector", "layout/levelSelector/LevelSelector"], function(exports_3, context_3) {
+    "use strict";
+    var __moduleName = context_3 && context_3.id;
+    var core_3, ObjectSelector_1, LevelSelector_1;
+    var Layout;
+    return {
+        setters:[
+            function (core_3_1) {
+                core_3 = core_3_1;
+            },
+            function (ObjectSelector_1_1) {
+                ObjectSelector_1 = ObjectSelector_1_1;
+            },
+            function (LevelSelector_1_1) {
+                LevelSelector_1 = LevelSelector_1_1;
+            }],
+        execute: function() {
+            Layout = (function () {
+                function Layout() {
                 }
-                return AnimatedPalettePiece;
+                Layout = __decorate([
+                    core_3.Component({
+                        selector: 'layout',
+                        templateUrl: 'app/layout/layout.html',
+                        directives: [ObjectSelector_1.ObjectSelector, LevelSelector_1.LevelSelector]
+                    })
+                ], Layout);
+                return Layout;
             }());
-            exports_1("AnimatedPalettePiece", AnimatedPalettePiece);
-            SLDataRingEntry = (function () {
-                function SLDataRingEntry() {
-                }
-                return SLDataRingEntry;
-            }());
-            exports_1("SLDataRingEntry", SLDataRingEntry);
-            SLDataCNZBumperEntry = (function () {
-                function SLDataCNZBumperEntry() {
-                }
-                return SLDataCNZBumperEntry;
-            }());
-            exports_1("SLDataCNZBumperEntry", SLDataCNZBumperEntry);
-            (function (Solidity) {
-                Solidity[Solidity["NotSolid"] = 0] = "NotSolid";
-                Solidity[Solidity["TopSolid"] = 1] = "TopSolid";
-                Solidity[Solidity["LRBSolid"] = 2] = "LRBSolid";
-                Solidity[Solidity["AllSolid"] = 3] = "AllSolid";
-            })(Solidity || (Solidity = {}));
-            exports_1("Solidity", Solidity);
-            SLDataChunkBlock = (function () {
-                function SLDataChunkBlock() {
-                }
-                return SLDataChunkBlock;
-            }());
-            exports_1("SLDataChunkBlock", SLDataChunkBlock);
-            SLDataObjectEntry = (function () {
-                function SLDataObjectEntry() {
-                }
-                return SLDataObjectEntry;
-            }());
-            exports_1("SLDataObjectEntry", SLDataObjectEntry);
-            SLDataStartPositionEntry = (function () {
-                function SLDataStartPositionEntry() {
-                }
-                return SLDataStartPositionEntry;
-            }());
-            exports_1("SLDataStartPositionEntry", SLDataStartPositionEntry);
-            SLDataAnimation = (function () {
-                function SLDataAnimation() {
-                }
-                return SLDataAnimation;
-            }());
-            exports_1("SLDataAnimation", SLDataAnimation);
-            SLDataAnimationFrame = (function () {
-                function SLDataAnimationFrame() {
-                }
-                return SLDataAnimationFrame;
-            }());
-            exports_1("SLDataAnimationFrame", SLDataAnimationFrame);
-            SLDataPatternIndex = (function () {
-                function SLDataPatternIndex() {
-                }
-                return SLDataPatternIndex;
-            }());
-            exports_1("SLDataPatternIndex", SLDataPatternIndex);
-            ObjectModelData = (function () {
-                function ObjectModelData() {
-                }
-                return ObjectModelData;
-            }());
-            exports_1("ObjectModelData", ObjectModelData);
+            exports_3("Layout", Layout);
         }
     }
 });
 ///<reference path="../../typings/jQuery.d.ts"/>
-System.register("Common/CanvasInformation", [], function(exports_2, context_2) {
+System.register("common/CanvasInformation", [], function(exports_4, context_4) {
     "use strict";
-    var __moduleName = context_2 && context_2.id;
+    var __moduleName = context_4 && context_4.id;
     var CanvasInformation;
     return {
         setters:[],
@@ -103,23 +105,23 @@ System.register("Common/CanvasInformation", [], function(exports_2, context_2) {
             CanvasInformation = (function () {
                 function CanvasInformation(context, domCanvas) {
                     this.Context = context;
-                    this.DomCanvas = domCanvas;
-                    this.Canvas = domCanvas[0];
+                    this.domCanvas = domCanvas;
+                    this.canvas = domCanvas[0];
                 }
                 Object.defineProperty(CanvasInformation, "BlackPixel", {
                     get: function () {
                         if (CanvasInformation.blackPixel == null) {
-                            var m = CanvasInformation.Create(0, 0, false);
+                            var m = CanvasInformation.create(0, 0, false);
                             m.Context.fillStyle = "black";
                             m.Context.fillRect(0, 0, 1, 1);
-                            CanvasInformation.blackPixel = m.Canvas;
+                            CanvasInformation.blackPixel = m.canvas;
                         }
                         return CanvasInformation.blackPixel;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                CanvasInformation.Create = function (w, h, pixelated) {
+                CanvasInformation.create = function (w, h, pixelated) {
                     var canvas = document.createElement("canvas");
                     return CanvasInformation.CreateFromElement(canvas, w, h, pixelated);
                 };
@@ -138,23 +140,23 @@ System.register("Common/CanvasInformation", [], function(exports_2, context_2) {
                 };
                 return CanvasInformation;
             }());
-            exports_2("CanvasInformation", CanvasInformation);
+            exports_4("CanvasInformation", CanvasInformation);
         }
     }
 });
-System.register("Common/Utils", [], function(exports_3, context_3) {
+System.register("common/Utils", [], function(exports_5, context_5) {
     "use strict";
-    var __moduleName = context_3 && context_3.id;
+    var __moduleName = context_5 && context_5.id;
     var Point, DoublePoint, IntersectingRectangle, Rectangle;
     return {
         setters:[],
         execute: function() {
             Point = (function () {
                 function Point(x, y) {
-                    this.X = x;
-                    this.Y = y;
+                    this.x = x;
+                    this.y = y;
                 }
-                Object.defineProperty(Point.prototype, "X", {
+                Object.defineProperty(Point.prototype, "x", {
                     get: function () {
                         return this._x | 0;
                     },
@@ -164,7 +166,7 @@ System.register("Common/Utils", [], function(exports_3, context_3) {
                     enumerable: true,
                     configurable: true
                 });
-                Object.defineProperty(Point.prototype, "Y", {
+                Object.defineProperty(Point.prototype, "y", {
                     get: function () {
                         return this._y | 0;
                     },
@@ -175,67 +177,67 @@ System.register("Common/Utils", [], function(exports_3, context_3) {
                     configurable: true
                 });
                 Point.Create = function (pos) {
-                    return new Point(pos.X, pos.Y);
+                    return new Point(pos.x, pos.y);
                 };
                 Point.prototype.Offset = function (windowLocation) {
-                    return new Point(this.X + windowLocation.X, this.Y + windowLocation.Y);
+                    return new Point(this.x + windowLocation.x, this.y + windowLocation.y);
                 };
                 Point.prototype.NegatePoint = function (windowLocation) {
-                    return new Point(this.X - windowLocation.X, this.Y - windowLocation.Y);
+                    return new Point(this.x - windowLocation.x, this.y - windowLocation.y);
                 };
                 Point.prototype.Negate = function (x, y) {
-                    return new Point(this.X - (x | 0), this.Y - (y | 0));
+                    return new Point(this.x - (x | 0), this.y - (y | 0));
                 };
                 Point.prototype.Set = function (x, y) {
-                    this.X = x;
-                    this.Y = y;
+                    this.x = x;
+                    this.y = y;
                 };
                 return Point;
             }());
-            exports_3("Point", Point);
+            exports_5("Point", Point);
             DoublePoint = (function () {
                 function DoublePoint(x, y) {
-                    this.X = x;
-                    this.Y = y;
+                    this.x = x;
+                    this.y = y;
                 }
                 DoublePoint.create = function (pos) {
-                    return new DoublePoint(pos.X, pos.Y);
+                    return new DoublePoint(pos.x, pos.y);
                 };
                 DoublePoint.prototype.Offset = function (windowLocation) {
-                    return new DoublePoint(this.X + windowLocation.X, this.Y + windowLocation.Y);
+                    return new DoublePoint(this.x + windowLocation.x, this.y + windowLocation.y);
                 };
                 DoublePoint.prototype.NegatePoint = function (windowLocation) {
-                    return new DoublePoint(this.X - windowLocation.X, this.Y - windowLocation.Y);
+                    return new DoublePoint(this.x - windowLocation.x, this.y - windowLocation.y);
                 };
                 DoublePoint.prototype.Negate = function (x, y) {
-                    return new DoublePoint(this.X - (x | 0), this.Y - (y | 0));
+                    return new DoublePoint(this.x - (x | 0), this.y - (y | 0));
                 };
                 DoublePoint.prototype.et = function (x, y) {
-                    this.X = x;
-                    this.Y = y;
+                    this.x = x;
+                    this.y = y;
                 };
                 return DoublePoint;
             }());
-            exports_3("DoublePoint", DoublePoint);
-            IntersectingRectangle = (function () {
+            exports_5("DoublePoint", DoublePoint);
+            IntersectingRectangle = (function (_super) {
+                __extends(IntersectingRectangle, _super);
                 function IntersectingRectangle(x, y, width, height) {
-                    this.X = x;
-                    this.Y = y;
+                    _super.call(this, x, y);
                     this.Width = width;
                     this.Height = height;
                 }
                 IntersectingRectangle.prototype.Intersects = function (p) {
-                    return this.X < p.X && this.X + this.Width > p.X && this.Y < p.Y && this.Y + this.Height > p.Y;
+                    return this.x < p.x && this.x + this.Width > p.x && this.y < p.y && this.y + this.Height > p.y;
                 };
                 IntersectingRectangle.IntersectsRect = function (r, p) {
-                    return r.X < p.X && r.X + r.Width > p.X && r.Y < p.Y && r.Y + r.Height > p.Y;
+                    return r.x < p.x && r.x + r.Width > p.x && r.y < p.y && r.y + r.Height > p.y;
                 };
                 IntersectingRectangle.IntersectRect = function (r1, r2) {
-                    return !(r2.X > r1.X + r1.Width || r2.X + 0 < r1.X || r2.Y > r1.Y + r1.Height || r2.Y + 0 < r1.Y);
+                    return !(r2.x > r1.x + r1.Width || r2.x + 0 < r1.x || r2.y > r1.y + r1.Height || r2.y + 0 < r1.y);
                 };
                 return IntersectingRectangle;
-            }());
-            exports_3("IntersectingRectangle", IntersectingRectangle);
+            }(Point));
+            exports_5("IntersectingRectangle", IntersectingRectangle);
             Rectangle = (function (_super) {
                 __extends(Rectangle, _super);
                 function Rectangle(x, y, width, height) {
@@ -249,13 +251,13 @@ System.register("Common/Utils", [], function(exports_3, context_3) {
                 }
                 return Rectangle;
             }(Point));
-            exports_3("Rectangle", Rectangle);
+            exports_5("Rectangle", Rectangle);
         }
     }
 });
-System.register("Game/Level/SonicImage", [], function(exports_4, context_4) {
+System.register("game/level/SonicImage", [], function(exports_6, context_6) {
     "use strict";
-    var __moduleName = context_4 && context_4.id;
+    var __moduleName = context_6 && context_6.id;
     var SonicImage;
     return {
         setters:[],
@@ -269,13 +271,13 @@ System.register("Game/Level/SonicImage", [], function(exports_4, context_4) {
                 }
                 return SonicImage;
             }());
-            exports_4("SonicImage", SonicImage);
+            exports_6("SonicImage", SonicImage);
         }
     }
 });
-System.register("Common/Enums", [], function(exports_5, context_5) {
+System.register("common/Enums", [], function(exports_7, context_7) {
     "use strict";
-    var __moduleName = context_5 && context_5.id;
+    var __moduleName = context_7 && context_7.id;
     var GameState, ClickState, ChunkLayerState, RotationMode;
     return {
         setters:[],
@@ -284,32 +286,32 @@ System.register("Common/Enums", [], function(exports_5, context_5) {
                 GameState[GameState["Playing"] = 0] = "Playing";
                 GameState[GameState["Editing"] = 1] = "Editing";
             })(GameState || (GameState = {}));
-            exports_5("GameState", GameState);
+            exports_7("GameState", GameState);
             (function (ClickState) {
                 ClickState[ClickState["Dragging"] = 0] = "Dragging";
                 ClickState[ClickState["PlaceChunk"] = 1] = "PlaceChunk";
                 ClickState[ClickState["PlaceRing"] = 2] = "PlaceRing";
                 ClickState[ClickState["PlaceObject"] = 3] = "PlaceObject";
             })(ClickState || (ClickState = {}));
-            exports_5("ClickState", ClickState);
+            exports_7("ClickState", ClickState);
             (function (ChunkLayerState) {
                 ChunkLayerState[ChunkLayerState["Low"] = 0] = "Low";
                 ChunkLayerState[ChunkLayerState["High"] = 1] = "High";
             })(ChunkLayerState || (ChunkLayerState = {}));
-            exports_5("ChunkLayerState", ChunkLayerState);
+            exports_7("ChunkLayerState", ChunkLayerState);
             (function (RotationMode) {
                 RotationMode[RotationMode["Floor"] = 134] = "Floor";
                 RotationMode[RotationMode["RightWall"] = 224] = "RightWall";
                 RotationMode[RotationMode["Ceiling"] = 314] = "Ceiling";
                 RotationMode[RotationMode["LeftWall"] = 44] = "LeftWall";
             })(RotationMode || (RotationMode = {}));
-            exports_5("RotationMode", RotationMode);
+            exports_7("RotationMode", RotationMode);
         }
     }
 });
-System.register("Common/Color", [], function(exports_6, context_6) {
+System.register("common/Color", [], function(exports_8, context_8) {
     "use strict";
-    var __moduleName = context_6 && context_6.id;
+    var __moduleName = context_8 && context_8.id;
     var Color;
     return {
         setters:[],
@@ -325,13 +327,14 @@ System.register("Common/Color", [], function(exports_6, context_6) {
                 }
                 return Color;
             }());
-            exports_6("Color", Color);
+            exports_8("Color", Color);
         }
     }
 });
-System.register("Common/Help", ["Common/Utils", "Common/CanvasInformation", "Common/Color", "Common/Enums", "Game/SonicManager"], function(exports_7, context_7) {
+///<reference path="../../typings/Compress.d.ts"/>
+System.register("common/Help", ["common/Utils", "common/CanvasInformation", "common/Color", "common/Enums", "game/SonicManager"], function(exports_9, context_9) {
     "use strict";
-    var __moduleName = context_7 && context_7.id;
+    var __moduleName = context_9 && context_9.id;
     var Utils_1, CanvasInformation_1, Color_1, Enums_1, SonicManager_1;
     var Help;
     return {
@@ -355,37 +358,34 @@ System.register("Common/Help", ["Common/Utils", "Common/CanvasInformation", "Com
             Help = (function () {
                 function Help() {
                 }
-                Help.ToPx = function (number) {
-                    return number + "px";
-                };
-                Help.Sin = function (f) {
+                Help.sin = function (f) {
                     return Help.cos_table[(f + 0x40) & 0xFF];
                 };
-                Help.Cos = function (f) {
+                Help.cos = function (f) {
                     return Help.cos_table[(f) & 0xFF];
                 };
-                Help.Mod = function (j, n) {
+                Help.mod = function (j, n) {
                     return ((j % n) + n) % n;
                 };
-                Help.ScaleSprite = function (image, scale) {
-                    var canv = CanvasInformation_1.CanvasInformation.Create(image.width * scale.X, image.height * scale.Y, true);
+                Help.scaleSprite = function (image, scale) {
+                    var canv = CanvasInformation_1.CanvasInformation.create(image.width * scale.x, image.height * scale.y, true);
                     canv.Context.save();
-                    canv.Context.scale(scale.X, scale.Y);
+                    canv.Context.scale(scale.x, scale.y);
                     canv.Context.drawImage(image, 0, 0);
                     canv.Context.restore();
                     return canv;
                 };
-                Help.ScalePixelData = function (scale, data) {
+                Help.scalePixelData = function (scale, data) {
                     var Uint8ClampedArray = data.data;
                     var colors = new Array(Uint8ClampedArray.length / 4 | 0);
                     for (var f = 0; f < Uint8ClampedArray.length; f += 4) {
-                        colors[f / 4 | 0] = (Help.ColorObjectFromData(Uint8ClampedArray, f));
+                        colors[f / 4 | 0] = (Help.colorObjectFromData(Uint8ClampedArray, f));
                     }
-                    var d = CanvasInformation_1.CanvasInformation.Create(1, 1, false).Context.createImageData(data.width * scale.X, data.height * scale.Y);
-                    Help.SetDataFromColors(d.data, colors, scale, data.width, colors[0]);
+                    var d = CanvasInformation_1.CanvasInformation.create(1, 1, false).Context.createImageData(data.width * scale.x, data.height * scale.y);
+                    Help.setDataFromColors(d.data, colors, scale, data.width, colors[0]);
                     return d;
                 };
-                Help.SetDataFromColors = function (data, colors, scale, width, transparent) {
+                Help.setDataFromColors = function (data, colors, scale, width, transparent) {
                     for (var i = 0; i < colors.length; i++) {
                         var curX = i % width;
                         var curY = i / width | 0;
@@ -395,11 +395,11 @@ System.register("Common/Help", ["Common/Utils", "Common/CanvasInformation", "Com
                             if (g.R == transparent.R && g.G == transparent.G && g.B == transparent.B)
                                 isTrans = true;
                         }
-                        for (var j = 0; j < scale.X; j++) {
-                            for (var k = 0; k < scale.Y; k++) {
-                                var x = (curX * scale.X + j);
-                                var y = (curY * scale.Y + k);
-                                var c = (x + y * (scale.X * width)) * 4;
+                        for (var j = 0; j < scale.x; j++) {
+                            for (var k = 0; k < scale.y; k++) {
+                                var x = (curX * scale.x + j);
+                                var y = (curY * scale.y + k);
+                                var c = (x + y * (scale.x * width)) * 4;
                                 if (isTrans) {
                                     data[c + 0] = 0;
                                     data[c + 1] = 0;
@@ -415,7 +415,7 @@ System.register("Common/Help", ["Common/Utils", "Common/CanvasInformation", "Com
                         }
                     }
                 };
-                Help.GetBase64Image = function (data) {
+                Help.getBase64Image = function (data) {
                     var canvas = document.createElement("canvas");
                     canvas.width = data.width;
                     canvas.height = data.height;
@@ -424,14 +424,14 @@ System.register("Common/Help", ["Common/Utils", "Common/CanvasInformation", "Com
                     var dataURL = canvas.toDataURL("image/png");
                     return dataURL;
                 };
-                Help.ColorObjectFromData = function (data, c) {
+                Help.colorObjectFromData = function (data, c) {
                     var r = data[c];
                     var g = data[c + 1];
                     var b = data[c + 2];
                     var a = data[c + 3];
                     return new Color_1.Color(r, g, b, a);
                 };
-                Help.GetImageData = function (image) {
+                Help.getImageData = function (image) {
                     var canvas = document.createElement("canvas");
                     canvas.width = image.width;
                     canvas.height = image.height;
@@ -440,90 +440,67 @@ System.register("Common/Help", ["Common/Utils", "Common/CanvasInformation", "Com
                     var data = ctx.getImageData(0, 0, image.width, image.height);
                     return data;
                 };
-                Help.ScaleCsImage = function (image, scale, complete) {
+                Help.scaleCsImage = function (image, scale, complete) {
                     var df = image.Bytes;
                     var colors = new Array(df.length);
                     for (var f = 0; f < df.length; f++) {
                         var c = image.Palette[df[f]];
                         colors[f] = new Color_1.Color(c[0], c[1], c[2], c[3]);
                     }
-                    var dc = CanvasInformation_1.CanvasInformation.Create(1, 1, false);
-                    var d = dc.Context.createImageData(image.Width * scale.X, image.Height * scale.Y);
-                    Help.SetDataFromColors(d.data, colors, scale, image.Width, colors[0]);
-                    return Help.LoadSprite(Help.GetBase64Image(d), complete);
+                    var dc = CanvasInformation_1.CanvasInformation.create(1, 1, false);
+                    var d = dc.Context.createImageData(image.Width * scale.x, image.Height * scale.y);
+                    Help.setDataFromColors(d.data, colors, scale, image.Width, colors[0]);
+                    return Help.loadSprite(Help.getBase64Image(d), complete);
                 };
-                Help.IsLoaded = function (element) {
+                Help.isLoaded = function (element) {
                     return element.getAttribute("loaded") == "true";
                 };
-                Help.Loaded = function (element, set) {
+                Help.loaded = function (element, set) {
                     element.setAttribute("loaded", set ? "true" : "false");
                 };
-                Help.LoadSprite = function (src, complete) {
+                Help.loadSprite = function (src, complete) {
                     var sprite1 = new Image();
                     sprite1.addEventListener("load", function (e) {
-                        Help.Loaded(sprite1, true);
+                        Help.loaded(sprite1, true);
                         if (complete)
                             complete(sprite1);
                     }, false);
                     sprite1.src = src;
                     return sprite1;
                 };
-                Help.DecodeString = function (lvl) {
+                Help.decodeString = function (lvl) {
                     return new Compressor().DecompressText(lvl);
                 };
-                Help.FixAngle = function (angle) {
+                Help.fixAngle = function (angle) {
                     var fixedAng = Math.floor((256 - angle) * 1.4062) % 360 | 0;
                     var flop = 360 - fixedAng;
-                    return Help.DegToRad(flop);
+                    return Help.degToRad(flop);
                 };
-                Help.DegToRad = function (angle) {
+                Help.degToRad = function (angle) {
                     return angle * Math.PI / 180;
                 };
-                Help.Sign = function (m) {
+                Help.sign = function (m) {
                     return m == 0 ? 0 : (m < 0 ? -1 : 1);
                 };
-                Help.Floor = function (spinDashSpeed) {
+                Help.floor = function (spinDashSpeed) {
                     if (spinDashSpeed > 0)
                         return ~~spinDashSpeed;
                     return Math.floor(spinDashSpeed) | 0;
                 };
-                Help.Max = function (f1, f2) {
+                Help.max = function (f1, f2) {
                     return f1 < f2 ? f2 : f1;
                 };
-                Help.Min = function (f1, f2) {
+                Help.min = function (f1, f2) {
                     return f1 > f2 ? f2 : f1;
                 };
-                Help.Clone = function (o) {
-                    return null;
-                };
-                Help.RoundRect = function (ctx, x, y, width, height, radius, fill, stroke) {
-                    if (radius === void 0) { radius = 5; }
-                    if (fill === void 0) { fill = true; }
-                    if (stroke === void 0) { stroke = false; }
-                    ctx.save();
-                    ctx.lineWidth = 3;
-                    ctx.beginPath();
-                    ctx.moveTo(x + radius, y);
-                    ctx.lineTo(x + width, y);
-                    ctx.lineTo(x + width, y + height);
-                    ctx.lineTo(x, y + height);
-                    ctx.lineTo(x, y + radius);
-                    ctx.quadraticCurveTo(x, y, x + radius, y);
-                    ctx.closePath();
-                    if (stroke)
-                        ctx.stroke();
-                    if (fill)
-                        ctx.fill();
-                    ctx.restore();
-                };
-                Help.GetCursorPosition = function (ev) {
+                Help.getCursorPosition = function (ev) {
                     if (ev.originalEvent && ev.originalEvent.targetTouches && ev.originalEvent.targetTouches.length > 0)
-                        ev = ev.originalEvent.targetTouches[0];
+                        ev = (ev.originalEvent.targetTouches[0]);
                     if (ev.pageX && ev.pageY)
                         return new Utils_1.Point(ev.pageX, ev.pageY);
                     return new Utils_1.Point(ev.clientX, ev.clientY /*, 0, ev.Which == 3*/);
                 };
-                Help.Stringify = function (obj) {
+                Help.stringify = function (obj) {
                     return JSON.stringify(obj, function (key, value) {
                         if (key.indexOf("$") == 0)
                             return undefined;
@@ -545,12 +522,12 @@ System.register("Common/Help", ["Common/Utils", "Common/CanvasInformation", "Com
                             return value;
                     });
                 };
-                Help.SafeResize = function (block, width, height) {
-                    var m = CanvasInformation_1.CanvasInformation.Create(width, height, false);
-                    m.Context.drawImage(block.Canvas, 0, 0);
+                Help.safeResize = function (block, width, height) {
+                    var m = CanvasInformation_1.CanvasInformation.create(width, height, false);
+                    m.Context.drawImage(block.canvas, 0, 0);
                     return m;
                 };
-                Help.GetQueryString = function () {
+                Help.getQueryString = function () {
                     var result = {};
                     var queryString = window.location.search.substring(1);
                     var re = new RegExp("/([^&=]+)=([^&]*)/g");
@@ -560,22 +537,22 @@ System.register("Common/Help", ["Common/Utils", "Common/CanvasInformation", "Com
                     }
                     return result;
                 };
-                Help.Merge = function (base, update) {
+                Help.merge = function (base, update) {
                     for (var i in update) {
                         base[i] = update[i];
                     }
                     return base;
                 };
-                Help.DefaultWindowLocation = function (gameState, scale) {
+                Help.defaultWindowLocation = function (gameState, scale) {
                     switch (gameState) {
                         case Enums_1.GameState.Playing:
                             return new Utils_1.IntersectingRectangle(0, 0, 320, 224);
                         case Enums_1.GameState.Editing:
                             var x = 0;
                             var y = 0;
-                            if (SonicManager_1.SonicManager.Instance.SonicLevel && SonicManager_1.SonicManager.Instance.SonicLevel.StartPositions && SonicManager_1.SonicManager.Instance.SonicLevel.StartPositions[0]) {
-                                x = SonicManager_1.SonicManager.Instance.SonicLevel.StartPositions[0].X - 128 * scale.X;
-                                y = SonicManager_1.SonicManager.Instance.SonicLevel.StartPositions[0].Y - 128 * scale.Y;
+                            if (SonicManager_1.SonicManager.instance.sonicLevel && SonicManager_1.SonicManager.instance.sonicLevel.StartPositions && SonicManager_1.SonicManager.instance.sonicLevel.StartPositions[0]) {
+                                x = SonicManager_1.SonicManager.instance.sonicLevel.StartPositions[0].x - 128 * scale.x;
+                                y = SonicManager_1.SonicManager.instance.sonicLevel.StartPositions[0].y - 128 * scale.y;
                             }
                             return new Utils_1.IntersectingRectangle(x, y, window.innerWidth, window.innerHeight);
                     }
@@ -584,13 +561,102 @@ System.register("Common/Help", ["Common/Utils", "Common/CanvasInformation", "Com
                 Help.cos_table = new Array(1.00000, 0.99970, 0.99880, 0.99729, 0.99518, 0.99248, 0.98918, 0.98528, 0.98079, 0.97570, 0.97003, 0.96378, 0.95694, 0.94953, 0.94154, 0.93299, 0.92388, 0.91421, 0.90399, 0.89322, 0.88192, 0.87009, 0.85773, 0.84485, 0.83147, 0.81758, 0.80321, 0.78835, 0.77301, 0.75721, 0.74095, 0.72425, 0.70711, 0.68954, 0.67156, 0.65317, 0.63439, 0.61523, 0.59570, 0.57581, 0.55557, 0.53500, 0.51410, 0.49290, 0.47140, 0.44961, 0.42755, 0.40524, 0.38268, 0.35990, 0.33689, 0.31368, 0.29028, 0.26671, 0.24298, 0.21910, 0.19509, 0.17096, 0.14673, 0.12241, 0.09802, 0.07356, 0.04907, 0.02454, 0.00000, -0.02454, -0.04907, -0.07356, -0.09802, -0.12241, -0.14673, -0.17096, -0.19509, -0.21910, -0.24298, -0.26671, -0.29028, -0.31368, -0.33689, -0.35990, -0.38268, -0.40524, -0.42755, -0.44961, -0.47140, -0.49290, -0.51410, -0.53500, -0.55557, -0.57581, -0.59570, -0.61523, -0.63439, -0.65317, -0.67156, -0.68954, -0.70711, -0.72425, -0.74095, -0.75721, -0.77301, -0.78835, -0.80321, -0.81758, -0.83147, -0.84485, -0.85773, -0.87009, -0.88192, -0.89322, -0.90399, -0.91421, -0.92388, -0.93299, -0.94154, -0.94953, -0.95694, -0.96378, -0.97003, -0.97570, -0.98079, -0.98528, -0.98918, -0.99248, -0.99518, -0.99729, -0.99880, -0.99970, -1.00000, -0.99970, -0.99880, -0.99729, -0.99518, -0.99248, -0.98918, -0.98528, -0.98079, -0.97570, -0.97003, -0.96378, -0.95694, -0.94953, -0.94154, -0.93299, -0.92388, -0.91421, -0.90399, -0.89322, -0.88192, -0.87009, -0.85773, -0.84485, -0.83147, -0.81758, -0.80321, -0.78835, -0.77301, -0.75721, -0.74095, -0.72425, -0.70711, -0.68954, -0.67156, -0.65317, -0.63439, -0.61523, -0.59570, -0.57581, -0.55557, -0.53500, -0.51410, -0.49290, -0.47140, -0.44961, -0.42756, -0.40524, -0.38268, -0.35990, -0.33689, -0.31368, -0.29028, -0.26671, -0.24298, -0.21910, -0.19509, -0.17096, -0.14673, -0.12241, -0.09802, -0.07356, -0.04907, -0.02454, -0.00000, 0.02454, 0.04907, 0.07356, 0.09802, 0.12241, 0.14673, 0.17096, 0.19509, 0.21910, 0.24298, 0.26671, 0.29028, 0.31368, 0.33689, 0.35990, 0.38268, 0.40524, 0.42756, 0.44961, 0.47140, 0.49290, 0.51410, 0.53500, 0.55557, 0.57581, 0.59570, 0.61523, 0.63439, 0.65317, 0.67156, 0.68954, 0.70711, 0.72425, 0.74095, 0.75721, 0.77301, 0.78835, 0.80321, 0.81758, 0.83147, 0.84485, 0.85773, 0.87009, 0.88192, 0.89322, 0.90399, 0.91421, 0.92388, 0.93299, 0.94154, 0.94953, 0.95694, 0.96378, 0.97003, 0.97570, 0.98079, 0.98528, 0.98918, 0.99248, 0.99518, 0.99729, 0.99880, 0.99970);
                 return Help;
             }());
-            exports_7("Help", Help);
+            exports_9("Help", Help);
         }
     }
 });
-System.register("Game/Level/HeightMap", ["Common/Utils", "Game/SonicManager", "Common/CanvasInformation", "Common/Help", "Common/Enums"], function(exports_8, context_8) {
+System.register("SLData", [], function(exports_10, context_10) {
     "use strict";
-    var __moduleName = context_8 && context_8.id;
+    var __moduleName = context_10 && context_10.id;
+    var SLData, AnimatedPaletteItem, AnimatedPalettePiece, SLDataRingEntry, SLDataCNZBumperEntry, Solidity, SLDataChunkBlock, SLDataObjectEntry, SLDataStartPositionEntry, SLDataAnimation, SLDataAnimationFrame, SLDataPatternIndex, ObjectModelData;
+    return {
+        setters:[],
+        execute: function() {
+            SLData = (function () {
+                function SLData() {
+                }
+                return SLData;
+            }());
+            exports_10("SLData", SLData);
+            AnimatedPaletteItem = (function () {
+                function AnimatedPaletteItem() {
+                }
+                return AnimatedPaletteItem;
+            }());
+            exports_10("AnimatedPaletteItem", AnimatedPaletteItem);
+            AnimatedPalettePiece = (function () {
+                function AnimatedPalettePiece() {
+                }
+                return AnimatedPalettePiece;
+            }());
+            exports_10("AnimatedPalettePiece", AnimatedPalettePiece);
+            SLDataRingEntry = (function () {
+                function SLDataRingEntry() {
+                }
+                return SLDataRingEntry;
+            }());
+            exports_10("SLDataRingEntry", SLDataRingEntry);
+            SLDataCNZBumperEntry = (function () {
+                function SLDataCNZBumperEntry() {
+                }
+                return SLDataCNZBumperEntry;
+            }());
+            exports_10("SLDataCNZBumperEntry", SLDataCNZBumperEntry);
+            (function (Solidity) {
+                Solidity[Solidity["NotSolid"] = 0] = "NotSolid";
+                Solidity[Solidity["TopSolid"] = 1] = "TopSolid";
+                Solidity[Solidity["LRBSolid"] = 2] = "LRBSolid";
+                Solidity[Solidity["AllSolid"] = 3] = "AllSolid";
+            })(Solidity || (Solidity = {}));
+            exports_10("Solidity", Solidity);
+            SLDataChunkBlock = (function () {
+                function SLDataChunkBlock() {
+                }
+                return SLDataChunkBlock;
+            }());
+            exports_10("SLDataChunkBlock", SLDataChunkBlock);
+            SLDataObjectEntry = (function () {
+                function SLDataObjectEntry() {
+                }
+                return SLDataObjectEntry;
+            }());
+            exports_10("SLDataObjectEntry", SLDataObjectEntry);
+            SLDataStartPositionEntry = (function () {
+                function SLDataStartPositionEntry() {
+                }
+                return SLDataStartPositionEntry;
+            }());
+            exports_10("SLDataStartPositionEntry", SLDataStartPositionEntry);
+            SLDataAnimation = (function () {
+                function SLDataAnimation() {
+                }
+                return SLDataAnimation;
+            }());
+            exports_10("SLDataAnimation", SLDataAnimation);
+            SLDataAnimationFrame = (function () {
+                function SLDataAnimationFrame() {
+                }
+                return SLDataAnimationFrame;
+            }());
+            exports_10("SLDataAnimationFrame", SLDataAnimationFrame);
+            SLDataPatternIndex = (function () {
+                function SLDataPatternIndex() {
+                }
+                return SLDataPatternIndex;
+            }());
+            exports_10("SLDataPatternIndex", SLDataPatternIndex);
+            ObjectModelData = (function () {
+                function ObjectModelData() {
+                }
+                return ObjectModelData;
+            }());
+            exports_10("ObjectModelData", ObjectModelData);
+        }
+    }
+});
+System.register("game/level/HeightMap", ["common/Utils", "game/SonicManager", "common/CanvasInformation", "common/Help", "common/Enums"], function(exports_11, context_11) {
+    "use strict";
+    var __moduleName = context_11 && context_11.id;
     var Utils_2, SonicManager_2, CanvasInformation_2, Help_1, Enums_2;
     var HeightMap;
     return {
@@ -613,6 +679,9 @@ System.register("Game/Level/HeightMap", ["Common/Utils", "Game/SonicManager", "C
         execute: function() {
             HeightMap = (function () {
                 function HeightMap(heightMap, i) {
+                    this.Width = 0;
+                    this.Height = 0;
+                    this.Index = 0;
                     this.Full = undefined;
                     this.Items = heightMap;
                     this.Width = 16;
@@ -654,18 +723,18 @@ System.register("Game/Level/HeightMap", ["Common/Utils", "Game/SonicManager", "C
                     canvas.save();
                     var oPos = Utils_2.Point.Create(pos);
                     if (xflip) {
-                        pos.X = -pos.X - 16;
+                        pos.x = -pos.x - 16;
                         canvas.scale(-1, 1);
                     }
                     if (yflip) {
-                        pos.Y = -pos.Y - 16;
+                        pos.y = -pos.y - 16;
                         canvas.scale(1, -1);
                     }
-                    var fd = SonicManager_2.SonicManager.Instance.SpriteCache.HeightMaps[this.Index + (solid << 20)];
+                    var fd = SonicManager_2.SonicManager.instance.spriteCache.HeightMaps[this.Index + (solid << 20)];
                     if (this.Index != -1 && fd)
-                        canvas.drawImage(fd.Canvas, pos.X, pos.Y);
+                        canvas.drawImage(fd.canvas, pos.x, pos.y);
                     else {
-                        var ntcanvas = CanvasInformation_2.CanvasInformation.Create(16, 16, false);
+                        var ntcanvas = CanvasInformation_2.CanvasInformation.create(16, 16, false);
                         var ncanvas = ntcanvas.Context;
                         if (solid > 0) {
                             for (var x = 0; x < 16; x++) {
@@ -685,19 +754,19 @@ System.register("Game/Level/HeightMap", ["Common/Utils", "Game/SonicManager", "C
                                             ncanvas.lineWidth = 1;
                                             ncanvas.strokeStyle = "rgba(163,241,255,0.8)";
                                             ncanvas.moveTo(16 / 2, 16 / 2);
-                                            ncanvas.lineTo(16 / 2 - Help_1.Help.Sin(angle) * 8, 16 / 2 - Help_1.Help.Cos(angle) * 8);
+                                            ncanvas.lineTo(16 / 2 - Help_1.Help.sin(angle) * 8, 16 / 2 - Help_1.Help.cos(angle) * 8);
                                             ncanvas.stroke();
                                         }
                                     }
                                 }
                             }
                         }
-                        SonicManager_2.SonicManager.Instance.SpriteCache.HeightMaps[this.Index + (solid << 20)] = ntcanvas;
-                        canvas.drawImage(ntcanvas.Canvas, pos.X, pos.Y);
+                        SonicManager_2.SonicManager.instance.spriteCache.HeightMaps[this.Index + (solid << 20)] = ntcanvas;
+                        canvas.drawImage(ntcanvas.canvas, pos.x, pos.y);
                     }
                     canvas.restore();
-                    pos.X = oPos.X;
-                    pos.Y = oPos.Y;
+                    pos.x = oPos.x;
+                    pos.y = oPos.y;
                 };
                 HeightMap.ItemsGood = function (items, x, y) {
                     if (items[x] < 0)
@@ -707,13 +776,13 @@ System.register("Game/Level/HeightMap", ["Common/Utils", "Game/SonicManager", "C
                 HeightMap.colors = new Array("", "rgba(255,98,235,0.6)", "rgba(24,218,235,0.6)", "rgba(24,98,235,0.6)");
                 return HeightMap;
             }());
-            exports_8("HeightMap", HeightMap);
+            exports_11("HeightMap", HeightMap);
         }
     }
 });
-System.register("Game/Level/Tiles/Tile", ["Common/CanvasInformation", "Common/Utils", "Game/SonicManager"], function(exports_9, context_9) {
+System.register("game/level/Tiles/Tile", ["common/CanvasInformation", "common/Utils", "game/SonicManager"], function(exports_12, context_12) {
     "use strict";
-    var __moduleName = context_9 && context_9.id;
+    var __moduleName = context_12 && context_12.id;
     var CanvasInformation_3, Utils_3, SonicManager_3;
     var Tile;
     return {
@@ -731,39 +800,41 @@ System.register("Game/Level/Tiles/Tile", ["Common/CanvasInformation", "Common/Ut
             Tile = (function () {
                 function Tile(colors) {
                     this.canAnimate = true;
+                    this.index = 0;
+                    this.isTileAnimated = false;
                     this.baseCaches = {};
                     this.animatedPaletteCaches = {};
-                    this.Colors = colors;
-                    this.CurPaletteIndexes = null;
+                    this.colors = colors;
+                    this.curPaletteIndexes = null;
                 }
-                Tile.prototype.DrawBase = function (canvas, pos, xflip, yflip, palette, isAnimatedTile) {
+                Tile.prototype.drawBase = function (canvas, pos, xflip, yflip, palette, isAnimatedTile) {
                     if (isAnimatedTile === void 0) { isAnimatedTile = false; }
-                    if (this.AnimatedTileIndexes != null && (!isAnimatedTile && this.AnimatedTileIndexes.length > 0))
+                    if (this.animatedTileIndexes != null && (!isAnimatedTile && this.animatedTileIndexes.length > 0))
                         return;
                     var baseCacheIndex = this.getBaseCacheIndex(xflip, yflip, palette);
                     var baseCache = this.baseCaches[baseCacheIndex];
                     if (baseCache == null) {
-                        var squareSize = this.Colors.length;
+                        var squareSize = this.colors.length;
                         var j = void 0;
-                        j = CanvasInformation_3.CanvasInformation.Create(squareSize, squareSize, false);
-                        if (pos.X < 0 || pos.Y < 0)
+                        j = CanvasInformation_3.CanvasInformation.create(squareSize, squareSize, false);
+                        if (pos.x < 0 || pos.y < 0)
                             return;
                         var oPos = new Utils_3.Point(0, 0);
                         if (xflip) {
-                            oPos.X = -squareSize;
+                            oPos.x = -squareSize;
                             j.Context.scale(-1, 1);
                         }
                         if (yflip) {
-                            oPos.Y = -squareSize;
+                            oPos.y = -squareSize;
                             j.Context.scale(1, -1);
                         }
-                        var palette_ = SonicManager_3.SonicManager.Instance.SonicLevel.Palette;
-                        var colorPaletteIndex = (palette + SonicManager_3.SonicManager.Instance.IndexedPalette) % palette_.length;
-                        var x = oPos.X;
-                        var y = oPos.Y;
+                        var palette_ = SonicManager_3.SonicManager.instance.sonicLevel.Palette;
+                        var colorPaletteIndex = (palette + SonicManager_3.SonicManager.instance.indexedPalette) % palette_.length;
+                        var x = oPos.x;
+                        var y = oPos.y;
                         for (var _x = 0; _x < squareSize; _x++) {
                             for (var _y = 0; _y < squareSize; _y++) {
-                                var colorIndex = this.Colors[_x][_y];
+                                var colorIndex = this.colors[_x][_y];
                                 if (colorIndex == 0)
                                     continue;
                                 j.Context.fillStyle = palette_[colorPaletteIndex][colorIndex];
@@ -772,7 +843,7 @@ System.register("Game/Level/Tiles/Tile", ["Common/CanvasInformation", "Common/Ut
                         }
                         this.baseCaches[baseCacheIndex] = baseCache = j;
                     }
-                    canvas.drawImage(baseCache.Canvas, pos.X, pos.Y);
+                    canvas.drawImage(baseCache.canvas, pos.x, pos.y);
                 };
                 Tile.prototype.getBaseCacheIndex = function (xflip, yflip, palette) {
                     return (palette << 6) + ((xflip ? 1 : 0) << 5) + ((yflip ? 1 : 0) << 4);
@@ -782,35 +853,35 @@ System.register("Game/Level/Tiles/Tile", ["Common/CanvasInformation", "Common/Ut
                 };
                 Tile.prototype.DrawAnimatedPalette = function (canvas, pos, xflip, yflip, palette, animatedPaletteIndex, isAnimatedTile) {
                     if (isAnimatedTile === void 0) { isAnimatedTile = false; }
-                    if (this.AnimatedTileIndexes != null && (!isAnimatedTile && this.AnimatedTileIndexes.length > 0))
+                    if (this.animatedTileIndexes != null && (!isAnimatedTile && this.animatedTileIndexes.length > 0))
                         return;
-                    var animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xflip, yflip, palette, animatedPaletteIndex, SonicManager_3.SonicManager.Instance.TilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
+                    var animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xflip, yflip, palette, animatedPaletteIndex, SonicManager_3.SonicManager.instance.tilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
                     var animatedPaletteCache = this.animatedPaletteCaches[animatedPaletteCacheIndex];
                     if (animatedPaletteCache == null) {
-                        var squareSize = this.Colors.length;
+                        var squareSize = this.colors.length;
                         var j = void 0;
-                        j = CanvasInformation_3.CanvasInformation.Create(squareSize, squareSize, false);
-                        if (pos.X < 0 || pos.Y < 0)
+                        j = CanvasInformation_3.CanvasInformation.create(squareSize, squareSize, false);
+                        if (pos.x < 0 || pos.y < 0)
                             return;
                         var oPos = new Utils_3.Point(0, 0);
                         if (xflip) {
-                            oPos.X = -squareSize;
+                            oPos.x = -squareSize;
                             j.Context.scale(-1, 1);
                         }
                         if (yflip) {
-                            oPos.Y = -squareSize;
+                            oPos.y = -squareSize;
                             j.Context.scale(1, -1);
                         }
-                        var palette_ = SonicManager_3.SonicManager.Instance.SonicLevel.Palette;
-                        var colorPaletteIndex = (palette + SonicManager_3.SonicManager.Instance.IndexedPalette) % palette_.length;
-                        var x = oPos.X;
-                        var y = oPos.Y;
+                        var palette_ = SonicManager_3.SonicManager.instance.sonicLevel.Palette;
+                        var colorPaletteIndex = (palette + SonicManager_3.SonicManager.instance.indexedPalette) % palette_.length;
+                        var x = oPos.x;
+                        var y = oPos.y;
                         for (var _x = 0; _x < squareSize; _x++) {
                             for (var _y = 0; _y < squareSize; _y++) {
-                                var colorIndex = this.Colors[_x][_y];
+                                var colorIndex = this.colors[_x][_y];
                                 if (colorIndex == 0)
                                     continue;
-                                if (this.PaletteIndexesToBeAnimated[animatedPaletteIndex].indexOf(colorIndex) == -1)
+                                if (this.paletteIndexesToBeAnimated[animatedPaletteIndex].indexOf(colorIndex) == -1)
                                     continue;
                                 j.Context.fillStyle = palette_[colorPaletteIndex][colorIndex];
                                 j.Context.fillRect(x + _x, y + _y, 1, 1);
@@ -818,35 +889,35 @@ System.register("Game/Level/Tiles/Tile", ["Common/CanvasInformation", "Common/Ut
                         }
                         this.animatedPaletteCaches[animatedPaletteCacheIndex] = animatedPaletteCache = j;
                     }
-                    canvas.drawImage(animatedPaletteCache.Canvas, pos.X, pos.Y);
+                    canvas.drawImage(animatedPaletteCache.canvas, pos.x, pos.y);
                 };
-                Tile.prototype.DrawAnimatedTile = function (canvas, pos, xflip, yflip, palette, animatedTileIndex) {
-                    if (this.AnimatedTileIndexes.indexOf(animatedTileIndex) == -1)
+                Tile.prototype.drawAnimatedTile = function (canvas, pos, xflip, yflip, palette, animatedTileIndex) {
+                    if (this.animatedTileIndexes.indexOf(animatedTileIndex) == -1)
                         return;
-                    var tileAnimationFrame = SonicManager_3.SonicManager.Instance.TileAnimationManager.GetCurrentFrame(animatedTileIndex);
-                    var tileAnimation = tileAnimationFrame.Animation;
-                    var tileAnimationData = tileAnimation.AnimatedTileData;
+                    var tileAnimationFrame = SonicManager_3.SonicManager.instance.tileAnimationManager.getCurrentFrame(animatedTileIndex);
+                    var tileAnimation = tileAnimationFrame.animation;
+                    var tileAnimationData = tileAnimation.animatedTileData;
                     var animationIndex = tileAnimationData.AnimationTileIndex;
-                    var frame = tileAnimationFrame.FrameData();
+                    var frame = tileAnimationFrame.frameData();
                     if (!frame) {
-                        frame = tileAnimation.AnimatedTileData.DataFrames[0];
+                        frame = tileAnimation.animatedTileData.DataFrames[0];
                     }
                     var file = tileAnimationData.GetAnimationFile();
-                    var va = file[frame.StartingTileIndex + (this.Index - animationIndex)];
+                    var va = file[frame.StartingTileIndex + (this.index - animationIndex)];
                     if (va != null) {
-                        va.DrawBase(canvas, pos, xflip, yflip, palette, true);
+                        va.drawBase(canvas, pos, xflip, yflip, palette, true);
                     }
                     else {
                     }
                 };
                 Tile.prototype.ShouldTileAnimate = function () {
-                    return this.IsTileAnimated && this.canAnimate;
+                    return this.isTileAnimated && this.canAnimate;
                 };
                 Tile.prototype.GetAllPaletteIndexes = function () {
-                    if (this.CurPaletteIndexes == null) {
+                    if (this.curPaletteIndexes == null) {
                         var d = new Array();
-                        for (var _x = 0; _x < this.Colors.length; _x++) {
-                            var color = this.Colors[_x];
+                        for (var _x = 0; _x < this.colors.length; _x++) {
+                            var color = this.colors[_x];
                             var _loop_1 = function(_y) {
                                 var col = color[_y];
                                 if (col == 0)
@@ -859,22 +930,23 @@ System.register("Game/Level/Tiles/Tile", ["Common/CanvasInformation", "Common/Ut
                                 if (state_1 === "continue") continue;
                             }
                         }
-                        this.CurPaletteIndexes = d.slice(0);
+                        this.curPaletteIndexes = d.slice(0);
                     }
-                    return this.CurPaletteIndexes;
+                    return this.curPaletteIndexes;
                 };
                 Tile.prototype.ClearCache = function () {
-                    this.CurPaletteIndexes = null;
+                    this.curPaletteIndexes = null;
+                    this.baseCaches = {};
                 };
                 return Tile;
             }());
-            exports_9("Tile", Tile);
+            exports_12("Tile", Tile);
         }
     }
 });
-System.register("Game/Level/Tiles/TileInfo", ["Game/SonicManager"], function(exports_10, context_10) {
+System.register("game/level/Tiles/TileInfo", ["game/SonicManager"], function(exports_13, context_13) {
     "use strict";
-    var __moduleName = context_10 && context_10.id;
+    var __moduleName = context_13 && context_13.id;
     var SonicManager_4;
     var TileInfo;
     return {
@@ -885,19 +957,25 @@ System.register("Game/Level/Tiles/TileInfo", ["Game/SonicManager"], function(exp
         execute: function() {
             TileInfo = (function () {
                 function TileInfo() {
+                    this._Tile = 0;
+                    this.Priority = false;
+                    this.XFlip = false;
+                    this.YFlip = false;
+                    this.Palette = 0;
+                    this.Index = 0;
                 }
                 TileInfo.prototype.GetTile = function () {
-                    return SonicManager_4.SonicManager.Instance.SonicLevel.GetTile(this._Tile);
+                    return SonicManager_4.SonicManager.instance.sonicLevel.GetTile(this._Tile);
                 };
                 return TileInfo;
             }());
-            exports_10("TileInfo", TileInfo);
+            exports_13("TileInfo", TileInfo);
         }
     }
 });
-System.register("Game/Level/Tiles/TilePiece", ["Common/Utils", "Common/CanvasInformation", "Game/SonicManager"], function(exports_11, context_11) {
+System.register("game/level/Tiles/TilePiece", ["common/Utils", "common/CanvasInformation", "game/SonicManager"], function(exports_14, context_14) {
     "use strict";
-    var __moduleName = context_11 && context_11.id;
+    var __moduleName = context_14 && context_14.id;
     var Utils_4, CanvasInformation_4, SonicManager_5;
     var TilePiece;
     return {
@@ -914,6 +992,12 @@ System.register("Game/Level/Tiles/TilePiece", ["Common/Utils", "Common/CanvasInf
         execute: function() {
             TilePiece = (function () {
                 function TilePiece() {
+                    this.onlyBackground = false;
+                    this.onlyBackgroundSet = false;
+                    this.onlyForeground = false;
+                    this.onlyForegroundSet = false;
+                    this.shouldAnimate = false;
+                    this.Index = 0;
                     this.animatedPaletteCaches = {};
                 }
                 TilePiece.prototype.Init = function () {
@@ -954,7 +1038,7 @@ System.register("Game/Level/Tiles/TilePiece", ["Common/Utils", "Common/CanvasInf
                     var drawOrderIndex = 0;
                     drawOrderIndex = xFlip ? (yFlip ? 0 : 1) : (yFlip ? 2 : 3);
                     var tilePieceLength = 8;
-                    var ac = CanvasInformation_4.CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
+                    var ac = CanvasInformation_4.CanvasInformation.create(tilePieceLength * 2, tilePieceLength * 2, false);
                     var i = 0;
                     var localPoint = new Utils_4.Point(0, 0);
                     for (var _i = 0, _a = this.Tiles; _i < _a.length; _i++) {
@@ -965,26 +1049,26 @@ System.register("Game/Level/Tiles/TilePiece", ["Common/Utils", "Common/CanvasInf
                                 var _xf = !!xFlip !== !!tileItem.XFlip;
                                 var _yf = !!yFlip !== !!tileItem.YFlip;
                                 var df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
-                                localPoint.X = df[0] * tilePieceLength;
-                                localPoint.Y = df[1] * tilePieceLength;
-                                tile.DrawBase(ac.Context, localPoint, _xf, _yf, tileItem.Palette);
+                                localPoint.x = df[0] * tilePieceLength;
+                                localPoint.y = df[1] * tilePieceLength;
+                                tile.drawBase(ac.Context, localPoint, _xf, _yf, tileItem.Palette);
                             }
                         }
                         i++;
                     }
-                    canvas.drawImage(ac.Canvas, position.X, position.Y);
+                    canvas.drawImage(ac.canvas, position.x, position.y);
                 };
                 TilePiece.prototype.getAnimatedPaletteCacheIndex = function (xflip, yflip, animatedPaletteIndex, frameIndex) {
                     return (frameIndex << 8) + (animatedPaletteIndex << 7) + ((xflip ? 1 : 0) << 5) + ((yflip ? 1 : 0) << 4);
                 };
                 TilePiece.prototype.DrawAnimatedPalette = function (canvas, position, layer, xFlip, yFlip, animatedPaletteIndex) {
-                    var animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xFlip, yFlip, animatedPaletteIndex, SonicManager_5.SonicManager.Instance.TilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
+                    var animatedPaletteCacheIndex = this.getAnimatedPaletteCacheIndex(xFlip, yFlip, animatedPaletteIndex, SonicManager_5.SonicManager.instance.tilePaletteAnimationManager.GetPaletteAnimation(animatedPaletteIndex).CurrentFrame);
                     var animatedPaletteCache = this.animatedPaletteCaches[animatedPaletteCacheIndex];
                     if (animatedPaletteCache == null) {
                         var drawOrderIndex = 0;
                         drawOrderIndex = xFlip ? (yFlip ? 0 : 1) : (yFlip ? 2 : 3);
                         var tilePieceLength = 8;
-                        var ac = CanvasInformation_4.CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
+                        var ac = CanvasInformation_4.CanvasInformation.create(tilePieceLength * 2, tilePieceLength * 2, false);
                         var i = 0;
                         var localPoint = new Utils_4.Point(0, 0);
                         for (var _i = 0, _a = this.Tiles; _i < _a.length; _i++) {
@@ -995,8 +1079,8 @@ System.register("Game/Level/Tiles/TilePiece", ["Common/Utils", "Common/CanvasInf
                                     var _xf = !!xFlip !== !!tileItem.XFlip;
                                     var _yf = !!yFlip !== !!tileItem.YFlip;
                                     var df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
-                                    localPoint.X = df[0] * tilePieceLength;
-                                    localPoint.Y = df[1] * tilePieceLength;
+                                    localPoint.x = df[0] * tilePieceLength;
+                                    localPoint.y = df[1] * tilePieceLength;
                                     tile.DrawAnimatedPalette(ac.Context, localPoint, _xf, _yf, tileItem.Palette, animatedPaletteIndex);
                                 }
                             }
@@ -1004,13 +1088,13 @@ System.register("Game/Level/Tiles/TilePiece", ["Common/Utils", "Common/CanvasInf
                         }
                         this.animatedPaletteCaches[animatedPaletteCacheIndex] = animatedPaletteCache = ac;
                     }
-                    canvas.drawImage(animatedPaletteCache.Canvas, position.X, position.Y);
+                    canvas.drawImage(animatedPaletteCache.canvas, position.x, position.y);
                 };
                 TilePiece.prototype.DrawAnimatedTile = function (canvas, position, layer, xFlip, yFlip, animatedTileIndex) {
                     var drawOrderIndex = 0;
                     drawOrderIndex = xFlip ? (yFlip ? 0 : 1) : (yFlip ? 2 : 3);
                     var tilePieceLength = 8;
-                    var ac = CanvasInformation_4.CanvasInformation.Create(tilePieceLength * 2, tilePieceLength * 2, false);
+                    var ac = CanvasInformation_4.CanvasInformation.create(tilePieceLength * 2, tilePieceLength * 2, false);
                     var i = 0;
                     var localPoint = new Utils_4.Point(0, 0);
                     for (var _i = 0, _a = this.Tiles; _i < _a.length; _i++) {
@@ -1021,14 +1105,14 @@ System.register("Game/Level/Tiles/TilePiece", ["Common/Utils", "Common/CanvasInf
                                 var _xf = !!xFlip !== !!tileItem.XFlip;
                                 var _yf = !!yFlip !== !!tileItem.YFlip;
                                 var df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
-                                localPoint.X = df[0] * tilePieceLength;
-                                localPoint.Y = df[1] * tilePieceLength;
-                                tile.DrawAnimatedTile(ac.Context, localPoint, _xf, _yf, tileItem.Palette, animatedTileIndex);
+                                localPoint.x = df[0] * tilePieceLength;
+                                localPoint.y = df[1] * tilePieceLength;
+                                tile.drawAnimatedTile(ac.Context, localPoint, _xf, _yf, tileItem.Palette, animatedTileIndex);
                             }
                         }
                         i++;
                     }
-                    canvas.drawImage(ac.Canvas, position.X, position.Y);
+                    canvas.drawImage(ac.canvas, position.x, position.y);
                 };
                 TilePiece.prototype.ShouldAnimate = function () {
                     if (this.shouldAnimate == null) {
@@ -1045,41 +1129,50 @@ System.register("Game/Level/Tiles/TilePiece", ["Common/Utils", "Common/CanvasInf
                     return (this.shouldAnimate);
                 };
                 TilePiece.prototype.GetLayer1Angles = function () {
-                    return SonicManager_5.SonicManager.Instance.SonicLevel.Angles[SonicManager_5.SonicManager.Instance.SonicLevel.CollisionIndexes1[this.Index]];
+                    return SonicManager_5.SonicManager.instance.sonicLevel.Angles[SonicManager_5.SonicManager.instance.sonicLevel.CollisionIndexes1[this.Index]];
                 };
                 TilePiece.prototype.GetLayer2Angles = function () {
-                    return SonicManager_5.SonicManager.Instance.SonicLevel.Angles[SonicManager_5.SonicManager.Instance.SonicLevel.CollisionIndexes2[this.Index]];
+                    return SonicManager_5.SonicManager.instance.sonicLevel.Angles[SonicManager_5.SonicManager.instance.sonicLevel.CollisionIndexes2[this.Index]];
                 };
                 TilePiece.prototype.GetLayer1HeightMaps = function () {
-                    return SonicManager_5.SonicManager.Instance.SonicLevel.HeightMaps[SonicManager_5.SonicManager.Instance.SonicLevel.CollisionIndexes1[this.Index]];
+                    return SonicManager_5.SonicManager.instance.sonicLevel.HeightMaps[SonicManager_5.SonicManager.instance.sonicLevel.CollisionIndexes1[this.Index]];
                 };
                 TilePiece.prototype.GetLayer2HeightMaps = function () {
-                    return SonicManager_5.SonicManager.Instance.SonicLevel.HeightMaps[SonicManager_5.SonicManager.Instance.SonicLevel.CollisionIndexes2[this.Index]];
+                    return SonicManager_5.SonicManager.instance.sonicLevel.HeightMaps[SonicManager_5.SonicManager.instance.sonicLevel.CollisionIndexes2[this.Index]];
                 };
                 TilePiece.DrawInfo = [[0, 0], [1, 0], [0, 1], [1, 1]];
                 TilePiece.DrawOrder = [[3, 2, 1, 0], [1, 0, 3, 2], [2, 3, 0, 1], [0, 1, 2, 3]];
                 return TilePiece;
             }());
-            exports_11("TilePiece", TilePiece);
+            exports_14("TilePiece", TilePiece);
         }
     }
 });
-System.register("Game/Level/Tiles/TilePieceInfo", ["Game/SonicManager"], function(exports_12, context_12) {
+System.register("game/level/Tiles/TilePieceInfo", ["game/SonicManager", "SLData"], function(exports_15, context_15) {
     "use strict";
-    var __moduleName = context_12 && context_12.id;
-    var SonicManager_6;
+    var __moduleName = context_15 && context_15.id;
+    var SonicManager_6, SLData_1;
     var TilePieceInfo;
     return {
         setters:[
             function (SonicManager_6_1) {
                 SonicManager_6 = SonicManager_6_1;
+            },
+            function (SLData_1_1) {
+                SLData_1 = SLData_1_1;
             }],
         execute: function() {
             TilePieceInfo = (function () {
                 function TilePieceInfo() {
+                    this.Block = 0;
+                    this.XFlip = false;
+                    this.YFlip = false;
+                    this.Solid1 = SLData_1.Solidity.NotSolid;
+                    this.Solid2 = SLData_1.Solidity.NotSolid;
+                    this.Index = 0;
                 }
                 TilePieceInfo.prototype.GetTilePiece = function () {
-                    return SonicManager_6.SonicManager.Instance.SonicLevel.GetTilePiece(this.Block);
+                    return SonicManager_6.SonicManager.instance.sonicLevel.GetTilePiece(this.Block);
                 };
                 TilePieceInfo.prototype.SetTilePiece = function (tp) {
                     if (this.Block == tp.Index)
@@ -1088,26 +1181,26 @@ System.register("Game/Level/Tiles/TilePieceInfo", ["Game/SonicManager"], functio
                     return true;
                 };
                 TilePieceInfo.prototype.GetLayer1Angles = function () {
-                    return SonicManager_6.SonicManager.Instance.SonicLevel.Angles[SonicManager_6.SonicManager.Instance.SonicLevel.CollisionIndexes1[this.Block]];
+                    return SonicManager_6.SonicManager.instance.sonicLevel.Angles[SonicManager_6.SonicManager.instance.sonicLevel.CollisionIndexes1[this.Block]];
                 };
                 TilePieceInfo.prototype.GetLayer2Angles = function () {
-                    return SonicManager_6.SonicManager.Instance.SonicLevel.Angles[SonicManager_6.SonicManager.Instance.SonicLevel.CollisionIndexes2[this.Block]];
+                    return SonicManager_6.SonicManager.instance.sonicLevel.Angles[SonicManager_6.SonicManager.instance.sonicLevel.CollisionIndexes2[this.Block]];
                 };
                 TilePieceInfo.prototype.GetLayer1HeightMaps = function () {
-                    return SonicManager_6.SonicManager.Instance.SonicLevel.HeightMaps[SonicManager_6.SonicManager.Instance.SonicLevel.CollisionIndexes1[this.Block]];
+                    return SonicManager_6.SonicManager.instance.sonicLevel.HeightMaps[SonicManager_6.SonicManager.instance.sonicLevel.CollisionIndexes1[this.Block]];
                 };
                 TilePieceInfo.prototype.GetLayer2HeightMaps = function () {
-                    return SonicManager_6.SonicManager.Instance.SonicLevel.HeightMaps[SonicManager_6.SonicManager.Instance.SonicLevel.CollisionIndexes2[this.Block]];
+                    return SonicManager_6.SonicManager.instance.sonicLevel.HeightMaps[SonicManager_6.SonicManager.instance.sonicLevel.CollisionIndexes2[this.Block]];
                 };
                 return TilePieceInfo;
             }());
-            exports_12("TilePieceInfo", TilePieceInfo);
+            exports_15("TilePieceInfo", TilePieceInfo);
         }
     }
 });
-System.register("Game/Level/Animations/TileAnimationData", ["Game/SonicManager"], function(exports_13, context_13) {
+System.register("game/level/Animations/TileAnimationData", ["game/SonicManager"], function(exports_16, context_16) {
     "use strict";
-    var __moduleName = context_13 && context_13.id;
+    var __moduleName = context_16 && context_16.id;
     var SonicManager_7;
     var TileAnimationData, TileAnimationDataFrame;
     return {
@@ -1118,25 +1211,54 @@ System.register("Game/Level/Animations/TileAnimationData", ["Game/SonicManager"]
         execute: function() {
             TileAnimationData = (function () {
                 function TileAnimationData() {
+                    /*   function animation(name, images) {
+                 this.images = images;
+                 this.name = name;
+                 this.draw = function (canvas, x, y, scale, animationIndex) {
+                     canvas.save();
+                     let jv = (function (ind, imgs) {
+                         let dj = 0;
+                         for (let vm in imgs) {
+                             if (dj == ind)
+                                 return vm;
+                             dj++;
+             
+                         }
+                         return null;
+                     })(animationIndex, this.images);
+                     
+                     canvas.drawImage(sonicManager.spriteCache.animationSprites[animationIndex + " " + name + scale.x + scale.y],
+                         (x - this.images[jv].width / 2) * scale.x, (y - this.images[jv].height / 2) * scale.y);
+                     canvas.restore();
+                 };
+             }*/
+                    this.AnimationTileFile = 0;
+                    this.NumberOfTiles = 0;
+                    this.LastAnimatedIndex = 0;
+                    this.LastAnimatedFrame = 0;
+                    this.AnimationTileIndex = 0;
+                    this.AutomatedTiming = 0;
                 }
                 TileAnimationData.prototype.GetAnimationFile = function () {
-                    return SonicManager_7.SonicManager.Instance.SonicLevel.AnimatedTileFiles[this.AnimationTileFile];
+                    return SonicManager_7.SonicManager.instance.sonicLevel.AnimatedTileFiles[this.AnimationTileFile];
                 };
                 return TileAnimationData;
             }());
-            exports_13("TileAnimationData", TileAnimationData);
+            exports_16("TileAnimationData", TileAnimationData);
             TileAnimationDataFrame = (function () {
                 function TileAnimationDataFrame() {
+                    this.Ticks = 0;
+                    this.StartingTileIndex = 0;
                 }
                 return TileAnimationDataFrame;
             }());
-            exports_13("TileAnimationDataFrame", TileAnimationDataFrame);
+            exports_16("TileAnimationDataFrame", TileAnimationDataFrame);
         }
     }
 });
-System.register("Game/Level/Objects/LevelObjectAssetFrame", ["Common/CanvasInformation"], function(exports_14, context_14) {
+System.register("game/level/Objects/LevelObjectAssetFrame", ["common/CanvasInformation"], function(exports_17, context_17) {
     "use strict";
-    var __moduleName = context_14 && context_14.id;
+    var __moduleName = context_17 && context_17.id;
     var CanvasInformation_5;
     var LevelObjectAssetFrame;
     return {
@@ -1176,15 +1298,15 @@ System.register("Game/Level/Objects/LevelObjectAssetFrame", ["Common/CanvasInfor
                 LevelObjectAssetFrame.prototype.DrawSimple = function (mainCanvas, pos, width, height, xflip, yflip) {
                     var c = this.GetCache(false, false, false);
                     mainCanvas.save();
-                    mainCanvas.translate(pos.X, pos.Y);
+                    mainCanvas.translate(pos.x, pos.y);
                     mainCanvas.scale((width / this.width) | 0, (height / this.height) | 0);
-                    mainCanvas.drawImage(c.Canvas, 0, 0);
+                    mainCanvas.drawImage(c.canvas, 0, 0);
                     mainCanvas.restore();
                 };
                 LevelObjectAssetFrame.prototype.GetCache = function (showOutline, showCollideMap, showHurtMap) {
                     var m = this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
                     if (m == null) {
-                        var mj = CanvasInformation_5.CanvasInformation.Create(this.width, this.height, false);
+                        var mj = CanvasInformation_5.CanvasInformation.create(this.width, this.height, false);
                         var canvas = mj.Context;
                         canvas.save();
                         canvas.strokeStyle = "#000000";
@@ -1231,19 +1353,19 @@ System.register("Game/Level/Objects/LevelObjectAssetFrame", ["Common/CanvasInfor
                 LevelObjectAssetFrame.prototype.DrawUI = function (_canvas, pos, showOutline, showCollideMap, showHurtMap, showOffset, xflip, yflip) {
                     var fd = this.GetCache(showOutline, showCollideMap, showHurtMap);
                     _canvas.save();
-                    _canvas.translate(pos.X, pos.Y);
+                    _canvas.translate(pos.x, pos.y);
                     if (xflip) {
                         if (yflip) {
-                            _canvas.translate(fd.Canvas.width / 2, fd.Canvas.height / 2);
+                            _canvas.translate(fd.canvas.width / 2, fd.canvas.height / 2);
                             _canvas.rotate(-90 * Math.PI / 180);
-                            _canvas.translate(-fd.Canvas.width / 2, -fd.Canvas.height / 2);
+                            _canvas.translate(-fd.canvas.width / 2, -fd.canvas.height / 2);
                             _canvas.translate(0, this.height);
                             _canvas.scale(1, -1);
                         }
                         else {
-                            _canvas.translate(fd.Canvas.width / 2, fd.Canvas.height / 2);
+                            _canvas.translate(fd.canvas.width / 2, fd.canvas.height / 2);
                             _canvas.rotate(-90 * Math.PI / 180);
-                            _canvas.translate(-fd.Canvas.width / 2, -fd.Canvas.height / 2);
+                            _canvas.translate(-fd.canvas.width / 2, -fd.canvas.height / 2);
                         }
                     }
                     else {
@@ -1254,7 +1376,7 @@ System.register("Game/Level/Objects/LevelObjectAssetFrame", ["Common/CanvasInfor
                         else {
                         }
                     }
-                    _canvas.drawImage(fd.Canvas, 0, 0);
+                    _canvas.drawImage(fd.canvas, 0, 0);
                     if (showOffset) {
                         _canvas.beginPath();
                         _canvas.moveTo(this.offsetX, 0);
@@ -1273,13 +1395,13 @@ System.register("Game/Level/Objects/LevelObjectAssetFrame", ["Common/CanvasInfor
                 };
                 return LevelObjectAssetFrame;
             }());
-            exports_14("LevelObjectAssetFrame", LevelObjectAssetFrame);
+            exports_17("LevelObjectAssetFrame", LevelObjectAssetFrame);
         }
     }
 });
-System.register("Game/Level/Objects/LevelObjectAsset", [], function(exports_15, context_15) {
+System.register("game/level/Objects/LevelObjectAsset", [], function(exports_18, context_18) {
     "use strict";
-    var __moduleName = context_15 && context_15.id;
+    var __moduleName = context_18 && context_18.id;
     var LevelObjectAsset;
     return {
         setters:[],
@@ -1291,13 +1413,13 @@ System.register("Game/Level/Objects/LevelObjectAsset", [], function(exports_15, 
                 }
                 return LevelObjectAsset;
             }());
-            exports_15("LevelObjectAsset", LevelObjectAsset);
+            exports_18("LevelObjectAsset", LevelObjectAsset);
         }
     }
 });
-System.register("Game/Level/Objects/LevelObjectProjectile", [], function(exports_16, context_16) {
+System.register("game/level/Objects/LevelObjectProjectile", [], function(exports_19, context_19) {
     "use strict";
-    var __moduleName = context_16 && context_16.id;
+    var __moduleName = context_19 && context_19.id;
     var LevelObjectProjectile;
     return {
         setters:[],
@@ -1308,13 +1430,13 @@ System.register("Game/Level/Objects/LevelObjectProjectile", [], function(exports
                 }
                 return LevelObjectProjectile;
             }());
-            exports_16("LevelObjectProjectile", LevelObjectProjectile);
+            exports_19("LevelObjectProjectile", LevelObjectProjectile);
         }
     }
 });
-System.register("Game/Level/Objects/LevelObjectPiece", [], function(exports_17, context_17) {
+System.register("game/level/Objects/LevelObjectPiece", [], function(exports_20, context_20) {
     "use strict";
-    var __moduleName = context_17 && context_17.id;
+    var __moduleName = context_20 && context_20.id;
     var LevelObjectPiece;
     return {
         setters:[],
@@ -1325,13 +1447,13 @@ System.register("Game/Level/Objects/LevelObjectPiece", [], function(exports_17, 
                 }
                 return LevelObjectPiece;
             }());
-            exports_17("LevelObjectPiece", LevelObjectPiece);
+            exports_20("LevelObjectPiece", LevelObjectPiece);
         }
     }
 });
-System.register("Game/Level/Objects/LevelObject", ["Game/SonicManager"], function(exports_18, context_18) {
+System.register("game/level/Objects/LevelObject", ["game/SonicManager"], function(exports_21, context_21) {
     "use strict";
-    var __moduleName = context_18 && context_18.id;
+    var __moduleName = context_21 && context_21.id;
     var SonicManager_8;
     var LevelObject;
     return {
@@ -1362,9 +1484,9 @@ System.register("Game/Level/Objects/LevelObject", ["Game/SonicManager"], functio
                     return this.evalMe("HurtScript").apply($object, [$object, level, sonic, sensor, piece]);
                 };
                 LevelObject.prototype.Tick = function ($object, level, sonic) {
-                    if ($object.lastDrawTick != SonicManager_8.SonicManager.Instance.tickCount - 1)
+                    if ($object.lastDrawTick != SonicManager_8.SonicManager.instance.tickCount - 1)
                         this.Init($object, level, sonic);
-                    $object.lastDrawTick = SonicManager_8.SonicManager.Instance.tickCount;
+                    $object.lastDrawTick = SonicManager_8.SonicManager.instance.tickCount;
                     this.evalMe("TickScript").apply($object, [$object, level, sonic]);
                     if ($object.State) {
                         $object.Xsp = $object.State.Xsp;
@@ -1389,13 +1511,13 @@ System.register("Game/Level/Objects/LevelObject", ["Game/SonicManager"], functio
                 };
                 return LevelObject;
             }());
-            exports_18("LevelObject", LevelObject);
+            exports_21("LevelObject", LevelObject);
         }
     }
 });
-System.register("Game/Level/Objects/LevelObjectPieceLayoutPiece", [], function(exports_19, context_19) {
+System.register("game/level/Objects/LevelObjectPieceLayoutPiece", [], function(exports_22, context_22) {
     "use strict";
-    var __moduleName = context_19 && context_19.id;
+    var __moduleName = context_22 && context_22.id;
     var LevelObjectPieceLayoutPiece;
     return {
         setters:[],
@@ -1406,13 +1528,13 @@ System.register("Game/Level/Objects/LevelObjectPieceLayoutPiece", [], function(e
                 }
                 return LevelObjectPieceLayoutPiece;
             }());
-            exports_19("LevelObjectPieceLayoutPiece", LevelObjectPieceLayoutPiece);
+            exports_22("LevelObjectPieceLayoutPiece", LevelObjectPieceLayoutPiece);
         }
     }
 });
-System.register("Game/Level/Objects/LevelObjectPieceLayout", ["Game/SonicManager", "Common/Utils"], function(exports_20, context_20) {
+System.register("game/level/Objects/LevelObjectPieceLayout", ["game/SonicManager", "common/Utils"], function(exports_23, context_23) {
     "use strict";
-    var __moduleName = context_20 && context_20.id;
+    var __moduleName = context_23 && context_23.id;
     var SonicManager_9, Utils_5;
     var LevelObjectPieceLayout;
     return {
@@ -1432,7 +1554,7 @@ System.register("Game/Level/Objects/LevelObjectPieceLayout", ["Game/SonicManager
                     this.pieces = new Array();
                 }
                 LevelObjectPieceLayout.prototype.Update = function () {
-                    for (var _i = 0, _a = SonicManager_9.SonicManager.Instance.SonicLevel.Objects; _i < _a.length; _i++) {
+                    for (var _i = 0, _a = SonicManager_9.SonicManager.instance.sonicLevel.Objects; _i < _a.length; _i++) {
                         var t = _a[_i];
                         t.Reset();
                     }
@@ -1472,7 +1594,7 @@ System.register("Game/Level/Objects/LevelObjectPieceLayout", ["Game/SonicManager
                         }
                         else {
                             var drawRadial = void 0;
-                            drawRadial = SonicManager_9.SonicManager.Instance.mainCanvas.Context.createRadialGradient(0, 0, 0, 10, 10, 50);
+                            drawRadial = SonicManager_9.SonicManager.instance.mainCanvas.Context.createRadialGradient(0, 0, 0, 10, 10, 50);
                             drawRadial.addColorStop(0, "white");
                             if (selectedPieceIndex == levelObjectPieceLayoutPiece.PieceIndex)
                                 drawRadial.addColorStop(1, "yellow");
@@ -1531,13 +1653,13 @@ System.register("Game/Level/Objects/LevelObjectPieceLayout", ["Game/SonicManager
                 };
                 return LevelObjectPieceLayout;
             }());
-            exports_20("LevelObjectPieceLayout", LevelObjectPieceLayout);
+            exports_23("LevelObjectPieceLayout", LevelObjectPieceLayout);
         }
     }
 });
-System.register("Game/Level/Objects/LevelObjectData", [], function(exports_21, context_21) {
+System.register("game/level/Objects/LevelObjectData", [], function(exports_24, context_24) {
     "use strict";
-    var __moduleName = context_21 && context_21.id;
+    var __moduleName = context_24 && context_24.id;
     var LevelObjectData;
     return {
         setters:[],
@@ -1557,13 +1679,13 @@ System.register("Game/Level/Objects/LevelObjectData", [], function(exports_21, c
                 }
                 return LevelObjectData;
             }());
-            exports_21("LevelObjectData", LevelObjectData);
+            exports_24("LevelObjectData", LevelObjectData);
         }
     }
 });
-System.register("Game/Level/Objects/ObjectManager", ["Common/Help", "Game/Level/Objects/LevelObjectAsset", "Game/Level/Objects/LevelObjectAssetFrame", "Game/Level/Objects/LevelObjectProjectile", "Game/Level/Objects/LevelObject", "Game/Level/Objects/LevelObjectPieceLayout"], function(exports_22, context_22) {
+System.register("game/level/Objects/ObjectManager", ["common/Help", "game/level/Objects/LevelObjectAsset", "game/level/Objects/LevelObjectAssetFrame", "game/level/Objects/LevelObjectProjectile", "game/level/Objects/LevelObject", "game/level/Objects/LevelObjectPieceLayout"], function(exports_25, context_25) {
     "use strict";
-    var __moduleName = context_22 && context_22.id;
+    var __moduleName = context_25 && context_25.id;
     var Help_2, LevelObjectAsset_1, LevelObjectAssetFrame_1, LevelObjectProjectile_1, LevelObject_1, LevelObjectPieceLayout_1;
     var ObjectManager;
     return {
@@ -1594,7 +1716,7 @@ System.register("Game/Level/Objects/ObjectManager", ["Common/Help", "Game/Level/
                 ObjectManager.prototype.Init = function () {
                 };
                 ObjectManager.ExtendObject = function (d) {
-                    var obj = Help_2.Help.Merge(new LevelObject_1.LevelObject(d.key), {
+                    var obj = Help_2.Help.merge(new LevelObject_1.LevelObject(d.key), {
                         CollideScript: d.collideScript,
                         HurtScript: d.hurtScript,
                         InitScript: d.initScript,
@@ -1604,11 +1726,11 @@ System.register("Game/Level/Objects/ObjectManager", ["Common/Help", "Game/Level/
                     obj.Assets = new Array();
                     for (var i = 0; i < d.assets.length; i++) {
                         var asset = d.assets[i];
-                        var levelObjectAsset = Help_2.Help.Merge(new LevelObjectAsset_1.LevelObjectAsset(asset.name), { name: asset.name });
+                        var levelObjectAsset = Help_2.Help.merge(new LevelObjectAsset_1.LevelObjectAsset(asset.name), { name: asset.name });
                         levelObjectAsset.frames = new Array();
                         for (var index = 0; index < asset.frames.length; index++) {
                             var fr = asset.frames[index];
-                            levelObjectAsset.frames[index] = Help_2.Help.Merge(new LevelObjectAssetFrame_1.LevelObjectAssetFrame(fr.name), {
+                            levelObjectAsset.frames[index] = Help_2.Help.merge(new LevelObjectAssetFrame_1.LevelObjectAssetFrame(fr.name), {
                                 offsetX: fr.offsetX,
                                 width: fr.width,
                                 transparentColor: fr.transparentColor,
@@ -1630,7 +1752,7 @@ System.register("Game/Level/Objects/ObjectManager", ["Common/Help", "Game/Level/
                     obj.PieceLayouts = new Array();
                     for (var index = 0; index < d.pieceLayouts.length; index++) {
                         var pl = d.pieceLayouts[index];
-                        obj.PieceLayouts[index] = Help_2.Help.Merge(new LevelObjectPieceLayout_1.LevelObjectPieceLayout(pl.name), {
+                        obj.PieceLayouts[index] = Help_2.Help.merge(new LevelObjectPieceLayout_1.LevelObjectPieceLayout(pl.name), {
                             height: pl.height,
                             width: pl.width
                         });
@@ -1642,7 +1764,7 @@ System.register("Game/Level/Objects/ObjectManager", ["Common/Help", "Game/Level/
                     obj.Projectiles = new Array();
                     for (var index = 0; index < d.projectiles.length; index++) {
                         var proj = d.projectiles[index];
-                        proj = Help_2.Help.Merge(new LevelObjectProjectile_1.LevelObjectProjectile(proj.name), {
+                        proj = Help_2.Help.merge(new LevelObjectProjectile_1.LevelObjectProjectile(proj.name), {
                             x: proj.x,
                             y: proj.y,
                             xsp: proj.xsp,
@@ -1656,17 +1778,17 @@ System.register("Game/Level/Objects/ObjectManager", ["Common/Help", "Game/Level/
                     }
                     return obj;
                 };
-                ObjectManager.broken = Help_2.Help.LoadSprite("assets/sprites/broken.png", function (e) {
+                ObjectManager.broken = Help_2.Help.loadSprite("assets/sprites/broken.png", function (e) {
                 });
                 return ObjectManager;
             }());
-            exports_22("ObjectManager", ObjectManager);
+            exports_25("ObjectManager", ObjectManager);
         }
     }
 });
-System.register("Game/Level/Objects/LevelObjectInfo", ["Common/Utils", "Game/SonicManager", "Game/Level/Objects/ObjectManager"], function(exports_23, context_23) {
+System.register("game/level/Objects/LevelObjectInfo", ["common/Utils", "game/SonicManager", "game/level/Objects/ObjectManager"], function(exports_26, context_26) {
     "use strict";
-    var __moduleName = context_23 && context_23.id;
+    var __moduleName = context_26 && context_26.id;
     var Utils_6, SonicManager_10, ObjectManager_1;
     var LevelObjectInfo;
     return {
@@ -1684,6 +1806,19 @@ System.register("Game/Level/Objects/LevelObjectInfo", ["Common/Utils", "Game/Son
             LevelObjectInfo = (function () {
                 function LevelObjectInfo(o) {
                     this._rect = new Utils_6.Rectangle(0, 0, 0, 0);
+                    this.lastDrawTick = 0;
+                    this.X = 0;
+                    this.Y = 0;
+                    this.Xsp = 0;
+                    this.Ysp = 0;
+                    this.Xflip = false;
+                    this.Yflip = false;
+                    this.Subdata = 0;
+                    this.UpperNibble = 0;
+                    this.LowerNibble = 0;
+                    this.PieceLayoutIndex = 0;
+                    this.Dead = false;
+                    this.Index = 0;
                     this.O = o;
                     this.X = o.X;
                     this.Y = o.Y;
@@ -1736,8 +1871,8 @@ System.register("Game/Level/Objects/LevelObjectInfo", ["Common/Utils", "Game/Son
                 };
                 LevelObjectInfo.prototype.GetRect = function () {
                     if (this.ObjectData.PieceLayouts.length == 0) {
-                        this._rect.X = this.X;
-                        this._rect.Y = this.Y;
+                        this._rect.x = this.X;
+                        this._rect.y = this.Y;
                         this._rect.Width = ObjectManager_1.ObjectManager.broken.width;
                         this._rect.Height = ObjectManager_1.ObjectManager.broken.height;
                         return this._rect;
@@ -1752,18 +1887,13 @@ System.register("Game/Level/Objects/LevelObjectInfo", ["Common/Utils", "Game/Son
                         return;
                     }
                     var levelObjectPieceLayout = this.MainPieceLayout();
-                    if (!levelObjectPieceLayout) {
-                        //should not happens
-                        this.MainPieceLayout();
-                        return;
-                    }
                     levelObjectPieceLayout.Draw(canvas, x, y, this.ObjectData, this, showHeightMap);
                     if (this.ConsoleLog != null) {
                         var gr = this.GetRect();
                         canvas.save();
                         canvas.fillStyle = "rgba(228,228,12,0.4)";
                         var wd = 1;
-                        canvas.fillRect(gr.X - this.X + x - (gr.Width / 2) - wd, gr.Y - this.Y + y - (gr.Height / 2) - wd, gr.Width - (gr.X - this.X) + wd * 2, gr.Height - (gr.Y - this.Y) + wd * 2);
+                        canvas.fillRect(gr.x - this.X + x - (gr.Width / 2) - wd, gr.y - this.Y + y - (gr.Height / 2) - wd, gr.Width - (gr.x - this.X) + wd * 2, gr.Height - (gr.y - this.Y) + wd * 2);
                         canvas.restore();
                     }
                 };
@@ -1796,8 +1926,8 @@ System.register("Game/Level/Objects/LevelObjectInfo", ["Common/Utils", "Game/Son
                     if (this.Dead || !this.ObjectData || this.ObjectData.PieceLayouts.length == 0)
                         return null;
                     var pcs = this.Pieces;
-                    var mX = ((sonic.X) - this.X) | 0;
-                    var mY = ((sonic.Y) - this.Y) | 0;
+                    var mX = ((sonic.x) - this.X) | 0;
+                    var mY = ((sonic.y) - this.Y) | 0;
                     for (var _i = 0, pcs_2 = pcs; _i < pcs_2.length; _i++) {
                         var j = pcs_2[_i];
                         var piece = this.ObjectData.Pieces[j.pieceIndex];
@@ -1821,7 +1951,7 @@ System.register("Game/Level/Objects/LevelObjectInfo", ["Common/Utils", "Game/Son
                 };
                 LevelObjectInfo.prototype.Collide = function (sonic, sensor, piece) {
                     try {
-                        return this.ObjectData.OnCollide(this, SonicManager_10.SonicManager.Instance.SonicLevel, sonic, sensor, piece);
+                        return this.ObjectData.OnCollide(this, SonicManager_10.SonicManager.instance.sonicLevel, sonic, sensor, piece);
                     }
                     catch (EJ) {
                         this.Log(EJ.Message, 0);
@@ -1830,7 +1960,7 @@ System.register("Game/Level/Objects/LevelObjectInfo", ["Common/Utils", "Game/Son
                 };
                 LevelObjectInfo.prototype.HurtSonic = function (sonic, sensor, piece) {
                     try {
-                        return this.ObjectData.OnHurtSonic(this, SonicManager_10.SonicManager.Instance.SonicLevel, sonic, sensor, piece);
+                        return this.ObjectData.OnHurtSonic(this, SonicManager_10.SonicManager.instance.sonicLevel, sonic, sensor, piece);
                     }
                     catch (EJ) {
                         this.Log(EJ.Message, 0);
@@ -1839,13 +1969,13 @@ System.register("Game/Level/Objects/LevelObjectInfo", ["Common/Utils", "Game/Son
                 };
                 return LevelObjectInfo;
             }());
-            exports_23("LevelObjectInfo", LevelObjectInfo);
+            exports_26("LevelObjectInfo", LevelObjectInfo);
         }
     }
 });
-System.register("Game/Level/Ring", ["Common/Utils", "Game/SonicManager", "Common/Enums"], function(exports_24, context_24) {
+System.register("game/level/Ring", ["common/Utils", "game/SonicManager", "common/Enums"], function(exports_27, context_27) {
     "use strict";
-    var __moduleName = context_24 && context_24.id;
+    var __moduleName = context_27 && context_27.id;
     var Utils_7, SonicManager_11, Enums_3;
     var Ring;
     return {
@@ -1864,52 +1994,61 @@ System.register("Game/Level/Ring", ["Common/Utils", "Game/SonicManager", "Common
                 __extends(Ring, _super);
                 function Ring(active) {
                     _super.call(this, 0, 0);
+                    this.Active = false;
+                    this.AnimationIndex = 0;
+                    this.TickCount = 0;
+                    this.Ysp = 0;
+                    this.Xsp = 0;
                     this.Active = active;
                 }
                 Ring.prototype.Draw = function (canvas, pos) {
                     if (this.Active) {
                         this.Ysp += 0.09375;
-                        this.X += this.Xsp;
-                        this.Y += this.Ysp;
-                        var wl = SonicManager_11.SonicManager.Instance.windowLocation;
-                        if (this.X < wl.X || this.Y < wl.Y || this.X > wl.X + wl.Width || this.Y > wl.Y + wl.Height) {
+                        this.x += this.Xsp;
+                        this.y += this.Ysp;
+                        var wl = SonicManager_11.SonicManager.instance.windowLocation;
+                        if (this.x < wl.x || this.y < wl.y || this.x > wl.x + wl.Width || this.y > wl.y + wl.Height) {
                             this.TickCount = 0xfffffff;
                             return;
                         }
-                        if (SonicManager_11.SonicManager.Instance.DrawTickCount > SonicManager_11.SonicManager.Instance.sonicToon.sonicLastHitTick + 64 && Utils_7.IntersectingRectangle.IntersectsRect(SonicManager_11.SonicManager.Instance.sonicToon.myRec, new Utils_7.Rectangle(this.X - 8, this.Y - 8, 8 * 2, 2 * 8))) {
+                        if (SonicManager_11.SonicManager.instance.drawTickCount > SonicManager_11.SonicManager.instance.sonicToon.sonicLastHitTick + 64 && Utils_7.IntersectingRectangle.IntersectsRect(SonicManager_11.SonicManager.instance.sonicToon.myRec, new Utils_7.Rectangle(this.x - 8, this.y - 8, 8 * 2, 2 * 8))) {
                             this.TickCount = 0xfffffff;
-                            SonicManager_11.SonicManager.Instance.sonicToon.Rings++;
+                            SonicManager_11.SonicManager.instance.sonicToon.rings++;
                             return;
                         }
                         this.TickCount++;
                     }
-                    if (SonicManager_11.SonicManager.Instance.currentGameState == Enums_3.GameState.Playing)
-                        this.AnimationIndex = ((SonicManager_11.SonicManager.Instance.DrawTickCount % ((this.Active ? 4 : 8) * 4)) / (this.Active ? 4 : 8)) | 0;
+                    if (SonicManager_11.SonicManager.instance.currentGameState == Enums_3.GameState.Playing)
+                        this.AnimationIndex = ((SonicManager_11.SonicManager.instance.drawTickCount % ((this.Active ? 4 : 8) * 4)) / (this.Active ? 4 : 8)) | 0;
                     else
                         this.AnimationIndex = 0;
                     var sprites = null;
-                    if (SonicManager_11.SonicManager.Instance.SpriteCache.Rings)
-                        sprites = SonicManager_11.SonicManager.Instance.SpriteCache.Rings;
+                    if (SonicManager_11.SonicManager.instance.spriteCache.Rings)
+                        sprites = SonicManager_11.SonicManager.instance.spriteCache.Rings;
                     else
                         throw ("bad ring animation");
                     var sps = sprites[this.AnimationIndex];
-                    canvas.drawImage(sps.Canvas, (pos.X - 8), (pos.Y - 8));
+                    canvas.drawImage(sps.canvas, (pos.x - 8), (pos.y - 8));
                 };
                 return Ring;
             }(Utils_7.Point));
-            exports_24("Ring", Ring);
+            exports_27("Ring", Ring);
         }
     }
 });
-System.register("Game/SonicLevel", [], function(exports_25, context_25) {
+System.register("game/SonicLevel", [], function(exports_28, context_28) {
     "use strict";
-    var __moduleName = context_25 && context_25.id;
+    var __moduleName = context_28 && context_28.id;
     var SonicLevel, PaletteItem, PaletteItemPieces;
     return {
         setters:[],
         execute: function() {
             SonicLevel = (function () {
                 function SonicLevel() {
+                    this.CurHeightMap = false;
+                    this.LevelWidth = 0;
+                    this.LevelHeight = 0;
+                    this.CurPaletteIndex = 0;
                     this.Tiles = new Array();
                     this.TilePieces = new Array();
                     this.TileChunks = new Array();
@@ -1923,7 +2062,7 @@ System.register("Game/SonicLevel", [], function(exports_25, context_25) {
                     this.LevelWidth = 0;
                     this.LevelHeight = 0;
                 }
-                SonicLevel.prototype.GetChunkAt = function (x, y) {
+                SonicLevel.prototype.getChunkAt = function (x, y) {
                     return this.TileChunks[this.ChunkMap[x][y]];
                 };
                 SonicLevel.prototype.ClearCache = function () {
@@ -1933,7 +2072,7 @@ System.register("Game/SonicLevel", [], function(exports_25, context_25) {
                     }
                     for (var _b = 0, _c = this.TileChunks; _b < _c.length; _b++) {
                         var chunk = _c[_b];
-                        chunk.ClearCache();
+                        chunk.clearCache();
                     }
                 };
                 SonicLevel.prototype.GetTile = function (tile) {
@@ -1947,25 +2086,30 @@ System.register("Game/SonicLevel", [], function(exports_25, context_25) {
                 };
                 return SonicLevel;
             }());
-            exports_25("SonicLevel", SonicLevel);
+            exports_28("SonicLevel", SonicLevel);
             PaletteItem = (function () {
                 function PaletteItem() {
+                    this.SkipIndex = 0;
+                    this.TotalLength = 0;
                 }
                 return PaletteItem;
             }());
-            exports_25("PaletteItem", PaletteItem);
+            exports_28("PaletteItem", PaletteItem);
             PaletteItemPieces = (function () {
                 function PaletteItemPieces() {
+                    this.PaletteIndex = 0;
+                    this.PaletteMultiply = 0;
+                    this.PaletteOffset = 0;
                 }
                 return PaletteItemPieces;
             }());
-            exports_25("PaletteItemPieces", PaletteItemPieces);
+            exports_28("PaletteItemPieces", PaletteItemPieces);
         }
     }
 });
-System.register("Game/Level/Tiles/TilePaletteAnimationManager", [], function(exports_26, context_26) {
+System.register("game/level/Tiles/TilePaletteAnimationManager", [], function(exports_29, context_29) {
     "use strict";
-    var __moduleName = context_26 && context_26.id;
+    var __moduleName = context_29 && context_29.id;
     var TilePaletteAnimationManager, TilePaletteAnimation, TilePaletteAnimationFrame;
     return {
         setters:[],
@@ -1977,8 +2121,8 @@ System.register("Game/Level/Tiles/TilePaletteAnimationManager", [], function(exp
                 }
                 TilePaletteAnimationManager.prototype.Init = function () {
                     this.Animations = {};
-                    for (var animatedPaletteIndex = 0; animatedPaletteIndex < this.SonicManager.SonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
-                        this.Animations[animatedPaletteIndex] = new TilePaletteAnimation(this, this.SonicManager.SonicLevel.AnimatedPalettes[animatedPaletteIndex]);
+                    for (var animatedPaletteIndex = 0; animatedPaletteIndex < this.SonicManager.sonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
+                        this.Animations[animatedPaletteIndex] = new TilePaletteAnimation(this, this.SonicManager.sonicLevel.AnimatedPalettes[animatedPaletteIndex]);
                         this.Animations[animatedPaletteIndex].Init();
                     }
                 };
@@ -1993,7 +2137,7 @@ System.register("Game/Level/Tiles/TilePaletteAnimationManager", [], function(exp
                         tilePaletteAnimation.Tick();
                     }
                 };
-                TilePaletteAnimationManager.prototype.GetCurrentFrame = function (paletteAnimationIndex) {
+                TilePaletteAnimationManager.prototype.getCurrentFrame = function (paletteAnimationIndex) {
                     return this.Animations[paletteAnimationIndex].GetCurrentFrame();
                 };
                 TilePaletteAnimationManager.prototype.GetPaletteAnimation = function (paletteAnimationIndex) {
@@ -2001,9 +2145,10 @@ System.register("Game/Level/Tiles/TilePaletteAnimationManager", [], function(exp
                 };
                 return TilePaletteAnimationManager;
             }());
-            exports_26("TilePaletteAnimationManager", TilePaletteAnimationManager);
+            exports_29("TilePaletteAnimationManager", TilePaletteAnimationManager);
             TilePaletteAnimation = (function () {
                 function TilePaletteAnimation(manager, animatedPaletteData) {
+                    this.CurrentFrame = 0;
                     this.Manager = manager;
                     this.AnimatedPaletteData = animatedPaletteData;
                     this.Frames = new Array();
@@ -2018,7 +2163,7 @@ System.register("Game/Level/Tiles/TilePaletteAnimationManager", [], function(exp
                     if (pal.TotalLength == 0)
                         return;
                     for (var j = 0; j <= pal.TotalLength; j += pal.SkipIndex) {
-                        if (this.Manager.SonicManager.DrawTickCount % (pal.TotalLength + pal.SkipIndex) == j) {
+                        if (this.Manager.SonicManager.drawTickCount % (pal.TotalLength + pal.SkipIndex) == j) {
                             this.CurrentFrame = j / pal.SkipIndex;
                         }
                     }
@@ -2038,14 +2183,15 @@ System.register("Game/Level/Tiles/TilePaletteAnimationManager", [], function(exp
                 };
                 return TilePaletteAnimation;
             }());
-            exports_26("TilePaletteAnimation", TilePaletteAnimation);
+            exports_29("TilePaletteAnimation", TilePaletteAnimation);
             TilePaletteAnimationFrame = (function () {
                 function TilePaletteAnimationFrame(frameIndex, animation) {
+                    this.FrameIndex = 0;
                     this.Animation = animation;
                     this.FrameIndex = frameIndex;
                 }
                 TilePaletteAnimationFrame.prototype.SetPalette = function () {
-                    var levelPalette = this.Animation.Manager.SonicManager.SonicLevel.Palette;
+                    var levelPalette = this.Animation.Manager.SonicManager.sonicLevel.Palette;
                     this.clonePalette(levelPalette);
                     var pal = this.Animation.AnimatedPaletteData;
                     for (var index = 0; index < pal.Pieces.length; index++) {
@@ -2070,18 +2216,18 @@ System.register("Game/Level/Tiles/TilePaletteAnimationManager", [], function(exp
                     }
                 };
                 TilePaletteAnimationFrame.prototype.ClearPalette = function () {
-                    this.Animation.Manager.SonicManager.SonicLevel.Palette = this.tempPalette;
+                    this.Animation.Manager.SonicManager.sonicLevel.Palette = this.tempPalette;
                     this.tempPalette = null;
                 };
                 return TilePaletteAnimationFrame;
             }());
-            exports_26("TilePaletteAnimationFrame", TilePaletteAnimationFrame);
+            exports_29("TilePaletteAnimationFrame", TilePaletteAnimationFrame);
         }
     }
 });
-System.register("Game/Level/Tiles/TileAnimationManager", ["Game/SonicManager"], function(exports_27, context_27) {
+System.register("game/level/Tiles/TileAnimationManager", ["game/SonicManager"], function(exports_30, context_30) {
     "use strict";
-    var __moduleName = context_27 && context_27.id;
+    var __moduleName = context_30 && context_30.id;
     var SonicManager_12;
     var TileAnimationManager, TileAnimation, TileAnimationFrame;
     return {
@@ -2097,9 +2243,9 @@ System.register("Game/Level/Tiles/TileAnimationManager", ["Game/SonicManager"], 
                 }
                 TileAnimationManager.prototype.Init = function () {
                     this.Animations = {};
-                    for (var animatedTileIndex = 0; animatedTileIndex < this.SonicManager.SonicLevel.TileAnimations.length; animatedTileIndex++) {
-                        this.Animations[animatedTileIndex] = new TileAnimation(this, this.SonicManager.SonicLevel.TileAnimations[animatedTileIndex]);
-                        this.Animations[animatedTileIndex].Init();
+                    for (var animatedTileIndex = 0; animatedTileIndex < this.SonicManager.sonicLevel.TileAnimations.length; animatedTileIndex++) {
+                        this.Animations[animatedTileIndex] = new TileAnimation(this, this.SonicManager.sonicLevel.TileAnimations[animatedTileIndex]);
+                        this.Animations[animatedTileIndex].init();
                     }
                 };
                 TileAnimationManager.prototype.TickAnimatedTiles = function () {
@@ -2108,66 +2254,68 @@ System.register("Game/Level/Tiles/TileAnimationManager", ["Game/SonicManager"], 
                     for (var animation in this.Animations) {
                         if (this.Animations.hasOwnProperty(animation)) {
                             var tilePaletteAnimation = this.Animations[animation];
-                            tilePaletteAnimation.Tick();
+                            tilePaletteAnimation.tick();
                         }
                     }
                 };
                 TileAnimationManager.prototype.ClearCache = function () {
                     this.Animations = null;
                 };
-                TileAnimationManager.prototype.GetCurrentFrame = function (tileAnimationIndex) {
-                    return this.Animations[tileAnimationIndex].GetCurrentFrame();
+                TileAnimationManager.prototype.getCurrentFrame = function (tileAnimationIndex) {
+                    return this.Animations[tileAnimationIndex].getCurrentFrame();
                 };
                 return TileAnimationManager;
             }());
-            exports_27("TileAnimationManager", TileAnimationManager);
+            exports_30("TileAnimationManager", TileAnimationManager);
             TileAnimation = (function () {
                 function TileAnimation(manager, animatedTileData) {
-                    this.Manager = manager;
-                    this.AnimatedTileData = animatedTileData;
-                    this.Frames = new Array();
-                    this.CurrentFrame = 0;
+                    this.currentFrame = 0;
+                    this.manager = manager;
+                    this.animatedTileData = animatedTileData;
+                    this.frames = new Array();
+                    this.currentFrame = 0;
                 }
-                TileAnimation.prototype.GetCurrentFrame = function () {
-                    return this.Frames[this.CurrentFrame];
+                TileAnimation.prototype.getCurrentFrame = function () {
+                    return this.frames[this.currentFrame];
                 };
-                TileAnimation.prototype.Tick = function () {
-                    var anni = this.AnimatedTileData;
+                TileAnimation.prototype.tick = function () {
+                    var anni = this.animatedTileData;
                     if (anni.LastAnimatedFrame == null) {
                         anni.LastAnimatedFrame = 0;
                         anni.LastAnimatedIndex = 0;
                     }
-                    if (anni.DataFrames[anni.LastAnimatedIndex].Ticks == 0 || (SonicManager_12.SonicManager.Instance.DrawTickCount - anni.LastAnimatedFrame) >= ((anni.AutomatedTiming > 0) ? anni.AutomatedTiming : anni.DataFrames[anni.LastAnimatedIndex].Ticks)) {
-                        anni.LastAnimatedFrame = SonicManager_12.SonicManager.Instance.DrawTickCount;
+                    if (anni.DataFrames[anni.LastAnimatedIndex].Ticks == 0 || (SonicManager_12.SonicManager.instance.drawTickCount - anni.LastAnimatedFrame) >= ((anni.AutomatedTiming > 0) ? anni.AutomatedTiming : anni.DataFrames[anni.LastAnimatedIndex].Ticks)) {
+                        anni.LastAnimatedFrame = SonicManager_12.SonicManager.instance.drawTickCount;
                         anni.LastAnimatedIndex = (anni.LastAnimatedIndex + 1) % anni.DataFrames.length;
-                        this.CurrentFrame = anni.LastAnimatedIndex;
+                        this.currentFrame = anni.LastAnimatedIndex;
                     }
                 };
-                TileAnimation.prototype.Init = function () {
-                    for (var index = 0; index < this.AnimatedTileData.DataFrames.length; index++) {
-                        this.Frames[index] = new TileAnimationFrame(index, this);
+                TileAnimation.prototype.init = function () {
+                    for (var index = 0; index < this.animatedTileData.DataFrames.length; index++) {
+                        this.frames[index] = new TileAnimationFrame(index, this);
                     }
                 };
                 return TileAnimation;
             }());
-            exports_27("TileAnimation", TileAnimation);
+            exports_30("TileAnimation", TileAnimation);
             TileAnimationFrame = (function () {
                 function TileAnimationFrame(frameIndex, animation) {
-                    this.Animation = animation;
-                    this.FrameIndex = frameIndex;
+                    this.frameIndex = 0;
+                    this.animation = animation;
+                    this.frameIndex = frameIndex;
                 }
-                TileAnimationFrame.prototype.FrameData = function () {
-                    return this.Animation.AnimatedTileData.DataFrames[this.FrameIndex];
+                TileAnimationFrame.prototype.frameData = function () {
+                    return this.animation.animatedTileData.DataFrames[this.frameIndex];
                 };
                 return TileAnimationFrame;
             }());
-            exports_27("TileAnimationFrame", TileAnimationFrame);
+            exports_30("TileAnimationFrame", TileAnimationFrame);
         }
     }
 });
-System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManager", "Common/CanvasInformation", "Common/Enums"], function(exports_28, context_28) {
+System.register("game/level/Tiles/TileChunk", ["common/Utils", "game/SonicManager", "common/CanvasInformation", "common/Enums"], function(exports_31, context_31) {
     "use strict";
-    var __moduleName = context_28 && context_28.id;
+    var __moduleName = context_31 && context_31.id;
     var Utils_8, SonicManager_13, CanvasInformation_6, Enums_4;
     var TileChunk, TileChunkDebugDrawOptions, ChunkLayer, PaletteAnimationCanvasFrames, PaletteAnimationCanvasFrame, TileAnimationCanvasFrames, TileAnimationCanvasFrame;
     return {
@@ -2195,7 +2343,7 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                 };
                 TileChunk.prototype.SetTilePieceAt = function (x, y, tp, large) {
                     if (this.GetTilePieceInfo(x, y, large).SetTilePiece(tp))
-                        this.ClearCache();
+                        this.clearCache();
                 };
                 TileChunk.prototype.GetTilePieceInfo = function (x, y, large) {
                     if (large) {
@@ -2205,7 +2353,7 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                         return this.TilePieces[x][y];
                     }
                 };
-                TileChunk.prototype.OnlyBackground = function () {
+                TileChunk.prototype.onlyBackground = function () {
                     if (!this.IsOnlyBackground) {
                         for (var _i = 0, _a = this.EachPiece(); _i < _a.length; _i++) {
                             var tilePiece = _a[_i];
@@ -2230,7 +2378,7 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                     }
                     return this.IsOnlyForeground;
                 };
-                TileChunk.prototype.IsEmpty = function () {
+                TileChunk.prototype.isEmpty = function () {
                     if (!this.Empty) {
                         for (var _i = 0, _a = this.EachPiece(); _i < _a.length; _i++) {
                             var tilePiece = _a[_i];
@@ -2242,9 +2390,8 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                     }
                     return this.Empty;
                 };
-                //todo look at this
                 TileChunk.prototype.EachPiece = function () {
-                    var __result = new Array();
+                    var __result = [];
                     for (var pieceY = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
                         for (var pieceX = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
                             var tilePiece = this.TilePieces[pieceX][pieceY].GetTilePiece();
@@ -2255,15 +2402,15 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                     }
                     return __result;
                 };
-                TileChunk.prototype.HasPixelAnimations = function () {
-                    return this.GetAllPaletteAnimationIndexes().length > 0;
+                TileChunk.prototype.hasPixelAnimations = function () {
+                    return this.getAllPaletteAnimationIndexes().length > 0;
                 };
                 TileChunk.prototype.HasTileAnimations = function () {
-                    return this.GetAllTileAnimationIndexes().length > 0;
+                    return this.getAllTileAnimationIndexes().length > 0;
                 };
-                TileChunk.prototype.GetAllPaletteAnimationIndexes = function () {
+                TileChunk.prototype.getAllPaletteAnimationIndexes = function () {
                     if (this.paletteAnimationIndexes == null) {
-                        this.paletteAnimationIndexes = new Array();
+                        this.paletteAnimationIndexes = [];
                         for (var _i = 0, _a = this.EachPiece(); _i < _a.length; _i++) {
                             var tilePiece = _a[_i];
                             if (tilePiece.AnimatedPaletteIndexes == null)
@@ -2278,9 +2425,9 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                     }
                     return this.paletteAnimationIndexes;
                 };
-                TileChunk.prototype.GetAllTileAnimationIndexes = function () {
+                TileChunk.prototype.getAllTileAnimationIndexes = function () {
                     if (this.tileAnimationIndexes == null) {
-                        this.tileAnimationIndexes = new Array();
+                        this.tileAnimationIndexes = [];
                         for (var _i = 0, _a = this.EachPiece(); _i < _a.length; _i++) {
                             var tilePiece = _a[_i];
                             for (var _b = 0, _c = tilePiece.Tiles; _b < _c.length; _b++) {
@@ -2288,9 +2435,9 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                                 var tile = tileInfo.GetTile();
                                 if (tile == null)
                                     continue;
-                                if (tile.AnimatedTileIndexes == null)
+                                if (tile.animatedTileIndexes == null)
                                     continue;
-                                for (var _d = 0, _e = tile.AnimatedTileIndexes; _d < _e.length; _d++) {
+                                for (var _d = 0, _e = tile.animatedTileIndexes; _d < _e.length; _d++) {
                                     var animatedTileIndex = _e[_d];
                                     if (this.tileAnimationIndexes.indexOf(animatedTileIndex) == -1) {
                                         this.tileAnimationIndexes.push(animatedTileIndex);
@@ -2301,39 +2448,39 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                     }
                     return this.tileAnimationIndexes;
                 };
-                TileChunk.prototype.NeverAnimates = function () {
-                    return !(this.HasTileAnimations() || this.HasPixelAnimations());
+                TileChunk.prototype.neverAnimates = function () {
+                    return !(this.HasTileAnimations() || this.hasPixelAnimations());
                 };
-                TileChunk.prototype.Draw = function (canvas, position, layer) {
+                TileChunk.prototype.draw = function (canvas, position, layer) {
                     canvas.save();
                     {
-                        canvas.drawImage(this.BaseCanvasCache[layer].Canvas, position.X, position.Y);
-                        if (this.HasPixelAnimations()) {
-                            var paletteAnimationCanvases = this.PaletteAnimationCanvasesCache[layer];
-                            for (var _i = 0, _a = this.GetAllPaletteAnimationIndexes(); _i < _a.length; _i++) {
+                        canvas.drawImage(this.baseCanvasCache[layer].canvas, position.x, position.y);
+                        if (this.hasPixelAnimations()) {
+                            var paletteAnimationCanvases = this.paletteAnimationCanvasesCache[layer];
+                            for (var _i = 0, _a = this.getAllPaletteAnimationIndexes(); _i < _a.length; _i++) {
                                 var paletteAnimationIndex = _a[_i];
                                 var paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex];
                                 if (paletteAnimationCanvasFrames == null)
                                     continue;
-                                var currentFrame = SonicManager_13.SonicManager.Instance.TilePaletteAnimationManager.GetCurrentFrame(paletteAnimationIndex);
-                                this.CurrentPaletteAnimationFrameIndexCache[paletteAnimationIndex] = currentFrame.FrameIndex;
-                                var paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.Frames[currentFrame.FrameIndex];
-                                var canvasLayerToDraw = paletteAnimationCanvasFrame.Canvas.Canvas;
-                                canvas.drawImage(canvasLayerToDraw, position.X + paletteAnimationCanvasFrames.Position.X, position.Y + paletteAnimationCanvasFrames.Position.Y);
+                                var currentFrame = SonicManager_13.SonicManager.instance.tilePaletteAnimationManager.getCurrentFrame(paletteAnimationIndex);
+                                this.currentPaletteAnimationFrameIndexCache[paletteAnimationIndex] = currentFrame.FrameIndex;
+                                var paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.frames[currentFrame.FrameIndex];
+                                var canvasLayerToDraw = paletteAnimationCanvasFrame.canvas.canvas;
+                                canvas.drawImage(canvasLayerToDraw, position.x + paletteAnimationCanvasFrames.position.x, position.y + paletteAnimationCanvasFrames.position.y);
                             }
                         }
                         if (this.HasTileAnimations()) {
-                            var tileAnimationCanvases = this.TileAnimationCanvasesCache[layer];
-                            for (var _b = 0, _c = this.GetAllTileAnimationIndexes(); _b < _c.length; _b++) {
+                            var tileAnimationCanvases = this.tileAnimationCanvasesCache[layer];
+                            for (var _b = 0, _c = this.getAllTileAnimationIndexes(); _b < _c.length; _b++) {
                                 var tileAnimationIndex = _c[_b];
                                 var tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex];
                                 if (tileAnimationCanvasFrames == null)
                                     continue;
-                                var currentFrame = SonicManager_13.SonicManager.Instance.TileAnimationManager.GetCurrentFrame(tileAnimationIndex);
-                                this.CurrentTileAnimationFrameIndexCache[tileAnimationIndex] = currentFrame.FrameIndex;
-                                var tileAnimationCanvasFrame = tileAnimationCanvasFrames.Frames[currentFrame.FrameIndex];
-                                var canvasLayerToDraw = tileAnimationCanvasFrame.Canvas.Canvas;
-                                canvas.drawImage(canvasLayerToDraw, position.X + tileAnimationCanvasFrames.Position.X, position.Y + tileAnimationCanvasFrames.Position.Y);
+                                var currentFrame = SonicManager_13.SonicManager.instance.tileAnimationManager.getCurrentFrame(tileAnimationIndex);
+                                this.currentTileAnimationFrameIndexCache[tileAnimationIndex] = currentFrame.frameIndex;
+                                var tileAnimationCanvasFrame = tileAnimationCanvasFrames.frames[currentFrame.frameIndex];
+                                var canvasLayerToDraw = tileAnimationCanvasFrame.canvas.canvas;
+                                canvas.drawImage(canvasLayerToDraw, position.x + tileAnimationCanvasFrames.position.x, position.y + tileAnimationCanvasFrames.position.y);
                             }
                         }
                     }
@@ -2350,8 +2497,8 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                                 continue;
                             if (layer == Enums_4.ChunkLayerState.Low ? (piece.OnlyForeground()) : (piece.OnlyBackground()))
                                 continue;
-                            this.myLocalPoint.X = pieceX * piecesSquareSize;
-                            this.myLocalPoint.Y = pieceY * piecesSquareSize;
+                            this.myLocalPoint.x = pieceX * piecesSquareSize;
+                            this.myLocalPoint.y = pieceY * piecesSquareSize;
                             piece.DrawAnimatedPalette(canvas, this.myLocalPoint, layer, pieceInfo.XFlip, pieceInfo.YFlip, animatedPaletteIndex);
                         }
                     }
@@ -2367,8 +2514,8 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                                 continue;
                             if (layer == Enums_4.ChunkLayerState.Low ? (piece.OnlyForeground()) : (piece.OnlyBackground()))
                                 continue;
-                            this.myLocalPoint.X = pieceX * piecesSquareSize;
-                            this.myLocalPoint.Y = pieceY * piecesSquareSize;
+                            this.myLocalPoint.x = pieceX * piecesSquareSize;
+                            this.myLocalPoint.y = pieceY * piecesSquareSize;
                             piece.DrawAnimatedTile(canvas, this.myLocalPoint, layer, pieceInfo.XFlip, pieceInfo.YFlip, animatedTileIndex);
                         }
                     }
@@ -2382,94 +2529,96 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                                 continue;
                             if (layer == Enums_4.ChunkLayerState.Low ? (piece.OnlyForeground()) : (piece.OnlyBackground()))
                                 continue;
-                            this.myLocalPoint.X = pieceX * piecesSquareSize;
-                            this.myLocalPoint.Y = pieceY * piecesSquareSize;
+                            this.myLocalPoint.x = pieceX * piecesSquareSize;
+                            this.myLocalPoint.y = pieceY * piecesSquareSize;
                             piece.DrawBase(canvas, this.myLocalPoint, layer, pieceInfo.XFlip, pieceInfo.YFlip);
                         }
                     }
                 };
                 /*cache */
-                TileChunk.prototype.ClearCache = function () {
+                TileChunk.prototype.clearCache = function () {
+                    this.initCache();
+                    this.warmCache();
                 };
-                TileChunk.prototype.InitCache = function () {
-                    this.BaseCanvasCache = new ChunkLayer();
-                    this.PaletteAnimationCanvasesCache = new ChunkLayer();
-                    this.TileAnimationCanvasesCache = new ChunkLayer();
-                    this.TileAnimationCanvasesCache[Enums_4.ChunkLayerState.Low] = {};
-                    this.TileAnimationCanvasesCache[Enums_4.ChunkLayerState.High] = {};
-                    this.PaletteAnimationCanvasesCache[Enums_4.ChunkLayerState.Low] = {};
-                    this.PaletteAnimationCanvasesCache[Enums_4.ChunkLayerState.High] = {};
-                    this.CurrentTileAnimationFrameIndexCache = new Array();
-                    this.CurrentPaletteAnimationFrameIndexCache = new Array();
+                TileChunk.prototype.initCache = function () {
+                    this.baseCanvasCache = new ChunkLayer();
+                    this.paletteAnimationCanvasesCache = new ChunkLayer();
+                    this.tileAnimationCanvasesCache = new ChunkLayer();
+                    this.tileAnimationCanvasesCache[Enums_4.ChunkLayerState.Low] = {};
+                    this.tileAnimationCanvasesCache[Enums_4.ChunkLayerState.High] = {};
+                    this.paletteAnimationCanvasesCache[Enums_4.ChunkLayerState.Low] = {};
+                    this.paletteAnimationCanvasesCache[Enums_4.ChunkLayerState.High] = {};
+                    this.currentTileAnimationFrameIndexCache = [];
+                    this.currentPaletteAnimationFrameIndexCache = [];
                 };
-                TileChunk.prototype.WarmCache = function () {
-                    this.CacheBase(Enums_4.ChunkLayerState.Low);
-                    this.CacheBase(Enums_4.ChunkLayerState.High);
-                    if (this.HasPixelAnimations()) {
-                        this.CachePaletteAnimation(Enums_4.ChunkLayerState.Low);
-                        this.CachePaletteAnimation(Enums_4.ChunkLayerState.High);
+                TileChunk.prototype.warmCache = function () {
+                    this.cacheBase(Enums_4.ChunkLayerState.Low);
+                    this.cacheBase(Enums_4.ChunkLayerState.High);
+                    if (this.hasPixelAnimations()) {
+                        this.cachePaletteAnimation(Enums_4.ChunkLayerState.Low);
+                        this.cachePaletteAnimation(Enums_4.ChunkLayerState.High);
                     }
                     if (this.HasTileAnimations()) {
-                        this.CacheTileAnimation(Enums_4.ChunkLayerState.Low);
-                        this.CacheTileAnimation(Enums_4.ChunkLayerState.High);
+                        this.cacheTileAnimation(Enums_4.ChunkLayerState.Low);
+                        this.cacheTileAnimation(Enums_4.ChunkLayerState.High);
                     }
                 };
-                TileChunk.prototype.CacheBase = function (layer) {
-                    if (layer == Enums_4.ChunkLayerState.Low ? (this.OnlyForeground()) : (this.OnlyBackground()))
+                TileChunk.prototype.cacheBase = function (layer) {
+                    if (layer == Enums_4.ChunkLayerState.Low ? (this.OnlyForeground()) : (this.onlyBackground()))
                         return;
-                    this.BaseCanvasCache[layer] = CanvasInformation_6.CanvasInformation.Create(TileChunk.TilePieceSideLength * TileChunk.TilePiecesSquareSize, TileChunk.TilePieceSideLength * TileChunk.TilePiecesSquareSize, false);
-                    this.drawTilePiecesBase(this.BaseCanvasCache[layer].Context, layer, TileChunk.TilePiecesSquareSize);
+                    this.baseCanvasCache[layer] = CanvasInformation_6.CanvasInformation.create(TileChunk.TilePieceSideLength * TileChunk.TilePiecesSquareSize, TileChunk.TilePieceSideLength * TileChunk.TilePiecesSquareSize, false);
+                    this.drawTilePiecesBase(this.baseCanvasCache[layer].Context, layer, TileChunk.TilePiecesSquareSize);
                 };
-                TileChunk.prototype.CachePaletteAnimation = function (layer) {
-                    var paletteAnimationCanvases = this.PaletteAnimationCanvasesCache[layer];
-                    for (var _i = 0, _a = this.GetAllPaletteAnimationIndexes(); _i < _a.length; _i++) {
+                TileChunk.prototype.cachePaletteAnimation = function (layer) {
+                    var paletteAnimationCanvases = this.paletteAnimationCanvasesCache[layer];
+                    for (var _i = 0, _a = this.getAllPaletteAnimationIndexes(); _i < _a.length; _i++) {
                         var paletteAnimationIndex = _a[_i];
                         var rect = this.getAnimationPaletteSurfaceInformation(paletteAnimationIndex, layer);
                         if (rect == null) {
                             continue;
                         }
                         var paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex] = new PaletteAnimationCanvasFrames(paletteAnimationIndex);
-                        var tilePaletteAnimation = SonicManager_13.SonicManager.Instance.TilePaletteAnimationManager.Animations[paletteAnimationIndex];
-                        paletteAnimationCanvasFrames.Position = new Utils_8.Point(rect.X * TileChunk.TilePiecesSquareSize, rect.Y * TileChunk.TilePiecesSquareSize);
+                        var tilePaletteAnimation = SonicManager_13.SonicManager.instance.tilePaletteAnimationManager.Animations[paletteAnimationIndex];
+                        paletteAnimationCanvasFrames.position = new Utils_8.Point(rect.x * TileChunk.TilePiecesSquareSize, rect.y * TileChunk.TilePiecesSquareSize);
                         for (var _b = 0, _c = tilePaletteAnimation.Frames; _b < _c.length; _b++) {
                             var currentFrame = _c[_b];
                             tilePaletteAnimation.CurrentFrame = currentFrame.FrameIndex;
-                            var paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.Frames[currentFrame.FrameIndex] = new PaletteAnimationCanvasFrame();
+                            var paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.frames[currentFrame.FrameIndex] = new PaletteAnimationCanvasFrame();
                             currentFrame.SetPalette();
-                            var tilePaletteCanvas = CanvasInformation_6.CanvasInformation.Create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
-                            paletteAnimationCanvasFrame.Canvas = tilePaletteCanvas;
-                            paletteAnimationCanvasFrame.Canvas.Context.save();
-                            paletteAnimationCanvasFrame.Canvas.Context.translate(-rect.X * TileChunk.TilePiecesSquareSize, -rect.Y * TileChunk.TilePiecesSquareSize);
+                            var tilePaletteCanvas = CanvasInformation_6.CanvasInformation.create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
+                            paletteAnimationCanvasFrame.canvas = tilePaletteCanvas;
+                            paletteAnimationCanvasFrame.canvas.Context.save();
+                            paletteAnimationCanvasFrame.canvas.Context.translate(-rect.x * TileChunk.TilePiecesSquareSize, -rect.y * TileChunk.TilePiecesSquareSize);
                             this.drawTilePiecesAnimatedPalette(tilePaletteCanvas.Context, layer, TileChunk.TilePiecesSquareSize, paletteAnimationIndex);
-                            paletteAnimationCanvasFrame.Canvas.Context.restore();
+                            paletteAnimationCanvasFrame.canvas.Context.restore();
                             currentFrame.ClearPalette();
                         }
                         tilePaletteAnimation.CurrentFrame = 0;
                     }
                 };
-                TileChunk.prototype.CacheTileAnimation = function (layer) {
-                    var tileAnimationCanvases = this.TileAnimationCanvasesCache[layer];
-                    for (var _i = 0, _a = this.GetAllTileAnimationIndexes(); _i < _a.length; _i++) {
+                TileChunk.prototype.cacheTileAnimation = function (layer) {
+                    var tileAnimationCanvases = this.tileAnimationCanvasesCache[layer];
+                    for (var _i = 0, _a = this.getAllTileAnimationIndexes(); _i < _a.length; _i++) {
                         var tileAnimationIndex = _a[_i];
                         var rect = this.getAnimationTileSurfaceInformation(tileAnimationIndex, layer);
                         if (rect == null) {
                             continue;
                         }
                         var tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex] = new TileAnimationCanvasFrames(tileAnimationIndex);
-                        var tileAnimation = SonicManager_13.SonicManager.Instance.TileAnimationManager.Animations[tileAnimationIndex];
-                        tileAnimationCanvasFrames.Position = new Utils_8.Point(rect.X * TileChunk.TilePiecesSquareSize, rect.Y * TileChunk.TilePiecesSquareSize);
-                        for (var _b = 0, _c = tileAnimation.Frames; _b < _c.length; _b++) {
+                        var tileAnimation = SonicManager_13.SonicManager.instance.tileAnimationManager.Animations[tileAnimationIndex];
+                        tileAnimationCanvasFrames.position = new Utils_8.Point(rect.x * TileChunk.TilePiecesSquareSize, rect.y * TileChunk.TilePiecesSquareSize);
+                        for (var _b = 0, _c = tileAnimation.frames; _b < _c.length; _b++) {
                             var currentFrame = _c[_b];
-                            var tileAnimationCanvasFrame = tileAnimationCanvasFrames.Frames[currentFrame.FrameIndex] = new TileAnimationCanvasFrame();
-                            var tileTileCanvas = CanvasInformation_6.CanvasInformation.Create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
-                            tileAnimationCanvasFrame.Canvas = tileTileCanvas;
-                            tileAnimation.CurrentFrame = currentFrame.FrameIndex;
-                            tileAnimationCanvasFrame.Canvas.Context.save();
-                            tileAnimationCanvasFrame.Canvas.Context.translate(-rect.X * TileChunk.TilePiecesSquareSize, -rect.Y * TileChunk.TilePiecesSquareSize);
+                            var tileAnimationCanvasFrame = tileAnimationCanvasFrames.frames[currentFrame.frameIndex] = new TileAnimationCanvasFrame();
+                            var tileTileCanvas = CanvasInformation_6.CanvasInformation.create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
+                            tileAnimationCanvasFrame.canvas = tileTileCanvas;
+                            tileAnimation.currentFrame = currentFrame.frameIndex;
+                            tileAnimationCanvasFrame.canvas.Context.save();
+                            tileAnimationCanvasFrame.canvas.Context.translate(-rect.x * TileChunk.TilePiecesSquareSize, -rect.y * TileChunk.TilePiecesSquareSize);
                             this.drawTilePiecesAnimatedTile(tileTileCanvas.Context, layer, TileChunk.TilePiecesSquareSize, tileAnimationIndex);
-                            tileAnimationCanvasFrame.Canvas.Context.restore();
+                            tileAnimationCanvasFrame.canvas.Context.restore();
                         }
-                        tileAnimation.CurrentFrame = 0;
+                        tileAnimation.currentFrame = 0;
                     }
                 };
                 TileChunk.prototype.getAnimationTileSurfaceInformation = function (tileAnimationIndex, layer) {
@@ -2538,59 +2687,59 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                     canvas.textBaseline = "top";
                     {
                         var yOffset = layer == Enums_4.ChunkLayerState.Low ? 0 : 64;
-                        if (debugDrawOptions.ShowBaseData) {
-                            canvas.fillText("Base", position.X + 0, position.Y + yOffset);
+                        if (debugDrawOptions.showBaseData) {
+                            canvas.fillText("Base", position.x + 0, position.y + yOffset);
                         }
-                        if (debugDrawOptions.ShowPaletteAnimationData) {
-                            if (this.HasPixelAnimations()) {
-                                var paletteAnimationCanvases = this.PaletteAnimationCanvasesCache[layer];
-                                for (var _i = 0, _a = this.GetAllPaletteAnimationIndexes(); _i < _a.length; _i++) {
+                        if (debugDrawOptions.showPaletteAnimationData) {
+                            if (this.hasPixelAnimations()) {
+                                var paletteAnimationCanvases = this.paletteAnimationCanvasesCache[layer];
+                                for (var _i = 0, _a = this.getAllPaletteAnimationIndexes(); _i < _a.length; _i++) {
                                     var paletteAnimationIndex = _a[_i];
                                     var paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex];
                                     if (paletteAnimationCanvasFrames == null)
                                         continue;
-                                    var currentFrame = SonicManager_13.SonicManager.Instance.TilePaletteAnimationManager.GetCurrentFrame(paletteAnimationIndex);
-                                    canvas.fillText("Palette " + paletteAnimationIndex + "-" + currentFrame.FrameIndex, position.X + 25, position.Y + yOffset + (paletteAnimationIndex * 13));
+                                    var currentFrame = SonicManager_13.SonicManager.instance.tilePaletteAnimationManager.getCurrentFrame(paletteAnimationIndex);
+                                    canvas.fillText("Palette " + paletteAnimationIndex + "-" + currentFrame.FrameIndex, position.x + 25, position.y + yOffset + (paletteAnimationIndex * 13));
                                 }
                             }
                         }
-                        if (debugDrawOptions.ShowTileAnimationData) {
+                        if (debugDrawOptions.showTileAnimationData) {
                             if (this.HasTileAnimations()) {
-                                var tileAnimationCanvases = this.TileAnimationCanvasesCache[layer];
-                                for (var _b = 0, _c = this.GetAllTileAnimationIndexes(); _b < _c.length; _b++) {
+                                var tileAnimationCanvases = this.tileAnimationCanvasesCache[layer];
+                                for (var _b = 0, _c = this.getAllTileAnimationIndexes(); _b < _c.length; _b++) {
                                     var tileAnimationIndex = _c[_b];
                                     var tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex];
                                     if (tileAnimationCanvasFrames == null)
                                         continue;
-                                    var currentFrame = SonicManager_13.SonicManager.Instance.TileAnimationManager.GetCurrentFrame(tileAnimationIndex);
-                                    canvas.fillText("Tile " + tileAnimationIndex + "-" + currentFrame.FrameIndex, position.X + 75, position.Y + yOffset + (tileAnimationIndex * 13));
+                                    var currentFrame = SonicManager_13.SonicManager.instance.tileAnimationManager.getCurrentFrame(tileAnimationIndex);
+                                    canvas.fillText("Tile " + tileAnimationIndex + "-" + currentFrame.frameIndex, position.x + 75, position.y + yOffset + (tileAnimationIndex * 13));
                                 }
                             }
                         }
                     }
-                    if (debugDrawOptions.OutlineChunk) {
+                    if (debugDrawOptions.putlineChunk) {
                         canvas.strokeStyle = "black";
-                        canvas.strokeRect(position.X, position.Y, 128, 128);
+                        canvas.strokeRect(position.x, position.y, 128, 128);
                     }
-                    if (debugDrawOptions.OutlineTiles) {
+                    if (debugDrawOptions.outlineTiles) {
                         canvas.strokeStyle = "green";
                         for (var x = 0; x < TileChunk.TileSideLength; x++) {
                             for (var y = 0; y < TileChunk.TileSideLength; y++) {
-                                canvas.strokeRect(position.X + (x * TileChunk.TileSquareSize), position.Y + (y * TileChunk.TileSquareSize), TileChunk.TileSquareSize, TileChunk.TileSquareSize);
+                                canvas.strokeRect(position.x + (x * TileChunk.TileSquareSize), position.y + (y * TileChunk.TileSquareSize), TileChunk.TileSquareSize, TileChunk.TileSquareSize);
                             }
                         }
                     }
-                    if (debugDrawOptions.OutlineTilePieces) {
+                    if (debugDrawOptions.outlineTilePieces) {
                         canvas.strokeStyle = "purple";
                         for (var x = 0; x < TileChunk.TilePieceSideLength; x++) {
                             for (var y = 0; y < TileChunk.TilePieceSideLength; y++) {
-                                canvas.strokeRect(position.X + (x * TileChunk.TilePiecesSquareSize), position.Y + (y * TileChunk.TilePiecesSquareSize), TileChunk.TilePiecesSquareSize, TileChunk.TilePiecesSquareSize);
+                                canvas.strokeRect(position.x + (x * TileChunk.TilePiecesSquareSize), position.y + (y * TileChunk.TilePiecesSquareSize), TileChunk.TilePiecesSquareSize, TileChunk.TilePiecesSquareSize);
                             }
                         }
                     }
-                    if (debugDrawOptions.OutlineTile != null) {
+                    if (debugDrawOptions.outlineTile != null) {
                     }
-                    if (debugDrawOptions.OutlineTilePiece != null) {
+                    if (debugDrawOptions.outlineTilePiece != null) {
                         canvas.strokeStyle = "yellow";
                         for (var x = 0; x < TileChunk.TilePieceSideLength; x++) {
                             for (var y = 0; y < TileChunk.TilePieceSideLength; y++) {
@@ -2600,8 +2749,8 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                                 var tilePiece = tilePieceInfo.GetTilePiece();
                                 if (tilePiece == null)
                                     continue;
-                                if (tilePiece.Index == debugDrawOptions.OutlineTilePiece.Block) {
-                                    canvas.strokeRect(position.X + (x * TileChunk.TilePiecesSquareSize), position.Y + (y * TileChunk.TilePiecesSquareSize), TileChunk.TilePiecesSquareSize, TileChunk.TilePiecesSquareSize);
+                                if (tilePiece.Index == debugDrawOptions.outlineTilePiece.Block) {
+                                    canvas.strokeRect(position.x + (x * TileChunk.TilePiecesSquareSize), position.y + (y * TileChunk.TilePiecesSquareSize), TileChunk.TilePiecesSquareSize, TileChunk.TilePiecesSquareSize);
                                 }
                             }
                         }
@@ -2613,29 +2762,29 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                     var numOfChunks = 0;
                     for (var i = 0; i < 2; i++) {
                         var chunkLayer = i;
-                        if (this.BaseCanvasCache[chunkLayer] != null)
+                        if (this.baseCanvasCache[chunkLayer] != null)
                             numOfChunks++;
-                        for (var paletteAnimationCanvasCache in this.PaletteAnimationCanvasesCache[chunkLayer]) {
-                            for (var frame in this.PaletteAnimationCanvasesCache[chunkLayer][paletteAnimationCanvasCache].Frames) {
+                        for (var paletteAnimationCanvasCache in this.paletteAnimationCanvasesCache[chunkLayer]) {
+                            for (var frame in this.paletteAnimationCanvasesCache[chunkLayer][paletteAnimationCanvasCache].frames) {
                                 numOfChunks++;
                             }
                         }
-                        for (var tileAnimationCanvasCache in this.TileAnimationCanvasesCache[chunkLayer]) {
-                            for (var frame in this.TileAnimationCanvasesCache[chunkLayer][tileAnimationCanvasCache].Frames) {
+                        for (var tileAnimationCanvasCache in this.tileAnimationCanvasesCache[chunkLayer]) {
+                            for (var frame in this.tileAnimationCanvasesCache[chunkLayer][tileAnimationCanvasCache].frames) {
                                 numOfChunks++;
                             }
                         }
                     }
-                    var canvas = CanvasInformation_6.CanvasInformation.Create((numWide * 128), (Math.ceil(numOfChunks / numWide) | 0) * 128, false);
+                    var canvas = CanvasInformation_6.CanvasInformation.create((numWide * 128), (Math.ceil(numOfChunks / numWide) | 0) * 128, false);
                     canvas.Context.fillStyle = "#111111";
-                    canvas.Context.fillRect(0, 0, canvas.Canvas.width, canvas.Canvas.height);
+                    canvas.Context.fillRect(0, 0, canvas.canvas.width, canvas.canvas.height);
                     numOfChunks = 0;
                     canvas.Context.strokeStyle = "#FFFFFF";
                     canvas.Context.lineWidth = 4;
                     for (var i = 0; i < 2; i++) {
                         var chunkLayer = i;
                         canvas.Context.strokeStyle = chunkLayer == Enums_4.ChunkLayerState.Low ? "Green" : "Yellow";
-                        if (this.BaseCanvasCache[chunkLayer] != null) {
+                        if (this.baseCanvasCache[chunkLayer] != null) {
                             var context = canvas.Context;
                             context.save();
                             var x = ((numOfChunks % numWide) * 128) | 0;
@@ -2643,16 +2792,16 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                             context.translate(x, y);
                             canvas.Context.fillStyle = chunkLayer == Enums_4.ChunkLayerState.Low ? "#333333" : "#777777";
                             context.fillRect(0, 0, 128, 128);
-                            context.drawImage(this.BaseCanvasCache[chunkLayer].Canvas, 0, 0);
+                            context.drawImage(this.baseCanvasCache[chunkLayer].canvas, 0, 0);
                             context.strokeRect(0, 0, 128, 128);
                             context.restore();
                             numOfChunks++;
                         }
                         canvas.Context.strokeStyle = chunkLayer == Enums_4.ChunkLayerState.Low ? "pink" : "purple";
-                        for (var paletteAnimationCanvasCache in this.PaletteAnimationCanvasesCache[chunkLayer]) {
-                            var m = this.PaletteAnimationCanvasesCache[chunkLayer][paletteAnimationCanvasCache];
-                            for (var f in m.Frames) {
-                                var frame = m.Frames[f];
+                        for (var paletteAnimationCanvasCache in this.paletteAnimationCanvasesCache[chunkLayer]) {
+                            var m = this.paletteAnimationCanvasesCache[chunkLayer][paletteAnimationCanvasCache];
+                            for (var f in m.frames) {
+                                var frame = m.frames[f];
                                 var context = canvas.Context;
                                 context.save();
                                 var x = ((numOfChunks % numWide) * 128) | 0;
@@ -2660,17 +2809,17 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                                 context.translate(x, y);
                                 canvas.Context.fillStyle = chunkLayer == Enums_4.ChunkLayerState.Low ? "#333333" : "#777777";
                                 context.fillRect(0, 0, 128, 128);
-                                context.drawImage(frame.Canvas.Canvas, m.Position.X, m.Position.Y);
+                                context.drawImage(frame.canvas.canvas, m.position.x, m.position.y);
                                 context.strokeRect(0, 0, 128, 128);
                                 context.restore();
                                 numOfChunks++;
                             }
                         }
                         canvas.Context.strokeStyle = chunkLayer == Enums_4.ChunkLayerState.Low ? "red" : "orange";
-                        for (var tileAnimationCanvasCache in this.TileAnimationCanvasesCache[chunkLayer]) {
-                            var m = this.TileAnimationCanvasesCache[chunkLayer][tileAnimationCanvasCache];
-                            for (var f in m.Frames) {
-                                var frame = m.Frames[f];
+                        for (var tileAnimationCanvasCache in this.tileAnimationCanvasesCache[chunkLayer]) {
+                            var m = this.tileAnimationCanvasesCache[chunkLayer][tileAnimationCanvasCache];
+                            for (var f in m.frames) {
+                                var frame = m.frames[f];
                                 var context = canvas.Context;
                                 context.save();
                                 var x = ((numOfChunks % numWide) * 128) | 0;
@@ -2678,7 +2827,7 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                                 context.translate(x, y);
                                 canvas.Context.fillStyle = chunkLayer == Enums_4.ChunkLayerState.Low ? "#333333" : "#777777";
                                 context.fillRect(0, 0, 128, 128);
-                                context.drawImage(frame.Canvas.Canvas, m.Position.Y, m.Position.Y);
+                                context.drawImage(frame.canvas.canvas, m.position.y, m.position.y);
                                 context.strokeRect(0, 0, 128, 128);
                                 context.restore();
                                 numOfChunks++;
@@ -2686,7 +2835,7 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                         }
                     }
                     canvas.Context.strokeStyle = "blue";
-                    canvas.Context.strokeRect(0, 0, canvas.Canvas.width, canvas.Canvas.height);
+                    canvas.Context.strokeRect(0, 0, canvas.canvas.width, canvas.canvas.height);
                     canvas.Context.fillStyle = "white";
                     canvas.Context.font = "20px bold";
                     canvas.Context.fillText("Number Of Chunks: " + numOfChunks, 50, 50);
@@ -2699,59 +2848,59 @@ System.register("Game/Level/Tiles/TileChunk", ["Common/Utils", "Game/SonicManage
                 TileChunk.TileSideLength = 16;
                 return TileChunk;
             }());
-            exports_28("TileChunk", TileChunk);
+            exports_31("TileChunk", TileChunk);
             TileChunkDebugDrawOptions = (function () {
                 function TileChunkDebugDrawOptions() {
                 }
                 return TileChunkDebugDrawOptions;
             }());
-            exports_28("TileChunkDebugDrawOptions", TileChunkDebugDrawOptions);
+            exports_31("TileChunkDebugDrawOptions", TileChunkDebugDrawOptions);
             ChunkLayer = (function () {
                 function ChunkLayer() {
                 }
                 return ChunkLayer;
             }());
-            exports_28("ChunkLayer", ChunkLayer);
+            exports_31("ChunkLayer", ChunkLayer);
             PaletteAnimationCanvasFrames = (function () {
                 function PaletteAnimationCanvasFrames(paletteAnimationIndex) {
-                    this.PaletteAnimationIndex = paletteAnimationIndex;
-                    this.Frames = {};
+                    this.paletteAnimationIndex = paletteAnimationIndex;
+                    this.frames = {};
                 }
                 return PaletteAnimationCanvasFrames;
             }());
-            exports_28("PaletteAnimationCanvasFrames", PaletteAnimationCanvasFrames);
+            exports_31("PaletteAnimationCanvasFrames", PaletteAnimationCanvasFrames);
             PaletteAnimationCanvasFrame = (function () {
                 function PaletteAnimationCanvasFrame() {
                 }
                 return PaletteAnimationCanvasFrame;
             }());
-            exports_28("PaletteAnimationCanvasFrame", PaletteAnimationCanvasFrame);
+            exports_31("PaletteAnimationCanvasFrame", PaletteAnimationCanvasFrame);
             TileAnimationCanvasFrames = (function () {
                 function TileAnimationCanvasFrames(tileAnimationIndex) {
-                    this.TileAnimationIndex = tileAnimationIndex;
-                    this.Frames = {};
+                    this.tileAnimationIndex = tileAnimationIndex;
+                    this.frames = {};
                 }
                 return TileAnimationCanvasFrames;
             }());
-            exports_28("TileAnimationCanvasFrames", TileAnimationCanvasFrames);
+            exports_31("TileAnimationCanvasFrames", TileAnimationCanvasFrames);
             TileAnimationCanvasFrame = (function () {
                 function TileAnimationCanvasFrame() {
                 }
                 return TileAnimationCanvasFrame;
             }());
-            exports_28("TileAnimationCanvasFrame", TileAnimationCanvasFrame);
+            exports_31("TileAnimationCanvasFrame", TileAnimationCanvasFrame);
         }
     }
 });
-System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "Common/Help", "Game/SonicManager", "Common/Enums"], function(exports_29, context_29) {
+System.register("game/sonic/SensorManager", ["SLData", "game/level/HeightMap", "common/Help", "game/SonicManager", "common/Enums"], function(exports_32, context_32) {
     "use strict";
-    var __moduleName = context_29 && context_29.id;
-    var SLData_1, HeightMap_1, Help_3, SonicManager_14, Enums_5;
+    var __moduleName = context_32 && context_32.id;
+    var SLData_2, HeightMap_1, Help_3, SonicManager_14, Enums_5;
     var SensorManager, Sensor, SensorM;
     return {
         setters:[
-            function (SLData_1_1) {
-                SLData_1 = SLData_1_1;
+            function (SLData_2_1) {
+                SLData_2 = SLData_2_1;
             },
             function (HeightMap_1_1) {
                 HeightMap_1 = HeightMap_1_1;
@@ -2768,39 +2917,39 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
         execute: function() {
             SensorManager = (function () {
                 function SensorManager() {
-                    this.Sensors = {};
-                    this.SensorResults = {};
+                    this.sensors = {};
+                    this.sensorResults = {};
                 }
-                SensorManager.prototype.AddSensor = function (letter, sensor) {
-                    this.Sensors[letter] = (sensor);
-                    this.SensorResults[letter] = null;
+                SensorManager.prototype.addSensor = function (letter, sensor) {
+                    this.sensors[letter] = (sensor);
+                    this.sensorResults[letter] = null;
                     return sensor;
                 };
-                SensorManager.prototype.CreateVerticalSensor = function (letter, x, y1, y2, color, ignoreSolid) {
+                SensorManager.prototype.createVerticalSensor = function (letter, x, y1, y2, color, ignoreSolid) {
                     if (ignoreSolid === void 0) { ignoreSolid = false; }
-                    return this.AddSensor(letter, new Sensor(x, x, y1, y2, this, color, ignoreSolid, letter));
+                    return this.addSensor(letter, new Sensor(x, x, y1, y2, this, color, ignoreSolid, letter));
                 };
-                SensorManager.prototype.CreateHorizontalSensor = function (letter, y, x1, x2, color, ignoreSolid) {
+                SensorManager.prototype.createHorizontalSensor = function (letter, y, x1, x2, color, ignoreSolid) {
                     if (ignoreSolid === void 0) { ignoreSolid = false; }
-                    return this.AddSensor(letter, new Sensor(x1, x2, y, y, this, color, ignoreSolid, letter));
+                    return this.addSensor(letter, new Sensor(x1, x2, y, y, this, color, ignoreSolid, letter));
                 };
-                SensorManager.prototype.Check = function (character) {
+                SensorManager.prototype.check = function (character) {
                     var none = false;
-                    for (var i in this.Sensors) {
-                        this.SensorResults[i] = this.Sensors[i].Check(character);
-                        none = none || (this.SensorResults[i] != null);
+                    for (var i in this.sensors) {
+                        this.sensorResults[i] = this.sensors[i].check(character);
+                        none = none || (this.sensorResults[i] != null);
                     }
                     return none;
                 };
-                SensorManager.prototype.GetResult = function (mn) {
-                    return this.SensorResults[mn];
+                SensorManager.prototype.getResult = function (mn) {
+                    return this.sensorResults[mn];
                 };
-                SensorManager.prototype.Draw = function (canvas, sonic) {
-                    for (var sensor in this.Sensors) {
-                        this.Sensors[sensor].Draw(canvas, sonic, this.SensorResults[sensor]);
+                SensorManager.prototype.draw = function (canvas, sonic) {
+                    for (var sensor in this.sensors) {
+                        this.sensors[sensor].draw(canvas, sonic, this.sensorResults[sensor]);
                     }
                 };
-                SensorManager.prototype.BuildChunk = function (chunk, isLayerOne) {
+                SensorManager.prototype.buildChunk = function (chunk, isLayerOne) {
                     if (isLayerOne) {
                         if (chunk.HeightBlocks1)
                             return;
@@ -2968,7 +3117,7 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                         if (hd2.Full === undefined) {
                                             switch (tp.Solid2) {
                                                 case 0:
-                                                    hb2[(_x * 16 + jx)][(_y * 16 + jy)] = SLData_1.Solidity.NotSolid;
+                                                    hb2[(_x * 16 + jx)][(_y * 16 + jy)] = SLData_2.Solidity.NotSolid;
                                                     break;
                                                 case 1:
                                                 case 2:
@@ -2985,33 +3134,41 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                 };
                 return SensorManager;
             }());
-            exports_29("SensorManager", SensorManager);
+            exports_32("SensorManager", SensorManager);
             Sensor = (function () {
                 function Sensor(x1, x2, y1, y2, manager, color, ignoreSolid, letter) {
                     this.__currentM = new SensorM(0, 0);
-                    this.X1 = x1;
-                    this.X2 = x2;
-                    this.Y1 = y1;
-                    this.Y2 = y2;
-                    this.Manager = manager;
-                    this.Color = color;
-                    this.IgnoreSolid = ignoreSolid;
-                    this.Letter = letter;
+                    this.value = 0;
+                    this.angle = 0;
+                    this.chosen = false;
+                    this.ignoreSolid = false;
+                    this.x1 = 0;
+                    this.x2 = 0;
+                    this.y1 = 0;
+                    this.y2 = 0;
+                    this.x1 = x1;
+                    this.x2 = x2;
+                    this.y1 = y1;
+                    this.y2 = y2;
+                    this.manager = manager;
+                    this.color = color;
+                    this.ignoreSolid = ignoreSolid;
+                    this.letter = letter;
                 }
                 Sensor.prototype.checkCollisionLineWrap = function (x1, x2, y1, y2, ignoreSolid) {
                     var _x = (x1 / 128) | 0;
-                    var _y = Help_3.Help.Mod((y1 / 128) | 0, SonicManager_14.SonicManager.Instance.SonicLevel.LevelHeight);
-                    var tc = SonicManager_14.SonicManager.Instance.SonicLevel.GetChunkAt(_x, _y);
-                    this.Manager.BuildChunk(tc, SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap);
-                    var curh = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                    var cura = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
+                    var _y = Help_3.Help.mod((y1 / 128) | 0, SonicManager_14.SonicManager.instance.sonicLevel.LevelHeight);
+                    var tc = SonicManager_14.SonicManager.instance.sonicLevel.getChunkAt(_x, _y);
+                    this.manager.buildChunk(tc, SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap);
+                    var curh = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
+                    var cura = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
                     var __x = x1 - _x * 128;
                     var __y = y1 - _y * 128;
                     var length = 0;
                     if (y1 == y2) {
-                        if (Math.max(x1, x2) > SonicManager_14.SonicManager.Instance.SonicLevel.LevelWidth * 128) {
-                            this.__currentM.Value = SonicManager_14.SonicManager.Instance.SonicLevel.LevelWidth * 128 - 20;
-                            this.__currentM.Angle = 0xff;
+                        if (Math.max(x1, x2) > SonicManager_14.SonicManager.instance.sonicLevel.LevelWidth * 128) {
+                            this.__currentM.value = SonicManager_14.SonicManager.instance.sonicLevel.LevelWidth * 128 - 20;
+                            this.__currentM.angle = 0xff;
                             return this.__currentM;
                         }
                         if (x1 < x2) {
@@ -3021,22 +3178,22 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                     while (true) {
                                         if (__x - i < 0) {
                                             if (_x - 1 < 0) {
-                                                this.__currentM.Value = 0;
-                                                this.__currentM.Angle = 0xFF;
+                                                this.__currentM.value = 0;
+                                                this.__currentM.angle = 0xFF;
                                                 return this.__currentM;
                                             }
-                                            tc = SonicManager_14.SonicManager.Instance.SonicLevel.GetChunkAt(_x - 1, _y);
-                                            this.Manager.BuildChunk(tc, SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap);
-                                            curh = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                            cura = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
+                                            tc = SonicManager_14.SonicManager.instance.sonicLevel.getChunkAt(_x - 1, _y);
+                                            this.manager.buildChunk(tc, SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap);
+                                            curh = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
+                                            cura = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
                                             __x += 128;
                                         }
                                         else
                                             break;
                                     }
-                                    if (curh[(__x - i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1 - i, y1, this.Letter)) {
-                                        this.__currentM.Value = x1 - i;
-                                        this.__currentM.Angle = cura[(__x - i) / 16 | 0][(__y) / 16 | 0];
+                                    if (curh[(__x - i)][__y] >= 1 || SonicManager_14.SonicManager.instance.sonicToon.CheckCollisionWithObjects(x1 - i, y1, this.letter)) {
+                                        this.__currentM.value = x1 - i;
+                                        this.__currentM.angle = cura[(__x - i) / 16 | 0][(__y) / 16 | 0];
                                         return this.__currentM;
                                     }
                                 }
@@ -3044,18 +3201,18 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                             for (var i = 0; i < length; i++) {
                                 while (true) {
                                     if (__x + i >= 128) {
-                                        tc = SonicManager_14.SonicManager.Instance.SonicLevel.GetChunkAt(_x + 1, _y);
-                                        this.Manager.BuildChunk(tc, SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap);
-                                        curh = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                        cura = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
+                                        tc = SonicManager_14.SonicManager.instance.sonicLevel.getChunkAt(_x + 1, _y);
+                                        this.manager.buildChunk(tc, SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap);
+                                        curh = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
+                                        cura = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
                                         __x -= 128;
                                     }
                                     else
                                         break;
                                 }
-                                if (curh[(__x + i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1 + i, y1, this.Letter)) {
-                                    this.__currentM.Value = x1 + i;
-                                    this.__currentM.Angle = cura[(__x + i) / 16 | 0][(__y) / 16 | 0];
+                                if (curh[(__x + i)][__y] >= 1 || SonicManager_14.SonicManager.instance.sonicToon.CheckCollisionWithObjects(x1 + i, y1, this.letter)) {
+                                    this.__currentM.value = x1 + i;
+                                    this.__currentM.angle = cura[(__x + i) / 16 | 0][(__y) / 16 | 0];
                                     return this.__currentM;
                                 }
                             }
@@ -3066,18 +3223,18 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                 for (var i = 0; i < 128 * 2; i++) {
                                     while (true) {
                                         if (__x + i >= 128) {
-                                            tc = SonicManager_14.SonicManager.Instance.SonicLevel.GetChunkAt(_x + 1, _y);
-                                            this.Manager.BuildChunk(tc, SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap);
-                                            curh = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                            cura = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
+                                            tc = SonicManager_14.SonicManager.instance.sonicLevel.getChunkAt(_x + 1, _y);
+                                            this.manager.buildChunk(tc, SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap);
+                                            curh = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
+                                            cura = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
                                             __x -= 128;
                                         }
                                         else
                                             break;
                                     }
-                                    if (curh[(__x + i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1 + i, y1, this.Letter)) {
-                                        this.__currentM.Value = x1 + i;
-                                        this.__currentM.Angle = cura[(__x + i) / 16 | 0][(__y) / 16 | 0];
+                                    if (curh[(__x + i)][__y] >= 1 || SonicManager_14.SonicManager.instance.sonicToon.CheckCollisionWithObjects(x1 + i, y1, this.letter)) {
+                                        this.__currentM.value = x1 + i;
+                                        this.__currentM.angle = cura[(__x + i) / 16 | 0][(__y) / 16 | 0];
                                         return this.__currentM;
                                     }
                                 }
@@ -3086,22 +3243,22 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                 while (true) {
                                     if (__x - i < 0) {
                                         if (_x - 1 < 0) {
-                                            this.__currentM.Value = 0;
-                                            this.__currentM.Angle = 0xFF;
+                                            this.__currentM.value = 0;
+                                            this.__currentM.angle = 0xFF;
                                             return this.__currentM;
                                         }
-                                        tc = SonicManager_14.SonicManager.Instance.SonicLevel.GetChunkAt(_x - 1, _y);
-                                        this.Manager.BuildChunk(tc, SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap);
-                                        curh = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                        cura = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
+                                        tc = SonicManager_14.SonicManager.instance.sonicLevel.getChunkAt(_x - 1, _y);
+                                        this.manager.buildChunk(tc, SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap);
+                                        curh = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
+                                        cura = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
                                         __x += 128;
                                     }
                                     else
                                         break;
                                 }
-                                if (curh[(__x - i)][__y] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1 - i, y1, this.Letter)) {
-                                    this.__currentM.Value = x1 - i;
-                                    this.__currentM.Angle = cura[(__x - i) / 16 | 0][(__y) / 16 | 0];
+                                if (curh[(__x - i)][__y] >= 1 || SonicManager_14.SonicManager.instance.sonicToon.CheckCollisionWithObjects(x1 - i, y1, this.letter)) {
+                                    this.__currentM.value = x1 - i;
+                                    this.__currentM.angle = cura[(__x - i) / 16 | 0][(__y) / 16 | 0];
                                     return this.__currentM;
                                 }
                             }
@@ -3114,18 +3271,18 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                 for (var i = 0; i < 128 * 2; i++) {
                                     while (true) {
                                         if (__y - i < 0) {
-                                            tc = SonicManager_14.SonicManager.Instance.SonicLevel.GetChunkAt(_x, Help_3.Help.Mod((_y - 1), SonicManager_14.SonicManager.Instance.SonicLevel.LevelHeight));
-                                            this.Manager.BuildChunk(tc, SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap);
-                                            curh = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                            cura = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
+                                            tc = SonicManager_14.SonicManager.instance.sonicLevel.getChunkAt(_x, Help_3.Help.mod((_y - 1), SonicManager_14.SonicManager.instance.sonicLevel.LevelHeight));
+                                            this.manager.buildChunk(tc, SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap);
+                                            curh = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
+                                            cura = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
                                             __y += 128;
                                         }
                                         else
                                             break;
                                     }
-                                    if (curh[__x][__y - i] > 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1, y1 - i, this.Letter)) {
-                                        this.__currentM.Value = y1 - i;
-                                        this.__currentM.Angle = cura[(__x) / 16 | 0][(__y - i) / 16 | 0];
+                                    if (curh[__x][__y - i] > 1 || SonicManager_14.SonicManager.instance.sonicToon.CheckCollisionWithObjects(x1, y1 - i, this.letter)) {
+                                        this.__currentM.value = y1 - i;
+                                        this.__currentM.angle = cura[(__x) / 16 | 0][(__y - i) / 16 | 0];
                                         return this.__currentM;
                                     }
                                 }
@@ -3133,20 +3290,20 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                             for (var i = 0; i < length; i++) {
                                 while (true) {
                                     if (__y + i >= 128) {
-                                        tc = SonicManager_14.SonicManager.Instance.SonicLevel.GetChunkAt(_x, (_y + 1) % SonicManager_14.SonicManager.Instance.SonicLevel.LevelHeight);
-                                        this.Manager.BuildChunk(tc, SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap);
-                                        curh = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                        cura = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
+                                        tc = SonicManager_14.SonicManager.instance.sonicLevel.getChunkAt(_x, (_y + 1) % SonicManager_14.SonicManager.instance.sonicLevel.LevelHeight);
+                                        this.manager.buildChunk(tc, SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap);
+                                        curh = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
+                                        cura = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
                                         __y -= 128;
                                     }
                                     else
                                         break;
                                 }
-                                if (curh[__x][__y + i] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
-                                    if (curh[__x][__y + i] == 1 && SonicManager_14.SonicManager.Instance.sonicToon.InAir && SonicManager_14.SonicManager.Instance.sonicToon.Ysp < 0)
+                                if (curh[__x][__y + i] >= 1 || SonicManager_14.SonicManager.instance.sonicToon.CheckCollisionWithObjects(x1, y1 + i, this.letter)) {
+                                    if (curh[__x][__y + i] == 1 && SonicManager_14.SonicManager.instance.sonicToon.inAir && SonicManager_14.SonicManager.instance.sonicToon.ysp < 0)
                                         continue;
-                                    this.__currentM.Value = y1 + i;
-                                    this.__currentM.Angle = cura[(__x) / 16 | 0][(__y + i) / 16 | 0];
+                                    this.__currentM.value = y1 + i;
+                                    this.__currentM.angle = cura[(__x) / 16 | 0][(__y + i) / 16 | 0];
                                     return this.__currentM;
                                 }
                             }
@@ -3157,18 +3314,18 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                                 for (var i = 0; i < 128 * 2; i++) {
                                     while (true) {
                                         if (__y + i >= 128) {
-                                            tc = SonicManager_14.SonicManager.Instance.SonicLevel.GetChunkAt(_x, (_y + 1) % SonicManager_14.SonicManager.Instance.SonicLevel.LevelHeight);
-                                            this.Manager.BuildChunk(tc, SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap);
-                                            curh = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                            cura = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
+                                            tc = SonicManager_14.SonicManager.instance.sonicLevel.getChunkAt(_x, (_y + 1) % SonicManager_14.SonicManager.instance.sonicLevel.LevelHeight);
+                                            this.manager.buildChunk(tc, SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap);
+                                            curh = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
+                                            cura = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
                                             __y -= 128;
                                         }
                                         else
                                             break;
                                     }
-                                    if (curh[__x][__y + i] >= 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
-                                        this.__currentM.Value = y1 + i;
-                                        this.__currentM.Angle = cura[(__x) / 16 | 0][(__y + i) / 16 | 0];
+                                    if (curh[__x][__y + i] >= 1 || SonicManager_14.SonicManager.instance.sonicToon.CheckCollisionWithObjects(x1, y1 + i, this.letter)) {
+                                        this.__currentM.value = y1 + i;
+                                        this.__currentM.angle = cura[(__x) / 16 | 0][(__y + i) / 16 | 0];
                                         return this.__currentM;
                                     }
                                 }
@@ -3176,18 +3333,18 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                             for (var i = 0; i < length; i++) {
                                 while (true) {
                                     if (__y - i < 0) {
-                                        tc = SonicManager_14.SonicManager.Instance.SonicLevel.GetChunkAt(_x, Help_3.Help.Mod((_y - 1), SonicManager_14.SonicManager.Instance.SonicLevel.LevelHeight));
-                                        this.Manager.BuildChunk(tc, SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap);
-                                        curh = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                        cura = SonicManager_14.SonicManager.Instance.SonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
+                                        tc = SonicManager_14.SonicManager.instance.sonicLevel.getChunkAt(_x, Help_3.Help.mod((_y - 1), SonicManager_14.SonicManager.instance.sonicLevel.LevelHeight));
+                                        this.manager.buildChunk(tc, SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap);
+                                        curh = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
+                                        cura = SonicManager_14.SonicManager.instance.sonicLevel.CurHeightMap ? tc.AngleMap1 : tc.AngleMap2;
                                         __y += 128;
                                     }
                                     else
                                         break;
                                 }
-                                if (curh[__x][__y - i] > 1 || SonicManager_14.SonicManager.Instance.sonicToon.CheckCollisionWithObjects(x1, y1 + i, this.Letter)) {
-                                    this.__currentM.Value = y1 - i;
-                                    this.__currentM.Angle = cura[(__x) / 16 | 0][(__y - i) / 16 | 0];
+                                if (curh[__x][__y - i] > 1 || SonicManager_14.SonicManager.instance.sonicToon.CheckCollisionWithObjects(x1, y1 + i, this.letter)) {
+                                    this.__currentM.value = y1 - i;
+                                    this.__currentM.angle = cura[(__x) / 16 | 0][(__y - i) / 16 | 0];
                                     return this.__currentM;
                                 }
                             }
@@ -3195,90 +3352,93 @@ System.register("Game/Sonic/SensorManager", ["SLData", "Game/Level/HeightMap", "
                     }
                     return null;
                 };
-                Sensor.prototype.Draw = function (canvas, character, sensorResult) {
-                    var x = Help_3.Help.Floor(character.X) - SonicManager_14.SonicManager.Instance.windowLocation.X;
-                    var y = Help_3.Help.Floor(character.Y) - SonicManager_14.SonicManager.Instance.windowLocation.Y;
+                Sensor.prototype.draw = function (canvas, character, sensorResult) {
+                    var x = Help_3.Help.floor(character.x) - SonicManager_14.SonicManager.instance.windowLocation.x;
+                    var y = Help_3.Help.floor(character.y) - SonicManager_14.SonicManager.instance.windowLocation.y;
                     canvas.beginPath();
-                    if (sensorResult && sensorResult.Chosen) {
+                    if (sensorResult && sensorResult.chosen) {
                         canvas.strokeStyle = "#FFF76D";
                         canvas.lineWidth = 4;
                     }
                     else {
-                        canvas.strokeStyle = this.Color;
+                        canvas.strokeStyle = this.color;
                         canvas.lineWidth = 2;
                     }
-                    switch (character.Mode) {
+                    switch (character.mode) {
                         case Enums_5.RotationMode.Floor:
-                            canvas.moveTo((x + this.X1), (y + this.Y1));
-                            canvas.lineTo((x + this.X2), (y + this.Y2));
+                            canvas.moveTo((x + this.x1), (y + this.y1));
+                            canvas.lineTo((x + this.x2), (y + this.y2));
                             break;
                         case Enums_5.RotationMode.LeftWall:
-                            canvas.moveTo((x - this.Y1), (y + this.X1));
-                            canvas.lineTo((x - this.Y2), (y + this.X2));
+                            canvas.moveTo((x - this.y1), (y + this.x1));
+                            canvas.lineTo((x - this.y2), (y + this.x2));
                             break;
                         case Enums_5.RotationMode.Ceiling:
-                            canvas.moveTo((x - this.X1), (y - this.Y1));
-                            canvas.lineTo((x - this.X2), (y - this.Y2));
+                            canvas.moveTo((x - this.x1), (y - this.y1));
+                            canvas.lineTo((x - this.x2), (y - this.y2));
                             break;
                         case Enums_5.RotationMode.RightWall:
-                            canvas.moveTo((x + this.Y1), (y - this.X1));
-                            canvas.lineTo((x + this.Y2), (y - this.X2));
+                            canvas.moveTo((x + this.y1), (y - this.x1));
+                            canvas.lineTo((x + this.y2), (y - this.x2));
                             break;
                     }
                     canvas.closePath();
                     canvas.stroke();
                 };
-                Sensor.prototype.Check = function (character) {
-                    var _y2 = character.InAir ? this.Y2 : this.Y2;
+                Sensor.prototype.check = function (character) {
+                    var _y2 = character.inAir ? this.y2 : this.y2;
                     var m = null;
-                    var x = Help_3.Help.Floor(character.X);
-                    var y = Help_3.Help.Floor(character.Y);
-                    switch (character.Mode) {
+                    var x = Help_3.Help.floor(character.x);
+                    var y = Help_3.Help.floor(character.y);
+                    switch (character.mode) {
                         case Enums_5.RotationMode.Floor:
-                            m = this.checkCollisionLineWrap(x + this.X1, x + this.X2, y + this.Y1, y + _y2, this.IgnoreSolid);
+                            m = this.checkCollisionLineWrap(x + this.x1, x + this.x2, y + this.y1, y + _y2, this.ignoreSolid);
                             break;
                         case Enums_5.RotationMode.LeftWall:
-                            m = this.checkCollisionLineWrap(x - this.Y1, x - _y2, y + this.X1, y + this.X2, this.IgnoreSolid);
+                            m = this.checkCollisionLineWrap(x - this.y1, x - _y2, y + this.x1, y + this.x2, this.ignoreSolid);
                             break;
                         case Enums_5.RotationMode.Ceiling:
-                            m = this.checkCollisionLineWrap(x - this.X1, x - this.X2, y - this.Y1, y - _y2, this.IgnoreSolid);
+                            m = this.checkCollisionLineWrap(x - this.x1, x - this.x2, y - this.y1, y - _y2, this.ignoreSolid);
                             break;
                         case Enums_5.RotationMode.RightWall:
-                            m = this.checkCollisionLineWrap(x + this.Y1, x + _y2, y - this.X1, y - this.X2, this.IgnoreSolid);
+                            m = this.checkCollisionLineWrap(x + this.y1, x + _y2, y - this.x1, y - this.x2, this.ignoreSolid);
                             break;
                     }
                     if (m != null) {
-                        m.Letter = this.Letter;
-                        if (m.Angle == 255 || m.Angle == 0 || m.Angle == 1) {
-                            if (character.Mode == Enums_5.RotationMode.Floor)
-                                m.Angle = 255;
-                            if (character.Mode == Enums_5.RotationMode.LeftWall)
-                                m.Angle = 64;
-                            if (character.Mode == Enums_5.RotationMode.Ceiling)
-                                m.Angle = 128;
-                            if (character.Mode == Enums_5.RotationMode.RightWall)
-                                m.Angle = 192;
+                        m.letter = this.letter;
+                        if (m.angle == 255 || m.angle == 0 || m.angle == 1) {
+                            if (character.mode == Enums_5.RotationMode.Floor)
+                                m.angle = 255;
+                            if (character.mode == Enums_5.RotationMode.LeftWall)
+                                m.angle = 64;
+                            if (character.mode == Enums_5.RotationMode.Ceiling)
+                                m.angle = 128;
+                            if (character.mode == Enums_5.RotationMode.RightWall)
+                                m.angle = 192;
                         }
                     }
                     return m;
                 };
                 return Sensor;
             }());
-            exports_29("Sensor", Sensor);
+            exports_32("Sensor", Sensor);
             SensorM = (function () {
                 function SensorM(value, angle) {
-                    this.Value = value;
-                    this.Angle = angle;
+                    this.value = 0;
+                    this.angle = 0;
+                    this.chosen = false;
+                    this.value = value;
+                    this.angle = angle;
                 }
                 return SensorM;
             }());
-            exports_29("SensorM", SensorM);
+            exports_32("SensorM", SensorM);
         }
     }
 });
-System.register("Game/Sonic/SonicConstants", ["Common/Help"], function(exports_30, context_30) {
+System.register("game/sonic/SonicConstants", ["common/Help"], function(exports_33, context_33) {
     "use strict";
-    var __moduleName = context_30 && context_30.id;
+    var __moduleName = context_33 && context_33.id;
     var Help_4;
     var SonicConstants;
     return {
@@ -3291,31 +3451,31 @@ System.register("Game/Sonic/SonicConstants", ["Common/Help"], function(exports_3
                 function SonicConstants() {
                 }
                 SonicConstants.Sonic = function () {
-                    var sc = Help_4.Help.Merge(new SonicConstants(), {
-                        Acc: 0.046875,
-                        Dec: 0.5,
-                        Slp: 0.125,
-                        Frc: 0.046875,
-                        Rdec: 0.125,
-                        Rfrc: 0.0234375,
-                        SlpRollingUp: 0.078125,
-                        SlpRollingDown: 0.3125,
-                        Jmp: -6.5,
-                        Grv: 0.21875,
-                        Air: 0.09375,
-                        TopSpeed: 6
+                    var sc = Help_4.Help.merge(new SonicConstants(), {
+                        acc: 0.046875,
+                        dec: 0.5,
+                        slp: 0.125,
+                        frc: 0.046875,
+                        rdec: 0.125,
+                        rfrc: 0.0234375,
+                        slpRollingUp: 0.078125,
+                        slpRollingDown: 0.3125,
+                        jmp: -6.5,
+                        grv: 0.21875,
+                        air: 0.09375,
+                        topSpeed: 6
                     });
                     return sc;
                 };
                 return SonicConstants;
             }());
-            exports_30("SonicConstants", SonicConstants);
+            exports_33("SonicConstants", SonicConstants);
         }
     }
 });
-System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager", "Common/Enums", "Game/SonicManager", "Common/Help", "Game/Level/Ring", "Game/Sonic/SonicConstants"], function(exports_31, context_31) {
+System.register("game/sonic/Sonic", ["common/Utils", "game/sonic/SensorManager", "common/Enums", "game/SonicManager", "common/Help", "game/level/Ring", "game/sonic/SonicConstants"], function(exports_34, context_34) {
     "use strict";
-    var __moduleName = context_31 && context_31.id;
+    var __moduleName = context_34 && context_34.id;
     var Utils_9, SensorManager_1, Enums_6, SonicManager_15, Help_5, Ring_1, SonicConstants_1;
     var Sonic, Watcher;
     return {
@@ -3345,271 +3505,288 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
             Sonic = (function () {
                 function Sonic() {
                     this.obtainedRing = {};
-                    this.X = 0;
-                    this.Y = 0;
-                    this.Rings = 0;
-                    this.Xsp = 0;
-                    this.Ysp = 0;
-                    this.Gsp = 0;
-                    this.HLock = 0;
-                    this.Breaking = 0;
-                    this.SpinDashSpeed = 0;
-                    this.Angle = 0;
+                    this.ticking = false;
+                    this.x = 0;
+                    this.y = 0;
+                    this.rings = 0;
+                    this.debugging = false;
+                    this.jumping = false;
+                    this.crouching = false;
+                    this.holdingLeft = false;
+                    this.holdingRight = false;
+                    this.holdingUp = false;
+                    this.xsp = 0;
+                    this.ysp = 0;
+                    this.gsp = 0;
+                    this.rolling = false;
+                    this.inAir = false;
+                    this.wasInAir = false;
+                    this.holdingJump = false;
+                    this.justHit = false;
+                    this.hLock = 0;
+                    this.mode = Enums_6.RotationMode.Floor;
+                    this.facing = false;
+                    this.breaking = 0;
+                    this.ducking = false;
+                    this.spinDash = false;
+                    this.spinDashSpeed = 0;
+                    this.angle = 0;
+                    this.currentlyBall = false;
                     this.halfSize = new Utils_9.Point(20, 20);
                     this.offsetFromImage = new Utils_9.Point(0, 0);
                     this.objectCollision = new Utils_9.Point(0, 0);
                     this.ringCollisionRect = new Utils_9.Rectangle(0, 0, 0, 0);
-                    this.Watcher = new Watcher();
+                    this.watcher = new Watcher();
                     this.physicsVariables = SonicConstants_1.SonicConstants.Sonic();
-                    var sonicManager = SonicManager_15.SonicManager.Instance;
-                    this.sonicLevel = sonicManager.SonicLevel;
-                    this.X = this.sonicLevel.StartPositions[0].X;
-                    this.Y = this.sonicLevel.StartPositions[0].Y;
-                    this.SensorManager = new SensorManager_1.SensorManager();
-                    this.HaltSmoke = new Array();
-                    this.Rings = 7;
-                    this.SensorManager.CreateVerticalSensor("a", -9, 0, 36, "#F202F2");
-                    this.SensorManager.CreateVerticalSensor("b", 9, 0, 36, "#02C2F2");
-                    this.SensorManager.CreateVerticalSensor("c", -9, 0, -20, "#2D2C21");
-                    this.SensorManager.CreateVerticalSensor("d", 9, 0, -20, "#C24222");
-                    this.SensorManager.CreateHorizontalSensor("m1", 4, 0, -12, "#212C2E");
-                    this.SensorManager.CreateHorizontalSensor("m2", 4, 0, 13, "#22Ffc1");
-                    this.SpriteState = "normal";
+                    var sonicManager = SonicManager_15.SonicManager.instance;
+                    this.sonicLevel = sonicManager.sonicLevel;
+                    this.x = this.sonicLevel.StartPositions[0].x;
+                    this.y = this.sonicLevel.StartPositions[0].y;
+                    this.sensorManager = new SensorManager_1.SensorManager();
+                    this.haltSmoke = new Array();
+                    this.rings = 7;
+                    this.sensorManager.createVerticalSensor("a", -9, 0, 36, "#F202F2");
+                    this.sensorManager.createVerticalSensor("b", 9, 0, 36, "#02C2F2");
+                    this.sensorManager.createVerticalSensor("c", -9, 0, -20, "#2D2C21");
+                    this.sensorManager.createVerticalSensor("d", 9, 0, -20, "#C24222");
+                    this.sensorManager.createHorizontalSensor("m1", 4, 0, -12, "#212C2E");
+                    this.sensorManager.createHorizontalSensor("m2", 4, 0, 13, "#22Ffc1");
+                    this.spriteState = "normal";
                     this.myRec = new Utils_9.Rectangle(0, 0, 0, 0);
                     this.sonicLastHitTick = -100000;
                 }
-                Sonic.prototype.UpdateMode = function () {
-                    if (this.Angle <= 0x22 || this.Angle >= 0xDE)
-                        this.Mode = Enums_6.RotationMode.Floor;
-                    else if (this.Angle > 0x22 && this.Angle < 0x59)
-                        this.Mode = Enums_6.RotationMode.LeftWall;
-                    else if (this.Angle >= 0x59 && this.Angle < 0xA1)
-                        this.Mode = Enums_6.RotationMode.Ceiling;
-                    else if (this.Angle > 0xA1 && this.Angle < 0xDE)
-                        this.Mode = Enums_6.RotationMode.RightWall;
-                    this.myRec.X = (this.X - 10) | 0;
-                    this.myRec.Y = (this.Y - 20) | 0;
+                Sonic.prototype.updateMode = function () {
+                    if (this.angle <= 0x22 || this.angle >= 0xDE)
+                        this.mode = Enums_6.RotationMode.Floor;
+                    else if (this.angle > 0x22 && this.angle < 0x59)
+                        this.mode = Enums_6.RotationMode.LeftWall;
+                    else if (this.angle >= 0x59 && this.angle < 0xA1)
+                        this.mode = Enums_6.RotationMode.Ceiling;
+                    else if (this.angle > 0xA1 && this.angle < 0xDE)
+                        this.mode = Enums_6.RotationMode.RightWall;
+                    this.myRec.x = (this.x - 10) | 0;
+                    this.myRec.y = (this.y - 20) | 0;
                     this.myRec.Width = 10 * 2;
                     this.myRec.Height = 20 * 2;
-                    if (this.InAir)
-                        this.Mode = Enums_6.RotationMode.Floor;
+                    if (this.inAir)
+                        this.mode = Enums_6.RotationMode.Floor;
                 };
-                Sonic.prototype.Tick = function (sonicLevel) {
-                    if (this.Debugging) {
-                        var debugSpeed = this.Watcher.Multiply(15);
-                        if (this.HoldingRight)
-                            this.X += debugSpeed;
-                        if (this.HoldingLeft)
-                            this.X -= debugSpeed;
-                        if (this.Crouching)
-                            this.Y += debugSpeed;
-                        if (this.HoldingUp)
-                            this.Y -= debugSpeed;
-                        this.X = ((sonicLevel.LevelWidth * 128) + (this.X)) % (sonicLevel.LevelWidth * 128);
-                        this.Y = ((sonicLevel.LevelHeight * 128) + (this.Y)) % (sonicLevel.LevelHeight * 128);
+                Sonic.prototype.tick = function (sonicLevel) {
+                    if (this.debugging) {
+                        var debugSpeed = this.watcher.Multiply(15);
+                        if (this.holdingRight)
+                            this.x += debugSpeed;
+                        if (this.holdingLeft)
+                            this.x -= debugSpeed;
+                        if (this.crouching)
+                            this.y += debugSpeed;
+                        if (this.holdingUp)
+                            this.y -= debugSpeed;
+                        this.x = ((sonicLevel.LevelWidth * 128) + (this.x)) % (sonicLevel.LevelWidth * 128);
+                        this.y = ((sonicLevel.LevelHeight * 128) + (this.y)) % (sonicLevel.LevelHeight * 128);
                         return;
                     }
-                    this.UpdateMode();
-                    if (this.HLock > 0) {
-                        this.HLock--;
-                        this.HoldingRight = false;
-                        this.HoldingLeft = false;
+                    this.updateMode();
+                    if (this.hLock > 0) {
+                        this.hLock--;
+                        this.holdingRight = false;
+                        this.holdingLeft = false;
                     }
-                    if (this.InAir) {
-                        if (this.Angle != 0xff) {
-                            this.Angle = (0xff + (this.Angle + ((this.Angle > 0xff / 2) ? 2 : -2))) % 0xff;
-                            if (this.Angle >= 0xfd || this.Angle <= 0x01)
-                                this.Angle = 0xff;
+                    if (this.inAir) {
+                        if (this.angle != 0xff) {
+                            this.angle = (0xff + (this.angle + ((this.angle > 0xff / 2) ? 2 : -2))) % 0xff;
+                            if (this.angle >= 0xfd || this.angle <= 0x01)
+                                this.angle = 0xff;
                         }
                     }
-                    this.EffectPhysics();
-                    this.CheckCollisionWithRings();
-                    this.UpdateSprite();
-                    this.SensorManager.Check(this);
-                    var sensorM1 = this.SensorManager.GetResult("m1");
-                    var sensorM2 = this.SensorManager.GetResult("m2");
-                    var best = this.GetBestSensor(sensorM1, sensorM2, this.Mode);
+                    this.effectPhysics();
+                    this.checkCollisionWithRings();
+                    this.updateSprite();
+                    this.sensorManager.check(this);
+                    var sensorM1 = this.sensorManager.getResult("m1");
+                    var sensorM2 = this.sensorManager.getResult("m2");
+                    var best = this.getBestSensor(sensorM1, sensorM2, this.mode);
                     if (best != null) {
-                        switch (this.Mode) {
+                        switch (this.mode) {
                             case Enums_6.RotationMode.Floor:
-                                this.X = (best.Value + (sensorM2 != null && sensorM1 != null && (sensorM1.Value == sensorM2.Value) ? 12 : (best.Letter == "m1" ? 12 : -12)));
-                                this.Gsp = 0;
-                                if (this.InAir)
-                                    this.Xsp = 0;
+                                this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? 12 : -12)));
+                                this.gsp = 0;
+                                if (this.inAir)
+                                    this.xsp = 0;
                                 break;
                             case Enums_6.RotationMode.LeftWall:
-                                this.Y = (best.Value + (sensorM2 != null && sensorM1 != null && (sensorM1.Value == sensorM2.Value) ? 12 : (best.Letter == "m1" ? 12 : -12)));
-                                if (this.InAir)
-                                    this.Xsp = 0;
+                                this.y = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? 12 : -12)));
+                                if (this.inAir)
+                                    this.xsp = 0;
                                 break;
                             case Enums_6.RotationMode.Ceiling:
-                                this.X = (best.Value + (sensorM2 != null && sensorM1 != null && (sensorM1.Value == sensorM2.Value) ? 12 : (best.Letter == "m1" ? -12 : 12)));
-                                this.Gsp = 0;
-                                if (this.InAir)
-                                    this.Xsp = 0;
+                                this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? -12 : 12)));
+                                this.gsp = 0;
+                                if (this.inAir)
+                                    this.xsp = 0;
                                 break;
                             case Enums_6.RotationMode.RightWall:
-                                this.Y = (best.Value + (sensorM2 != null && sensorM1 != null && (sensorM1.Value == sensorM2.Value) ? 12 : (best.Letter == "m1" ? -12 : 12)));
-                                this.Gsp = 0;
-                                if (this.InAir)
-                                    this.Xsp = 0;
+                                this.y = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? -12 : 12)));
+                                this.gsp = 0;
+                                if (this.inAir)
+                                    this.xsp = 0;
                                 break;
                         }
                     }
-                    this.SensorManager.Check(this);
-                    var sensorA = this.SensorManager.GetResult("a");
-                    var sensorB = this.SensorManager.GetResult("b");
+                    this.sensorManager.check(this);
+                    var sensorA = this.sensorManager.getResult("a");
+                    var sensorB = this.sensorManager.getResult("b");
                     var fy;
                     var fx;
-                    var hSize = this.GetHalfImageSize();
-                    if (!this.InAir) {
-                        best = this.GetBestSensor(sensorA, sensorB, this.Mode);
+                    var hSize = this.getHalfImageSize();
+                    if (!this.inAir) {
+                        best = this.getBestSensor(sensorA, sensorB, this.mode);
                         if (best == null)
-                            this.InAir = true;
+                            this.inAir = true;
                         else {
-                            this.JustHit = false;
-                            switch (this.Mode) {
+                            this.justHit = false;
+                            switch (this.mode) {
                                 case Enums_6.RotationMode.Floor:
-                                    best.Chosen = true;
-                                    this.Angle = best.Angle;
-                                    this.Y = fy = best.Value - hSize.Y;
+                                    best.chosen = true;
+                                    this.angle = best.angle;
+                                    this.y = fy = best.value - hSize.y;
                                     break;
                                 case Enums_6.RotationMode.LeftWall:
-                                    best.Chosen = true;
-                                    this.Angle = best.Angle;
-                                    this.X = fx = best.Value + hSize.X;
+                                    best.chosen = true;
+                                    this.angle = best.angle;
+                                    this.x = fx = best.value + hSize.x;
                                     break;
                                 case Enums_6.RotationMode.Ceiling:
-                                    best.Chosen = true;
-                                    this.Angle = best.Angle;
-                                    this.Y = fy = best.Value + hSize.Y;
+                                    best.chosen = true;
+                                    this.angle = best.angle;
+                                    this.y = fy = best.value + hSize.y;
                                     break;
                                 case Enums_6.RotationMode.RightWall:
-                                    best.Chosen = true;
-                                    this.Angle = best.Angle;
-                                    this.X = fx = best.Value - hSize.X;
+                                    best.chosen = true;
+                                    this.angle = best.angle;
+                                    this.x = fx = best.value - hSize.x;
                                     break;
                             }
                         }
-                        this.UpdateMode();
+                        this.updateMode();
                     }
                     else {
                         if (sensorA == null && sensorB == null)
-                            this.InAir = true;
+                            this.inAir = true;
                         else {
-                            if ((sensorA != null && sensorA.Value >= 0) && (sensorB != null && sensorB.Value >= 0)) {
-                                if (sensorA.Value < sensorB.Value) {
-                                    if (this.Y + (20) >= sensorA.Value) {
-                                        this.Angle = sensorA.Angle;
-                                        this.Y = fy = sensorA.Value - hSize.Y;
-                                        this.Rolling = this.CurrentlyBall = false;
-                                        this.InAir = false;
+                            if ((sensorA != null && sensorA.value >= 0) && (sensorB != null && sensorB.value >= 0)) {
+                                if (sensorA.value < sensorB.value) {
+                                    if (this.y + (20) >= sensorA.value) {
+                                        this.angle = sensorA.angle;
+                                        this.y = fy = sensorA.value - hSize.y;
+                                        this.rolling = this.currentlyBall = false;
+                                        this.inAir = false;
                                     }
                                 }
                                 else {
-                                    if (sensorB.Value > -1) {
-                                        if (this.Y + (20) >= sensorB.Value) {
-                                            this.Angle = sensorB.Angle;
-                                            this.Y = fy = sensorB.Value - hSize.Y;
-                                            this.Rolling = this.CurrentlyBall = false;
-                                            this.InAir = false;
+                                    if (sensorB.value > -1) {
+                                        if (this.y + (20) >= sensorB.value) {
+                                            this.angle = sensorB.angle;
+                                            this.y = fy = sensorB.value - hSize.y;
+                                            this.rolling = this.currentlyBall = false;
+                                            this.inAir = false;
                                         }
                                     }
                                 }
                             }
-                            else if ((sensorA != null) && sensorA.Value > -1) {
-                                if (this.Y + (20) >= sensorA.Value) {
-                                    this.Angle = sensorA.Angle;
-                                    this.Y = fy = sensorA.Value - hSize.Y;
-                                    this.Rolling = this.CurrentlyBall = false;
-                                    this.InAir = false;
+                            else if ((sensorA != null) && sensorA.value > -1) {
+                                if (this.y + (20) >= sensorA.value) {
+                                    this.angle = sensorA.angle;
+                                    this.y = fy = sensorA.value - hSize.y;
+                                    this.rolling = this.currentlyBall = false;
+                                    this.inAir = false;
                                 }
                             }
-                            else if (sensorB != null && sensorB.Value > -1) {
-                                if (this.Y + (20) >= sensorB.Value) {
-                                    this.Angle = sensorB.Angle;
-                                    this.Y = fy = sensorB.Value - hSize.Y;
-                                    this.Rolling = this.CurrentlyBall = false;
-                                    this.InAir = false;
+                            else if (sensorB != null && sensorB.value > -1) {
+                                if (this.y + (20) >= sensorB.value) {
+                                    this.angle = sensorB.angle;
+                                    this.y = fy = sensorB.value - hSize.y;
+                                    this.rolling = this.currentlyBall = false;
+                                    this.inAir = false;
                                 }
                             }
                         }
-                        this.UpdateMode();
-                        var cur = SonicManager_15.SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
+                        this.updateMode();
+                        var cur = SonicManager_15.SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
                         var __h = cur.height / 2;
-                        this.SensorManager.Check(this);
-                        var sensorC = this.SensorManager.GetResult("c");
-                        var sensorD = this.SensorManager.GetResult("d");
+                        this.sensorManager.check(this);
+                        var sensorC = this.sensorManager.getResult("c");
+                        var sensorD = this.sensorManager.getResult("d");
                         if ((sensorC == null && sensorD == null)) {
                         }
                         else {
-                            if (sensorD != null && (sensorC != null) && (sensorC.Value >= 0 && sensorD.Value >= 0)) {
-                                if (sensorC.Value < sensorD.Value) {
-                                    if (this.Y + (__h) >= sensorC.Value) {
-                                        if (this.Ysp < 0) {
-                                            if (sensorC.Angle > 0x40 && sensorC.Angle < 0xC0) {
-                                                this.Angle = sensorC.Angle;
-                                                this.Gsp = this.Ysp;
-                                                this.InAir = false;
-                                                this.WasInAir = false;
+                            if (sensorD != null && (sensorC != null) && (sensorC.value >= 0 && sensorD.value >= 0)) {
+                                if (sensorC.value < sensorD.value) {
+                                    if (this.y + (__h) >= sensorC.value) {
+                                        if (this.ysp < 0) {
+                                            if (sensorC.angle > 0x40 && sensorC.angle < 0xC0) {
+                                                this.angle = sensorC.angle;
+                                                this.gsp = this.ysp;
+                                                this.inAir = false;
+                                                this.wasInAir = false;
                                             }
                                             else
-                                                this.Ysp = 0;
-                                            this.Y = fy = sensorC.Value + __h;
+                                                this.ysp = 0;
+                                            this.y = fy = sensorC.value + __h;
                                         }
                                     }
                                 }
                                 else {
-                                    if (this.Y + (__h) >= sensorD.Value) {
-                                        if (this.Ysp < 0) {
-                                            if (sensorD.Angle > 0x40 && sensorD.Angle < 0xC0) {
-                                                this.Angle = sensorD.Angle;
-                                                this.Gsp = -this.Ysp;
-                                                this.InAir = false;
-                                                this.WasInAir = false;
+                                    if (this.y + (__h) >= sensorD.value) {
+                                        if (this.ysp < 0) {
+                                            if (sensorD.angle > 0x40 && sensorD.angle < 0xC0) {
+                                                this.angle = sensorD.angle;
+                                                this.gsp = -this.ysp;
+                                                this.inAir = false;
+                                                this.wasInAir = false;
                                             }
                                             else
-                                                this.Ysp = 0;
-                                            this.Y = fy = sensorD.Value + __h;
+                                                this.ysp = 0;
+                                            this.y = fy = sensorD.value + __h;
                                         }
                                     }
                                 }
                             }
-                            else if (sensorC != null && sensorC.Value > -1) {
-                                if (this.Y + (__h) >= sensorC.Value) {
-                                    if (this.Ysp < 0) {
-                                        if (sensorC.Angle > 0x40 && sensorC.Angle < 0xC0) {
-                                            this.Angle = sensorC.Angle;
-                                            this.Gsp = this.Ysp;
-                                            this.InAir = false;
-                                            this.WasInAir = false;
-                                        }
-                                        else
-                                            this.Ysp = 0;
-                                        this.Y = fy = sensorC.Value + __h;
-                                    }
-                                }
-                            }
-                            else if (sensorD != null && sensorD.Value > -1) {
-                                if (this.Y + (__h) >= sensorD.Value) {
-                                    if (this.Ysp < 0) {
-                                        if (sensorD.Angle > 0x40 && sensorD.Angle < 0xC0) {
-                                            this.Angle = sensorD.Angle;
-                                            this.Gsp = -this.Ysp;
-                                            this.InAir = false;
-                                            this.WasInAir = false;
+                            else if (sensorC != null && sensorC.value > -1) {
+                                if (this.y + (__h) >= sensorC.value) {
+                                    if (this.ysp < 0) {
+                                        if (sensorC.angle > 0x40 && sensorC.angle < 0xC0) {
+                                            this.angle = sensorC.angle;
+                                            this.gsp = this.ysp;
+                                            this.inAir = false;
+                                            this.wasInAir = false;
                                         }
                                         else
-                                            this.Ysp = 0;
-                                        this.Y = fy = sensorD.Value + __h;
+                                            this.ysp = 0;
+                                        this.y = fy = sensorC.value + __h;
                                     }
                                 }
                             }
-                            this.UpdateMode();
+                            else if (sensorD != null && sensorD.value > -1) {
+                                if (this.y + (__h) >= sensorD.value) {
+                                    if (this.ysp < 0) {
+                                        if (sensorD.angle > 0x40 && sensorD.angle < 0xC0) {
+                                            this.angle = sensorD.angle;
+                                            this.gsp = -this.ysp;
+                                            this.inAir = false;
+                                            this.wasInAir = false;
+                                        }
+                                        else
+                                            this.ysp = 0;
+                                        this.y = fy = sensorD.value + __h;
+                                    }
+                                }
+                            }
+                            this.updateMode();
                         }
                     }
                 };
-                Sonic.prototype.GetBestSensor = function (sensor1, sensor2, mode) {
+                Sonic.prototype.getBestSensor = function (sensor1, sensor2, mode) {
                     if (sensor1 == null && sensor2 == null)
                         return null;
                     if (sensor1 == null)
@@ -3618,34 +3795,34 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
                         return sensor1;
                     switch (mode) {
                         case Enums_6.RotationMode.Floor:
-                            return sensor1.Value < sensor2.Value ? sensor1 : sensor2;
+                            return sensor1.value < sensor2.value ? sensor1 : sensor2;
                         case Enums_6.RotationMode.LeftWall:
-                            return sensor1.Value > sensor2.Value ? sensor1 : sensor2;
+                            return sensor1.value > sensor2.value ? sensor1 : sensor2;
                         case Enums_6.RotationMode.Ceiling:
-                            return sensor1.Value > sensor2.Value ? sensor1 : sensor2;
+                            return sensor1.value > sensor2.value ? sensor1 : sensor2;
                         case Enums_6.RotationMode.RightWall:
-                            return sensor1.Value < sensor2.Value ? sensor1 : sensor2;
+                            return sensor1.value < sensor2.value ? sensor1 : sensor2;
                     }
                     return null;
                 };
-                Sonic.prototype.Invulnerable = function () {
-                    var mc = SonicManager_15.SonicManager.Instance.DrawTickCount - this.sonicLastHitTick;
+                Sonic.prototype.invulnerable = function () {
+                    var mc = SonicManager_15.SonicManager.instance.drawTickCount - this.sonicLastHitTick;
                     if (mc < 120) {
                         if (mc % 8 < 4)
                             return true;
                     }
                     return false;
                 };
-                Sonic.prototype.GetHalfImageSize = function () {
+                Sonic.prototype.getHalfImageSize = function () {
                     return this.halfSize;
                 };
-                Sonic.prototype.GetOffsetFromImage = function () {
-                    var cur = SonicManager_15.SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
+                Sonic.prototype.getOffsetFromImage = function () {
+                    var cur = SonicManager_15.SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
                     var xOffset = 0;
                     var yOffset = 0;
                     if (cur.height != 40) {
                         var n = void 0;
-                        switch (this.Mode) {
+                        switch (this.mode) {
                             case Enums_6.RotationMode.Floor:
                                 n = 0;
                                 yOffset = (40 - ((cur.height + n))) / 2;
@@ -3664,320 +3841,319 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
                                 break;
                         }
                     }
-                    this.offsetFromImage.X = xOffset;
-                    this.offsetFromImage.Y = yOffset;
+                    this.offsetFromImage.x = xOffset;
+                    this.offsetFromImage.y = yOffset;
                     return this.offsetFromImage;
                 };
-                Sonic.prototype.UpdateSprite = function () {
-                    var absgsp = Math.abs(this.Gsp);
-                    var word = this.SpriteState.substring(0, this.SpriteState.length - 1);
-                    var j = parseInt(this.SpriteState.substring(this.SpriteState.length - 1, this.SpriteState.length));
-                    if (this.Breaking > 0) {
-                        if (this.Gsp > 0 || this.Gsp == 0 || this.SpriteState == "breaking3") {
-                            this.Facing = false;
-                            this.Breaking = 0;
+                Sonic.prototype.updateSprite = function () {
+                    var absgsp = Math.abs(this.gsp);
+                    var word = this.spriteState.substring(0, this.spriteState.length - 1);
+                    var j = parseInt(this.spriteState.substring(this.spriteState.length - 1, this.spriteState.length));
+                    if (this.breaking > 0) {
+                        if (this.gsp > 0 || this.gsp == 0 || this.spriteState == "breaking3") {
+                            this.facing = false;
+                            this.breaking = 0;
                         }
                     }
-                    else if (this.Breaking < 0) {
-                        if (this.Gsp < 0 || this.Gsp == 0 || this.SpriteState == "breaking3") {
-                            this.Breaking = 0;
-                            this.Facing = true;
+                    else if (this.breaking < 0) {
+                        if (this.gsp < 0 || this.gsp == 0 || this.spriteState == "breaking3") {
+                            this.breaking = 0;
+                            this.facing = true;
                         }
                     }
                     var epsilon = 0.00001;
-                    if (this.JustHit) {
+                    if (this.justHit) {
                         if (word != "hit") {
-                            this.SpriteState = "hit0";
+                            this.spriteState = "hit0";
                             this.runningTick = 1;
                         }
                         else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) == 0))
-                            this.SpriteState = "hit1";
+                            this.spriteState = "hit1";
                     }
-                    else if (this.SpinDash) {
+                    else if (this.spinDash) {
                         if (word != "spindash") {
-                            this.SpriteState = "spindash0";
+                            this.spriteState = "spindash0";
                             this.runningTick = 1;
                         }
                         else if (((this.runningTick++) % Math.floor(2 - absgsp) | 0) == 0)
-                            this.SpriteState = "spindash" + ((j + 1) % 6);
+                            this.spriteState = "spindash" + ((j + 1) % 6);
                     }
-                    else if (Math.abs(absgsp - 0) < epsilon && this.InAir == false) {
-                        if (this.Ducking) {
+                    else if (Math.abs(absgsp - 0) < epsilon && !this.inAir) {
+                        if (this.ducking) {
                             if (word != "duck") {
-                                this.SpriteState = "duck0";
+                                this.spriteState = "duck0";
                                 this.runningTick = 1;
                             }
                             else if (((this.runningTick++) % Math.floor(4 - absgsp) | 0) == 0)
-                                this.SpriteState = "duck1";
+                                this.spriteState = "duck1";
                         }
-                        else if (this.HoldingUp) {
+                        else if (this.holdingUp) {
                             if (word != "lookingup") {
-                                this.SpriteState = "lookingup0";
+                                this.spriteState = "lookingup0";
                                 this.runningTick = 1;
                             }
                             else if (((this.runningTick++) % Math.floor(4 - absgsp) | 0) == 0)
-                                this.SpriteState = "lookingup1";
+                                this.spriteState = "lookingup1";
                         }
                         else {
-                            this.SpriteState = "normal";
-                            this.CurrentlyBall = false;
-                            this.Rolling = false;
+                            this.spriteState = "normal";
+                            this.currentlyBall = false;
+                            this.rolling = false;
                             this.runningTick = 0;
                         }
                     }
-                    else if (this.Breaking != 0) {
+                    else if (this.breaking != 0) {
                         if (word != "breaking") {
-                            this.SpriteState = "breaking0";
+                            this.spriteState = "breaking0";
                             this.runningTick = 1;
                         }
                         else if ((this.runningTick++) % (7) == 0) {
-                            this.SpriteState = "breaking" + ((j + 1) % 4);
+                            this.spriteState = "breaking" + ((j + 1) % 4);
                             if (j == 0)
-                                this.HaltSmoke.push(new Utils_9.Point(this.X, this.Y));
+                                this.haltSmoke.push(new Utils_9.Point(this.x, this.y));
                         }
                     }
-                    else if (this.CurrentlyBall) {
+                    else if (this.currentlyBall) {
                         if (word != "balls") {
-                            this.SpriteState = "balls0";
+                            this.spriteState = "balls0";
                             this.runningTick = 1;
                         }
                         else if (((this.runningTick++) % Math.floor(8 - absgsp) == 0) || (8 - absgsp < 1))
-                            this.SpriteState = "balls" + ((j + 1) % 5);
+                            this.spriteState = "balls" + ((j + 1) % 5);
                     }
                     else if (absgsp < 6) {
                         if (word != "running") {
-                            this.SpriteState = "running0";
+                            this.spriteState = "running0";
                             this.runningTick = 1;
                         }
                         else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) == 0) || (8 - absgsp < 1))
-                            this.SpriteState = "running" + ((j + 1) % 8);
+                            this.spriteState = "running" + ((j + 1) % 8);
                     }
                     else if (absgsp >= 6) {
                         if (word != "fastrunning") {
-                            this.SpriteState = "fastrunning0";
+                            this.spriteState = "fastrunning0";
                             this.runningTick = 1;
                         }
                         else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) == 0) || (8 - absgsp < 1))
-                            this.SpriteState = "fastrunning" + ((j + 1) % 4);
+                            this.spriteState = "fastrunning" + ((j + 1) % 4);
                     }
                 };
-                Sonic.prototype.EffectPhysics = function () {
-                    this.Watcher.Tick();
+                Sonic.prototype.effectPhysics = function () {
+                    this.watcher.Tick();
                     var physics = this.physicsVariables;
-                    var max = physics.TopSpeed;
-                    if (!this.Jumping) {
-                        if (!this.InAir && this.WasJumping)
-                            this.WasJumping = false;
+                    var max = physics.topSpeed;
+                    if (!this.jumping) {
+                        if (!this.inAir && this.wasJumping)
+                            this.wasJumping = false;
                     }
-                    if (this.InAir && !this.WasInAir) {
-                        this.WasInAir = true;
-                        var offset = this.GetOffsetFromImage();
+                    if (this.inAir && !this.wasInAir) {
+                        this.wasInAir = true;
+                        var offset = this.getOffsetFromImage();
                     }
-                    if (!this.InAir && this.WasInAir) {
-                        this.WasInAir = false;
-                        if ((this.Angle >= 0xF0 || this.Angle <= 0x0F))
-                            this.Gsp = (this.Xsp);
-                        else if ((this.Angle > 0xE2 && this.Angle <= 0xEF) || (this.Angle >= 0x10 && this.Angle <= 0x1F))
-                            this.Gsp = (this.Ysp);
-                        else if ((this.Angle >= 0xC0 && this.Angle <= 0xE2))
-                            this.Gsp = (-this.Ysp);
-                        else if ((this.Angle >= 0x20 && this.Angle <= 0x3F))
-                            this.Gsp = (this.Ysp);
-                        this.Xsp = 0;
-                        this.Ysp = 0;
+                    if (!this.inAir && this.wasInAir) {
+                        this.wasInAir = false;
+                        if ((this.angle >= 0xF0 || this.angle <= 0x0F))
+                            this.gsp = (this.xsp);
+                        else if ((this.angle > 0xE2 && this.angle <= 0xEF) || (this.angle >= 0x10 && this.angle <= 0x1F))
+                            this.gsp = (this.ysp);
+                        else if ((this.angle >= 0xC0 && this.angle <= 0xE2))
+                            this.gsp = (-this.ysp);
+                        else if ((this.angle >= 0x20 && this.angle <= 0x3F))
+                            this.gsp = (this.ysp);
+                        this.xsp = 0;
+                        this.ysp = 0;
                     }
-                    if (!this.InAir && !this.Rolling && !this.SpinDash) {
-                        if (!this.HoldingLeft && !this.HoldingRight && !this.JustHit) {
-                            this.Gsp -= (Math.min(Math.abs(this.Gsp), this.Watcher.Multiply(physics.Frc)) * (this.Gsp > 0 ? 1 : -1));
+                    if (!this.inAir && !this.rolling && !this.spinDash) {
+                        if (!this.holdingLeft && !this.holdingRight && !this.justHit) {
+                            this.gsp -= (Math.min(Math.abs(this.gsp), this.watcher.Multiply(physics.frc)) * (this.gsp > 0 ? 1 : -1));
                         }
-                        this.oldSign = Help_5.Help.Sign(this.Gsp);
-                        this.Gsp += this.Watcher.Multiply(physics.Slp) * -Help_5.Help.Sin(this.Angle);
-                        if (this.oldSign != Help_5.Help.Sign(this.Gsp) && this.oldSign != 0)
-                            this.HLock = 30;
-                        if (this.HoldingRight && !this.HoldingLeft && !this.JustHit) {
-                            this.Facing = true;
-                            if (this.Gsp >= 0) {
-                                this.Gsp += this.Watcher.Multiply(physics.Acc);
-                                if (this.Gsp > max)
-                                    this.Gsp = max;
+                        this.oldSign = Help_5.Help.sign(this.gsp);
+                        this.gsp += this.watcher.Multiply(physics.slp) * -Help_5.Help.sin(this.angle);
+                        if (this.oldSign != Help_5.Help.sign(this.gsp) && this.oldSign != 0)
+                            this.hLock = 30;
+                        if (this.holdingRight && !this.holdingLeft && !this.justHit) {
+                            this.facing = true;
+                            if (this.gsp >= 0) {
+                                this.gsp += this.watcher.Multiply(physics.acc);
+                                if (this.gsp > max)
+                                    this.gsp = max;
                             }
                             else {
-                                this.Gsp += this.Watcher.Multiply(physics.Dec);
-                                if (Math.abs(this.Gsp) > 4.5) {
-                                    this.Facing = false;
-                                    this.Breaking = 1;
+                                this.gsp += this.watcher.Multiply(physics.dec);
+                                if (Math.abs(this.gsp) > 4.5) {
+                                    this.facing = false;
+                                    this.breaking = 1;
                                     this.runningTick = 0;
                                 }
                             }
                         }
-                        if (this.HoldingLeft && !this.HoldingRight && !this.JustHit) {
-                            this.Facing = false;
-                            if (this.Gsp <= 0) {
-                                this.Gsp -= this.Watcher.Multiply(physics.Acc);
-                                if (this.Gsp < -max)
-                                    this.Gsp = -max;
+                        if (this.holdingLeft && !this.holdingRight && !this.justHit) {
+                            this.facing = false;
+                            if (this.gsp <= 0) {
+                                this.gsp -= this.watcher.Multiply(physics.acc);
+                                if (this.gsp < -max)
+                                    this.gsp = -max;
                             }
                             else {
-                                this.Gsp -= this.Watcher.Multiply(physics.Dec);
-                                if (Math.abs(this.Gsp) > 4.5) {
-                                    this.Facing = true;
-                                    this.Breaking = -1;
+                                this.gsp -= this.watcher.Multiply(physics.dec);
+                                if (Math.abs(this.gsp) > 4.5) {
+                                    this.facing = true;
+                                    this.breaking = -1;
                                     this.runningTick = 0;
                                 }
                             }
                         }
                     }
-                    this.Ducking = false;
-                    if (this.Crouching) {
-                        if (Math.abs(this.Gsp) > 1.03125) {
-                            this.Rolling = true;
-                            this.CurrentlyBall = true;
+                    this.ducking = false;
+                    if (this.crouching) {
+                        if (Math.abs(this.gsp) > 1.03125) {
+                            this.rolling = true;
+                            this.currentlyBall = true;
                         }
                         else
-                            this.Ducking = true;
+                            this.ducking = true;
                     }
                     else {
-                        if (this.SpinDash) {
-                            this.Gsp = (8 + Help_5.Help.Floor(this.SpinDashSpeed) / 2) * (this.Facing ? 1 : -1);
-                            this.SpinDash = false;
-                            this.Rolling = true;
-                            this.CurrentlyBall = true;
+                        if (this.spinDash) {
+                            this.gsp = (8 + Help_5.Help.floor(this.spinDashSpeed) / 2) * (this.facing ? 1 : -1);
+                            this.spinDash = false;
+                            this.rolling = true;
+                            this.currentlyBall = true;
                         }
                     }
-                    if (!this.InAir && this.Rolling) {
-                        if (this.HoldingLeft && !this.JustHit) {
-                            if (this.Gsp > 0) {
-                                if (this.Rolling)
-                                    this.Gsp = (Help_5.Help.Max(0, this.Gsp - this.Watcher.Multiply(physics.Rdec)));
+                    if (!this.inAir && this.rolling) {
+                        if (this.holdingLeft && !this.justHit) {
+                            if (this.gsp > 0) {
+                                if (this.rolling)
+                                    this.gsp = (Help_5.Help.max(0, this.gsp - this.watcher.Multiply(physics.rdec)));
                             }
                         }
-                        if (this.HoldingRight && !this.JustHit) {
-                            if (this.Gsp < 0) {
-                                if (this.Rolling)
-                                    this.Gsp = (Help_5.Help.Min(0, this.Gsp + this.Watcher.Multiply(physics.Rdec)));
+                        if (this.holdingRight && !this.justHit) {
+                            if (this.gsp < 0) {
+                                if (this.rolling)
+                                    this.gsp = (Help_5.Help.min(0, this.gsp + this.watcher.Multiply(physics.rdec)));
                             }
                         }
-                        this.Gsp -= (Math.min(Math.abs(this.Gsp), this.Watcher.Multiply(physics.Rfrc)) * (this.Gsp > 0 ? 1 : -1));
-                        this.oldSign = Help_5.Help.Sign(this.Gsp);
-                        var ang = Help_5.Help.Sin(this.Angle);
-                        if ((ang > 0) == (this.Gsp > 0))
-                            this.Gsp += this.Watcher.Multiply(-physics.SlpRollingUp) * ang;
+                        this.gsp -= (Math.min(Math.abs(this.gsp), this.watcher.Multiply(physics.rfrc)) * (this.gsp > 0 ? 1 : -1));
+                        this.oldSign = Help_5.Help.sign(this.gsp);
+                        var ang = Help_5.Help.sin(this.angle);
+                        if ((ang > 0) == (this.gsp > 0))
+                            this.gsp += this.watcher.Multiply(-physics.slpRollingUp) * ang;
                         else
-                            this.Gsp += this.Watcher.Multiply(-physics.SlpRollingDown) * ang;
-                        if (this.Gsp > max * 2.5)
-                            this.Gsp = max * 2.5;
-                        if (this.Gsp < -max * 2.5)
-                            this.Gsp = -max * 2.5;
-                        if (this.oldSign != Help_5.Help.Sign(this.Gsp) && this.oldSign != 0)
-                            this.HLock = 30;
-                        if (Math.abs(this.Gsp) < 0.53125) {
-                            this.Rolling = false;
-                            this.CurrentlyBall = false;
+                            this.gsp += this.watcher.Multiply(-physics.slpRollingDown) * ang;
+                        if (this.gsp > max * 2.5)
+                            this.gsp = max * 2.5;
+                        if (this.gsp < -max * 2.5)
+                            this.gsp = -max * 2.5;
+                        if (this.oldSign != Help_5.Help.sign(this.gsp) && this.oldSign != 0)
+                            this.hLock = 30;
+                        if (Math.abs(this.gsp) < 0.53125) {
+                            this.rolling = false;
+                            this.currentlyBall = false;
                         }
                     }
-                    if (this.InAir) {
-                        if (this.HoldingRight && !this.HoldingLeft && !this.JustHit) {
-                            this.Facing = true;
-                            if (this.Xsp >= 0) {
-                                this.Xsp += this.Watcher.Multiply(physics.Air);
-                                if (this.Xsp > max)
-                                    this.Xsp = max;
+                    if (this.inAir) {
+                        if (this.holdingRight && !this.holdingLeft && !this.justHit) {
+                            this.facing = true;
+                            if (this.xsp >= 0) {
+                                this.xsp += this.watcher.Multiply(physics.air);
+                                if (this.xsp > max)
+                                    this.xsp = max;
                             }
                             else {
-                                this.Xsp += this.Watcher.Multiply(physics.Air);
+                                this.xsp += this.watcher.Multiply(physics.air);
                             }
                         }
-                        if (this.HoldingLeft && !this.HoldingRight && !this.JustHit) {
-                            this.Facing = false;
-                            if (this.Xsp <= 0) {
-                                this.Xsp -= this.Watcher.Multiply(physics.Air);
-                                if (this.Xsp < -max)
-                                    this.Xsp = -max;
-                            }
-                            else {
-                                this.Xsp -= this.Watcher.Multiply(physics.Air);
-                            }
-                        }
-                        if (this.WasInAir)
-                            if (this.Jumping) {
+                        if (this.holdingLeft && !this.holdingRight && !this.justHit) {
+                            this.facing = false;
+                            if (this.xsp <= 0) {
+                                this.xsp -= this.watcher.Multiply(physics.air);
+                                if (this.xsp < -max)
+                                    this.xsp = -max;
                             }
                             else {
                             }
-                        this.Ysp += this.JustHit ? 0.1875 : physics.Grv;
-                        if (this.Ysp < 0 && this.Ysp > -4) {
-                            if (Math.abs(this.Xsp) > 0.125)
-                                this.Xsp *= 0.96875;
                         }
-                        if (this.Ysp > 16)
-                            this.Ysp = 16;
+                        if (this.wasInAir)
+                            if (this.jumping) {
+                            }
+                            else {
+                            }
+                        this.ysp += this.justHit ? 0.1875 : physics.grv;
+                        if (this.ysp < 0 && this.ysp > -4) {
+                            if (Math.abs(this.xsp) > 0.125)
+                                this.xsp *= 0.96875;
+                        }
+                        if (this.ysp > 16)
+                            this.ysp = 16;
                     }
-                    if (this.WasInAir && this.Jumping) {
+                    if (this.wasInAir && this.jumping) {
                     }
-                    else if (this.Jumping && !this.WasJumping) {
-                        this.WasJumping = true;
-                        if (this.Ducking) {
-                            this.SpinDash = true;
-                            this.SpinDashSpeed += 2;
-                            if (this.SpinDashSpeed > 8)
-                                this.SpinDashSpeed = 8;
-                            this.SpriteState = "spindash0";
+                    else if (this.jumping && !this.wasJumping) {
+                        this.wasJumping = true;
+                        if (this.ducking) {
+                            this.spinDash = true;
+                            this.spinDashSpeed += 2;
+                            if (this.spinDashSpeed > 8)
+                                this.spinDashSpeed = 8;
+                            this.spriteState = "spindash0";
                         }
                         else {
-                            this.InAir = true;
-                            this.CurrentlyBall = true;
-                            this.Xsp = physics.Jmp * Help_5.Help.Sin(this.Angle) + this.Gsp * Help_5.Help.Cos(this.Angle);
-                            this.Ysp = physics.Jmp * Help_5.Help.Cos(this.Angle);
-                            if (Math.abs(this.Xsp) < .17)
-                                this.Xsp = 0;
+                            this.inAir = true;
+                            this.currentlyBall = true;
+                            this.xsp = physics.jmp * Help_5.Help.sin(this.angle) + this.gsp * Help_5.Help.cos(this.angle);
+                            this.ysp = physics.jmp * Help_5.Help.cos(this.angle);
+                            if (Math.abs(this.xsp) < .17)
+                                this.xsp = 0;
                         }
                     }
-                    if (!this.InAir) {
-                        if (this.SpinDash)
-                            this.Gsp = 0;
-                        this.Xsp = this.Gsp * Help_5.Help.Cos(this.Angle);
-                        this.Ysp = this.Gsp * -Help_5.Help.Sin(this.Angle);
-                        if (Math.abs(this.Gsp) < 2.5 && this.Mode != Enums_6.RotationMode.Floor) {
-                            if (this.Mode == Enums_6.RotationMode.RightWall)
-                                this.X += 0;
-                            else if (this.Mode == Enums_6.RotationMode.LeftWall)
-                                this.X += 0;
-                            else if (this.Mode == Enums_6.RotationMode.Ceiling)
-                                this.Y += 0;
-                            var oldMode = this.Mode;
-                            this.UpdateMode();
-                            this.Mode = Enums_6.RotationMode.Floor;
-                            this.HLock = 30;
-                            this.InAir = true;
+                    if (!this.inAir) {
+                        if (this.spinDash)
+                            this.gsp = 0;
+                        this.xsp = this.gsp * Help_5.Help.cos(this.angle);
+                        this.ysp = this.gsp * -Help_5.Help.sin(this.angle);
+                        if (Math.abs(this.gsp) < 2.5 && this.mode != Enums_6.RotationMode.Floor) {
+                            if (this.mode == Enums_6.RotationMode.RightWall)
+                                this.x += 0;
+                            else if (this.mode == Enums_6.RotationMode.LeftWall)
+                                this.x += 0;
+                            else if (this.mode == Enums_6.RotationMode.Ceiling)
+                                this.y += 0;
+                            var oldMode = this.mode;
+                            this.updateMode();
+                            this.mode = Enums_6.RotationMode.Floor;
+                            this.hLock = 30;
+                            this.inAir = true;
                         }
                     }
-                    if (this.Xsp > 0 && this.Xsp < 0.008) {
-                        this.Gsp = 0;
-                        this.Xsp = 0;
+                    if (this.xsp > 0 && this.xsp < 0.008) {
+                        this.gsp = 0;
+                        this.xsp = 0;
                     }
-                    if (this.Xsp < 0 && this.Xsp > -0.008) {
-                        this.Gsp = 0;
-                        this.Xsp = 0;
+                    if (this.xsp < 0 && this.xsp > -0.008) {
+                        this.gsp = 0;
+                        this.xsp = 0;
                     }
-                    this.X = ((this.sonicLevel.LevelWidth * 128) + (this.X + this.Xsp)) % (this.sonicLevel.LevelWidth * 128);
-                    this.Y = ((this.sonicLevel.LevelHeight * 128) + (this.Y + this.Ysp)) % (this.sonicLevel.LevelHeight * 128);
+                    this.x = ((this.sonicLevel.LevelWidth * 128) + (this.x + this.xsp)) % (this.sonicLevel.LevelWidth * 128);
+                    this.y = ((this.sonicLevel.LevelHeight * 128) + (this.y + this.ysp)) % (this.sonicLevel.LevelHeight * 128);
                 };
-                Sonic.prototype.Draw = function (canvas) {
-                    var fx = (this.X);
-                    var fy = (this.Y);
-                    if (this.Invulnerable())
+                Sonic.prototype.draw = function (canvas) {
+                    var fx = (this.x) | 0;
+                    var fy = (this.y) | 0;
+                    if (this.invulnerable())
                         return;
-                    var cur = SonicManager_15.SonicManager.Instance.SpriteCache.SonicSprites[this.SpriteState];
+                    var cur = SonicManager_15.SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
                     if (cur == null) {
                     }
-                    if (Help_5.Help.IsLoaded(cur)) {
+                    if (Help_5.Help.isLoaded(cur)) {
                         canvas.save();
-                        var offset = this.GetOffsetFromImage();
-                        canvas.translate((fx - SonicManager_15.SonicManager.Instance.windowLocation.X + offset.X), ((fy - SonicManager_15.SonicManager.Instance.windowLocation.Y + offset.Y)));
-                        if (SonicManager_15.SonicManager.Instance.ShowHeightMap) {
+                        var offset = this.getOffsetFromImage();
+                        canvas.translate((fx - SonicManager_15.SonicManager.instance.windowLocation.x + offset.x), ((fy - SonicManager_15.SonicManager.instance.windowLocation.y + offset.y)));
+                        if (SonicManager_15.SonicManager.instance.showHeightMap) {
                             canvas.save();
                             var mul = 6;
-                            var xj = this.Xsp * mul;
-                            var yj = this.Ysp * mul;
+                            var xj = this.xsp * mul;
+                            var yj = this.ysp * mul;
                             canvas.beginPath();
                             canvas.moveTo(0, 0);
                             canvas.lineTo(xj, yj);
@@ -3993,31 +4169,32 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
                             canvas.stroke();
                             canvas.restore();
                         }
-                        if (!this.Facing) {
+                        if (!this.facing) {
                             canvas.scale(-1, 1);
-                            if (!this.CurrentlyBall && !this.SpinDash)
-                                canvas.rotate(-Help_5.Help.FixAngle(this.Angle));
+                            if (!this.currentlyBall && !this.spinDash)
+                                canvas.rotate(-Help_5.Help.fixAngle(this.angle));
                             canvas.drawImage(cur, -cur.width / 2, -cur.height / 2);
-                            if (this.SpinDash) {
-                                canvas.drawImage(SonicManager_15.SonicManager.Instance.SpriteCache.SonicSprites[("spinsmoke" + ((SonicManager_15.SonicManager.Instance.DrawTickCount % 14) / 2 | 0))], (-cur.width / 2) - 25, -cur.height / 2 + (offset.Y) - 14, cur.width, cur.height);
+                            if (this.spinDash) {
+                                canvas.drawImage(SonicManager_15.SonicManager.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager_15.SonicManager.instance.drawTickCount % 14) / 2 | 0))], (-cur.width / 2) - 19, -cur.height / 2 + (offset.y) - 6, cur.width, cur.height);
                             }
                         }
                         else {
-                            if (!this.CurrentlyBall && !this.SpinDash)
-                                canvas.rotate(Help_5.Help.FixAngle(this.Angle));
+                            if (!this.currentlyBall && !this.spinDash)
+                                canvas.rotate(Help_5.Help.fixAngle(this.angle));
                             canvas.drawImage(cur, -cur.width / 2, -cur.height / 2);
-                            if (this.SpinDash) {
-                                canvas.drawImage(SonicManager_15.SonicManager.Instance.SpriteCache.SonicSprites[("spinsmoke" + ((SonicManager_15.SonicManager.Instance.DrawTickCount % 14) / 2 | 0))], (-cur.width / 2) - 25, -cur.height / 2 + (offset.Y) - 14, cur.width, cur.height);
+                            if (this.spinDash) {
+                                canvas.drawImage(SonicManager_15.SonicManager.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager_15.SonicManager.instance.drawTickCount % 14) / 2 | 0))], (-cur.width / 2) - 19, -cur.height / 2 + (offset.y) - 6, cur.width, cur.height);
                             }
                         }
                         canvas.restore();
-                        if (SonicManager_15.SonicManager.Instance.ShowHeightMap)
-                            this.SensorManager.Draw(canvas, this);
-                        for (var i = 0; i < this.HaltSmoke.length; i++) {
-                            var lo = this.HaltSmoke[i];
-                            canvas.drawImage(SonicManager_15.SonicManager.Instance.SpriteCache.SonicSprites[("haltsmoke" + ((SonicManager_15.SonicManager.Instance.DrawTickCount % (4 * 6)) / 6 | 0))], ((lo.X - SonicManager_15.SonicManager.Instance.windowLocation.X - 25)), ((lo.Y + 12 - SonicManager_15.SonicManager.Instance.windowLocation.Y + offset.Y)));
-                            if ((((SonicManager_15.SonicManager.Instance.DrawTickCount + 6) % (4 * 6)) / 6 | 0) == 0)
-                                this.HaltSmoke = this.HaltSmoke.slice(i, 1);
+                        if (SonicManager_15.SonicManager.instance.showHeightMap)
+                            this.sensorManager.draw(canvas, this);
+                        for (var i = 0; i < this.haltSmoke.length; i++) {
+                            var lo = this.haltSmoke[i];
+                            canvas.drawImage(SonicManager_15.SonicManager.instance.spriteCache.SonicSprites[("haltsmoke" + ((SonicManager_15.SonicManager.instance.drawTickCount % (4 * 6)) / 6 | 0))], ((lo.x - SonicManager_15.SonicManager.instance.windowLocation.x - 15)), ((lo.y + 12 - SonicManager_15.SonicManager.instance.windowLocation.y + offset.y)));
+                            if ((((SonicManager_15.SonicManager.instance.drawTickCount + 6) % (4 * 6)) / 6 | 0) == 0) {
+                                this.haltSmoke.splice(i, 1);
+                            }
                         }
                     }
                 };
@@ -4027,35 +4204,35 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
                         if (canvas.font != "13pt Arial bold")
                             canvas.font = "13pt Arial bold";
                         canvas.fillStyle = "White";
-                        canvas.fillText("Rings: " + this.Rings, pos.X + 90, pos.Y + 45);
-                        canvas.fillText("Angle: " + this.Angle.toString(16), pos.X + 90, pos.Y + 75);
-                        canvas.fillText("Position: " + (this.X) + ", " + (this.Y), pos.X + 90, pos.Y + 105);
-                        canvas.fillText("Speed: g: " + this.Gsp.toFixed(3) + " x:" + this.Xsp.toFixed(3) + " y:" + this.Ysp.toFixed(3), pos.X + 90, pos.Y + 135);
-                        canvas.fillText("Mode: " + this.Mode.toString(), pos.X + 90, pos.Y + 165);
-                        canvas.fillText("Multiplier: " + this.Watcher.mult, pos.X + 90, pos.Y + 195);
-                        if (this.InAir)
-                            canvas.fillText("Air ", pos.X + 220, pos.Y + 45);
-                        if (this.HLock > 0)
-                            canvas.fillText("HLock: " + this.HLock, pos.X + 90, pos.Y + 195);
+                        canvas.fillText("Rings: " + this.rings, pos.x + 90, pos.y + 45);
+                        canvas.fillText("Angle: " + this.angle.toString(16), pos.x + 90, pos.y + 75);
+                        canvas.fillText("Position: " + (this.x) + ", " + (this.y), pos.x + 90, pos.y + 105);
+                        canvas.fillText("Speed: g: " + this.gsp.toFixed(3) + " x:" + this.xsp.toFixed(3) + " y:" + this.ysp.toFixed(3), pos.x + 90, pos.y + 135);
+                        canvas.fillText("Mode: " + this.mode.toString(), pos.x + 90, pos.y + 165);
+                        canvas.fillText("Multiplier: " + this.watcher.mult, pos.x + 90, pos.y + 195);
+                        if (this.inAir)
+                            canvas.fillText("air ", pos.x + 220, pos.y + 45);
+                        if (this.hLock > 0)
+                            canvas.fillText("HLock: " + this.hLock, pos.x + 90, pos.y + 195);
                     }
                     canvas.restore();
                 };
                 Sonic.prototype.Hit = function (x, y) {
-                    if (SonicManager_15.SonicManager.Instance.DrawTickCount - this.sonicLastHitTick < 120)
+                    if (SonicManager_15.SonicManager.instance.drawTickCount - this.sonicLastHitTick < 120)
                         return;
-                    this.JustHit = true;
-                    this.Ysp = -4;
-                    this.Xsp = 2 * ((this.X - x) < 0 ? -1 : 1);
-                    this.sonicLastHitTick = SonicManager_15.SonicManager.Instance.DrawTickCount;
+                    this.justHit = true;
+                    this.ysp = -4;
+                    this.xsp = 2 * ((this.x - x) < 0 ? -1 : 1);
+                    this.sonicLastHitTick = SonicManager_15.SonicManager.instance.drawTickCount;
                     var t = 0;
                     var angle = 101.25;
                     var n = false;
                     var speed = 4;
-                    while (t < this.Rings) {
+                    while (t < this.rings) {
                         var ring = new Ring_1.Ring(true);
-                        SonicManager_15.SonicManager.Instance.ActiveRings.push(ring);
-                        ring.X = this.X | 0;
-                        ring.Y = this.Y - 10 | 0;
+                        SonicManager_15.SonicManager.instance.activeRings.push(ring);
+                        ring.x = this.x | 0;
+                        ring.y = this.y - 10 | 0;
                         ring.Ysp = -Math.sin(angle) * speed;
                         ring.Xsp = Math.cos(angle) * speed;
                         if (n) {
@@ -4069,50 +4246,50 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
                             angle = 101.25;
                         }
                     }
-                    this.Rings = 0;
+                    this.rings = 0;
                 };
                 Sonic.prototype.Debug = function () {
-                    this.Debugging = !this.Debugging;
-                    this.Xsp = 0;
-                    this.Gsp = 0;
-                    this.Ysp = 0;
-                    this.SpriteState = "normal";
+                    this.debugging = !this.debugging;
+                    this.xsp = 0;
+                    this.gsp = 0;
+                    this.ysp = 0;
+                    this.spriteState = "normal";
                 };
                 Sonic.prototype.PressUp = function () {
-                    this.HoldingUp = true;
+                    this.holdingUp = true;
                 };
                 Sonic.prototype.ReleaseUp = function () {
-                    this.HoldingUp = false;
+                    this.holdingUp = false;
                 };
                 Sonic.prototype.PressCrouch = function () {
-                    this.Crouching = true;
+                    this.crouching = true;
                 };
                 Sonic.prototype.ReleaseCrouch = function () {
-                    this.Crouching = false;
+                    this.crouching = false;
                 };
                 Sonic.prototype.PressLeft = function () {
-                    this.HoldingLeft = true;
+                    this.holdingLeft = true;
                 };
                 Sonic.prototype.ReleaseLeft = function () {
-                    this.HoldingLeft = false;
+                    this.holdingLeft = false;
                 };
                 Sonic.prototype.PressRight = function () {
-                    this.HoldingRight = true;
+                    this.holdingRight = true;
                 };
                 Sonic.prototype.ReleaseRight = function () {
-                    this.HoldingRight = false;
+                    this.holdingRight = false;
                 };
                 Sonic.prototype.PressJump = function () {
-                    this.Jumping = true;
+                    this.jumping = true;
                 };
                 Sonic.prototype.ReleaseJump = function () {
-                    this.Jumping = false;
+                    this.jumping = false;
                 };
                 Sonic.prototype.CheckCollisionWithObjects = function (x, y, letter) {
-                    this.objectCollision.X = x;
-                    this.objectCollision.Y = y;
+                    this.objectCollision.x = x;
+                    this.objectCollision.y = y;
                     var me = this.objectCollision;
-                    var levelObjectInfos = SonicManager_15.SonicManager.Instance.InFocusObjects;
+                    var levelObjectInfos = SonicManager_15.SonicManager.instance.inFocusObjects;
                     for (var _i = 0, levelObjectInfos_1 = levelObjectInfos; _i < levelObjectInfos_1.length; _i++) {
                         var ob = levelObjectInfos_1[_i];
                         var dj = ob.Collides(me);
@@ -4124,22 +4301,22 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
                     }
                     return false;
                 };
-                Sonic.prototype.CheckCollisionWithRings = function () {
+                Sonic.prototype.checkCollisionWithRings = function () {
                     var me = this.myRec;
-                    this.ringCollisionRect.X = 0;
-                    this.ringCollisionRect.Y = 0;
+                    this.ringCollisionRect.x = 0;
+                    this.ringCollisionRect.y = 0;
                     this.ringCollisionRect.Width = 8 * 2;
                     this.ringCollisionRect.Height = 8 * 2;
-                    var rings = SonicManager_15.SonicManager.Instance.SonicLevel.Rings;
+                    var rings = SonicManager_15.SonicManager.instance.sonicLevel.Rings;
                     for (var index = 0; index < rings.length; index++) {
                         var ring = rings[index];
                         var pos = ring;
                         if (this.obtainedRing[index])
                             continue;
-                        this.ringCollisionRect.X = pos.X;
-                        this.ringCollisionRect.Y = pos.Y;
+                        this.ringCollisionRect.x = pos.x;
+                        this.ringCollisionRect.y = pos.y;
                         if (Utils_9.IntersectingRectangle.IntersectRect(me, this.ringCollisionRect)) {
-                            this.Rings++;
+                            this.rings++;
                             this.obtainedRing[index] = true;
                         }
                     }
@@ -4149,14 +4326,14 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
                 };
                 return Sonic;
             }());
-            exports_31("Sonic", Sonic);
+            exports_34("Sonic", Sonic);
             Watcher = (function () {
                 function Watcher() {
                     this.lastTick = 0;
                     this.mult = 1;
                 }
                 Watcher.prototype.Tick = function () {
-                    if (true || SonicManager_15.SonicManager.Instance.InHaltMode) {
+                    if (true || SonicManager_15.SonicManager.instance.inHaltMode) {
                         this.mult = 1;
                         return;
                     }
@@ -4174,13 +4351,13 @@ System.register("Game/Sonic/Sonic", ["Common/Utils", "Game/Sonic/SensorManager",
                 };
                 return Watcher;
             }());
-            exports_31("Watcher", Watcher);
+            exports_34("Watcher", Watcher);
         }
     }
 });
-System.register("Game/Level/SpriteCache", [], function(exports_32, context_32) {
+System.register("game/level/SpriteCache", [], function(exports_35, context_35) {
     "use strict";
-    var __moduleName = context_32 && context_32.id;
+    var __moduleName = context_35 && context_35.id;
     var SpriteCache, SpriteCacheIndexes;
     return {
         setters:[],
@@ -4202,7 +4379,7 @@ System.register("Game/Level/SpriteCache", [], function(exports_32, context_32) {
                 };
                 return SpriteCache;
             }());
-            exports_32("SpriteCache", SpriteCache);
+            exports_35("SpriteCache", SpriteCache);
             SpriteCacheIndexes = (function () {
                 function SpriteCacheIndexes() {
                     this.Sprites = 0;
@@ -4217,13 +4394,13 @@ System.register("Game/Level/SpriteCache", [], function(exports_32, context_32) {
                 }
                 return SpriteCacheIndexes;
             }());
-            exports_32("SpriteCacheIndexes", SpriteCacheIndexes);
+            exports_35("SpriteCacheIndexes", SpriteCacheIndexes);
         }
     }
 });
-System.register("Game/Level/Animations/AnimationInstance", [], function(exports_33, context_33) {
+System.register("game/level/Animations/AnimationInstance", [], function(exports_36, context_36) {
     "use strict";
-    var __moduleName = context_33 && context_33.id;
+    var __moduleName = context_36 && context_36.id;
     var AnimationInstance;
     return {
         setters:[],
@@ -4237,13 +4414,13 @@ System.register("Game/Level/Animations/AnimationInstance", [], function(exports_
                 };
                 return AnimationInstance;
             }());
-            exports_33("AnimationInstance", AnimationInstance);
+            exports_36("AnimationInstance", AnimationInstance);
         }
     }
 });
-System.register("Common/SpriteLoader", [], function(exports_34, context_34) {
+System.register("common/SpriteLoader", [], function(exports_37, context_37) {
     "use strict";
-    var __moduleName = context_34 && context_34.id;
+    var __moduleName = context_37 && context_37.id;
     var SpriteLoader, SpriteLoaderStep;
     return {
         setters:[],
@@ -4294,7 +4471,7 @@ System.register("Common/SpriteLoader", [], function(exports_34, context_34) {
                 };
                 return SpriteLoader;
             }());
-            exports_34("SpriteLoader", SpriteLoader);
+            exports_37("SpriteLoader", SpriteLoader);
             SpriteLoaderStep = (function () {
                 function SpriteLoaderStep(title, method, onFinish) {
                     this.Title = title;
@@ -4304,31 +4481,33 @@ System.register("Common/SpriteLoader", [], function(exports_34, context_34) {
                 }
                 return SpriteLoaderStep;
             }());
-            exports_34("SpriteLoaderStep", SpriteLoaderStep);
+            exports_37("SpriteLoaderStep", SpriteLoaderStep);
         }
     }
 });
-System.register("Game/Level/SonicBackground", [], function(exports_35, context_35) {
+System.register("game/level/SonicBackground", [], function(exports_38, context_38) {
     "use strict";
-    var __moduleName = context_35 && context_35.id;
+    var __moduleName = context_38 && context_38.id;
     var SonicBackground;
     return {
         setters:[],
         execute: function() {
             SonicBackground = (function () {
                 function SonicBackground() {
+                    this.Width = 0;
+                    this.Height = 0;
                 }
                 SonicBackground.prototype.Draw = function (canvas, point, wOffset) {
                 };
                 return SonicBackground;
             }());
-            exports_35("SonicBackground", SonicBackground);
+            exports_38("SonicBackground", SonicBackground);
         }
     }
 });
-System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation", "Game/SonicEngine", "Common/Enums", "Common/Help", "Game/Level/HeightMap", "Game/Level/Objects/ObjectManager", "Game/SonicLevel", "Game/Level/Objects/LevelObjectInfo", "Game/Level/Ring", "Game/Level/SpriteCache", "Game/Level/Animations/TileAnimationData", "Game/Level/Tiles/TilePaletteAnimationManager", "Game/Level/Tiles/TileAnimationManager", "Game/Level/Tiles/TileChunk", "Common/SpriteLoader", "Game/Level/Objects/LevelObject", "Game/Level/Objects/LevelObjectData", "Game/Level/Tiles/Tile", "Game/Level/Tiles/TilePiece", "Game/Level/Tiles/TileInfo", "Game/Level/Tiles/TilePieceInfo"], function(exports_36, context_36) {
+System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation", "game/SonicEngine", "common/Enums", "common/Help", "game/level/HeightMap", "game/level/Objects/ObjectManager", "game/SonicLevel", "game/level/Objects/LevelObjectInfo", "game/level/Ring", "game/level/SpriteCache", "game/level/Animations/TileAnimationData", "game/level/Tiles/TilePaletteAnimationManager", "game/level/Tiles/TileAnimationManager", "game/level/Tiles/TileChunk", "common/SpriteLoader", "game/level/Objects/LevelObject", "game/level/Objects/LevelObjectData", "game/level/Tiles/Tile", "game/level/Tiles/TilePiece", "game/level/Tiles/TileInfo", "game/level/Tiles/TilePieceInfo"], function(exports_39, context_39) {
     "use strict";
-    var __moduleName = context_36 && context_36.id;
+    var __moduleName = context_39 && context_39.id;
     var Utils_10, CanvasInformation_7, SonicEngine_1, Enums_7, Help_6, HeightMap_2, ObjectManager_2, SonicLevel_1, LevelObjectInfo_1, Ring_2, SpriteCache_1, TileAnimationData_1, TilePaletteAnimationManager_1, TileAnimationManager_1, TileChunk_1, SpriteLoader_1, LevelObject_2, LevelObjectData_1, Tile_1, TilePiece_1, TileInfo_1, TilePieceInfo_1;
     var SonicManager;
     return {
@@ -4404,12 +4583,12 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                 function SonicManager(engine, gameCanvas, resize) {
                     var _this = this;
                     this.sonicSprites = {};
-                    SonicManager.Instance = this;
+                    SonicManager.instance = this;
                     this.engine = engine;
                     this.engine.canvasWidth = $(window).width();
                     this.engine.canvasHeight = $(window).height();
-                    gameCanvas.DomCanvas[0].setAttribute("width", this.engine.canvasWidth.toString());
-                    gameCanvas.DomCanvas[0].setAttribute("height", this.engine.canvasHeight.toString());
+                    gameCanvas.domCanvas[0].setAttribute("width", this.engine.canvasWidth.toString());
+                    gameCanvas.domCanvas[0].setAttribute("height", this.engine.canvasHeight.toString());
                     jQuery.getJSON("content/sprites/sonic.js", function (data) {
                         _this.sonicSprites = data;
                     });
@@ -4417,28 +4596,28 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     this.objectManager.Init();
                     var scl = 4;
                     this.scale = new Utils_10.Point(scl, scl);
-                    this.RealScale = new Utils_10.DoublePoint(1, 1);
+                    this.realScale = new Utils_10.DoublePoint(1, 1);
                     this.mainCanvas = gameCanvas;
-                    this.windowLocation = Help_6.Help.DefaultWindowLocation(Enums_7.GameState.Editing, this.scale);
-                    this.BigWindowLocation = Help_6.Help.DefaultWindowLocation(Enums_7.GameState.Editing, this.scale);
-                    this.BigWindowLocation.Width = (this.BigWindowLocation.Width * 1.8) | 0;
-                    this.BigWindowLocation.Height = (this.BigWindowLocation.Height * 1.8) | 0;
-                    this.TileAnimations = new Array();
-                    this.AnimationInstances = new Array();
-                    this.ShowHeightMap = false;
-                    this.GoodRing = new Ring_2.Ring(false);
-                    this.ActiveRings = new Array();
-                    this.ForceResize = resize;
-                    this.Background = null;
+                    this.windowLocation = Help_6.Help.defaultWindowLocation(Enums_7.GameState.Editing, this.scale);
+                    this.bigWindowLocation = Help_6.Help.defaultWindowLocation(Enums_7.GameState.Editing, this.scale);
+                    this.bigWindowLocation.Width = (this.bigWindowLocation.Width * 1.8) | 0;
+                    this.bigWindowLocation.Height = (this.bigWindowLocation.Height * 1.8) | 0;
+                    this.tileAnimations = new Array();
+                    this.animationInstances = new Array();
+                    this.showHeightMap = false;
+                    this.goodRing = new Ring_2.Ring(false);
+                    this.activeRings = new Array();
+                    this.forceResize = resize;
+                    this.background = null;
                     this.currentGameState = Enums_7.GameState.Editing;
-                    this.ScreenOffset = new Utils_10.Point(this.mainCanvas.DomCanvas.width() / 2 - this.windowLocation.Width / 2, this.mainCanvas.DomCanvas.height() / 2 - this.windowLocation.Height / 2);
-                    this.ClickState = Enums_7.ClickState.PlaceChunk;
+                    this.screenOffset = new Utils_10.Point(this.mainCanvas.domCanvas.width() / 2 - this.windowLocation.Width / 2, this.mainCanvas.domCanvas.height() / 2 - this.windowLocation.Height / 2);
+                    this.clickState = Enums_7.ClickState.PlaceChunk;
                     this.tickCount = 0;
-                    this.DrawTickCount = 0;
-                    this.InHaltMode = false;
+                    this.drawTickCount = 0;
+                    this.inHaltMode = false;
                     this.waitingForTickContinue = false;
                     this.waitingForDrawContinue = false;
-                    this.TileChunkDebugDrawOptions = new TileChunk_1.TileChunkDebugDrawOptions();
+                    this.tileChunkDebugDrawOptions = new TileChunk_1.TileChunkDebugDrawOptions();
                 }
                 SonicManager.prototype.OnClick = function (Event) {
                     this.clicking = true;
@@ -4447,34 +4626,34 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     return false;
                 };
                 SonicManager.prototype.effectClick = function (event) {
-                    var e = new Utils_10.Point((event.clientX / this.scale.X / this.RealScale.X + this.windowLocation.X), (event.clientY / this.scale.Y / this.RealScale.Y + this.windowLocation.Y));
+                    var e = new Utils_10.Point((event.clientX / this.scale.x / this.realScale.x + this.windowLocation.x), (event.clientY / this.scale.y / this.realScale.y + this.windowLocation.y));
                     var ey;
                     var ex;
                     if (event.ctrlKey) {
-                        ex = e.X / 128 | 0;
-                        ey = e.Y / 128 | 0;
-                        var ch = this.SonicLevel.GetChunkAt(ex, ey);
+                        ex = e.x / 128 | 0;
+                        ey = e.y / 128 | 0;
+                        var ch = this.sonicLevel.getChunkAt(ex, ey);
                         //            if (this.UIManager.UIManagerAreas.TilePieceArea != null)
                         //                ch.SetTilePieceAt(e.X - ex * 128, e.Y - ey * 128, this.UIManager.UIManagerAreas.TilePieceArea.Data, true);
                         return true;
                     }
                     if (event.shiftKey) {
-                        ex = e.X / 128 | 0;
-                        ey = e.Y / 128 | 0;
-                        var ch = this.SonicLevel.GetChunkAt(ex, ey);
+                        ex = e.x / 128 | 0;
+                        ey = e.y / 128 | 0;
+                        var ch = this.sonicLevel.getChunkAt(ex, ey);
                         //            if (this.UIManager.UIManagerAreas.TileChunkArea != null)
                         //                this.SonicLevel.SetChunkAt(ex, ey, this.UIManager.UIManagerAreas.TileChunkArea.Data);
                         return true;
                     }
                     if (event.button == 0) {
-                        switch (this.ClickState) {
+                        switch (this.clickState) {
                             case Enums_7.ClickState.Dragging:
                                 return true;
                             case Enums_7.ClickState.PlaceChunk:
-                                ex = e.X / 128 | 0;
-                                ey = e.Y / 128 | 0;
-                                var ch = this.SonicLevel.GetChunkAt(ex, ey);
-                                var tp = ch.GetTilePieceAt(e.X - ex * 128, e.Y - ey * 128, true);
+                                ex = e.x / 128 | 0;
+                                ey = e.y / 128 | 0;
+                                var ch = this.sonicLevel.getChunkAt(ex, ey);
+                                var tp = ch.GetTilePieceAt(e.x - ex * 128, e.y - ey * 128, true);
                                 var dontClear = false;
                                 //                    if (this.UIManager.UIManagerAreas.TileChunkArea != null) {
                                 //                        if (this.UIManager.UIManagerAreas.TileChunkArea.Data == ch)
@@ -4486,21 +4665,21 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                                 //                            dontClear = true;
                                 //                        this.UIManager.UIManagerAreas.TilePieceArea.Data = tp;
                                 //                    }
-                                this.ClearCache();
+                                // this.clearCache();
                                 return true;
                             case Enums_7.ClickState.PlaceRing:
-                                ex = e.X;
-                                ey = e.Y;
-                                this.SonicLevel.Rings.push(Help_6.Help.Merge(new Ring_2.Ring(true), { X: ex, Y: ey }));
+                                ex = e.x;
+                                ey = e.y;
+                                this.sonicLevel.Rings.push(Help_6.Help.merge(new Ring_2.Ring(true), { X: ex, Y: ey }));
                                 return true;
                             case Enums_7.ClickState.PlaceObject:
-                                ex = e.X;
-                                ey = e.Y;
+                                ex = e.x;
+                                ey = e.y;
                                 var pos = new Utils_10.Point(ex, ey);
-                                for (var _i = 0, _a = this.SonicLevel.Objects; _i < _a.length; _i++) {
+                                for (var _i = 0, _a = this.sonicLevel.Objects; _i < _a.length; _i++) {
                                     var o = _a[_i];
                                     if (Utils_10.IntersectingRectangle.IntersectsRect(o.GetRect(), pos))
-                                        alert("Object Data: " + Help_6.Help.Stringify(o));
+                                        alert("Object Data: " + Help_6.Help.stringify(o));
                                 }
                                 return true;
                         }
@@ -4509,42 +4688,42 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                 };
                 SonicManager.prototype.tickObjects = function () {
                     var localPoint = new Utils_10.Point(0, 0);
-                    this.InFocusObjects = new Array();
-                    var levelObjectInfos = this.SonicLevel.Objects;
+                    this.inFocusObjects = new Array();
+                    var levelObjectInfos = this.sonicLevel.Objects;
                     for (var _i = 0, levelObjectInfos_2 = levelObjectInfos; _i < levelObjectInfos_2.length; _i++) {
                         var obj = levelObjectInfos_2[_i];
-                        localPoint.X = obj.X | 0;
-                        localPoint.Y = obj.Y | 0;
-                        if (this.BigWindowLocation.Intersects(localPoint)) {
-                            this.InFocusObjects.push(obj);
-                            obj.Tick(obj, this.SonicLevel, this.sonicToon);
+                        localPoint.x = obj.X | 0;
+                        localPoint.y = obj.Y | 0;
+                        if (this.bigWindowLocation.Intersects(localPoint)) {
+                            this.inFocusObjects.push(obj);
+                            obj.Tick(obj, this.sonicLevel, this.sonicToon);
                         }
                     }
                     //        if (this.UIManager.UIManagerAreas.LiveObjectsArea != null)
                     //            this.UIManager.UIManagerAreas.LiveObjectsArea.Data.Populate(this.InFocusObjects);
-                    for (var _a = 0, _b = this.AnimationInstances; _a < _b.length; _a++) {
+                    for (var _a = 0, _b = this.animationInstances; _a < _b.length; _a++) {
                         var animationInstance = _b[_a];
                         animationInstance.Tick();
                     }
                 };
                 SonicManager.prototype.Tick = function () {
-                    if (this.Loading)
+                    if (this.loading)
                         return;
                     if (this.currentGameState == Enums_7.GameState.Playing) {
-                        if (this.InHaltMode) {
+                        if (this.inHaltMode) {
                             if (this.waitingForTickContinue)
                                 return;
                         }
                         this.tickCount++;
                         this.tickObjects();
-                        this.sonicToon.Ticking = true;
+                        this.sonicToon.ticking = true;
                         try {
-                            this.sonicToon.Tick(this.SonicLevel);
+                            this.sonicToon.tick(this.sonicLevel);
                         }
                         finally {
-                            this.sonicToon.Ticking = false;
+                            this.sonicToon.ticking = false;
                         }
-                        if (this.InHaltMode) {
+                        if (this.inHaltMode) {
                             if (this.waitingForTickContinue)
                                 return;
                             this.waitingForTickContinue = true;
@@ -4554,23 +4733,23 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                 };
                 SonicManager.prototype.PreloadSprites = function (completed, update) {
                     var _this = this;
-                    if (this.SpriteCache != null) {
+                    if (this.spriteCache != null) {
                         completed();
                         return;
                     }
-                    this.SpriteCache = this.SpriteCache != null ? this.SpriteCache : new SpriteCache_1.SpriteCache();
-                    var ci = this.SpriteCache.Rings;
+                    this.spriteCache = this.spriteCache != null ? this.spriteCache : new SpriteCache_1.SpriteCache();
+                    var ci = this.spriteCache.Rings;
                     var spriteLocations = new Array();
                     for (var j = 0; j < 4; j++) {
                         spriteLocations.push("assets/sprites/ring" + j + ".png");
                         this.imageLength++;
                     }
-                    var ind_ = this.SpriteCache.Indexes;
-                    this.SpriteLoader = new SpriteLoader_1.SpriteLoader(completed, update);
+                    var ind_ = this.spriteCache.Indexes;
+                    this.spriteLoader = new SpriteLoader_1.SpriteLoader(completed, update);
                     if (ci.length == 0) {
-                        var spriteStep = this.SpriteLoader.AddStep("Sprites", function (i, done) {
-                            Help_6.Help.LoadSprite(spriteLocations[i], function (jd) {
-                                ci[i] = CanvasInformation_7.CanvasInformation.Create(jd.width, jd.height, false);
+                        var spriteStep = this.spriteLoader.AddStep("Sprites", function (i, done) {
+                            Help_6.Help.loadSprite(spriteLocations[i], function (jd) {
+                                ci[i] = CanvasInformation_7.CanvasInformation.create(jd.width, jd.height, false);
                                 ci[i].Context.drawImage(jd, 0, 0);
                                 done();
                             });
@@ -4581,33 +4760,33 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                             return false;
                         }, false);
                         for (var i = 0; i < spriteLocations.length; i++) {
-                            this.SpriteLoader.AddIterationToStep(spriteStep, i);
+                            this.spriteLoader.AddIterationToStep(spriteStep, i);
                         }
                     }
-                    var cci = this.SpriteCache.SonicSprites;
+                    var cci = this.spriteCache.SonicSprites;
                     if (Object.keys(cci).length == 0) {
-                        var sonicStep = this.SpriteLoader.AddStep("Sonic Sprites", function (sp, done) {
+                        var sonicStep = this.spriteLoader.AddStep("Sonic Sprites", function (sp, done) {
                             for (var sonicSprite in _this.sonicSprites) {
-                                cci[sonicSprite] = Help_6.Help.ScaleCsImage(_this.sonicSprites[sonicSprite], new Utils_10.Point(1, 1), function (ec) {
+                                cci[sonicSprite] = Help_6.Help.scaleCsImage(_this.sonicSprites[sonicSprite], new Utils_10.Point(1, 1), function (ec) {
                                 });
                             }
                             done();
                         }, function () { return true; }, false);
-                        this.SpriteLoader.AddIterationToStep(sonicStep, 0);
+                        this.spriteLoader.AddIterationToStep(sonicStep, 0);
                     }
                 };
                 SonicManager.prototype.MainDraw = function (canvas) {
                     var context = canvas.Context;
-                    if (this.InHaltMode)
+                    if (this.inHaltMode)
                         if (this.drawHaltMode(context))
                             return;
                     this.engine.Clear(canvas);
-                    if (this.SonicLevel == null)
+                    if (this.sonicLevel == null)
                         return;
                     context.save();
                     var localPoint = new Utils_10.Point(0, 0);
-                    this.DrawTickCount++;
-                    if (this.SpriteLoader && !this.SpriteLoader.Tick() || this.Loading) {
+                    this.drawTickCount++;
+                    if (this.spriteLoader && !this.spriteLoader.Tick() || this.loading) {
                         SonicManager.drawLoading(context);
                         context.restore();
                         return;
@@ -4618,35 +4797,35 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     if (this.currentGameState == Enums_7.GameState.Editing) {
                         w1 += 1;
                         h1 += 1;
-                        w1 /= this.scale.X;
-                        h1 /= this.scale.Y;
+                        w1 /= this.scale.x;
+                        h1 /= this.scale.y;
                     }
                     var offs = SonicManager.getOffs(w1, h1);
-                    this.TilePaletteAnimationManager.TickAnimatedPalettes();
-                    this.TileAnimationManager.TickAnimatedTiles();
-                    var fxP = ((this.windowLocation.X) / 128) | 0;
-                    var fyP = ((this.windowLocation.Y) / 128) | 0;
+                    this.tilePaletteAnimationManager.TickAnimatedPalettes();
+                    this.tileAnimationManager.TickAnimatedTiles();
+                    var fxP = ((this.windowLocation.x) / 128) | 0;
+                    var fyP = ((this.windowLocation.y) / 128) | 0;
                     this.ResetCanvases();
                     var zero = new Utils_10.Point(0, 0);
-                    if (this.Background) {
-                        var wOffset = this.windowLocation.X;
-                        var bw = this.Background.Width;
+                    if (this.background) {
+                        var wOffset = this.windowLocation.x;
+                        var bw = this.background.Width;
                         var movex = (wOffset / bw) * bw;
-                        localPoint.X = -this.windowLocation.X + movex;
-                        localPoint.Y = -this.windowLocation.Y / 4;
-                        this.Background.Draw(this.lowChunkCanvas.Context, localPoint, wOffset);
-                        localPoint.X = -this.windowLocation.X + movex + this.Background.Width;
-                        localPoint.Y = -this.windowLocation.Y / 4;
-                        this.Background.Draw(this.lowChunkCanvas.Context, localPoint, wOffset);
+                        localPoint.x = -this.windowLocation.x + movex;
+                        localPoint.y = -this.windowLocation.y / 4;
+                        this.background.Draw(this.lowChunkCanvas.Context, localPoint, wOffset);
+                        localPoint.x = -this.windowLocation.x + movex + this.background.Width;
+                        localPoint.y = -this.windowLocation.y / 4;
+                        this.background.Draw(this.lowChunkCanvas.Context, localPoint, wOffset);
                     }
                     this.drawLowChunks(this.lowChunkCanvas.Context, zero, offs, fyP, fxP);
-                    if (this.ShowHeightMap)
+                    if (this.showHeightMap)
                         this.drawHighChunks(this.lowChunkCanvas.Context, fxP, fyP, offs, zero);
                     this.drawObjects(this.sonicCanvas.Context, zero);
                     this.drawAnimations(this.sonicCanvas.Context);
                     this.drawRings(this.sonicCanvas.Context, zero);
                     this.drawSonic(this.sonicCanvas.Context);
-                    if (!this.ShowHeightMap)
+                    if (!this.showHeightMap)
                         this.drawHighChunks(this.highChuckCanvas.Context, fxP, fyP, offs, zero);
                     this.drawDebugTextChunks(this.highChuckCanvas.Context, fxP, fyP, offs, zero);
                     //        this.lowChunkCanvas.Context.OffsetPixelsForWater();
@@ -4654,18 +4833,18 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     this.drawCanveses(context, localPoint);
                     context.restore();
                     if (this.currentGameState == Enums_7.GameState.Playing)
-                        this.sonicToon.DrawUI(context, new Utils_10.Point(this.ScreenOffset.X, this.ScreenOffset.Y));
+                        this.sonicToon.DrawUI(context, new Utils_10.Point(this.screenOffset.x, this.screenOffset.y));
                 };
                 SonicManager.prototype.drawCanveses = function (canvas, localPoint) {
-                    canvas.scale(this.scale.X, this.scale.Y);
-                    canvas.drawImage(this.lowChunkCanvas.Canvas, localPoint.X, localPoint.Y);
-                    canvas.drawImage(this.sonicCanvas.Canvas, localPoint.X, localPoint.Y);
-                    canvas.drawImage(this.highChuckCanvas.Canvas, localPoint.X, localPoint.Y);
+                    canvas.scale(this.scale.x, this.scale.y);
+                    canvas.drawImage(this.lowChunkCanvas.canvas, localPoint.x, localPoint.y);
+                    canvas.drawImage(this.sonicCanvas.canvas, localPoint.x, localPoint.y);
+                    canvas.drawImage(this.highChuckCanvas.canvas, localPoint.x, localPoint.y);
                 };
                 SonicManager.prototype.ResetCanvases = function () {
-                    this.lowChunkCanvas = this.lowChunkCanvas != null ? this.lowChunkCanvas : CanvasInformation_7.CanvasInformation.Create(this.windowLocation.Width, this.windowLocation.Height, false);
-                    this.sonicCanvas = this.sonicCanvas != null ? this.sonicCanvas : CanvasInformation_7.CanvasInformation.Create(this.windowLocation.Width, this.windowLocation.Height, true);
-                    this.highChuckCanvas = this.highChuckCanvas != null ? this.highChuckCanvas : CanvasInformation_7.CanvasInformation.Create(this.windowLocation.Width, this.windowLocation.Height, false);
+                    this.lowChunkCanvas = this.lowChunkCanvas != null ? this.lowChunkCanvas : CanvasInformation_7.CanvasInformation.create(this.windowLocation.Width, this.windowLocation.Height, false);
+                    this.sonicCanvas = this.sonicCanvas != null ? this.sonicCanvas : CanvasInformation_7.CanvasInformation.create(this.windowLocation.Width, this.windowLocation.Height, true);
+                    this.highChuckCanvas = this.highChuckCanvas != null ? this.highChuckCanvas : CanvasInformation_7.CanvasInformation.create(this.windowLocation.Width, this.windowLocation.Height, false);
                     this.sonicCanvas.Context.clearRect(0, 0, this.windowLocation.Width, this.windowLocation.Height);
                     this.highChuckCanvas.Context.clearRect(0, 0, this.windowLocation.Width, this.windowLocation.Height);
                     this.lowChunkCanvas.Context.clearRect(0, 0, this.windowLocation.Width, this.windowLocation.Height);
@@ -4687,34 +4866,33 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     return SonicManager._cachedOffs[hash] = offs;
                 };
                 SonicManager.prototype.updatePositions = function (canvas) {
-                    this.ScreenOffset.X = 0;
-                    this.ScreenOffset.Y = 0;
+                    this.screenOffset.x = 0;
+                    this.screenOffset.y = 0;
                     if (this.currentGameState == Enums_7.GameState.Playing)
                         this.updatePositionsForPlaying(canvas);
                 };
                 SonicManager.prototype.updatePositionsForPlaying = function (canvas) {
-                    canvas.scale(this.RealScale.X, this.RealScale.Y);
-                    if (this.sonicToon.Ticking) {
+                    canvas.scale(this.realScale.x, this.realScale.y);
+                    if (this.sonicToon.ticking) {
                         while (true) {
-                            if (this.sonicToon.Ticking)
+                            if (this.sonicToon.ticking)
                                 break;
                         }
                     }
-                    canvas.translate(this.ScreenOffset.X, this.ScreenOffset.Y);
-                    this.windowLocation.X = (this.sonicToon.X) - this.windowLocation.Width / 2;
-                    this.windowLocation.Y = (this.sonicToon.Y) - this.windowLocation.Height / 2;
-                    this.BigWindowLocation.X = (this.sonicToon.X) - this.BigWindowLocation.Width / 2;
-                    this.BigWindowLocation.Y = (this.sonicToon.Y) - this.BigWindowLocation.Height / 2;
-                    this.BigWindowLocation.X = (this.BigWindowLocation.X - this.windowLocation.Width * 0.2);
-                    this.BigWindowLocation.Y = (this.BigWindowLocation.Y - this.windowLocation.Height * 0.2);
-                    this.BigWindowLocation.Width = (this.windowLocation.Width * 1.8);
-                    this.BigWindowLocation.Height = (this.windowLocation.Height * 1.8);
+                    canvas.translate(this.screenOffset.x, this.screenOffset.y);
+                    this.windowLocation.x = (this.sonicToon.x) - this.windowLocation.Width / 2;
+                    this.windowLocation.y = (this.sonicToon.y) - this.windowLocation.Height / 2;
+                    this.bigWindowLocation.x = (this.sonicToon.x) - this.bigWindowLocation.Width / 2;
+                    this.bigWindowLocation.y = (this.sonicToon.y) - this.bigWindowLocation.Height / 2;
+                    this.bigWindowLocation.x = (this.bigWindowLocation.x - this.windowLocation.Width * 0.2);
+                    this.bigWindowLocation.y = (this.bigWindowLocation.y - this.windowLocation.Height * 0.2);
+                    this.bigWindowLocation.Width = (this.windowLocation.Width * 1.8);
+                    this.bigWindowLocation.Height = (this.windowLocation.Height * 1.8);
                 };
                 SonicManager.drawLoading = function (canvas) {
                     canvas.fillStyle = "white";
-                    canvas.fillText("Loading...   ", 95, 95);
+                    canvas.fillText("loading...   ", 95, 95);
                     canvas.restore();
-                    return;
                 };
                 SonicManager.prototype.drawHaltMode = function (canvas) {
                     canvas.fillStyle = "white";
@@ -4729,86 +4907,89 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                 SonicManager.prototype.drawLowChunks = function (canvas, localPoint, offs, fyP, fxP) {
                     for (var _i = 0, offs_1 = offs; _i < offs_1.length; _i++) {
                         var off = offs_1[_i];
-                        var _xP = fxP + off.X;
-                        var _yP = fyP + off.Y;
-                        var _xPreal = fxP + off.X;
-                        var _yPreal = fyP + off.Y;
-                        _xP = Help_6.Help.Mod(_xP, this.SonicLevel.LevelWidth);
-                        _yP = Help_6.Help.Mod(_yP, this.SonicLevel.LevelHeight);
-                        var chunk = this.SonicLevel.GetChunkAt(_xP, _yP);
+                        var _xP = fxP + off.x;
+                        var _yP = fyP + off.y;
+                        var _xPreal = fxP + off.x;
+                        var _yPreal = fyP + off.y;
+                        _xP = Help_6.Help.mod(_xP, this.sonicLevel.LevelWidth);
+                        _yP = Help_6.Help.mod(_yP, this.sonicLevel.LevelHeight);
+                        var chunk = this.sonicLevel.getChunkAt(_xP, _yP);
                         if (chunk == null)
                             continue;
-                        localPoint.X = (_xPreal * 128) - this.windowLocation.X;
-                        localPoint.Y = (_yPreal * 128) - this.windowLocation.Y;
-                        if (!chunk.IsEmpty() && !chunk.OnlyForeground())
-                            chunk.Draw(canvas, localPoint, Enums_7.ChunkLayerState.Low);
+                        localPoint.x = (_xPreal * 128) - this.windowLocation.x | 0;
+                        localPoint.y = (_yPreal * 128) - this.windowLocation.y | 0;
+                        if (!chunk.isEmpty() && !chunk.OnlyForeground())
+                            chunk.draw(canvas, localPoint, Enums_7.ChunkLayerState.Low);
                     }
                 };
                 SonicManager.prototype.drawHighChunks = function (canvas, fxP, fyP, offs, localPoint) {
+                    var m = [];
                     for (var _i = 0, offs_2 = offs; _i < offs_2.length; _i++) {
                         var off = offs_2[_i];
-                        var _xP = fxP + off.X;
-                        var _yP = fyP + off.Y;
-                        var _xPreal = fxP + off.X;
-                        var _yPreal = fyP + off.Y;
-                        _xP = Help_6.Help.Mod(_xP, this.SonicLevel.LevelWidth);
-                        _yP = Help_6.Help.Mod(_yP, this.SonicLevel.LevelHeight);
-                        var chunk = this.SonicLevel.GetChunkAt(_xP, _yP);
+                        var _xP = fxP + off.x;
+                        var _yP = fyP + off.y;
+                        var _xPreal = fxP + off.x;
+                        var _yPreal = fyP + off.y;
+                        _xP = Help_6.Help.mod(_xP, this.sonicLevel.LevelWidth);
+                        _yP = Help_6.Help.mod(_yP, this.sonicLevel.LevelHeight);
+                        var chunk = this.sonicLevel.getChunkAt(_xP, _yP);
                         if (chunk == null)
                             continue;
-                        localPoint.X = (_xPreal * 128) - this.windowLocation.X;
-                        localPoint.Y = (_yPreal * 128) - this.windowLocation.Y;
-                        if (!chunk.IsEmpty() && !chunk.OnlyBackground())
-                            chunk.Draw(canvas, localPoint, Enums_7.ChunkLayerState.High);
-                        if (this.ShowHeightMap) {
-                            var fd = this.SpriteCache.HeightMapChunks[(this.SonicLevel.CurHeightMap ? 1 : 2) + " " + chunk.Index];
+                        localPoint.x = (_xPreal * 128) - this.windowLocation.x | 0;
+                        localPoint.y = (_yPreal * 128) - this.windowLocation.y | 0;
+                        if (!chunk.isEmpty() && !chunk.onlyBackground()) {
+                            m.push(localPoint.x + " " + localPoint.y);
+                            chunk.draw(canvas, localPoint, Enums_7.ChunkLayerState.High);
+                        }
+                        if (this.showHeightMap) {
+                            var fd = this.spriteCache.HeightMapChunks[(this.sonicLevel.CurHeightMap ? 1 : 2) + " " + chunk.Index];
                             if (fd == null) {
                                 fd = this.cacheHeightMapForChunk(chunk);
                             }
-                            canvas.drawImage(fd.Canvas, localPoint.X, localPoint.Y);
+                            canvas.drawImage(fd.canvas, localPoint.x, localPoint.y);
                         }
                         if (this.currentGameState == Enums_7.GameState.Editing) {
                             canvas.strokeStyle = "#DD0033";
                             canvas.lineWidth = 3;
-                            canvas.strokeRect(localPoint.X, localPoint.Y, 128, 128);
+                            canvas.strokeRect(localPoint.x, localPoint.y, 128, 128);
                         }
                     }
                 };
                 SonicManager.prototype.drawDebugTextChunks = function (canvas, fxP, fyP, offs, localPoint) {
                     for (var _i = 0, offs_3 = offs; _i < offs_3.length; _i++) {
                         var off = offs_3[_i];
-                        var _xP = fxP + off.X;
-                        var _yP = fyP + off.Y;
-                        var _xPreal = fxP + off.X;
-                        var _yPreal = fyP + off.Y;
-                        _xP = Help_6.Help.Mod(_xP, this.SonicLevel.LevelWidth);
-                        _yP = Help_6.Help.Mod(_yP, this.SonicLevel.LevelHeight);
-                        var chunk = this.SonicLevel.GetChunkAt(_xP, _yP);
+                        var _xP = fxP + off.x;
+                        var _yP = fyP + off.y;
+                        var _xPreal = fxP + off.x;
+                        var _yPreal = fyP + off.y;
+                        _xP = Help_6.Help.mod(_xP, this.sonicLevel.LevelWidth);
+                        _yP = Help_6.Help.mod(_yP, this.sonicLevel.LevelHeight);
+                        var chunk = this.sonicLevel.getChunkAt(_xP, _yP);
                         if (chunk == null)
                             continue;
-                        localPoint.X = (_xPreal * 128) - this.windowLocation.X;
-                        localPoint.Y = (_yPreal * 128) - this.windowLocation.Y;
-                        if (!chunk.IsEmpty() && !chunk.OnlyForeground())
-                            chunk.DrawAnimationDebug(canvas, localPoint, Enums_7.ChunkLayerState.Low, this.TileChunkDebugDrawOptions);
-                        if (!chunk.IsEmpty() && !chunk.OnlyBackground())
-                            chunk.DrawAnimationDebug(canvas, localPoint, Enums_7.ChunkLayerState.High, this.TileChunkDebugDrawOptions);
+                        localPoint.x = (_xPreal * 128) - this.windowLocation.x;
+                        localPoint.y = (_yPreal * 128) - this.windowLocation.y;
+                        if (!chunk.isEmpty() && !chunk.OnlyForeground())
+                            chunk.DrawAnimationDebug(canvas, localPoint, Enums_7.ChunkLayerState.Low, this.tileChunkDebugDrawOptions);
+                        if (!chunk.isEmpty() && !chunk.onlyBackground())
+                            chunk.DrawAnimationDebug(canvas, localPoint, Enums_7.ChunkLayerState.High, this.tileChunkDebugDrawOptions);
                     }
                 };
                 SonicManager.prototype.cacheHeightMapForChunk = function (chunk) {
                     var md = chunk;
                     var posj1 = new Utils_10.Point(0, 0);
-                    var canv = CanvasInformation_7.CanvasInformation.Create(128, 128, false);
+                    var canv = CanvasInformation_7.CanvasInformation.create(128, 128, false);
                     var ctx = canv.Context;
                     this.engine.Clear(canv);
                     for (var _y = 0; _y < 8; _y++) {
                         for (var _x = 0; _x < 8; _x++) {
                             var tp = md.TilePieces[_x][_y];
-                            var solid = (this.SonicLevel.CurHeightMap ? tp.Solid1 : tp.Solid2);
-                            var hd = this.SonicLevel.CurHeightMap ? tp.GetLayer1HeightMaps() : tp.GetLayer2HeightMaps();
+                            var solid = (this.sonicLevel.CurHeightMap ? tp.Solid1 : tp.Solid2);
+                            var hd = this.sonicLevel.CurHeightMap ? tp.GetLayer1HeightMaps() : tp.GetLayer2HeightMaps();
                             var __x = _x;
                             var __y = _y;
                             var vangle = 0;
-                            var posm = new Utils_10.Point(posj1.X + (__x * 16), posj1.Y + (__y * 16));
+                            var posm = new Utils_10.Point(posj1.x + (__x * 16), posj1.y + (__y * 16));
                             if (!hd)
                                 continue;
                             if (hd.Full === false) {
@@ -4816,47 +4997,47 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                             else if (hd.Full === true) {
                                 if (solid > 0) {
                                     ctx.fillStyle = HeightMap_2.HeightMap.colors[solid];
-                                    ctx.fillRect(posj1.X + (__x * 16), posj1.Y + (__y * 16), 16, 16);
+                                    ctx.fillRect(posj1.x + (__x * 16), posj1.y + (__y * 16), 16, 16);
                                 }
                             }
                             else {
-                                vangle = this.SonicLevel.CurHeightMap ? tp.GetLayer1Angles() : tp.GetLayer2Angles();
+                                vangle = this.sonicLevel.CurHeightMap ? tp.GetLayer1Angles() : tp.GetLayer2Angles();
                                 hd.Draw(ctx, posm, tp.XFlip, tp.YFlip, solid, vangle);
                             }
                         }
                     }
-                    return this.SpriteCache.HeightMapChunks[(this.SonicLevel.CurHeightMap ? 1 : 2) + " " + md.Index] = canv;
+                    return this.spriteCache.HeightMapChunks[(this.sonicLevel.CurHeightMap ? 1 : 2) + " " + md.Index] = canv;
                 };
                 SonicManager.prototype.drawSonic = function (canvas) {
                     if (this.currentGameState == Enums_7.GameState.Playing) {
-                        this.sonicToon.Draw(canvas);
+                        this.sonicToon.draw(canvas);
                     }
                 };
                 SonicManager.prototype.drawRings = function (canvas, localPoint) {
-                    for (var index = 0; index < this.SonicLevel.Rings.length; index++) {
-                        var r = this.SonicLevel.Rings[index];
+                    for (var index = 0; index < this.sonicLevel.Rings.length; index++) {
+                        var r = this.sonicLevel.Rings[index];
                         switch (this.currentGameState) {
                             case Enums_7.GameState.Playing:
                                 if (!this.sonicToon.obtainedRing[index]) {
-                                    if (this.BigWindowLocation.Intersects(r))
-                                        this.GoodRing.Draw(canvas, r.Negate(this.windowLocation.X, this.windowLocation.Y));
+                                    if (this.bigWindowLocation.Intersects(r))
+                                        this.goodRing.Draw(canvas, r.Negate(this.windowLocation.x | 0, this.windowLocation.y | 0));
                                 }
                                 break;
                             case Enums_7.GameState.Editing:
-                                if (this.BigWindowLocation.Intersects(r))
-                                    this.GoodRing.Draw(canvas, r.Negate(this.windowLocation.X, this.windowLocation.Y));
+                                if (this.bigWindowLocation.Intersects(r))
+                                    this.goodRing.Draw(canvas, r.Negate(this.windowLocation.x | 0, this.windowLocation.y | 0));
                                 break;
                         }
                     }
                     switch (this.currentGameState) {
                         case Enums_7.GameState.Playing:
-                            for (var i = this.ActiveRings.length - 1; i >= 0; i--) {
-                                var ac = this.ActiveRings[i];
-                                localPoint.X = ac.X - this.windowLocation.X;
-                                localPoint.Y = ac.Y - this.windowLocation.Y;
+                            for (var i = this.activeRings.length - 1; i >= 0; i--) {
+                                var ac = this.activeRings[i];
+                                localPoint.x = ac.x - this.windowLocation.x | 0;
+                                localPoint.y = ac.y - this.windowLocation.y | 0;
                                 ac.Draw(canvas, localPoint);
                                 if (ac.TickCount > 256)
-                                    this.ActiveRings.splice(i, 1);
+                                    this.activeRings.splice(i, 1);
                             }
                             break;
                         case Enums_7.GameState.Editing:
@@ -4864,19 +5045,19 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     }
                 };
                 SonicManager.prototype.drawAnimations = function (canvas) {
-                    for (var _i = 0, _a = this.AnimationInstances; _i < _a.length; _i++) {
+                    for (var _i = 0, _a = this.animationInstances; _i < _a.length; _i++) {
                         var ano = _a[_i];
-                        ano.Draw(canvas, -this.windowLocation.X, -this.windowLocation.Y);
+                        ano.Draw(canvas, -this.windowLocation.x | 0, -this.windowLocation.y | 0);
                     }
                 };
                 SonicManager.prototype.drawObjects = function (canvas, localPoint) {
-                    var levelObjectInfos = this.SonicLevel.Objects;
+                    var levelObjectInfos = this.sonicLevel.Objects;
                     for (var _i = 0, levelObjectInfos_3 = levelObjectInfos; _i < levelObjectInfos_3.length; _i++) {
                         var o = levelObjectInfos_3[_i];
-                        localPoint.X = o.X;
-                        localPoint.Y = o.Y;
-                        if (o.Dead || this.BigWindowLocation.Intersects(localPoint)) {
-                            o.Draw(canvas, ((localPoint.X - this.windowLocation.X)), ((localPoint.Y - this.windowLocation.Y)), this.ShowHeightMap);
+                        localPoint.x = o.X;
+                        localPoint.y = o.Y;
+                        if (o.Dead || this.bigWindowLocation.Intersects(localPoint)) {
+                            o.Draw(canvas, ((localPoint.x - this.windowLocation.x)) | 0, ((localPoint.y - this.windowLocation.y)) | 0, this.showHeightMap);
                         }
                     }
                 };
@@ -4890,21 +5071,21 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                     }
                     return null;
                 };
-                SonicManager.prototype.ClearCache = function () {
-                    if (this.SpriteCache != null)
-                        this.SpriteCache.ClearCache();
-                    if (this.SonicLevel != null)
-                        this.SonicLevel.ClearCache();
-                    if (this.TilePaletteAnimationManager != null)
-                        this.TilePaletteAnimationManager.ClearCache();
-                    if (this.TileAnimationManager != null)
-                        this.TileAnimationManager.ClearCache();
+                SonicManager.prototype.clearCache = function () {
+                    if (this.spriteCache != null)
+                        this.spriteCache.ClearCache();
+                    if (this.sonicLevel != null)
+                        this.sonicLevel.ClearCache();
+                    if (this.tilePaletteAnimationManager != null)
+                        this.tilePaletteAnimationManager.ClearCache();
+                    if (this.tileAnimationManager != null)
+                        this.tileAnimationManager.ClearCache();
                 };
-                SonicManager.prototype.MouseUp = function (queryEvent) {
+                SonicManager.prototype.mouseUp = function (queryEvent) {
                     this.clicking = false;
                     return false;
                 };
-                SonicManager.prototype.MouseMove = function (queryEvent) {
+                SonicManager.prototype.mouseMove = function (queryEvent) {
                     if (this.clicking)
                         if (this.effectClick(queryEvent))
                             return true;
@@ -4919,22 +5100,22 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         var curY = y;
                         window.setTimeout(function () {
                             for (var x = 0; x < from.Width; x++) {
-                                var toChunkX = (to.X + x) / 8;
-                                var toChunkY = (to.Y + curY) / 8;
-                                var tochunk = _this.SonicLevel.GetChunkAt(toChunkX, toChunkY);
-                                tochunk.ClearCache();
-                                var totp = tochunk.TilePieces[(to.X + x) - toChunkX * 8][(to.Y + curY) - toChunkY * 8];
+                                var toChunkX = (to.x + x) / 8;
+                                var toChunkY = (to.y + curY) / 8;
+                                var tochunk = _this.sonicLevel.getChunkAt(toChunkX, toChunkY);
+                                tochunk.clearCache();
+                                var totp = tochunk.TilePieces[(to.x + x) - toChunkX * 8][(to.y + curY) - toChunkY * 8];
                                 tochunk.IsOnlyBackground = null;
                                 tochunk.IsOnlyForeground = null;
-                                var fromChunkX = (from.X + x) / 8 | 0;
-                                var fromChunkY = (from.Y + curY) / 8 | 0;
-                                var fromchunk = _this.SonicLevel.GetChunkAt(fromChunkX, fromChunkY);
-                                fromchunk.ClearCache();
+                                var fromChunkX = (from.x + x) / 8 | 0;
+                                var fromChunkY = (from.y + curY) / 8 | 0;
+                                var fromchunk = _this.sonicLevel.getChunkAt(fromChunkX, fromChunkY);
+                                fromchunk.clearCache();
                                 fromchunk.IsOnlyBackground = null;
                                 fromchunk.IsOnlyForeground = null;
-                                var fromtp = fromchunk.TilePieces[(from.X + x) - fromChunkX * 8][(from.Y + curY) - fromChunkY * 8];
-                                tochunk.TilePieces[(to.X + x) - toChunkX * 8][(to.Y + curY) - toChunkY * 8] = fromtp;
-                                fromchunk.TilePieces[(from.X + x) - fromChunkX * 8][(from.Y + curY) - fromChunkY * 8] = totp;
+                                var fromtp = fromchunk.TilePieces[(from.x + x) - fromChunkX * 8][(from.y + curY) - fromChunkY * 8];
+                                tochunk.TilePieces[(to.x + x) - toChunkX * 8][(to.y + curY) - toChunkY * 8] = fromtp;
+                                fromchunk.TilePieces[(from.x + x) - fromChunkX * 8][(from.y + curY) - fromChunkY * 8] = totp;
                             }
                         }, (from.Height - y) * 50);
                     };
@@ -4942,26 +5123,27 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         _loop_2(y);
                     }
                 };
-                SonicManager.prototype.CacheTiles = function () {
+                SonicManager.prototype.cacheTiles = function () {
                     console.time("tileCache");
-                    this.TilePaletteAnimationManager = new TilePaletteAnimationManager_1.TilePaletteAnimationManager(this);
-                    this.TileAnimationManager = new TileAnimationManager_1.TileAnimationManager(this);
-                    for (var _i = 0, _a = this.SonicLevel.TileChunks; _i < _a.length; _i++) {
+                    this.tilePaletteAnimationManager = new TilePaletteAnimationManager_1.TilePaletteAnimationManager(this);
+                    this.tileAnimationManager = new TileAnimationManager_1.TileAnimationManager(this);
+                    for (var _i = 0, _a = this.sonicLevel.TileChunks; _i < _a.length; _i++) {
                         var chunk = _a[_i];
-                        chunk.InitCache();
-                        chunk.WarmCache();
+                        chunk.initCache();
+                        chunk.warmCache();
                     }
                     console.timeEnd("tileCache");
                     if (this.sonicToon != null) {
                         console.time("collisionCache");
-                        for (var _b = 0, _c = this.SonicLevel.TileChunks; _b < _c.length; _b++) {
+                        for (var _b = 0, _c = this.sonicLevel.TileChunks; _b < _c.length; _b++) {
                             var chunk = _c[_b];
-                            this.sonicToon.SensorManager.BuildChunk(chunk, false);
-                            this.sonicToon.SensorManager.BuildChunk(chunk, true);
+                            this.sonicToon.sensorManager.buildChunk(chunk, false);
+                            this.sonicToon.sensorManager.buildChunk(chunk, true);
                         }
                         console.timeEnd("collisionCache");
                     }
                     if (false) {
+                        this.debugDraw();
                     }
                 };
                 SonicManager.prototype.debugDraw = function () {
@@ -4972,10 +5154,10 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         var debugCanvases = new Array();
                         var totalHeight = 0;
                         var broke = false;
-                        for (var index = dropOffIndex; index < this.SonicLevel.TileChunks.length; index++) {
-                            var chunk = this.SonicLevel.TileChunks[index];
+                        for (var index = dropOffIndex; index < this.sonicLevel.TileChunks.length; index++) {
+                            var chunk = this.sonicLevel.TileChunks[index];
                             var canvasCache = chunk.Debug_DrawCache();
-                            totalHeight += canvasCache.Canvas.height;
+                            totalHeight += canvasCache.canvas.height;
                             debugCanvases.push(canvasCache);
                             if (totalHeight > 10000) {
                                 dropOffIndex = index + 1;
@@ -4983,14 +5165,14 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                                 break;
                             }
                         }
-                        var bigOne = CanvasInformation_7.CanvasInformation.Create(numWide * 128, totalHeight, false);
+                        var bigOne = CanvasInformation_7.CanvasInformation.create(numWide * 128, totalHeight, false);
                         var currentPosition = 0;
                         for (var index = 0; index < debugCanvases.length; index++) {
                             var canvasInformation = debugCanvases[index];
-                            bigOne.Context.drawImage(canvasInformation.Canvas, 0, currentPosition);
-                            currentPosition += canvasInformation.Canvas.height;
+                            bigOne.Context.drawImage(canvasInformation.canvas, 0, currentPosition);
+                            currentPosition += canvasInformation.canvas.height;
                         }
-                        pieces.push(bigOne.Canvas.toDataURL());
+                        pieces.push(bigOne.canvas.toDataURL());
                         if (!broke)
                             break;
                     }
@@ -5028,34 +5210,34 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         t.SetObjectData(dr);
                     };
                     var this_1 = this;
-                    for (var _i = 0, _a = this.SonicLevel.Objects; _i < _a.length; _i++) {
+                    for (var _i = 0, _a = this.sonicLevel.Objects; _i < _a.length; _i++) {
                         var t = _a[_i];
                         var state_3 = _loop_3();
                         if (state_3 === "continue") continue;
                     }
                 };
                 SonicManager.prototype.downloadObjects = function (objects) {
-                    SonicEngine_1.SonicEngine.Instance.Client.emit("GetObjects", objects);
+                    SonicEngine_1.SonicEngine.instance.client.emit("GetObjects", objects);
                 };
                 SonicManager.prototype.Load = function (sonicLevel) {
                     var _this = this;
-                    this.Loading = true;
-                    this.SonicLevel = new SonicLevel_1.SonicLevel();
+                    this.loading = true;
+                    this.sonicLevel = new SonicLevel_1.SonicLevel();
                     for (var n = 0; n < sonicLevel.Rings.length; n++) {
-                        this.SonicLevel.Rings[n] = new Ring_2.Ring(true);
-                        this.SonicLevel.Rings[n].X = sonicLevel.Rings[n].X;
-                        this.SonicLevel.Rings[n].Y = sonicLevel.Rings[n].Y;
+                        this.sonicLevel.Rings[n] = new Ring_2.Ring(true);
+                        this.sonicLevel.Rings[n].x = sonicLevel.Rings[n].X;
+                        this.sonicLevel.Rings[n].y = sonicLevel.Rings[n].Y;
                     }
-                    this.SonicLevel.LevelWidth = sonicLevel.ForegroundWidth;
-                    this.SonicLevel.LevelHeight = sonicLevel.ForegroundHeight;
-                    this.SonicLevel.ChunkMap = sonicLevel.Foreground;
-                    this.SonicLevel.BGChunkMap = sonicLevel.Background;
+                    this.sonicLevel.LevelWidth = sonicLevel.ForegroundWidth;
+                    this.sonicLevel.LevelHeight = sonicLevel.ForegroundHeight;
+                    this.sonicLevel.ChunkMap = sonicLevel.Foreground;
+                    this.sonicLevel.BGChunkMap = sonicLevel.Background;
                     for (var l = 0; l < sonicLevel.Objects.length; l++) {
-                        this.SonicLevel.Objects[l] = new LevelObjectInfo_1.LevelObjectInfo(sonicLevel.Objects[l]);
-                        this.SonicLevel.Objects[l].Index = l;
+                        this.sonicLevel.Objects[l] = new LevelObjectInfo_1.LevelObjectInfo(sonicLevel.Objects[l]);
+                        this.sonicLevel.Objects[l].Index = l;
                     }
                     var objectKeys = new Array();
-                    this.SonicLevel.Objects.forEach(function (t) {
+                    this.sonicLevel.Objects.forEach(function (t) {
                         var o = t.Key;
                         if (objectKeys.filter(function (p) { return p != o; }).length == objectKeys.length)
                             objectKeys.push(o);
@@ -5077,15 +5259,15 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         for (var n = 0; n < mj.length; n++) {
                             mfc[n % 8][n / 8 | 0] = mj[n];
                         }
-                        this.SonicLevel.Tiles[j] = new Tile_1.Tile(mfc);
-                        this.SonicLevel.Tiles[j].Index = j;
+                        this.sonicLevel.Tiles[j] = new Tile_1.Tile(mfc);
+                        this.sonicLevel.Tiles[j].index = j;
                     }
-                    var acs = this.SonicLevel.AnimatedChunks = new Array();
+                    var acs = this.sonicLevel.AnimatedChunks = new Array();
                     if (sonicLevel.AnimatedFiles) {
-                        this.SonicLevel.AnimatedTileFiles = new Array(sonicLevel.AnimatedFiles.length);
+                        this.sonicLevel.AnimatedTileFiles = new Array(sonicLevel.AnimatedFiles.length);
                         for (var animatedFileIndex = 0; animatedFileIndex < sonicLevel.AnimatedFiles.length; animatedFileIndex++) {
                             var animatedFile = sonicLevel.AnimatedFiles[animatedFileIndex];
-                            this.SonicLevel.AnimatedTileFiles[animatedFileIndex] = new Array(animatedFile.length);
+                            this.sonicLevel.AnimatedTileFiles[animatedFileIndex] = new Array(animatedFile.length);
                             for (var filePiece = 0; filePiece < animatedFile.length; filePiece++) {
                                 var c = animatedFile[filePiece];
                                 var tiles = c;
@@ -5103,9 +5285,9 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                                     mfc[n % 8][n / 8 | 0] = mjc[n];
                                 }
                                 var tile = new Tile_1.Tile(mfc);
-                                tile.IsTileAnimated = true;
-                                tile.Index = filePiece * 10000 + animatedFileIndex;
-                                this.SonicLevel.AnimatedTileFiles[animatedFileIndex][filePiece] = tile;
+                                tile.isTileAnimated = true;
+                                tile.index = filePiece * 10000 + animatedFileIndex;
+                                this.sonicLevel.AnimatedTileFiles[animatedFileIndex][filePiece] = tile;
                             }
                         }
                     }
@@ -5115,7 +5297,7 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         mj.Index = j;
                         mj.Tiles = new Array();
                         for (var p = 0; p < fc.length; p++) {
-                            mj.Tiles.push(Help_6.Help.Merge(new TileInfo_1.TileInfo(), {
+                            mj.Tiles.push(Help_6.Help.merge(new TileInfo_1.TileInfo(), {
                                 _Tile: fc[p].Tile,
                                 Index: p,
                                 Palette: fc[p].Palette,
@@ -5125,18 +5307,18 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                             }));
                         }
                         mj.Init();
-                        this.SonicLevel.TilePieces[j] = mj;
+                        this.sonicLevel.TilePieces[j] = mj;
                     }
-                    this.SonicLevel.Angles = sonicLevel.Angles;
-                    this.SonicLevel.TileAnimations = sonicLevel.Animations.map(function (a) { return Help_6.Help.Merge(new TileAnimationData_1.TileAnimationData(), {
+                    this.sonicLevel.Angles = sonicLevel.Angles;
+                    this.sonicLevel.TileAnimations = sonicLevel.Animations.map(function (a) { return Help_6.Help.merge(new TileAnimationData_1.TileAnimationData(), {
                         AnimationTileFile: a.AnimationFile,
                         AnimationTileIndex: a.AnimationTileIndex,
                         AutomatedTiming: a.AutomatedTiming,
                         NumberOfTiles: a.NumberOfTiles,
-                        DataFrames: a.Frames.map(function (b) { return Help_6.Help.Merge(new TileAnimationData_1.TileAnimationDataFrame(), { Ticks: b.Ticks, StartingTileIndex: b.StartingTileIndex }); }).slice(0)
+                        DataFrames: a.Frames.map(function (b) { return Help_6.Help.merge(new TileAnimationData_1.TileAnimationDataFrame(), { Ticks: b.Ticks, StartingTileIndex: b.StartingTileIndex }); }).slice(0)
                     }); });
-                    this.SonicLevel.CollisionIndexes1 = sonicLevel.CollisionIndexes1;
-                    this.SonicLevel.CollisionIndexes2 = sonicLevel.CollisionIndexes2;
+                    this.sonicLevel.CollisionIndexes1 = sonicLevel.CollisionIndexes1;
+                    this.sonicLevel.CollisionIndexes2 = sonicLevel.CollisionIndexes2;
                     for (var i = 0; i < sonicLevel.HeightMaps.length; i++) {
                         var b1 = true;
                         var b2 = true;
@@ -5147,11 +5329,11 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                                 b2 = false;
                         }
                         if (b1)
-                            this.SonicLevel.HeightMaps[i] = HeightMap_2.HeightMap.FullHeight(false);
+                            this.sonicLevel.HeightMaps[i] = HeightMap_2.HeightMap.FullHeight(false);
                         else if (b2)
-                            this.SonicLevel.HeightMaps[i] = HeightMap_2.HeightMap.FullHeight(true);
+                            this.sonicLevel.HeightMaps[i] = HeightMap_2.HeightMap.FullHeight(true);
                         else
-                            this.SonicLevel.HeightMaps[i] = new HeightMap_2.HeightMap(sonicLevel.HeightMaps[i], i);
+                            this.sonicLevel.HeightMaps[i] = new HeightMap_2.HeightMap(sonicLevel.HeightMaps[i], i);
                     }
                     for (var j = 0; j < sonicLevel.Chunks.length; j++) {
                         var fc = sonicLevel.Chunks[j];
@@ -5162,7 +5344,7 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                             mj.TilePieces[i] = new Array(8);
                         }
                         for (var p = 0; p < fc.length; p++) {
-                            mj.TilePieces[p % 8][(p / 8) | 0] = Help_6.Help.Merge(new TilePieceInfo_1.TilePieceInfo(), {
+                            mj.TilePieces[p % 8][(p / 8) | 0] = Help_6.Help.merge(new TilePieceInfo_1.TilePieceInfo(), {
                                 Index: p,
                                 Block: fc[p].Block,
                                 Solid1: fc[p].Solid1,
@@ -5171,7 +5353,7 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                                 YFlip: fc[p].YFlip
                             });
                         }
-                        this.SonicLevel.TileChunks[j] = mj;
+                        this.sonicLevel.TileChunks[j] = mj;
                         mj.TileAnimations = {};
                         for (var tpX = 0; tpX < mj.TilePieces.length; tpX++) {
                             for (var tpY = 0; tpY < mj.TilePieces[tpX].length; tpY++) {
@@ -5179,7 +5361,7 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                                 if (pm != null) {
                                     for (var _i = 0, _a = pm.Tiles; _i < _a.length; _i++) {
                                         var mjc = _a[_i];
-                                        var fa = this.containsAnimatedTile(mjc._Tile, this.SonicLevel);
+                                        var fa = this.containsAnimatedTile(mjc._Tile, this.sonicLevel);
                                         if (fa) {
                                             mj.TileAnimations[tpY * 8 + tpX] = fa;
                                             acs[j] = mj;
@@ -5189,17 +5371,17 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                             }
                         }
                     }
-                    this.SonicLevel.Palette = sonicLevel.Palette.map(function (a) { return a.map(function (b) { return "#" + b; }); });
-                    this.SonicLevel.StartPositions = sonicLevel.StartPositions.map(function (a) { return new Utils_10.Point(a.X, a.Y); });
-                    this.SonicLevel.AnimatedPalettes = new Array();
+                    this.sonicLevel.Palette = sonicLevel.Palette.map(function (a) { return a.map(function (b) { return "#" + b; }); });
+                    this.sonicLevel.StartPositions = sonicLevel.StartPositions.map(function (a) { return new Utils_10.Point(a.X, a.Y); });
+                    this.sonicLevel.AnimatedPalettes = new Array();
                     if (sonicLevel.PaletteItems.length > 0) {
                         for (var k = 0; k < sonicLevel.PaletteItems[0].length; k++) {
                             var pal = sonicLevel.PaletteItems[0][k];
-                            this.SonicLevel.AnimatedPalettes.push(Help_6.Help.Merge(new SonicLevel_1.PaletteItem(), {
+                            this.sonicLevel.AnimatedPalettes.push(Help_6.Help.merge(new SonicLevel_1.PaletteItem(), {
                                 Palette: eval(pal.Palette).map(function (b) { return "#" + b; }),
                                 SkipIndex: pal.SkipIndex,
                                 TotalLength: pal.TotalLength,
-                                Pieces: pal.Pieces.map(function (a) { return Help_6.Help.Merge(new SonicLevel_1.PaletteItemPieces(), {
+                                Pieces: pal.Pieces.map(function (a) { return Help_6.Help.merge(new SonicLevel_1.PaletteItemPieces(), {
                                     PaletteIndex: a.PaletteIndex,
                                     PaletteMultiply: a.PaletteMultiply,
                                     PaletteOffset: a.PaletteOffset
@@ -5207,41 +5389,41 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                             }));
                         }
                     }
-                    for (var _b = 0, _c = this.SonicLevel.TilePieces; _b < _c.length; _b++) {
+                    for (var _b = 0, _c = this.sonicLevel.TilePieces; _b < _c.length; _b++) {
                         var tilePiece = _c[_b];
                         tilePiece.AnimatedPaletteIndexes = new Array();
                         tilePiece.AnimatedTileIndexes = new Array();
-                        if (this.SonicLevel.AnimatedPalettes.length > 0) {
+                        if (this.sonicLevel.AnimatedPalettes.length > 0) {
                             for (var _d = 0, _e = tilePiece.Tiles; _d < _e.length; _d++) {
                                 var mj = _e[_d];
                                 var tile = mj.GetTile();
                                 if (tile) {
-                                    tile.AnimatedPaletteIndexes = new Array();
+                                    tile.animatedPaletteIndexes = new Array();
                                     var pl = tile.GetAllPaletteIndexes();
-                                    tile.PaletteIndexesToBeAnimated = {};
-                                    tile.AnimatedTileIndexes = new Array();
-                                    for (var tileAnimationIndex = 0; tileAnimationIndex < this.SonicLevel.TileAnimations.length; tileAnimationIndex++) {
-                                        var tileAnimationData = this.SonicLevel.TileAnimations[tileAnimationIndex];
+                                    tile.paletteIndexesToBeAnimated = {};
+                                    tile.animatedTileIndexes = new Array();
+                                    for (var tileAnimationIndex = 0; tileAnimationIndex < this.sonicLevel.TileAnimations.length; tileAnimationIndex++) {
+                                        var tileAnimationData = this.sonicLevel.TileAnimations[tileAnimationIndex];
                                         var anin = tileAnimationData.AnimationTileIndex;
                                         var num = tileAnimationData.NumberOfTiles;
-                                        if (tile.Index >= anin && tile.Index < anin + num) {
+                                        if (tile.index >= anin && tile.index < anin + num) {
                                             tilePiece.AnimatedTileIndexes.push(tileAnimationIndex);
-                                            tile.AnimatedTileIndexes.push(tileAnimationIndex);
+                                            tile.animatedTileIndexes.push(tileAnimationIndex);
                                         }
                                     }
-                                    for (var animatedPaletteIndex = 0; animatedPaletteIndex < this.SonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
-                                        var pal = this.SonicLevel.AnimatedPalettes[animatedPaletteIndex];
-                                        tile.PaletteIndexesToBeAnimated[animatedPaletteIndex] = new Array();
+                                    for (var animatedPaletteIndex = 0; animatedPaletteIndex < this.sonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
+                                        var pal = this.sonicLevel.AnimatedPalettes[animatedPaletteIndex];
+                                        tile.paletteIndexesToBeAnimated[animatedPaletteIndex] = new Array();
                                         var _loop_4 = function(mjce) {
                                             var mje1 = mjce;
                                             if (mj.Palette == mje1.PaletteIndex) {
                                                 if (pl.filter(function (j) { return j == (mje1.PaletteOffset / 2 | 0) || j == (mje1.PaletteOffset / 2 | 0) + 1; }).length > 0) {
                                                     tilePiece.AnimatedPaletteIndexes.push(animatedPaletteIndex);
-                                                    tile.AnimatedPaletteIndexes.push(animatedPaletteIndex);
+                                                    tile.animatedPaletteIndexes.push(animatedPaletteIndex);
                                                     for (var _f = 0, pl_1 = pl; _f < pl_1.length; _f++) {
                                                         var pIndex = pl_1[_f];
                                                         if (pIndex == (mje1.PaletteOffset / 2 | 0) || pIndex == (mje1.PaletteOffset / 2 | 0) + 1) {
-                                                            tile.PaletteIndexesToBeAnimated[animatedPaletteIndex].push(pIndex);
+                                                            tile.paletteIndexesToBeAnimated[animatedPaletteIndex].push(pIndex);
                                                         }
                                                     }
                                                 }
@@ -5257,28 +5439,28 @@ System.register("Game/SonicManager", ["Common/Utils", "Common/CanvasInformation"
                         }
                     }
                     var finished = (function () {
-                        _this.Loading = false;
+                        _this.loading = false;
                     });
                     this.PreloadSprites(function () {
                         finished();
-                        _this.ForceResize();
+                        _this.forceResize();
                     }, function (s) {
                     });
-                    this.ForceResize();
-                    this.OnLevelLoad && this.OnLevelLoad(this.SonicLevel);
+                    this.forceResize();
+                    this.onLevelLoad && this.onLevelLoad(this.sonicLevel);
                 };
                 SonicManager._cachedOffs = {};
                 return SonicManager;
             }());
-            exports_36("SonicManager", SonicManager);
+            exports_39("SonicManager", SonicManager);
         }
     }
 });
 /// <reference path="../../typings/keyboardjs.d.ts" />
 /// <reference path="../../typings/socket.io-client.d.ts" />
-System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicManager", "Common/Enums", "Common/Utils", "Game/Sonic/Sonic", "Common/Help"], function(exports_37, context_37) {
+System.register("game/SonicEngine", ["common/CanvasInformation", "game/SonicManager", "common/Enums", "common/Utils", "game/sonic/Sonic", "common/Help"], function(exports_40, context_40) {
     "use strict";
-    var __moduleName = context_37 && context_37.id;
+    var __moduleName = context_40 && context_40.id;
     var CanvasInformation_8, SonicManager_16, Enums_8, Utils_11, Sonic_1, Help_7;
     var SonicEngine;
     return {
@@ -5305,8 +5487,12 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
             SonicEngine = (function () {
                 function SonicEngine() {
                     var _this = this;
-                    this.WideScreen = true;
-                    SonicEngine.Instance = this;
+                    this.wideScreen = true;
+                    this.fullscreenMode = false;
+                    this.gameGoodWidth = 0;
+                    this.canvasWidth = 0;
+                    this.canvasHeight = 0;
+                    SonicEngine.instance = this;
                     var gameCanvasName = "gameLayer";
                     this.gameCanvas = CanvasInformation_8.CanvasInformation.CreateFromElement(document.getElementById(gameCanvasName), 0, 0, true);
                     this.canvasWidth = 0;
@@ -5316,32 +5502,32 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                     window.addEventListener("resize", function (e) { return _this.resizeCanvas(true); });
                     jQuery(document).resize(function (e) { return _this.resizeCanvas(true); });
                     this.sonicManager = new SonicManager_16.SonicManager(this, this.gameCanvas, function () { return _this.resizeCanvas(true); });
-                    this.sonicManager.IndexedPalette = 0;
+                    this.sonicManager.indexedPalette = 0;
                     window.setInterval(function () { return _this.sonicManager.Tick(); }, 1000 / 60);
                     window.setInterval(function () { return _this.GameDraw(); }, 1000 / 60);
                     this.resizeCanvas(true);
                 }
                 SonicEngine.prototype.bindInput = function () {
                     var _this = this;
-                    this.gameCanvas.DomCanvas.mousedown(function (e) { return _this.canvasOnClick(e); });
-                    this.gameCanvas.DomCanvas.mouseup(function (e) { return _this.canvasMouseUp(e); });
-                    this.gameCanvas.DomCanvas.mousemove(function (e) { return _this.canvasMouseMove(e); });
-                    this.gameCanvas.DomCanvas.bind("touchstart", function (e) { return _this.canvasOnClick(e); });
-                    this.gameCanvas.DomCanvas.bind("touchend", function (e) { return _this.canvasMouseUp(e); });
-                    this.gameCanvas.DomCanvas.bind("touchmove", function (e) { return _this.canvasMouseMove(e); });
-                    this.gameCanvas.DomCanvas.bind("contextmenu", function (e) { return e.preventDefault(); });
+                    this.gameCanvas.domCanvas.mousedown(function (e) { return _this.canvasOnClick(e); });
+                    this.gameCanvas.domCanvas.mouseup(function (e) { return _this.canvasMouseUp(e); });
+                    this.gameCanvas.domCanvas.mousemove(function (e) { return _this.canvasMouseMove(e); });
+                    this.gameCanvas.domCanvas.bind("touchstart", function (e) { return _this.canvasOnClick(e); });
+                    this.gameCanvas.domCanvas.bind("touchend", function (e) { return _this.canvasMouseUp(e); });
+                    this.gameCanvas.domCanvas.bind("touchmove", function (e) { return _this.canvasMouseMove(e); });
+                    this.gameCanvas.domCanvas.bind("contextmenu", function (e) { return e.preventDefault(); });
                     keyboardJS.bind("f", function () {
-                        _this.sonicManager.ShowHeightMap = !_this.sonicManager.ShowHeightMap;
+                        _this.sonicManager.showHeightMap = !_this.sonicManager.showHeightMap;
                     }, function () {
                     });
                     keyboardJS.bind("o", function () {
                         if (_this.sonicManager.currentGameState == Enums_8.GameState.Playing)
-                            _this.sonicManager.InHaltMode = !_this.sonicManager.InHaltMode;
+                            _this.sonicManager.inHaltMode = !_this.sonicManager.inHaltMode;
                     }, function () {
                     });
                     keyboardJS.bind("1", function () {
-                        _this.sonicManager.IndexedPalette++;
-                        _this.sonicManager.ClearCache();
+                        _this.sonicManager.indexedPalette++;
+                        _this.sonicManager.clearCache();
                     }, function () {
                     });
                     keyboardJS.bind("q", function () {
@@ -5350,17 +5536,17 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                     });
                     keyboardJS.bind("p", function () {
                         if (_this.sonicManager.currentGameState == Enums_8.GameState.Playing)
-                            if (_this.sonicManager.InHaltMode)
+                            if (_this.sonicManager.inHaltMode)
                                 _this.sonicManager.waitingForTickContinue = false;
                     }, function () {
                     });
                     keyboardJS.bind("h", function () {
                         if (_this.sonicManager.currentGameState == Enums_8.GameState.Playing)
-                            _this.sonicManager.sonicToon.Hit(_this.sonicManager.sonicToon.X, _this.sonicManager.sonicToon.Y);
+                            _this.sonicManager.sonicToon.Hit(_this.sonicManager.sonicToon.x, _this.sonicManager.sonicToon.y);
                     }, function () {
                     });
                     keyboardJS.bind("u", function () {
-                        _this.WideScreen = !_this.WideScreen;
+                        _this.wideScreen = !_this.wideScreen;
                         _this.resizeCanvas(true);
                     }, function () {
                     });
@@ -5375,8 +5561,8 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                                 _this.sonicManager.sonicToon.PressUp();
                                 break;
                             case Enums_8.GameState.Editing:
-                                _this.sonicManager.windowLocation.Y -= 128;
-                                _this.sonicManager.BigWindowLocation.Y -= 128;
+                                _this.sonicManager.windowLocation.y -= 128;
+                                _this.sonicManager.bigWindowLocation.y -= 128;
                                 break;
                         }
                     }, function () {
@@ -5394,8 +5580,8 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                                 _this.sonicManager.sonicToon.PressCrouch();
                                 break;
                             case Enums_8.GameState.Editing:
-                                _this.sonicManager.windowLocation.Y += 128;
-                                _this.sonicManager.BigWindowLocation.Y += 128;
+                                _this.sonicManager.windowLocation.y += 128;
+                                _this.sonicManager.bigWindowLocation.y += 128;
                                 break;
                         }
                     }, function () {
@@ -5413,8 +5599,8 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                                 _this.sonicManager.sonicToon.PressLeft();
                                 break;
                             case Enums_8.GameState.Editing:
-                                _this.sonicManager.windowLocation.X -= 128;
-                                _this.sonicManager.BigWindowLocation.X -= 128;
+                                _this.sonicManager.windowLocation.x -= 128;
+                                _this.sonicManager.bigWindowLocation.x -= 128;
                                 break;
                         }
                     }, function () {
@@ -5432,8 +5618,8 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                                 _this.sonicManager.sonicToon.PressRight();
                                 break;
                             case Enums_8.GameState.Editing:
-                                _this.sonicManager.windowLocation.X += 128;
-                                _this.sonicManager.BigWindowLocation.X += 128;
+                                _this.sonicManager.windowLocation.x += 128;
+                                _this.sonicManager.bigWindowLocation.x += 128;
                                 break;
                         }
                     }, function () {
@@ -5463,57 +5649,57 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                         }
                     });
                     keyboardJS.bind("e", function () {
-                        _this.sonicManager.SonicLevel.CurHeightMap = !_this.sonicManager.SonicLevel.CurHeightMap;
+                        _this.sonicManager.sonicLevel.CurHeightMap = !_this.sonicManager.sonicLevel.CurHeightMap;
                     }, function () {
                     });
                     setTimeout(function () {
-                        _this.Client.emit("LoadLevel.Request", { Data: 'Angel Island Zone Act 1' });
+                        _this.client.emit("LoadLevel.Request", { Data: 'Angel Island Zone Act 1' });
                         //            if (neverGot) {
                         //            this.LoadLevel((<any>window).STATICLEVEL);
                         //        }
                     }, 1);
-                    this.Client = io.connect("159.203.118.77:8998");
-                    this.Client.on("LoadLevel.Response", function (data) {
+                    this.client = io.connect("159.203.118.77:8998");
+                    this.client.on("LoadLevel.Response", function (data) {
                         _this.LoadLevel(data.Data);
                     });
-                    this.Client.on("GetObjects.Response", function (data) {
+                    this.client.on("GetObjects.Response", function (data) {
                         _this.sonicManager.loadObjects(data.Data);
                     });
                 };
                 SonicEngine.prototype.LoadLevel = function (data) {
-                    var l = JSON.parse(Help_7.Help.DecodeString(data));
-                    SonicEngine.Instance.RunSonic(l);
+                    var l = JSON.parse(Help_7.Help.decodeString(data));
+                    SonicEngine.instance.RunSonic(l);
                 };
                 SonicEngine.prototype.RunSonic = function (level) {
-                    this.sonicManager.ClearCache();
+                    this.sonicManager.clearCache();
                     this.sonicManager.Load(level);
-                    this.sonicManager.windowLocation.X = 0;
-                    this.sonicManager.windowLocation.Y = 0;
-                    this.sonicManager.BigWindowLocation.X = (this.sonicManager.windowLocation.X - this.sonicManager.windowLocation.Width * 0.2) | 0;
-                    this.sonicManager.BigWindowLocation.Y = (this.sonicManager.windowLocation.Y - this.sonicManager.windowLocation.Height * 0.2) | 0;
-                    this.sonicManager.BigWindowLocation.Width = (this.sonicManager.windowLocation.Width * 1.8) | 0;
-                    this.sonicManager.BigWindowLocation.Height = (this.sonicManager.windowLocation.Height * 1.8) | 0;
-                    var dl = Help_7.Help.GetQueryString();
+                    this.sonicManager.windowLocation.x = 0;
+                    this.sonicManager.windowLocation.y = 0;
+                    this.sonicManager.bigWindowLocation.x = (this.sonicManager.windowLocation.x - this.sonicManager.windowLocation.Width * 0.2) | 0;
+                    this.sonicManager.bigWindowLocation.y = (this.sonicManager.windowLocation.y - this.sonicManager.windowLocation.Height * 0.2) | 0;
+                    this.sonicManager.bigWindowLocation.Width = (this.sonicManager.windowLocation.Width * 1.8) | 0;
+                    this.sonicManager.bigWindowLocation.Height = (this.sonicManager.windowLocation.Height * 1.8) | 0;
+                    var dl = Help_7.Help.getQueryString();
                     if (dl["run"]) {
                         if (this.sonicManager.currentGameState == Enums_8.GameState.Playing)
                             this.runGame();
                         this.runGame();
                     }
-                    this.sonicManager.CacheTiles();
+                    this.sonicManager.cacheTiles();
                 };
                 SonicEngine.prototype.runGame = function () {
-                    var sonicManager = SonicManager_16.SonicManager.Instance;
+                    var sonicManager = SonicManager_16.SonicManager.instance;
                     switch (sonicManager.currentGameState) {
                         case Enums_8.GameState.Playing:
                             sonicManager.currentGameState = Enums_8.GameState.Editing;
                             sonicManager.scale = new Utils_11.Point(4, 4);
-                            sonicManager.windowLocation = Help_7.Help.DefaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
+                            sonicManager.windowLocation = Help_7.Help.defaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
                             sonicManager.sonicToon = null;
                             break;
                         case Enums_8.GameState.Editing:
                             sonicManager.currentGameState = Enums_8.GameState.Playing;
                             sonicManager.scale = new Utils_11.Point(4, 4);
-                            sonicManager.windowLocation = Help_7.Help.DefaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
+                            sonicManager.windowLocation = Help_7.Help.defaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
                             sonicManager.sonicToon = new Sonic_1.Sonic();
                             break;
                     }
@@ -5522,7 +5708,7 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                 };
                 SonicEngine.prototype.canvasMouseMove = function (queryEvent) {
                     queryEvent.preventDefault();
-                    this.sonicManager.MouseMove(queryEvent);
+                    this.sonicManager.mouseMove(queryEvent);
                 };
                 SonicEngine.prototype.canvasOnClick = function (queryEvent) {
                     queryEvent.preventDefault();
@@ -5530,31 +5716,30 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                 };
                 SonicEngine.prototype.canvasMouseUp = function (queryEvent) {
                     queryEvent.preventDefault();
-                    this.sonicManager.MouseUp(queryEvent);
+                    this.sonicManager.mouseUp(queryEvent);
                 };
                 SonicEngine.prototype.resizeCanvas = function (resetOverride) {
                     this.canvasWidth = $(window).width();
                     this.canvasHeight = $(window).height();
-                    this.sonicManager.windowLocation = Help_7.Help.DefaultWindowLocation(this.sonicManager.currentGameState, this.sonicManager.scale);
-                    var wide = new Utils_11.DoublePoint((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y));
-                    var even = new Utils_11.DoublePoint(Math.min((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y)), Math.min((this.canvasWidth / 320 / this.sonicManager.scale.X), (this.canvasHeight / 224 / this.sonicManager.scale.Y)));
-                    this.sonicManager.RealScale = !this.fullscreenMode ? new Utils_11.DoublePoint(1, 1) : (this.WideScreen ? wide : even);
+                    this.sonicManager.windowLocation = Help_7.Help.defaultWindowLocation(this.sonicManager.currentGameState, this.sonicManager.scale);
+                    var wide = new Utils_11.DoublePoint((this.canvasWidth / 320 / this.sonicManager.scale.x), (this.canvasHeight / 224 / this.sonicManager.scale.y));
+                    var even = new Utils_11.DoublePoint(Math.min((this.canvasWidth / 320 / this.sonicManager.scale.x), (this.canvasHeight / 224 / this.sonicManager.scale.y)), Math.min((this.canvasWidth / 320 / this.sonicManager.scale.x), (this.canvasHeight / 224 / this.sonicManager.scale.y)));
+                    this.sonicManager.realScale = !this.fullscreenMode ? new Utils_11.DoublePoint(1, 1) : (this.wideScreen ? wide : even);
                     if (resetOverride || this.sonicManager.overrideRealScale == null)
-                        this.sonicManager.overrideRealScale = Utils_11.DoublePoint.create(this.sonicManager.RealScale);
+                        this.sonicManager.overrideRealScale = Utils_11.DoublePoint.create(this.sonicManager.realScale);
                     else
-                        this.sonicManager.RealScale = Utils_11.DoublePoint.create(this.sonicManager.overrideRealScale);
-                    this.gameCanvas.DomCanvas.attr("width", (this.sonicManager.windowLocation.Width * (this.sonicManager.currentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.X * this.sonicManager.RealScale.X : 1)).toString());
-                    this.gameCanvas.DomCanvas.attr("height", (this.sonicManager.windowLocation.Height * (this.sonicManager.currentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.Y * this.sonicManager.RealScale.Y : 1)).toString());
-                    this.gameGoodWidth = (this.sonicManager.windowLocation.Width * (this.sonicManager.currentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.X * this.sonicManager.RealScale.X : 1));
-                    var screenOffset = this.sonicManager.currentGameState == Enums_8.GameState.Playing ? new Utils_11.DoublePoint(((this.canvasWidth / 2 - this.sonicManager.windowLocation.Width * this.sonicManager.scale.X * this.sonicManager.RealScale.X / 2)), (this.canvasHeight / 2 - this.sonicManager.windowLocation.Height * this.sonicManager.scale.Y * this.sonicManager.RealScale.Y / 2)) : new Utils_11.DoublePoint(0, 0);
-                    this.gameCanvas.DomCanvas.css("left", screenOffset.X + 'px');
-                    this.gameCanvas.DomCanvas.css("top", screenOffset.Y + 'px');
+                        this.sonicManager.realScale = Utils_11.DoublePoint.create(this.sonicManager.overrideRealScale);
+                    this.gameCanvas.domCanvas.attr("width", (this.sonicManager.windowLocation.Width * (this.sonicManager.currentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.x * this.sonicManager.realScale.x : 1)).toString());
+                    this.gameCanvas.domCanvas.attr("height", (this.sonicManager.windowLocation.Height * (this.sonicManager.currentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.y * this.sonicManager.realScale.y : 1)).toString());
+                    this.gameGoodWidth = (this.sonicManager.windowLocation.Width * (this.sonicManager.currentGameState == Enums_8.GameState.Playing ? this.sonicManager.scale.x * this.sonicManager.realScale.x : 1));
+                    var screenOffset = this.sonicManager.currentGameState == Enums_8.GameState.Playing ? new Utils_11.DoublePoint(((this.canvasWidth / 2 - this.sonicManager.windowLocation.Width * this.sonicManager.scale.x * this.sonicManager.realScale.x / 2)), (this.canvasHeight / 2 - this.sonicManager.windowLocation.Height * this.sonicManager.scale.y * this.sonicManager.realScale.y / 2)) : new Utils_11.DoublePoint(0, 0);
+                    this.gameCanvas.domCanvas.css("left", screenOffset.x + 'px');
+                    this.gameCanvas.domCanvas.css("top", screenOffset.y + 'px');
                     this.sonicManager.DestroyCanvases();
                     this.sonicManager.ResetCanvases();
                 };
                 SonicEngine.prototype.Clear = function (canv) {
-                    var w;
-                    canv.DomCanvas[0].width = this.gameGoodWidth;
+                    canv.domCanvas[0].width = this.gameGoodWidth;
                     this.gameCanvas.Context.imageSmoothingEnabled = false;
                 };
                 SonicEngine.prototype.GameDraw = function () {
@@ -5562,18 +5747,24 @@ System.register("Game/SonicEngine", ["Common/CanvasInformation", "Game/SonicMana
                 };
                 return SonicEngine;
             }());
-            exports_37("SonicEngine", SonicEngine);
+            exports_40("SonicEngine", SonicEngine);
         }
     }
 });
 /// <reference path="../typings/Compress.d.ts" />
-System.register("main", ["Game/SonicEngine"], function(exports_38, context_38) {
+System.register("main", ['angular2/platform/browser', "layout/Layout", "game/SonicEngine"], function(exports_41, context_41) {
     "use strict";
-    var __moduleName = context_38 && context_38.id;
-    var SonicEngine_2;
+    var __moduleName = context_41 && context_41.id;
+    var browser_1, Layout_1, SonicEngine_2;
     var Main;
     return {
         setters:[
+            function (browser_1_1) {
+                browser_1 = browser_1_1;
+            },
+            function (Layout_1_1) {
+                Layout_1 = Layout_1_1;
+            },
             function (SonicEngine_2_1) {
                 SonicEngine_2 = SonicEngine_2_1;
             }],
@@ -5582,14 +5773,12 @@ System.register("main", ["Game/SonicEngine"], function(exports_38, context_38) {
                 function Main() {
                 }
                 Main.run = function () {
-                    var j = (window.STATICLEVEL);
-                    var message = new Compressor().DecompressText(j);
-                    var sl = JSON.parse(message);
                     new SonicEngine_2.SonicEngine();
+                    browser_1.bootstrap(Layout_1.Layout);
                 };
                 return Main;
             }());
-            exports_38("Main", Main);
+            exports_41("Main", Main);
             Main.run();
         }
     }

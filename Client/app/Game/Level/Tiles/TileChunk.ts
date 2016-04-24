@@ -162,15 +162,10 @@ export class TileChunk {
                     if (paletteAnimationCanvasFrames == null)
                         continue;
                     let currentFrame = SonicManager.instance.tilePaletteAnimationManager.getCurrentFrame(paletteAnimationIndex);
-                    if (!currentFrame) {
-
-                        debugger;
-                        let currentFrame = SonicManager.instance.tilePaletteAnimationManager.getCurrentFrame(paletteAnimationIndex);
-                    }
                     this.currentPaletteAnimationFrameIndexCache[paletteAnimationIndex] = currentFrame.FrameIndex;
-                    let paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.Frames[currentFrame.FrameIndex];
-                    let canvasLayerToDraw = paletteAnimationCanvasFrame.Canvas.canvas;
-                    canvas.drawImage(canvasLayerToDraw, position.x + paletteAnimationCanvasFrames.Position.x, position.y + paletteAnimationCanvasFrames.Position.y);
+                    let paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.frames[currentFrame.FrameIndex];
+                    let canvasLayerToDraw = paletteAnimationCanvasFrame.canvas.canvas;
+                    canvas.drawImage(canvasLayerToDraw, position.x + paletteAnimationCanvasFrames.position.x, position.y + paletteAnimationCanvasFrames.position.y);
                 }
             }
             if (this.HasTileAnimations()) {
@@ -181,9 +176,9 @@ export class TileChunk {
                         continue;
                     let currentFrame = SonicManager.instance.tileAnimationManager.getCurrentFrame(tileAnimationIndex);
                     this.currentTileAnimationFrameIndexCache[tileAnimationIndex] = currentFrame.frameIndex;
-                    let tileAnimationCanvasFrame = tileAnimationCanvasFrames.Frames[currentFrame.frameIndex];
-                    let canvasLayerToDraw = tileAnimationCanvasFrame.Canvas.canvas;
-                    canvas.drawImage(canvasLayerToDraw, position.x + tileAnimationCanvasFrames.Position.x, position.y + tileAnimationCanvasFrames.Position.y);
+                    let tileAnimationCanvasFrame = tileAnimationCanvasFrames.frames[currentFrame.frameIndex];
+                    let canvasLayerToDraw = tileAnimationCanvasFrame.canvas.canvas;
+                    canvas.drawImage(canvasLayerToDraw, position.x + tileAnimationCanvasFrames.position.x, position.y + tileAnimationCanvasFrames.position.y);
                 }
             }
         }
@@ -297,17 +292,17 @@ export class TileChunk {
             }
             let paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex] = new PaletteAnimationCanvasFrames(paletteAnimationIndex);
             let tilePaletteAnimation:TilePaletteAnimation = SonicManager.instance.tilePaletteAnimationManager.Animations[paletteAnimationIndex];
-            paletteAnimationCanvasFrames.Position = new Point(rect.x * TileChunk.TilePiecesSquareSize, rect.y * TileChunk.TilePiecesSquareSize);
+            paletteAnimationCanvasFrames.position = new Point(rect.x * TileChunk.TilePiecesSquareSize, rect.y * TileChunk.TilePiecesSquareSize);
             for (let currentFrame of tilePaletteAnimation.Frames) {
                 tilePaletteAnimation.CurrentFrame = currentFrame.FrameIndex;
-                let paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.Frames[currentFrame.FrameIndex] = new PaletteAnimationCanvasFrame();
+                let paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.frames[currentFrame.FrameIndex] = new PaletteAnimationCanvasFrame();
                 currentFrame.SetPalette();
                 let tilePaletteCanvas = CanvasInformation.create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
-                paletteAnimationCanvasFrame.Canvas = tilePaletteCanvas;
-                paletteAnimationCanvasFrame.Canvas.Context.save();
-                paletteAnimationCanvasFrame.Canvas.Context.translate(-rect.x * TileChunk.TilePiecesSquareSize, -rect.y * TileChunk.TilePiecesSquareSize);
+                paletteAnimationCanvasFrame.canvas = tilePaletteCanvas;
+                paletteAnimationCanvasFrame.canvas.Context.save();
+                paletteAnimationCanvasFrame.canvas.Context.translate(-rect.x * TileChunk.TilePiecesSquareSize, -rect.y * TileChunk.TilePiecesSquareSize);
                 this.drawTilePiecesAnimatedPalette(tilePaletteCanvas.Context, layer, TileChunk.TilePiecesSquareSize, paletteAnimationIndex);
-                paletteAnimationCanvasFrame.Canvas.Context.restore();
+                paletteAnimationCanvasFrame.canvas.Context.restore();
                 currentFrame.ClearPalette();
             }
             tilePaletteAnimation.CurrentFrame = 0;
@@ -323,16 +318,16 @@ export class TileChunk {
             }
             let tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex] = new TileAnimationCanvasFrames(tileAnimationIndex);
             let tileAnimation:TileAnimation = SonicManager.instance.tileAnimationManager.Animations[tileAnimationIndex];
-            tileAnimationCanvasFrames.Position = new Point(rect.x * TileChunk.TilePiecesSquareSize, rect.y * TileChunk.TilePiecesSquareSize);
+            tileAnimationCanvasFrames.position = new Point(rect.x * TileChunk.TilePiecesSquareSize, rect.y * TileChunk.TilePiecesSquareSize);
             for (let currentFrame of tileAnimation.frames) {
-                let tileAnimationCanvasFrame = tileAnimationCanvasFrames.Frames[currentFrame.frameIndex] = new TileAnimationCanvasFrame();
+                let tileAnimationCanvasFrame = tileAnimationCanvasFrames.frames[currentFrame.frameIndex] = new TileAnimationCanvasFrame();
                 let tileTileCanvas = CanvasInformation.create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
-                tileAnimationCanvasFrame.Canvas = tileTileCanvas;
+                tileAnimationCanvasFrame.canvas = tileTileCanvas;
                 tileAnimation.currentFrame = currentFrame.frameIndex;
-                tileAnimationCanvasFrame.Canvas.Context.save();
-                tileAnimationCanvasFrame.Canvas.Context.translate(-rect.x * TileChunk.TilePiecesSquareSize, -rect.y * TileChunk.TilePiecesSquareSize);
+                tileAnimationCanvasFrame.canvas.Context.save();
+                tileAnimationCanvasFrame.canvas.Context.translate(-rect.x * TileChunk.TilePiecesSquareSize, -rect.y * TileChunk.TilePiecesSquareSize);
                 this.drawTilePiecesAnimatedTile(tileTileCanvas.Context, layer, TileChunk.TilePiecesSquareSize, tileAnimationIndex);
-                tileAnimationCanvasFrame.Canvas.Context.restore();
+                tileAnimationCanvasFrame.canvas.Context.restore();
             }
             tileAnimation.currentFrame = 0;
         }
@@ -407,10 +402,10 @@ export class TileChunk {
         canvas.textBaseline = "top";
         {
             let yOffset:number = layer == ChunkLayerState.Low ? 0 : 64;
-            if (debugDrawOptions.ShowBaseData) {
+            if (debugDrawOptions.showBaseData) {
                 canvas.fillText("Base", position.x + 0, position.y + yOffset);
             }
-            if (debugDrawOptions.ShowPaletteAnimationData) {
+            if (debugDrawOptions.showPaletteAnimationData) {
                 if (this.hasPixelAnimations()) {
                     let paletteAnimationCanvases = this.paletteAnimationCanvasesCache[layer];
                     for (let paletteAnimationIndex of this.getAllPaletteAnimationIndexes()) {
@@ -422,7 +417,7 @@ export class TileChunk {
                     }
                 }
             }
-            if (debugDrawOptions.ShowTileAnimationData) {
+            if (debugDrawOptions.showTileAnimationData) {
                 if (this.HasTileAnimations()) {
                     let tileAnimationCanvases = this.tileAnimationCanvasesCache[layer];
                     for (let tileAnimationIndex of this.getAllTileAnimationIndexes()) {
@@ -435,11 +430,11 @@ export class TileChunk {
                 }
             }
         }
-        if (debugDrawOptions.OutlineChunk) {
+        if (debugDrawOptions.putlineChunk) {
             canvas.strokeStyle = "black";
             canvas.strokeRect(position.x, position.y, 128, 128);
         }
-        if (debugDrawOptions.OutlineTiles) {
+        if (debugDrawOptions.outlineTiles) {
             canvas.strokeStyle = "green";
             for (let x:number = 0; x < TileChunk.TileSideLength; x++) {
                 for (let y:number = 0; y < TileChunk.TileSideLength; y++) {
@@ -447,7 +442,7 @@ export class TileChunk {
                 }
             }
         }
-        if (debugDrawOptions.OutlineTilePieces) {
+        if (debugDrawOptions.outlineTilePieces) {
             canvas.strokeStyle = "purple";
             for (let x:number = 0; x < TileChunk.TilePieceSideLength; x++) {
                 for (let y:number = 0; y < TileChunk.TilePieceSideLength; y++) {
@@ -455,10 +450,10 @@ export class TileChunk {
                 }
             }
         }
-        if (debugDrawOptions.OutlineTile != null) {
+        if (debugDrawOptions.outlineTile != null) {
 
         }
-        if (debugDrawOptions.OutlineTilePiece != null) {
+        if (debugDrawOptions.outlineTilePiece != null) {
             canvas.strokeStyle = "yellow";
             for (let x:number = 0; x < TileChunk.TilePieceSideLength; x++) {
                 for (let y:number = 0; y < TileChunk.TilePieceSideLength; y++) {
@@ -468,7 +463,7 @@ export class TileChunk {
                     let tilePiece = tilePieceInfo.GetTilePiece();
                     if (tilePiece == null)
                         continue;
-                    if (tilePiece.Index == debugDrawOptions.OutlineTilePiece.Block) {
+                    if (tilePiece.Index == debugDrawOptions.outlineTilePiece.Block) {
                         canvas.strokeRect(position.x + (x * TileChunk.TilePiecesSquareSize), position.y + (y * TileChunk.TilePiecesSquareSize), TileChunk.TilePiecesSquareSize, TileChunk.TilePiecesSquareSize);
                     }
                 }
@@ -529,7 +524,7 @@ export class TileChunk {
                     context.translate(x, y);
                     canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                     context.fillRect(0, 0, 128, 128);
-                    context.drawImage(frame.canvas.canvas, m.Position.x, m.Position.y);
+                    context.drawImage(frame.canvas.canvas, m.position.x, m.position.y);
                     context.strokeRect(0, 0, 128, 128);
                     context.restore();
                     numOfChunks++;
@@ -547,7 +542,7 @@ export class TileChunk {
                     context.translate(x, y);
                     canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                     context.fillRect(0, 0, 128, 128);
-                    context.drawImage(frame.canvas.canvas, m.Position.y, m.Position.y);
+                    context.drawImage(frame.canvas.canvas, m.position.y, m.position.y);
                     context.strokeRect(0, 0, 128, 128);
                     context.restore();
                     numOfChunks++;
@@ -566,44 +561,44 @@ export class TileChunk {
 
 
 export class TileChunkDebugDrawOptions {
-    public ShowBaseData:boolean;
-    public ShowTileAnimationData:boolean;
-    public ShowPaletteAnimationData:boolean;
-    public OutlineChunk:boolean;
-    public OutlineTilePieces:boolean;
-    public OutlineTiles:boolean;
-    public OutlineTilePiece:TilePieceInfo;
-    public OutlineTile:TileInfo;
+    public showBaseData:boolean;
+    public showTileAnimationData:boolean;
+    public showPaletteAnimationData:boolean;
+    public putlineChunk:boolean;
+    public outlineTilePieces:boolean;
+    public outlineTiles:boolean;
+    public outlineTilePiece:TilePieceInfo;
+    public outlineTile:TileInfo;
 }
 export class ChunkLayer<T> {
     [layer:number]:T
 }
 export class PaletteAnimationCanvasFrames {
     constructor(paletteAnimationIndex:number) {
-        this.PaletteAnimationIndex = paletteAnimationIndex;
-        this.Frames = {};
+        this.paletteAnimationIndex = paletteAnimationIndex;
+        this.frames = {};
     }
 
-    public PaletteAnimationIndex:number;
-    public Position:Point;
-    public Frames:{ [key:number]:PaletteAnimationCanvasFrame };
+    public paletteAnimationIndex:number;
+    public position:Point;
+    public frames:{ [key:number]:PaletteAnimationCanvasFrame };
 }
 export class PaletteAnimationCanvasFrame {
-    public Canvas:CanvasInformation;
+    public canvas:CanvasInformation;
 }
 export class TileAnimationCanvasFrames {
     constructor(tileAnimationIndex:number) {
-        this.TileAnimationIndex = tileAnimationIndex;
-        this.Frames = {};
+        this.tileAnimationIndex = tileAnimationIndex;
+        this.frames = {};
     }
 
-    public TileAnimationIndex:number;
+    public tileAnimationIndex:number;
 
-    public Position:Point;
+    public position:Point;
 
-    public Frames:{ [key:number]:TileAnimationCanvasFrame };
+    public frames:{ [key:number]:TileAnimationCanvasFrame };
 }
 export class TileAnimationCanvasFrame {
 
-    public Canvas:CanvasInformation;
+    public canvas:CanvasInformation;
 }

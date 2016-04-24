@@ -157,7 +157,7 @@ export class SonicManager {
                     //                            dontClear = true;
                     //                        this.UIManager.UIManagerAreas.TilePieceArea.Data = tp;
                     //                    }
-                    this.clearCache();
+                    // this.clearCache();
                     return true;
                 case ClickState.PlaceRing:
                     ex = e.x;
