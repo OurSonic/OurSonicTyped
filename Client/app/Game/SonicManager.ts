@@ -348,7 +348,10 @@ export class SonicManager {
             canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
 
-            var imageData = this.pixelScaleManager.scale(canvas, this.pixelScale, this.windowLocation.Width, this.windowLocation.Height);
+            var imageData = this.pixelScaleManager.scale(canvas, this.pixelScale - 1, this.windowLocation.Width, this.windowLocation.Height);
+            var pixelScale = this.pixelScaleManager.getPixelScale(this.pixelScale - 1);
+            canvas.scale(pixelScale.x, pixelScale.y);
+
 
             canvas.scale(this.realScale.x, this.realScale.y);
             canvas.scale(this.scale.x, this.scale.y);
@@ -996,64 +999,36 @@ export class SonicManager {
 
 class PixelScaleManager {
 
-    scale(context, pixelScale, width, height) {
-        var a = pixelScale - 1;
-        if (a == 0)return context;
-        var startA = a;
+    private cachedImageDatas = {};
+    private cachedCanvases = {};
+    private cachedArrays = {};
+    private cached32BitArrays = {};
+    private cachedPosLookups = {};
 
-        var nScale = Math.pow(2, startA);
-        context.scale(1 / nScale, 1 / nScale);
+
+    scale(context, pixelScale, width, height) {
+        if (pixelScale == 0)return context;
+        var startingPixelScale = pixelScale;
 
         var imageData = context.getImageData(0, 0, width, height).data;
-        while (a > 0) {
-            var n = Math.pow(2, (startA - a));
-            imageData = this.scaleIt(imageData, width * n, height * n);
-            a--;
+        while (pixelScale > 0) {
+            var nScale = Math.pow(2, (startingPixelScale - pixelScale));
+            imageData = this.scaleIt(imageData, width * nScale, height * nScale);
+            pixelScale--;
         }
-        var f = Math.pow(2, (startA - a));
-        var id = this.imageDataCache(context, width * f, height * f);
-        id.data.set(imageData);
+        var f = Math.pow(2, (startingPixelScale - pixelScale));
+        var largeImageData = this.cachedImageData(context, width * f, height * f);
+        largeImageData.data.set(imageData);
 
-        var newC = this.getCnv(id.width, id.height);
-        newC.context.putImageData(id, 0, 0);
+        var newC = this.cachedCanvas(largeImageData.width, largeImageData.height);
+        newC.context.putImageData(largeImageData, 0, 0);
         return newC.canvas;
 
     }
 
-    private imageDataCaches = {};
-
-    private imageDataCache(canvas, width, height) {
-        var s = ((width ) + " " + (height ));
-        if (this.imageDataCaches[s]) {
-            return this.imageDataCaches[s];
-        }
-        return this.imageDataCaches[s] = canvas.createImageData(width, height);
-    };
-
-
-    private tempCnvs = {};
-
-    private   getCnv(width, height) {
-
-        var s = (width + " " + height);
-        var tempCnv = this.tempCnvs[s];
-        if (tempCnv) {
-            return tempCnv;
-        }
-
-
-        var newCanvas = document.createElement('canvas');
-        newCanvas.width = width;
-        newCanvas.height = height;
-        var newContext = newCanvas.getContext('2d');
-        (<any>newContext).mozImageSmoothingEnabled = false; /// future
-        (<any>newContext).msImageSmoothingEnabled = false; /// future
-        (<any>newContext).imageSmoothingEnabled = false; /// future
-
-        return this.tempCnvs[s] = {
-            canvas: newCanvas,
-            context: newContext
-        };
+    getPixelScale(pixelScale) {
+        var nScale = Math.pow(2, pixelScale);
+        return {x: 1 / nScale, y: 1 / nScale};
     }
 
 
@@ -1061,7 +1036,7 @@ class PixelScaleManager {
 
         var width2 = width * 2;
         var height2 = height * 2;
-        var pixels2_ = this.getArray(width2 * height2);
+        var pixels2_ = this.cachedArray(width2 * height2);
         var posLookup = this.getPosLookup(width, height);
         var colsLookup = this.getColsLookup(pixels_, width, height);
 
@@ -1138,40 +1113,11 @@ class PixelScaleManager {
     }
 
 
-    private tempArrays = {};
-
-    private getArray(size) {
-        var tmp = this.tempArrays[size];
-        if (tmp) {
-            return tmp;
-        }
-        tmp = this.tempArrays[size] = new Uint8ClampedArray(size * 4);
-
-        for (var s = 0; s < size * 4; s++) {
-            tmp[s] = 255;
-        }
-
-        return tmp;
-    }
-
-    private tempBArrays = {};
-
-    private getInt32Array(size) {
-        var tmp = this.tempBArrays[size];
-        if (tmp) {
-            return tmp;
-        }
-        return this.tempBArrays[size] = new Uint32Array(size);
-    }
-
-
-    private posLookups = {};
-
     private  getPosLookup(width, height) {
-        var posLookup = this.posLookups[width * height];
+        var posLookup = this.cachedPosLookups[width * height];
         if (posLookup)return posLookup;
 
-        var posLookup = this.posLookups[width * height] = {
+        var posLookup = this.cachedPosLookups[width * height] = {
             left: new Uint32Array(width * height),
             right: new Uint32Array(width * height),
             top: new Uint32Array(width * height),
@@ -1200,7 +1146,7 @@ class PixelScaleManager {
 
 
     private  getColsLookup(imageData, width, height) {
-        var cols = this.getInt32Array(width * height * 4);
+        var cols = this.cached32BitArray(width * height * 4);
         var pixels_ = imageData;
         var cc = 0;
         for (var y = 0; y < height; y++) {
@@ -1239,6 +1185,59 @@ class PixelScaleManager {
             return ((y) * width + (x)) * 4;
         else
             return ((y + 1) * width + (x)) * 4;
+    }
+
+
+    private cachedImageData(canvas, width, height) {
+        var s = ((width ) + " " + (height ));
+        if (this.cachedImageDatas[s]) {
+            return this.cachedImageDatas[s];
+        }
+        return this.cachedImageDatas[s] = canvas.createImageData(width, height);
+    };
+
+    private cachedCanvas(width, height) {
+
+        var s = (width + " " + height);
+        var tempCnv = this.cachedCanvases[s];
+        if (tempCnv) {
+            return tempCnv;
+        }
+
+        var newCanvas = document.createElement('canvas');
+        newCanvas.width = width;
+        newCanvas.height = height;
+        var newContext = newCanvas.getContext('2d');
+        (<any>newContext).mozImageSmoothingEnabled = false; /// future
+        (<any>newContext).msImageSmoothingEnabled = false; /// future
+        (<any>newContext).imageSmoothingEnabled = false; /// future
+
+        return this.cachedCanvases[s] = {
+            canvas: newCanvas,
+            context: newContext
+        };
+    }
+
+    private cachedArray(size) {
+        var tmp = this.cachedArrays[size];
+        if (tmp) {
+            return tmp;
+        }
+        tmp = this.cachedArrays[size] = new Uint8ClampedArray(size * 4);
+
+        for (var s = 0; s < size * 4; s++) {
+            tmp[s] = 255;
+        }
+
+        return tmp;
+    }
+
+    private cached32BitArray(size) {
+        var tmp = this.cached32BitArrays[size];
+        if (tmp) {
+            return tmp;
+        }
+        return this.cached32BitArrays[size] = new Uint32Array(size);
     }
 
 }
