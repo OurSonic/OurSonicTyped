@@ -69,6 +69,7 @@ export class SonicManager {
     public tileChunkDebugDrawOptions:TileChunkDebugDrawOptions;
     public tilePaletteAnimationManager:TilePaletteAnimationManager;
     public tileAnimationManager:TileAnimationManager;
+    public pixelScale:number = 1;
 
     constructor(engine:SonicEngine, gameCanvas:CanvasInformation, resize:() => void) {
         SonicManager.instance = this;
@@ -295,8 +296,8 @@ export class SonicManager {
             return;
         }
         this.updatePositions(context);
-        let w1:number = (this.windowLocation.Width / 128|0) + 2;
-        let h1:number = (this.windowLocation.Height / 128|0 )+ 2;
+        let w1:number = (this.windowLocation.Width / 128 | 0) + 2;
+        let h1:number = (this.windowLocation.Height / 128 | 0 ) + 2;
         if (this.currentGameState == GameState.Editing) {
             w1 += 1;
             h1 += 1;
@@ -341,17 +342,18 @@ export class SonicManager {
 
     private drawCanveses(canvas:CanvasRenderingContext2D, localPoint:Point):void {
 
-        if(window.doIt>1){
+        if (this.pixelScale > 1) {
             canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
 
-            canvas.scale(this.realScale.x, this.realScale.y);
-            canvas.scale(this.scale.x,this.scale.y);
+            var imageData = window.scaleTwice(canvas, this.pixelScale,this.windowLocation.Width, this.windowLocation.Height);
 
-            var imageData=window.scaleTwice(canvas, localPoint.x, localPoint.y,this.windowLocation.Width,this.windowLocation.Height);
+            canvas.scale(this.realScale.x, this.realScale.y);
+            canvas.scale(this.scale.x, this.scale.y);
+
             canvas.drawImage(imageData, localPoint.x, localPoint.y);
-        }else{
+        } else {
             canvas.scale(this.realScale.x, this.realScale.y);
             canvas.scale(this.scale.x, this.scale.y);
 
@@ -359,12 +361,7 @@ export class SonicManager {
             canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
 
-        }/*
-
-        canvas.scale(this.scale.x, this.scale.y);
-        canvas.drawImage(this.lowChunkCanvas.canvas, localPoint.x, localPoint.y);
-        canvas.drawImage(this.sonicCanvas.canvas, localPoint.x, localPoint.y);
-        canvas.drawImage(this.highChuckCanvas.canvas, localPoint.x, localPoint.y);*/
+        }
     }
 
     public ResetCanvases():void {
@@ -447,15 +444,15 @@ export class SonicManager {
             let chunk = this.sonicLevel.getChunkAt(_xP, _yP);
             if (chunk == null)
                 continue;
-            localPoint.x = (_xPreal * 128) - this.windowLocation.x|0;
-            localPoint.y = (_yPreal * 128) - this.windowLocation.y|0;
+            localPoint.x = (_xPreal * 128) - this.windowLocation.x | 0;
+            localPoint.y = (_yPreal * 128) - this.windowLocation.y | 0;
             if (!chunk.isEmpty() && !chunk.OnlyForeground())
                 chunk.draw(canvas, localPoint, ChunkLayerState.Low);
         }
     }
 
     private drawHighChunks(canvas:CanvasRenderingContext2D, fxP:number, fyP:number, offs:Point[], localPoint:Point):void {
-        var m=[];
+        var m = [];
 
         for (let off of offs) {
             let _xP:number = fxP + off.x;
@@ -467,11 +464,11 @@ export class SonicManager {
             let chunk = this.sonicLevel.getChunkAt(_xP, _yP);
             if (chunk == null)
                 continue;
-            localPoint.x = (_xPreal * 128) - this.windowLocation.x|0;
-            localPoint.y = (_yPreal * 128) - this.windowLocation.y|0;
+            localPoint.x = (_xPreal * 128) - this.windowLocation.x | 0;
+            localPoint.y = (_yPreal * 128) - this.windowLocation.y | 0;
             if (!chunk.isEmpty() && !chunk.onlyBackground()) {
 
-       m.push(localPoint.x+" "+localPoint.y)         ;
+                m.push(localPoint.x + " " + localPoint.y);
                 chunk.draw(canvas, localPoint, ChunkLayerState.High);
             }
             if (this.showHeightMap) {
@@ -560,12 +557,12 @@ export class SonicManager {
                 case GameState.Playing:
                     if (!this.sonicToon.obtainedRing[index]) {
                         if (this.bigWindowLocation.Intersects(r))
-                            this.goodRing.Draw(canvas, r.Negate(this.windowLocation.x|0, this.windowLocation.y|0));
+                            this.goodRing.Draw(canvas, r.Negate(this.windowLocation.x | 0, this.windowLocation.y | 0));
                     }
                     break;
                 case GameState.Editing:
                     if (this.bigWindowLocation.Intersects(r))
-                        this.goodRing.Draw(canvas, r.Negate(this.windowLocation.x|0, this.windowLocation.y|0));
+                        this.goodRing.Draw(canvas, r.Negate(this.windowLocation.x | 0, this.windowLocation.y | 0));
                     break;
             }
         }
@@ -573,8 +570,8 @@ export class SonicManager {
             case GameState.Playing:
                 for (let i:number = this.activeRings.length - 1; i >= 0; i--) {
                     let ac:Ring = this.activeRings[i];
-                    localPoint.x = ac.x - this.windowLocation.x|0;
-                    localPoint.y = ac.y - this.windowLocation.y|0;
+                    localPoint.x = ac.x - this.windowLocation.x | 0;
+                    localPoint.y = ac.y - this.windowLocation.y | 0;
                     ac.Draw(canvas, localPoint);
                     if (ac.TickCount > 256)
                         this.activeRings.splice(i, 1);
@@ -587,7 +584,7 @@ export class SonicManager {
 
     private drawAnimations(canvas:CanvasRenderingContext2D):void {
         for (let ano of this.animationInstances) {
-            ano.Draw(canvas, -this.windowLocation.x|0, -this.windowLocation.y|0);
+            ano.Draw(canvas, -this.windowLocation.x | 0, -this.windowLocation.y | 0);
         }
     }
 
@@ -598,8 +595,8 @@ export class SonicManager {
             localPoint.y = o.Y;
             if (o.Dead || this.bigWindowLocation.Intersects(localPoint)) {
                 o.Draw(canvas,
-                    ((localPoint.x - this.windowLocation.x))|0,
-                    ((localPoint.y - this.windowLocation.y))|0,
+                    ((localPoint.x - this.windowLocation.x)) | 0,
+                    ((localPoint.y - this.windowLocation.y)) | 0,
                     this.showHeightMap);
             }
         }
@@ -763,7 +760,10 @@ export class SonicManager {
     }
 
     public downloadObjects(objects:string[]):void {
-        SonicEngine.instance.client.emit("GetObjects", objects);
+        $.getJSON('https://api.oursonic.org/objects?object-keys=' + objects.join('~')).then((data)=> {
+            console.log(data);
+            this.loadObjects(data);
+        });
     }
 
     public Load(sonicLevel:SlData):void {
@@ -996,15 +996,13 @@ export class SonicManager {
 
 
 
+class PixelScaleManager{
 
+    static scale(canvas, pixelScale, width, height){
 
+    }
 
-
-
-
-
-
-
+}
 
 
 
@@ -1016,10 +1014,10 @@ function getArray(size) {
     if (tmp) {
         return tmp;
     }
-    tmp=tempArrays[size] = new Uint8ClampedArray(size * 4);
+    tmp = tempArrays[size] = new Uint8ClampedArray(size * 4);
 
-    for (var s = 0; s < size*4; s++) {
-        tmp[s]=255;
+    for (var s = 0; s < size * 4; s++) {
+        tmp[s] = 255;
     }
 
     return tmp;
@@ -1061,25 +1059,25 @@ function getCnv(width, height) {
 }
 
 
-var posLookups={};
+var posLookups = {};
 function getPosLookup(width, height) {
     var posLookup = posLookups[width * height];
-    if(posLookup)return posLookup;
+    if (posLookup)return posLookup;
 
-    var posLookup = posLookups[width * height]={
-        left:new Uint32Array (width * height),
-        right:new Uint32Array (width * height),
-        top:new Uint32Array (width * height),
-        bottom:new Uint32Array (width * height),
-        middle:new Uint32Array (width * height)
+    var posLookup = posLookups[width * height] = {
+        left: new Uint32Array(width * height),
+        right: new Uint32Array(width * height),
+        top: new Uint32Array(width * height),
+        bottom: new Uint32Array(width * height),
+        middle: new Uint32Array(width * height)
     };
-    var cc=0;
+    var cc = 0;
 
     for (var y = 0; y < height; y++) {
         for (var x = 0; x < width; x++) {
 
 
-            posLookup.top[cc]= _top(x, y, width, height);
+            posLookup.top[cc] = _top(x, y, width, height);
             posLookup.left[cc] = _left(x, y, width, height);
             posLookup.middle[cc] = ((y) * width + (x)) * 4;
             posLookup.right[cc] = _right(x, y, width, height);
@@ -1094,116 +1092,50 @@ function getPosLookup(width, height) {
 }
 
 
-
-var colsLookups={};
-function getColsLookup(imageData,width,height) {
-    var cols = getInt32Array(width * height*4);
-    var pixels_=imageData;
-    var cc=0;
+function getColsLookup(imageData, width, height) {
+    var cols = getInt32Array(width * height * 4);
+    var pixels_ = imageData;
+    var cc = 0;
     for (var y = 0; y < height; y++) {
         for (var x = 0; x < width; x++) {
-
-
-
-            cols[cc]=(((pixels_[(y*width+x)*4] << 8) + pixels_[(y*width+x)*4 + 1]) << 8) + pixels_[(y*width+x)*4 + 2];
-
-
-            cc+=4;
-
+            cols[cc] = (((pixels_[(y * width + x) * 4] << 8) + pixels_[(y * width + x) * 4 + 1]) << 8) + pixels_[(y * width + x) * 4 + 2];
+            cc += 4;
         }
     }
     return cols
 }
 
 
-window.scaleIt = function scaleMe(imageData,width,height) {
-    var width2 = width * 2;
-    var height2 = height * 2;
-    var pixels2_ = getArray(width2 * height2);
-    var cnv = getCnv(width2, height2);
-
-    doPixelCompare(imageData, width, height, width2, height2, pixels2_,getPosLookup(width,height),getColsLookup(imageData,width,height));
-    return pixels2_;
-};
-var imageDataCaches={};
-function imageDataCache(canvas,width,height){
+var imageDataCaches = {};
+function imageDataCache(canvas, width, height) {
     var s = ((width ) + " " + (height ));
-    if(imageDataCaches[ s]){
-        return imageDataCaches[ s];
+    if (imageDataCaches[s]) {
+        return imageDataCaches[s];
     }
-    return imageDataCaches[ s]=canvas.createImageData(width,height);
+    return imageDataCaches[s] = canvas.createImageData(width, height);
 };
 
-window.scaleTwice = function scaleMe(canvas,x,y,width,height) {
-    var a=window.doIt;
+window.scaleTwice = function (canvas, pixelScale, width, height) {
+    var a = pixelScale - 1;
+    var startA = a;
 
-    canvas.scale(1/Math.pow(2,a-1), 1/Math.pow(2,a-1));
+    var nScale = Math.pow(2, startA);
+    canvas.scale(1 / nScale, 1 / nScale);
 
-    if(a==2) {
-        var imageData=canvas.getImageData(x,y,width,height).data;
-        imageData=window.scaleIt(imageData,width,height);
-        var id=imageDataCache(canvas,width*2,height*2);
-        id.data.set(imageData);
-
-        var canvas=getCnv(id.width,id.height);
-        canvas.context.putImageData(id,0,0);
-        return canvas.canvas;
-    }else if(a==3) {
-
-        var imageData=canvas.getImageData(x,y,width,height).data;
-        imageData=window.scaleIt(imageData,width,height);
-        imageData=window.scaleIt(imageData,width*2,height*2);
-        var id=imageDataCache(canvas,width*2*2,height*2*2);
-        id.data.set(imageData);
-
-
-        var canvas=getCnv(id.width,id.height);
-        canvas.context.putImageData(id,0,0);
-        return canvas.canvas;
+    var imageData = canvas.getImageData(0, 0, width, height).data;
+    while (a > 0) {
+        var n = Math.pow(2, (startA - a));
+        imageData = scaleIt(imageData, width * n, height * n);
+        a--;
     }
-    else if(a==4) {
+    var f = Math.pow(2, (startA - a));
+    var id = imageDataCache(canvas, width * f, height * f);
+    id.data.set(imageData);
 
-        var imageData = canvas.getImageData(x, y, width, height).data;
-        imageData = window.scaleIt(imageData, width, height);
-        imageData = window.scaleIt(imageData, width * 2, height * 2);
-        imageData = window.scaleIt(imageData, width * 2 * 2, height * 2 * 2);
-        var id = imageDataCache(canvas, width * 2 * 2 * 2, height * 2 * 2 * 2);
-        id.data.set(imageData);
+    var newC = getCnv(id.width, id.height);
+    newC.context.putImageData(id, 0, 0);
+    return newC.canvas;
 
-
-        var canvas = getCnv(id.width, id.height);
-        canvas.context.putImageData(id, 0, 0);
-        return canvas.canvas;
-    } else if(a==5) {
-
-        var imageData = canvas.getImageData(x, y, width, height).data;
-        imageData = window.scaleIt(imageData, width, height);
-        imageData = window.scaleIt(imageData, width * 2, height * 2);
-        imageData = window.scaleIt(imageData, width * 2 * 2, height * 2 * 2);
-        imageData = window.scaleIt(imageData, width * 2 * 2*2, height * 2 * 2*2);
-        var id = imageDataCache(canvas, width * 2 * 2 * 2*2, height * 2 * 2 * 2*2);
-        id.data.set(imageData);
-
-
-        var canvas = getCnv(id.width, id.height);
-        canvas.context.putImageData(id, 0, 0);
-        return canvas.canvas;
-    }else if(a==6) {
-
-        var imageData = canvas.getImageData(x, y, width, height).data;
-        imageData = window.scaleIt(imageData, width, height);
-        imageData = window.scaleIt(imageData, width * 2, height * 2);
-        imageData = window.scaleIt(imageData, width * 2 * 2, height * 2 * 2);
-        imageData = window.scaleIt(imageData, width * 2 * 2*2, height * 2 * 2*2);
-        imageData = window.scaleIt(imageData, width * 2 * 2*2*2, height * 2 * 2*2*2);
-        var id = imageDataCache(canvas, width * 2 * 2 * 2*2*2, height * 2 * 2 * 2*2*2);
-        id.data.set(imageData);
-
-
-        var canvas = getCnv(id.width, id.height);
-        canvas.context.putImageData(id, 0, 0);
-        return canvas.canvas;
-    }
 };
 
 
@@ -1235,13 +1167,20 @@ function _bottom(x, y, width, height) {
         return ((y + 1) * width + (x)) * 4;
 }
 
-function doPixelCompare(pixels_, width, height, width2, height2, pixels2_,posLookup,colsLookup) {
+function scaleIt(pixels_, width, height) {
 
-    var cc=0;
+
+    var width2 = width * 2;
+    var height2 = height * 2;
+    var pixels2_ = getArray(width2 * height2);
+    var posLookup = getPosLookup(width, height);
+    var colsLookup = getColsLookup(pixels_, width, height);
+
+
+    var cc = 0;
 
     for (var y = 0; y < height; y++) {
         for (var x = 0; x < width; x++) {
-
 
 
             var Bid = posLookup.top[cc];
@@ -1286,27 +1225,25 @@ function doPixelCompare(pixels_, width, height, width2, height2, pixels2_,posLoo
             var br = (((y * 2 + 1) * width2 + (x * 2 + 1)) * 4);
 
 
-            pixels2_[ tl ] = pixels_[E0 ];
-            pixels2_[ tr ] = pixels_[E1 ];
-            pixels2_[ bl ] = pixels_[E2];
-            pixels2_[ br ] = pixels_[E3 ];
+            pixels2_[tl] = pixels_[E0];
+            pixels2_[tr] = pixels_[E1];
+            pixels2_[bl] = pixels_[E2];
+            pixels2_[br] = pixels_[E3];
 
 
             pixels2_[tl + 1] = pixels_[E0 + 1];
             pixels2_[tr + 1] = pixels_[E1 + 1];
             pixels2_[bl + 1] = pixels_[E2 + 1];
-            pixels2_[br +1] = pixels_[E3 + 1];
+            pixels2_[br + 1] = pixels_[E3 + 1];
 
 
             pixels2_[tl + 2] = pixels_[E0 + 2];
-            pixels2_[tr +2] = pixels_[E1 + 2];
+            pixels2_[tr + 2] = pixels_[E1 + 2];
             pixels2_[bl + 2] = pixels_[E2 + 2];
             pixels2_[br + 2] = pixels_[E3 + 2];
 
 
-
         }
     }
-
-}
-window.doIt=1;
+    return pixels2_;
+} 

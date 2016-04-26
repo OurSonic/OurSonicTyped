@@ -164,8 +164,8 @@ System.register("layout/services/LevelService", ['angular2/core', 'angular2/http
             LevelService = (function () {
                 function LevelService(http) {
                     this.http = http;
-                    this._getLevelsUrl = 'https://ju01nalc92.execute-api.us-west-2.amazonaws.com/prod/levels';
-                    this._getLevelUrl = 'https://ju01nalc92.execute-api.us-west-2.amazonaws.com/prod/level';
+                    this._getLevelsUrl = 'https://api.oursonic.org/levels';
+                    this._getLevelUrl = 'https://api.oursonic.org/level';
                 }
                 LevelService.prototype.getLevels = function () {
                     return this.http.get(this._getLevelsUrl)
@@ -4601,10 +4601,10 @@ System.register("game/level/SonicBackground", [], function(exports_39, context_3
         }
     }
 });
-System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation", "game/SonicEngine", "common/Enums", "common/Help", "game/level/HeightMap", "game/level/Objects/ObjectManager", "game/SonicLevel", "game/level/Objects/LevelObjectInfo", "game/level/Ring", "game/level/SpriteCache", "game/level/Animations/TileAnimationData", "game/level/Tiles/TilePaletteAnimationManager", "game/level/Tiles/TileAnimationManager", "game/level/Tiles/TileChunk", "common/SpriteLoader", "game/level/Objects/LevelObject", "game/level/Objects/LevelObjectData", "game/level/Tiles/Tile", "game/level/Tiles/TilePiece", "game/level/Tiles/TileInfo", "game/level/Tiles/TilePieceInfo"], function(exports_40, context_40) {
+System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation", "common/Enums", "common/Help", "game/level/HeightMap", "game/level/Objects/ObjectManager", "game/SonicLevel", "game/level/Objects/LevelObjectInfo", "game/level/Ring", "game/level/SpriteCache", "game/level/Animations/TileAnimationData", "game/level/Tiles/TilePaletteAnimationManager", "game/level/Tiles/TileAnimationManager", "game/level/Tiles/TileChunk", "common/SpriteLoader", "game/level/Objects/LevelObject", "game/level/Objects/LevelObjectData", "game/level/Tiles/Tile", "game/level/Tiles/TilePiece", "game/level/Tiles/TileInfo", "game/level/Tiles/TilePieceInfo"], function(exports_40, context_40) {
     "use strict";
     var __moduleName = context_40 && context_40.id;
-    var Utils_10, CanvasInformation_7, SonicEngine_1, Enums_7, Help_6, HeightMap_2, ObjectManager_2, SonicLevel_1, LevelObjectInfo_1, Ring_2, SpriteCache_1, TileAnimationData_1, TilePaletteAnimationManager_1, TileAnimationManager_1, TileChunk_1, SpriteLoader_1, LevelObject_2, LevelObjectData_1, Tile_1, TilePiece_1, TileInfo_1, TilePieceInfo_1;
+    var Utils_10, CanvasInformation_7, Enums_7, Help_6, HeightMap_2, ObjectManager_2, SonicLevel_1, LevelObjectInfo_1, Ring_2, SpriteCache_1, TileAnimationData_1, TilePaletteAnimationManager_1, TileAnimationManager_1, TileChunk_1, SpriteLoader_1, LevelObject_2, LevelObjectData_1, Tile_1, TilePiece_1, TileInfo_1, TilePieceInfo_1;
     var SonicManager, tempArrays, tempBArrays, tempCnvs, posLookups, colsLookups, imageDataCaches;
     function getArray(size) {
         var tmp = tempArrays[size];
@@ -4768,9 +4768,6 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
             },
             function (CanvasInformation_7_1) {
                 CanvasInformation_7 = CanvasInformation_7_1;
-            },
-            function (SonicEngine_1_1) {
-                SonicEngine_1 = SonicEngine_1_1;
             },
             function (Enums_7_1) {
                 Enums_7 = Enums_7_1;
@@ -5485,7 +5482,11 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                     }
                 };
                 SonicManager.prototype.downloadObjects = function (objects) {
-                    SonicEngine_1.SonicEngine.instance.client.emit("GetObjects", objects);
+                    var _this = this;
+                    $.getJSON('https://api.oursonic.org/objects?object-keys=' + objects.join('~')).then(function (data) {
+                        console.log(data);
+                        _this.loadObjects(data);
+                    });
                 };
                 SonicManager.prototype.Load = function (sonicLevel) {
                     var _this = this;
@@ -6001,14 +6002,6 @@ System.register("game/SonicEngine", ["common/CanvasInformation", "game/SonicMana
                         _this.sonicManager.sonicLevel.CurHeightMap = !_this.sonicManager.sonicLevel.CurHeightMap;
                     }, function () {
                     });
-                    this.client = io.connect("159.203.118.77:8998");
-                    // this.client.emit("LoadLevel.Request", {Data: 'Angel Island Zone Act 1'});
-                    this.client.on("LoadLevel.Response", function (data) {
-                        _this.LoadLevel(data.Data);
-                    });
-                    this.client.on("GetObjects.Response", function (data) {
-                        _this.sonicManager.loadObjects(data.Data);
-                    });
                 };
                 SonicEngine.prototype.LoadLevel = function (data) {
                     var l = JSON.parse(Help_7.Help.decodeString(data));
@@ -6102,7 +6095,7 @@ System.register("game/SonicEngine", ["common/CanvasInformation", "game/SonicMana
 System.register("layout/levelSelector/LevelSelector", ['angular2/core', "layout/windowComponent/WindowComponent", "layout/services/LevelService", "game/SonicEngine"], function(exports_42, context_42) {
     "use strict";
     var __moduleName = context_42 && context_42.id;
-    var core_5, WindowComponent_2, LevelService_1, SonicEngine_2;
+    var core_5, WindowComponent_2, LevelService_1, SonicEngine_1;
     var LevelSelector;
     return {
         setters:[
@@ -6115,8 +6108,8 @@ System.register("layout/levelSelector/LevelSelector", ['angular2/core', "layout/
             function (LevelService_1_1) {
                 LevelService_1 = LevelService_1_1;
             },
-            function (SonicEngine_2_1) {
-                SonicEngine_2 = SonicEngine_2_1;
+            function (SonicEngine_1_1) {
+                SonicEngine_1 = SonicEngine_1_1;
             }],
         execute: function() {
             LevelSelector = (function () {
@@ -6131,7 +6124,7 @@ System.register("layout/levelSelector/LevelSelector", ['angular2/core', "layout/
                 };
                 LevelSelector.prototype.loadLevel = function (level) {
                     this._levelService.getLevel(level.name).subscribe(function (level) {
-                        SonicEngine_2.SonicEngine.instance.LoadLevel(level);
+                        SonicEngine_1.SonicEngine.instance.LoadLevel(level);
                     });
                 };
                 LevelSelector.prototype.closedWindow = function (done) {
@@ -6195,7 +6188,7 @@ System.register("layout/Layout", ['angular2/core', "layout/objectSelector/Object
 System.register("main", ['angular2/platform/browser', "layout/Layout", 'angular2/http', "game/SonicEngine"], function(exports_44, context_44) {
     "use strict";
     var __moduleName = context_44 && context_44.id;
-    var browser_1, Layout_1, http_2, SonicEngine_3;
+    var browser_1, Layout_1, http_2, SonicEngine_2;
     var Main;
     return {
         setters:[
@@ -6208,15 +6201,15 @@ System.register("main", ['angular2/platform/browser', "layout/Layout", 'angular2
             function (http_2_1) {
                 http_2 = http_2_1;
             },
-            function (SonicEngine_3_1) {
-                SonicEngine_3 = SonicEngine_3_1;
+            function (SonicEngine_2_1) {
+                SonicEngine_2 = SonicEngine_2_1;
             }],
         execute: function() {
             Main = (function () {
                 function Main() {
                 }
                 Main.run = function () {
-                    new SonicEngine_3.SonicEngine();
+                    new SonicEngine_2.SonicEngine();
                     browser_1.bootstrap(Layout_1.Layout, [http_2.HTTP_PROVIDERS]);
                 };
                 return Main;

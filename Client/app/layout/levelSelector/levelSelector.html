@@ -1,8 +1,8 @@
 <!--onclose="callback.windowClosed()"-->
-<window [left]="'15%'" [top]="'25%'" [width]="'390px'" [height]="'300px'" [windowTitle]="'Level Selector'" [visible]="true" (onclose)="closedWindow($event)">
-    <ul>
-        <li *ngFor="#level of levels">
-            <button class="btn" (click)="loadLevel(level)">{{ level.name }}</button>
+<window [left]="'15%'" [top]="'25%'" [width]="'390px'" [height]="'300px'" [windowTitle]="'Level Selector'" [visible]="true" (onclose)="closedWindow($event)" >
+    <ul >
+        <li *ngFor="#level of levels" >
+            <a class="btn" (click)="loadLevel(level)" style="width:100%;">{{ level.name }}</a>
         </li>
     </ul>
 </window>

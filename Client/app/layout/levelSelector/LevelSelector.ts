@@ -30,7 +30,6 @@ export class LevelSelector implements OnInit {
 
     public closedWindow(done:boolean):void {
         console.log(done);
-        debugger;
     }
 }
 

@@ -12,7 +12,6 @@ import {Help} from "../common/Help";
 
 export class SonicEngine {
     private wideScreen:boolean = true;
-    public client:SocketIOClient.Socket;
     private fullscreenMode:boolean = false;
     private gameCanvas:CanvasInformation;
     private gameGoodWidth:number = 0;
@@ -74,8 +73,8 @@ export class SonicEngine {
             });
         keyboardJS.bind("2",
             () => {
-                window.doIt += 1;
-                if (window.doIt == 5)window.doIt = 1;
+                this.sonicManager.pixelScale += 1;
+                if (this.sonicManager.pixelScale == 6)this.sonicManager.pixelScale = 1;
             },
             () => {
 
@@ -231,18 +230,6 @@ export class SonicEngine {
 
             });
 
-
-
-
-        this.client = io.connect("159.203.118.77:8998");
-        // this.client.emit("LoadLevel.Request", {Data: 'Angel Island Zone Act 1'});
-        this.client.on("LoadLevel.Response",
-            data => {
-                this.LoadLevel(data.Data);
-            });
-        this.client.on("GetObjects.Response", data => {
-            this.sonicManager.loadObjects(data.Data);
-        });
     }
 
     LoadLevel(data:string):void {
