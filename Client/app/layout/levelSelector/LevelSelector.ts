@@ -32,5 +32,3 @@ export class LevelSelector implements OnInit {
         console.log(done);
     }
 }
-
- 

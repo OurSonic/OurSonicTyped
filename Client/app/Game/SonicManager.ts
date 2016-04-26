@@ -343,10 +343,13 @@ export class SonicManager {
 
     private drawCanveses(canvas:CanvasRenderingContext2D, localPoint:Point):void {
 
-        if (this.pixelScale > 1) {
+        if (this.pixelScale > 0) {
             canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
+
+            this.extracted(canvas);
+
 
             var imageData = this.pixelScaleManager.scale(canvas, this.pixelScale - 1, this.windowLocation.Width, this.windowLocation.Height);
             var pixelScale = this.pixelScaleManager.getPixelScale(this.pixelScale - 1);
@@ -360,12 +363,54 @@ export class SonicManager {
         } else {
             canvas.scale(this.realScale.x, this.realScale.y);
             canvas.scale(this.scale.x, this.scale.y);
+            this.extracted(canvas);
 
             canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
 
         }
+    }
+
+    private extracted(canvas:CanvasRenderingContext2D) {
+        var img = canvas.getImageData(0, 0, this.windowLocation.Width, this.windowLocation.Height);
+        var arr = img.data;
+
+        var newArr = PixelScaleManager.cachedArray(this.windowLocation.Width * this.windowLocation.Height);
+        for (var i = 0; i < arr.length; i += 4) {
+            this.transform(arr, newArr, i, this.windowLocation.Width, this.windowLocation.Height);
+        }
+        img.data.set(newArr);
+        canvas.putImageData(img, 0, 0);
+    }
+
+    transform(arr:Uint8ClampedArray, arr2:Uint8ClampedArray, i:number, width:number, height:number) {
+
+        var x = i / 4 % width | 0;
+        var y = i / 4 / width | 0;
+
+        var top = PixelScaleManager._top(x - 1, y, width, height);
+        var bottom = PixelScaleManager._bottom(x + 1, y, width, height);
+
+        arr2[i] = 127;
+        arr2[i + 1] = 127;
+        arr2[i + 2] = 127;
+
+        arr2[i] -= arr[top];
+        arr2[i + 1] -= arr[top + 1];
+        arr2[i + 2] -= arr[top + 2];
+
+
+        arr2[i] += arr[bottom];
+        arr2[i + 1] += arr[bottom + 1];
+        arr2[i + 2] += arr[bottom + 2];
+
+        var m = (arr2[i] + arr2[i + 1] + arr2[i + 2]) / 3 | 0;
+        arr2[i] = m;
+        arr2[i + 1] = m;
+        arr2[i + 2] = m;
+
+
     }
 
     public ResetCanvases():void {
@@ -865,7 +910,10 @@ export class SonicManager {
             AnimationTileIndex: a.AnimationTileIndex,
             AutomatedTiming: a.AutomatedTiming,
             NumberOfTiles: a.NumberOfTiles,
-            DataFrames: a.Frames.map(b => Help.merge(new TileAnimationDataFrame(), {Ticks: b.Ticks, StartingTileIndex: b.StartingTileIndex})).slice(0)
+            DataFrames: a.Frames.map(b => Help.merge(new TileAnimationDataFrame(), {
+                Ticks: b.Ticks,
+                StartingTileIndex: b.StartingTileIndex
+            })).slice(0)
         }));
         this.sonicLevel.CollisionIndexes1 = sonicLevel.CollisionIndexes1;
         this.sonicLevel.CollisionIndexes2 = sonicLevel.CollisionIndexes2;
@@ -1001,13 +1049,13 @@ class PixelScaleManager {
 
     private cachedImageDatas = {};
     private cachedCanvases = {};
-    private cachedArrays = {};
+    private static cachedArrays = {};
     private cached32BitArrays = {};
     private cachedPosLookups = {};
 
 
-    scale(context, pixelScale, width, height) {
-        if (pixelScale == 0)return context;
+    scale(context:CanvasRenderingContext2D, pixelScale:number, width:number, height:number):HTMLCanvasElement {
+        if (pixelScale == 0)return context.canvas;
         var startingPixelScale = pixelScale;
 
         var imageData = context.getImageData(0, 0, width, height).data;
@@ -1016,14 +1064,13 @@ class PixelScaleManager {
             imageData = this.scaleIt(imageData, width * nScale, height * nScale);
             pixelScale--;
         }
-        var f = Math.pow(2, (startingPixelScale - pixelScale));
+        var f = Math.pow(2, startingPixelScale);
         var largeImageData = this.cachedImageData(context, width * f, height * f);
         largeImageData.data.set(imageData);
 
         var newC = this.cachedCanvas(largeImageData.width, largeImageData.height);
         newC.context.putImageData(largeImageData, 0, 0);
         return newC.canvas;
-
     }
 
     getPixelScale(pixelScale) {
@@ -1036,7 +1083,7 @@ class PixelScaleManager {
 
         var width2 = width * 2;
         var height2 = height * 2;
-        var pixels2_ = this.cachedArray(width2 * height2);
+        var pixels2_ = PixelScaleManager.cachedArray(width2 * height2);
         var posLookup = this.getPosLookup(width, height);
         var colsLookup = this.getColsLookup(pixels_, width, height);
 
@@ -1117,7 +1164,7 @@ class PixelScaleManager {
         var posLookup = this.cachedPosLookups[width * height];
         if (posLookup)return posLookup;
 
-        var posLookup = this.cachedPosLookups[width * height] = {
+        posLookup = this.cachedPosLookups[width * height] = {
             left: new Uint32Array(width * height),
             right: new Uint32Array(width * height),
             top: new Uint32Array(width * height),
@@ -1130,11 +1177,11 @@ class PixelScaleManager {
             for (var x = 0; x < width; x++) {
 
 
-                posLookup.top[cc] = this._top(x, y, width, height);
-                posLookup.left[cc] = this._left(x, y, width, height);
+                posLookup.top[cc] = PixelScaleManager._top(x, y, width, height);
+                posLookup.left[cc] = PixelScaleManager._left(x, y, width, height);
                 posLookup.middle[cc] = ((y) * width + (x)) * 4;
-                posLookup.right[cc] = this._right(x, y, width, height);
-                posLookup.bottom[cc] = this._bottom(x, y, width, height);
+                posLookup.right[cc] = PixelScaleManager._right(x, y, width, height);
+                posLookup.bottom[cc] = PixelScaleManager._bottom(x, y, width, height);
 
 
                 cc++;
@@ -1159,28 +1206,28 @@ class PixelScaleManager {
     }
 
 
-    private  _top(x, y, width, height) {
+    public static  _top(x, y, width, height) {
         if (y <= 0)
             return ((y ) * width + (x)) * 4;
         else
             return ((y - 1) * width + (x)) * 4;
     }
 
-    private  _left(x, y, width, height) {
+    public static  _left(x, y, width, height) {
         if (x <= 0)
             return ((y) * width + (x )) * 4;
         else
             return ((y) * width + (x - 1)) * 4;
     }
 
-    private  _right(x, y, width, height) {
+    public static  _right(x, y, width, height) {
         if (x + 1 >= width)
             return ((y) * width + (x)) * 4;
         else
             return ((y) * width + (x + 1)) * 4;
     }
 
-    private  _bottom(x, y, width, height) {
+    public static _bottom(x, y, width, height) {
         if (y + 1 >= height)
             return ((y) * width + (x)) * 4;
         else
@@ -1188,7 +1235,7 @@ class PixelScaleManager {
     }
 
 
-    private cachedImageData(canvas, width, height) {
+    public cachedImageData(canvas, width, height) {
         var s = ((width ) + " " + (height ));
         if (this.cachedImageDatas[s]) {
             return this.cachedImageDatas[s];
@@ -1218,12 +1265,12 @@ class PixelScaleManager {
         };
     }
 
-    private cachedArray(size) {
-        var tmp = this.cachedArrays[size];
+    static  cachedArray(size) {
+        var tmp = PixelScaleManager.cachedArrays[size];
         if (tmp) {
             return tmp;
         }
-        tmp = this.cachedArrays[size] = new Uint8ClampedArray(size * 4);
+        tmp = PixelScaleManager.cachedArrays[size] = new Uint8ClampedArray(size * 4);
 
         for (var s = 0; s < size * 4; s++) {
             tmp[s] = 255;
@@ -1241,6 +1288,3 @@ class PixelScaleManager {
     }
 
 }
-
-
-

@@ -5,13 +5,13 @@
 
 import {bootstrap}    from 'angular2/platform/browser';
 import {Layout} from './layout/Layout';
-import { HTTP_PROVIDERS } from 'angular2/http';
+import {HTTP_PROVIDERS} from 'angular2/http';
 import {SonicEngine} from "./game/SonicEngine";
 
 export class Main {
     static run() {
         new SonicEngine();
-        bootstrap(Layout,[HTTP_PROVIDERS]);
+        bootstrap(Layout, [HTTP_PROVIDERS]);
     }
 }
 
