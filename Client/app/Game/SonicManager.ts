@@ -70,6 +70,7 @@ export class SonicManager {
     public tilePaletteAnimationManager:TilePaletteAnimationManager;
     public tileAnimationManager:TileAnimationManager;
     public pixelScale:number = 1;
+    private pixelScaleManager:PixelScaleManager = new PixelScaleManager();
 
     constructor(engine:SonicEngine, gameCanvas:CanvasInformation, resize:() => void) {
         SonicManager.instance = this;
@@ -347,7 +348,7 @@ export class SonicManager {
             canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
 
-            var imageData = window.scaleTwice(canvas, this.pixelScale,this.windowLocation.Width, this.windowLocation.Height);
+            var imageData = this.pixelScaleManager.scale(canvas, this.pixelScale, this.windowLocation.Width, this.windowLocation.Height);
 
             canvas.scale(this.realScale.x, this.realScale.y);
             canvas.scale(this.scale.x, this.scale.y);
@@ -993,257 +994,254 @@ export class SonicManager {
 }
 
 
+class PixelScaleManager {
 
+    scale(context, pixelScale, width, height) {
+        var a = pixelScale - 1;
+        if (a == 0)return context;
+        var startA = a;
 
+        var nScale = Math.pow(2, startA);
+        context.scale(1 / nScale, 1 / nScale);
 
-class PixelScaleManager{
-
-    static scale(canvas, pixelScale, width, height){
-
-    }
-
-}
-
-
-
-
-var tempArrays = {};
-
-function getArray(size) {
-    var tmp = tempArrays[size];
-    if (tmp) {
-        return tmp;
-    }
-    tmp = tempArrays[size] = new Uint8ClampedArray(size * 4);
-
-    for (var s = 0; s < size * 4; s++) {
-        tmp[s] = 255;
-    }
-
-    return tmp;
-}
-
-var tempBArrays = {};
-
-function getInt32Array(size) {
-    var tmp = tempBArrays[size];
-    if (tmp) {
-        return tmp;
-    }
-    return tempBArrays[size] = new Uint32Array(size);
-}
-
-var tempCnvs = {};
-
-function getCnv(width, height) {
-
-    var s = (width + " " + height);
-    var tempCnv = tempCnvs[s];
-    if (tempCnv) {
-        return tempCnv;
-    }
-
-
-    var newCanvas = document.createElement('canvas');
-    newCanvas.width = width;
-    newCanvas.height = height;
-    var newContext = newCanvas.getContext('2d');
-    (<any>newContext).mozImageSmoothingEnabled = false; /// future
-    (<any>newContext).msImageSmoothingEnabled = false; /// future
-    (<any>newContext).imageSmoothingEnabled = false; /// future
-
-    return tempCnvs[s] = {
-        canvas: newCanvas,
-        context: newContext
-    };
-}
-
-
-var posLookups = {};
-function getPosLookup(width, height) {
-    var posLookup = posLookups[width * height];
-    if (posLookup)return posLookup;
-
-    var posLookup = posLookups[width * height] = {
-        left: new Uint32Array(width * height),
-        right: new Uint32Array(width * height),
-        top: new Uint32Array(width * height),
-        bottom: new Uint32Array(width * height),
-        middle: new Uint32Array(width * height)
-    };
-    var cc = 0;
-
-    for (var y = 0; y < height; y++) {
-        for (var x = 0; x < width; x++) {
-
-
-            posLookup.top[cc] = _top(x, y, width, height);
-            posLookup.left[cc] = _left(x, y, width, height);
-            posLookup.middle[cc] = ((y) * width + (x)) * 4;
-            posLookup.right[cc] = _right(x, y, width, height);
-            posLookup.bottom[cc] = _bottom(x, y, width, height);
-
-
-            cc++;
-
+        var imageData = context.getImageData(0, 0, width, height).data;
+        while (a > 0) {
+            var n = Math.pow(2, (startA - a));
+            imageData = this.scaleIt(imageData, width * n, height * n);
+            a--;
         }
+        var f = Math.pow(2, (startA - a));
+        var id = this.imageDataCache(context, width * f, height * f);
+        id.data.set(imageData);
+
+        var newC = this.getCnv(id.width, id.height);
+        newC.context.putImageData(id, 0, 0);
+        return newC.canvas;
+
     }
-    return posLookup
-}
 
+    private imageDataCaches = {};
 
-function getColsLookup(imageData, width, height) {
-    var cols = getInt32Array(width * height * 4);
-    var pixels_ = imageData;
-    var cc = 0;
-    for (var y = 0; y < height; y++) {
-        for (var x = 0; x < width; x++) {
-            cols[cc] = (((pixels_[(y * width + x) * 4] << 8) + pixels_[(y * width + x) * 4 + 1]) << 8) + pixels_[(y * width + x) * 4 + 2];
-            cc += 4;
+    private imageDataCache(canvas, width, height) {
+        var s = ((width ) + " " + (height ));
+        if (this.imageDataCaches[s]) {
+            return this.imageDataCaches[s];
         }
+        return this.imageDataCaches[s] = canvas.createImageData(width, height);
+    };
+
+
+    private tempCnvs = {};
+
+    private   getCnv(width, height) {
+
+        var s = (width + " " + height);
+        var tempCnv = this.tempCnvs[s];
+        if (tempCnv) {
+            return tempCnv;
+        }
+
+
+        var newCanvas = document.createElement('canvas');
+        newCanvas.width = width;
+        newCanvas.height = height;
+        var newContext = newCanvas.getContext('2d');
+        (<any>newContext).mozImageSmoothingEnabled = false; /// future
+        (<any>newContext).msImageSmoothingEnabled = false; /// future
+        (<any>newContext).imageSmoothingEnabled = false; /// future
+
+        return this.tempCnvs[s] = {
+            canvas: newCanvas,
+            context: newContext
+        };
     }
-    return cols
-}
 
 
-var imageDataCaches = {};
-function imageDataCache(canvas, width, height) {
-    var s = ((width ) + " " + (height ));
-    if (imageDataCaches[s]) {
-        return imageDataCaches[s];
-    }
-    return imageDataCaches[s] = canvas.createImageData(width, height);
-};
+    private scaleIt(pixels_, width, height) {
 
-window.scaleTwice = function (canvas, pixelScale, width, height) {
-    var a = pixelScale - 1;
-    var startA = a;
-
-    var nScale = Math.pow(2, startA);
-    canvas.scale(1 / nScale, 1 / nScale);
-
-    var imageData = canvas.getImageData(0, 0, width, height).data;
-    while (a > 0) {
-        var n = Math.pow(2, (startA - a));
-        imageData = scaleIt(imageData, width * n, height * n);
-        a--;
-    }
-    var f = Math.pow(2, (startA - a));
-    var id = imageDataCache(canvas, width * f, height * f);
-    id.data.set(imageData);
-
-    var newC = getCnv(id.width, id.height);
-    newC.context.putImageData(id, 0, 0);
-    return newC.canvas;
-
-};
+        var width2 = width * 2;
+        var height2 = height * 2;
+        var pixels2_ = this.getArray(width2 * height2);
+        var posLookup = this.getPosLookup(width, height);
+        var colsLookup = this.getColsLookup(pixels_, width, height);
 
 
-function _top(x, y, width, height) {
-    if (y <= 0)
-        return ((y ) * width + (x)) * 4;
-    else
-        return ((y - 1) * width + (x)) * 4;
-}
+        var cc = 0;
 
-function _left(x, y, width, height) {
-    if (x <= 0)
-        return ((y) * width + (x )) * 4;
-    else
-        return ((y) * width + (x - 1)) * 4;
-}
-
-function _right(x, y, width, height) {
-    if (x + 1 >= width)
-        return ((y) * width + (x)) * 4;
-    else
-        return ((y) * width + (x + 1)) * 4;
-}
-
-function _bottom(x, y, width, height) {
-    if (y + 1 >= height)
-        return ((y) * width + (x)) * 4;
-    else
-        return ((y + 1) * width + (x)) * 4;
-}
-
-function scaleIt(pixels_, width, height) {
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
 
 
-    var width2 = width * 2;
-    var height2 = height * 2;
-    var pixels2_ = getArray(width2 * height2);
-    var posLookup = getPosLookup(width, height);
-    var colsLookup = getColsLookup(pixels_, width, height);
+                var Bid = posLookup.top[cc];
+                var Did = posLookup.left[cc];
+                var Eid = posLookup.middle[cc];
+                var Fid = posLookup.right[cc];
+                var Hid = posLookup.bottom[cc];
 
 
-    var cc = 0;
-
-    for (var y = 0; y < height; y++) {
-        for (var x = 0; x < width; x++) {
+                cc++;
 
 
-            var Bid = posLookup.top[cc];
-            var Did = posLookup.left[cc];
-            var Eid = posLookup.middle[cc];
-            var Fid = posLookup.right[cc];
-            var Hid = posLookup.bottom[cc];
+                /*
+                 var B = (((pixels_[Bid] << 8) + pixels_[Bid + 1]) << 8) + pixels_[Bid + 2];
+                 var D = (((pixels_[Did] << 8) + pixels_[Did + 1]) << 8) + pixels_[Did + 2];
+                 var F = (((pixels_[Fid] << 8) + pixels_[Fid + 1]) << 8) + pixels_[Fid + 2];
+                 var H = (((pixels_[Hid] << 8) + pixels_[Hid + 1]) << 8) + pixels_[Hid + 2];
+                 */
+
+                var B = colsLookup[Bid];
+                var D = colsLookup[Did];
+                var F = colsLookup[Fid];
+                var H = colsLookup[Hid];
+
+                var E0, E1, E2, E3;
+                if (B !== (H) && D !== (F)) {
+                    E0 = D == (B) ? Did : Eid;
+                    E1 = B == (F) ? Fid : Eid;
+                    E2 = D == (H) ? Did : Eid;
+                    E3 = H == (F) ? Fid : Eid;
+                } else {
+                    E0 = Eid;
+                    E1 = Eid;
+                    E2 = Eid;
+                    E3 = Eid;
+                }
 
 
-            cc++;
+                var tl = (((y * 2) * width2 + (x * 2)) * 4);
+                var tr = (((y * 2) * width2 + (x * 2 + 1)) * 4);
+                var bl = (((y * 2 + 1) * width2 + (x * 2)) * 4);
+                var br = (((y * 2 + 1) * width2 + (x * 2 + 1)) * 4);
 
 
-            /*
-             var B = (((pixels_[Bid] << 8) + pixels_[Bid + 1]) << 8) + pixels_[Bid + 2];
-             var D = (((pixels_[Did] << 8) + pixels_[Did + 1]) << 8) + pixels_[Did + 2];
-             var F = (((pixels_[Fid] << 8) + pixels_[Fid + 1]) << 8) + pixels_[Fid + 2];
-             var H = (((pixels_[Hid] << 8) + pixels_[Hid + 1]) << 8) + pixels_[Hid + 2];
-             */
+                pixels2_[tl] = pixels_[E0];
+                pixels2_[tr] = pixels_[E1];
+                pixels2_[bl] = pixels_[E2];
+                pixels2_[br] = pixels_[E3];
 
-            var B = colsLookup[Bid];
-            var D = colsLookup[Did];
-            var F = colsLookup[Fid];
-            var H = colsLookup[Hid];
 
-            var E0, E1, E2, E3;
-            if (B !== (H) && D !== (F)) {
-                E0 = D == (B) ? Did : Eid;
-                E1 = B == (F) ? Fid : Eid;
-                E2 = D == (H) ? Did : Eid;
-                E3 = H == (F) ? Fid : Eid;
-            } else {
-                E0 = Eid;
-                E1 = Eid;
-                E2 = Eid;
-                E3 = Eid;
+                pixels2_[tl + 1] = pixels_[E0 + 1];
+                pixels2_[tr + 1] = pixels_[E1 + 1];
+                pixels2_[bl + 1] = pixels_[E2 + 1];
+                pixels2_[br + 1] = pixels_[E3 + 1];
+
+
+                pixels2_[tl + 2] = pixels_[E0 + 2];
+                pixels2_[tr + 2] = pixels_[E1 + 2];
+                pixels2_[bl + 2] = pixels_[E2 + 2];
+                pixels2_[br + 2] = pixels_[E3 + 2];
+
+
             }
-
-
-            var tl = (((y * 2) * width2 + (x * 2)) * 4);
-            var tr = (((y * 2) * width2 + (x * 2 + 1)) * 4);
-            var bl = (((y * 2 + 1) * width2 + (x * 2)) * 4);
-            var br = (((y * 2 + 1) * width2 + (x * 2 + 1)) * 4);
-
-
-            pixels2_[tl] = pixels_[E0];
-            pixels2_[tr] = pixels_[E1];
-            pixels2_[bl] = pixels_[E2];
-            pixels2_[br] = pixels_[E3];
-
-
-            pixels2_[tl + 1] = pixels_[E0 + 1];
-            pixels2_[tr + 1] = pixels_[E1 + 1];
-            pixels2_[bl + 1] = pixels_[E2 + 1];
-            pixels2_[br + 1] = pixels_[E3 + 1];
-
-
-            pixels2_[tl + 2] = pixels_[E0 + 2];
-            pixels2_[tr + 2] = pixels_[E1 + 2];
-            pixels2_[bl + 2] = pixels_[E2 + 2];
-            pixels2_[br + 2] = pixels_[E3 + 2];
-
-
         }
+        return pixels2_;
     }
-    return pixels2_;
-} 
+
+
+    private tempArrays = {};
+
+    private getArray(size) {
+        var tmp = this.tempArrays[size];
+        if (tmp) {
+            return tmp;
+        }
+        tmp = this.tempArrays[size] = new Uint8ClampedArray(size * 4);
+
+        for (var s = 0; s < size * 4; s++) {
+            tmp[s] = 255;
+        }
+
+        return tmp;
+    }
+
+    private tempBArrays = {};
+
+    private getInt32Array(size) {
+        var tmp = this.tempBArrays[size];
+        if (tmp) {
+            return tmp;
+        }
+        return this.tempBArrays[size] = new Uint32Array(size);
+    }
+
+
+    private posLookups = {};
+
+    private  getPosLookup(width, height) {
+        var posLookup = this.posLookups[width * height];
+        if (posLookup)return posLookup;
+
+        var posLookup = this.posLookups[width * height] = {
+            left: new Uint32Array(width * height),
+            right: new Uint32Array(width * height),
+            top: new Uint32Array(width * height),
+            bottom: new Uint32Array(width * height),
+            middle: new Uint32Array(width * height)
+        };
+        var cc = 0;
+
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+
+
+                posLookup.top[cc] = this._top(x, y, width, height);
+                posLookup.left[cc] = this._left(x, y, width, height);
+                posLookup.middle[cc] = ((y) * width + (x)) * 4;
+                posLookup.right[cc] = this._right(x, y, width, height);
+                posLookup.bottom[cc] = this._bottom(x, y, width, height);
+
+
+                cc++;
+
+            }
+        }
+        return posLookup
+    }
+
+
+    private  getColsLookup(imageData, width, height) {
+        var cols = this.getInt32Array(width * height * 4);
+        var pixels_ = imageData;
+        var cc = 0;
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+                cols[cc] = (((pixels_[(y * width + x) * 4] << 8) + pixels_[(y * width + x) * 4 + 1]) << 8) + pixels_[(y * width + x) * 4 + 2];
+                cc += 4;
+            }
+        }
+        return cols
+    }
+
+
+    private  _top(x, y, width, height) {
+        if (y <= 0)
+            return ((y ) * width + (x)) * 4;
+        else
+            return ((y - 1) * width + (x)) * 4;
+    }
+
+    private  _left(x, y, width, height) {
+        if (x <= 0)
+            return ((y) * width + (x )) * 4;
+        else
+            return ((y) * width + (x - 1)) * 4;
+    }
+
+    private  _right(x, y, width, height) {
+        if (x + 1 >= width)
+            return ((y) * width + (x)) * 4;
+        else
+            return ((y) * width + (x + 1)) * 4;
+    }
+
+    private  _bottom(x, y, width, height) {
+        if (y + 1 >= height)
+            return ((y) * width + (x)) * 4;
+        else
+            return ((y + 1) * width + (x)) * 4;
+    }
+
+}
+
+
+

@@ -68,8 +68,8 @@
       <file leaf-file-name="SonicManager.ts" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/game/SonicManager.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="507">
-              <caret line="1118" column="3" selection-start-line="1118" selection-start-column="0" selection-end-line="1138" selection-end-column="0" />
+            <state relative-caret-position="361">
+              <caret line="998" column="4" selection-start-line="998" selection-start-column="4" selection-end-line="998" selection-end-column="4" />
               <folding>
                 <element signature="e#0#85#0" expanded="true" />
               </folding>
@@ -609,12 +609,12 @@
       <workItem from="1461469082927" duration="8032000" />
       <workItem from="1461484025797" duration="590000" />
       <workItem from="1461484636169" duration="3405000" />
-      <workItem from="1461633278741" duration="10373000" />
+      <workItem from="1461633278741" duration="10872000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45525000" />
+    <option name="totallyTimeSpent" value="46024000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -826,6 +826,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="4266" column="19" selection-start-line="4266" selection-start-column="14" selection-end-line="4266" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -848,6 +849,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1035,8 +1037,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/game/SonicManager.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="507">
-          <caret line="1118" column="3" selection-start-line="1118" selection-start-column="0" selection-end-line="1138" selection-end-column="0" />
+        <state relative-caret-position="361">
+          <caret line="998" column="4" selection-start-line="998" selection-start-column="4" selection-end-line="998" selection-end-column="4" />
           <folding>
             <element signature="e#0#85#0" expanded="true" />
           </folding>
