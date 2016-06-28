@@ -4931,10 +4931,11 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                         this.sonicToon.DrawUI(context, new Utils_10.Point(this.screenOffset.x, this.screenOffset.y));
                 };
                 SonicManager.prototype.drawCanveses = function (canvas, localPoint) {
-                    if (this.pixelScale > 1) {
+                    if (this.pixelScale > 0) {
                         canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
                         canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
                         canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
+                        this.extracted(canvas);
                         var imageData = this.pixelScaleManager.scale(canvas, this.pixelScale - 1, this.windowLocation.Width, this.windowLocation.Height);
                         var pixelScale = this.pixelScaleManager.getPixelScale(this.pixelScale - 1);
                         canvas.scale(pixelScale.x, pixelScale.y);
@@ -4945,10 +4946,40 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                     else {
                         canvas.scale(this.realScale.x, this.realScale.y);
                         canvas.scale(this.scale.x, this.scale.y);
+                        //            this.extracted(canvas);
                         canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
                         canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
                         canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
                     }
+                };
+                SonicManager.prototype.extracted = function (canvas) {
+                    var img = canvas.getImageData(0, 0, this.windowLocation.Width, this.windowLocation.Height);
+                    var arr = img.data;
+                    var newArr = PixelScaleManager.cachedArray(this.windowLocation.Width * this.windowLocation.Height);
+                    for (var i = 0; i < arr.length; i += 4) {
+                        this.transform(arr, newArr, i, this.windowLocation.Width, this.windowLocation.Height);
+                    }
+                    img.data.set(newArr);
+                    canvas.putImageData(img, 0, 0);
+                };
+                SonicManager.prototype.transform = function (arr, arr2, i, width, height) {
+                    var x = i / 4 % width | 0;
+                    var y = i / 4 / width | 0;
+                    var top = PixelScaleManager._top(x - 1, y, width, height);
+                    var bottom = PixelScaleManager._bottom(x + 1, y, width, height);
+                    arr2[i] = 127;
+                    arr2[i + 1] = 127;
+                    arr2[i + 2] = 127;
+                    arr2[i] -= arr[top];
+                    arr2[i + 1] -= arr[top + 1];
+                    arr2[i + 2] -= arr[top + 2];
+                    arr2[i] += arr[bottom];
+                    arr2[i + 1] += arr[bottom + 1];
+                    arr2[i + 2] += arr[bottom + 2];
+                    var m = (arr2[i] + arr2[i + 1] + arr2[i + 2]) / 3 | 0;
+                    arr2[i] = m;
+                    arr2[i + 1] = m;
+                    arr2[i + 2] = m;
                 };
                 SonicManager.prototype.ResetCanvases = function () {
                     this.lowChunkCanvas = this.lowChunkCanvas != null ? this.lowChunkCanvas : CanvasInformation_7.CanvasInformation.create(this.windowLocation.Width, this.windowLocation.Height, false);
@@ -5428,7 +5459,10 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                         AnimationTileIndex: a.AnimationTileIndex,
                         AutomatedTiming: a.AutomatedTiming,
                         NumberOfTiles: a.NumberOfTiles,
-                        DataFrames: a.Frames.map(function (b) { return Help_6.Help.merge(new TileAnimationData_1.TileAnimationDataFrame(), { Ticks: b.Ticks, StartingTileIndex: b.StartingTileIndex }); }).slice(0)
+                        DataFrames: a.Frames.map(function (b) { return Help_6.Help.merge(new TileAnimationData_1.TileAnimationDataFrame(), {
+                            Ticks: b.Ticks,
+                            StartingTileIndex: b.StartingTileIndex
+                        }); }).slice(0)
                     }); });
                     this.sonicLevel.CollisionIndexes1 = sonicLevel.CollisionIndexes1;
                     this.sonicLevel.CollisionIndexes2 = sonicLevel.CollisionIndexes2;
@@ -5570,13 +5604,12 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                 function PixelScaleManager() {
                     this.cachedImageDatas = {};
                     this.cachedCanvases = {};
-                    this.cachedArrays = {};
                     this.cached32BitArrays = {};
                     this.cachedPosLookups = {};
                 }
                 PixelScaleManager.prototype.scale = function (context, pixelScale, width, height) {
                     if (pixelScale == 0)
-                        return context;
+                        return context.canvas;
                     var startingPixelScale = pixelScale;
                     var imageData = context.getImageData(0, 0, width, height).data;
                     while (pixelScale > 0) {
@@ -5584,7 +5617,7 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                         imageData = this.scaleIt(imageData, width * nScale, height * nScale);
                         pixelScale--;
                     }
-                    var f = Math.pow(2, (startingPixelScale - pixelScale));
+                    var f = Math.pow(2, startingPixelScale);
                     var largeImageData = this.cachedImageData(context, width * f, height * f);
                     largeImageData.data.set(imageData);
                     var newC = this.cachedCanvas(largeImageData.width, largeImageData.height);
@@ -5598,7 +5631,7 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                 PixelScaleManager.prototype.scaleIt = function (pixels_, width, height) {
                     var width2 = width * 2;
                     var height2 = height * 2;
-                    var pixels2_ = this.cachedArray(width2 * height2);
+                    var pixels2_ = PixelScaleManager.cachedArray(width2 * height2);
                     var posLookup = this.getPosLookup(width, height);
                     var colsLookup = this.getColsLookup(pixels_, width, height);
                     var cc = 0;
@@ -5667,11 +5700,11 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                     var cc = 0;
                     for (var y = 0; y < height; y++) {
                         for (var x = 0; x < width; x++) {
-                            posLookup.top[cc] = this._top(x, y, width, height);
-                            posLookup.left[cc] = this._left(x, y, width, height);
+                            posLookup.top[cc] = PixelScaleManager._top(x, y, width, height);
+                            posLookup.left[cc] = PixelScaleManager._left(x, y, width, height);
                             posLookup.middle[cc] = ((y) * width + (x)) * 4;
-                            posLookup.right[cc] = this._right(x, y, width, height);
-                            posLookup.bottom[cc] = this._bottom(x, y, width, height);
+                            posLookup.right[cc] = PixelScaleManager._right(x, y, width, height);
+                            posLookup.bottom[cc] = PixelScaleManager._bottom(x, y, width, height);
                             cc++;
                         }
                     }
@@ -5689,25 +5722,25 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                     }
                     return cols;
                 };
-                PixelScaleManager.prototype._top = function (x, y, width, height) {
+                PixelScaleManager._top = function (x, y, width, height) {
                     if (y <= 0)
                         return ((y) * width + (x)) * 4;
                     else
                         return ((y - 1) * width + (x)) * 4;
                 };
-                PixelScaleManager.prototype._left = function (x, y, width, height) {
+                PixelScaleManager._left = function (x, y, width, height) {
                     if (x <= 0)
                         return ((y) * width + (x)) * 4;
                     else
                         return ((y) * width + (x - 1)) * 4;
                 };
-                PixelScaleManager.prototype._right = function (x, y, width, height) {
+                PixelScaleManager._right = function (x, y, width, height) {
                     if (x + 1 >= width)
                         return ((y) * width + (x)) * 4;
                     else
                         return ((y) * width + (x + 1)) * 4;
                 };
-                PixelScaleManager.prototype._bottom = function (x, y, width, height) {
+                PixelScaleManager._bottom = function (x, y, width, height) {
                     if (y + 1 >= height)
                         return ((y) * width + (x)) * 4;
                     else
@@ -5739,12 +5772,12 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                         context: newContext
                     };
                 };
-                PixelScaleManager.prototype.cachedArray = function (size) {
-                    var tmp = this.cachedArrays[size];
+                PixelScaleManager.cachedArray = function (size) {
+                    var tmp = PixelScaleManager.cachedArrays[size];
                     if (tmp) {
                         return tmp;
                     }
-                    tmp = this.cachedArrays[size] = new Uint8ClampedArray(size * 4);
+                    tmp = PixelScaleManager.cachedArrays[size] = new Uint8ClampedArray(size * 4);
                     for (var s = 0; s < size * 4; s++) {
                         tmp[s] = 255;
                     }
@@ -5757,6 +5790,7 @@ System.register("game/SonicManager", ["common/Utils", "common/CanvasInformation"
                     }
                     return this.cached32BitArrays[size] = new Uint32Array(size);
                 };
+                PixelScaleManager.cachedArrays = {};
                 return PixelScaleManager;
             }());
         }

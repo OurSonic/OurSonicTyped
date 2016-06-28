@@ -363,7 +363,7 @@ export class SonicManager {
         } else {
             canvas.scale(this.realScale.x, this.realScale.y);
             canvas.scale(this.scale.x, this.scale.y);
-            this.extracted(canvas);
+//            this.extracted(canvas);
 
             canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
