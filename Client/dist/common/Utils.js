@@ -82,11 +82,11 @@ System.register([], function(exports_1, context_1) {
                 __extends(IntersectingRectangle, _super);
                 function IntersectingRectangle(x, y, width, height) {
                     _super.call(this, x, y);
-                    this.Width = width;
-                    this.Height = height;
+                    this.width = width;
+                    this.height = height;
                 }
                 IntersectingRectangle.prototype.Intersects = function (p) {
-                    return this.x < p.x && this.x + this.Width > p.x && this.y < p.y && this.y + this.Height > p.y;
+                    return this.x < p.x && this.x + this.width > p.x && this.y < p.y && this.y + this.height > p.y;
                 };
                 IntersectingRectangle.IntersectsRect = function (r, p) {
                     return r.x < p.x && r.x + r.Width > p.x && r.y < p.y && r.y + r.Height > p.y;

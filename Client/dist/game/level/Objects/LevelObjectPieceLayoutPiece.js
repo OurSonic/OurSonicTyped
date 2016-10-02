@@ -7,7 +7,7 @@ System.register([], function(exports_1, context_1) {
         execute: function() {
             LevelObjectPieceLayoutPiece = (function () {
                 function LevelObjectPieceLayoutPiece(pieceIndex) {
-                    this.PieceIndex = pieceIndex;
+                    this.pieceIndex = pieceIndex;
                 }
                 return LevelObjectPieceLayoutPiece;
             }());

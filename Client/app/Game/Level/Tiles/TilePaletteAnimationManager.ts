@@ -10,8 +10,8 @@ export class TilePaletteAnimationManager {
     }
     private Init(): void {
         this.Animations = {};
-        for (let animatedPaletteIndex: number = 0; animatedPaletteIndex < this.SonicManager.sonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
-            this.Animations[animatedPaletteIndex] = new TilePaletteAnimation(this, this.SonicManager.sonicLevel.AnimatedPalettes[animatedPaletteIndex]);
+        for (let animatedPaletteIndex: number = 0; animatedPaletteIndex < this.SonicManager.sonicLevel.animatedPalettes.length; animatedPaletteIndex++) {
+            this.Animations[animatedPaletteIndex] = new TilePaletteAnimation(this, this.SonicManager.sonicLevel.animatedPalettes[animatedPaletteIndex]);
             this.Animations[animatedPaletteIndex].Init();
         }
     }
@@ -81,7 +81,7 @@ export class TilePaletteAnimationFrame {
     }
     private tempPalette: string[][];
     public SetPalette(): void {
-        let levelPalette = this.Animation.Manager.SonicManager.sonicLevel.Palette;
+        let levelPalette = this.Animation.Manager.SonicManager.sonicLevel.palette;
         this.clonePalette(levelPalette);
         let pal = this.Animation.AnimatedPaletteData;
         for (let index: number = 0; index < pal.Pieces.length; index++) {
@@ -105,7 +105,7 @@ export class TilePaletteAnimationFrame {
         }
     }
     public ClearPalette(): void {
-        this.Animation.Manager.SonicManager.sonicLevel.Palette = this.tempPalette;
+        this.Animation.Manager.SonicManager.sonicLevel.palette = this.tempPalette;
         this.tempPalette = null;
     }
 }

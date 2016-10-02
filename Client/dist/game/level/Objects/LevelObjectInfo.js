@@ -89,7 +89,7 @@ System.register(["../../../common/Utils", "../../SonicManager", "./ObjectManager
                         this._rect.Height = ObjectManager_1.ObjectManager.broken.height;
                         return this._rect;
                     }
-                    return this.objectData.pieceLayouts[this.pieceLayoutIndex].GetRectangle(this.objectData);
+                    return this.objectData.pieceLayouts[this.pieceLayoutIndex].getRectangle(this.objectData);
                 };
                 LevelObjectInfo.prototype.draw = function (canvas, x, y, showHeightMap) {
                     if (this.dead || !this.objectData)
@@ -99,7 +99,7 @@ System.register(["../../../common/Utils", "../../SonicManager", "./ObjectManager
                         return;
                     }
                     var levelObjectPieceLayout = this.mainPieceLayout();
-                    levelObjectPieceLayout.Draw(canvas, x, y, this.objectData, this, showHeightMap);
+                    levelObjectPieceLayout.draw(canvas, x, y, this.objectData, this, showHeightMap);
                     if (this.consoleLog != null) {
                         var gr = this.getRect();
                         canvas.save();

@@ -37,7 +37,7 @@ export class TileAnimationData {
 
     }
     public GetAnimationFile(): Tile[] {
-        return SonicManager.instance.sonicLevel.AnimatedTileFiles[this.AnimationTileFile];
+        return SonicManager.instance.sonicLevel.animatedTileFiles[this.AnimationTileFile];
     }
 }
 export class TileAnimationDataFrame {

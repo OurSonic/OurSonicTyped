@@ -32,23 +32,23 @@ System.register(["../../../common/Help", "./LevelObjectAsset", "./LevelObjectAss
                 };
                 ObjectManager.ExtendObject = function (d) {
                     var obj = Help_1.Help.merge(new LevelObject_1.LevelObject(d.key), {
-                        CollideScript: d.collideScript,
-                        HurtScript: d.hurtScript,
-                        InitScript: d.initScript,
-                        TickScript: d.tickScript
+                        collideScript: d.collideScript,
+                        hurtScript: d.hurtScript,
+                        initScript: d.initScript,
+                        tickScript: d.tickScript
                     });
                     obj.description = d.description;
-                    obj.assets = new Array();
+                    obj.assets = [];
                     for (var i = 0; i < d.assets.length; i++) {
                         var asset = d.assets[i];
                         var levelObjectAsset = Help_1.Help.merge(new LevelObjectAsset_1.LevelObjectAsset(asset.name), { name: asset.name });
-                        levelObjectAsset.frames = new Array();
+                        levelObjectAsset.frames = [];
                         for (var index = 0; index < asset.frames.length; index++) {
                             var fr = asset.frames[index];
                             levelObjectAsset.frames[index] = Help_1.Help.merge(new LevelObjectAssetFrame_1.LevelObjectAssetFrame(fr.name), {
                                 offsetX: fr.offsetX,
                                 width: fr.width,
-                                transparentColor: fr.transparentColor,
+                                transparentColor: fr.transparentColor || "000000",
                                 height: fr.height,
                                 offsetY: fr.offsetY,
                                 hurtSonicMap: fr.hurtSonicMap,
@@ -59,24 +59,24 @@ System.register(["../../../common/Help", "./LevelObjectAsset", "./LevelObjectAss
                         }
                         obj.assets[i] = levelObjectAsset;
                     }
-                    obj.pieces = new Array();
+                    obj.pieces = [];
                     for (var index = 0; index < d.pieces.length; index++) {
                         var piece = d.pieces[index];
                         obj.pieces[index] = piece;
                     }
-                    obj.pieceLayouts = new Array();
+                    obj.pieceLayouts = [];
                     for (var index = 0; index < d.pieceLayouts.length; index++) {
                         var pl = d.pieceLayouts[index];
                         obj.pieceLayouts[index] = Help_1.Help.merge(new LevelObjectPieceLayout_1.LevelObjectPieceLayout(pl.name), {
                             height: pl.height,
                             width: pl.width
                         });
-                        obj.pieceLayouts[index].pieces = new Array();
+                        obj.pieceLayouts[index].pieces = [];
                         for (var i = 0; i < d.pieceLayouts[index].pieces.length; i++) {
                             obj.pieceLayouts[index].pieces[i] = d.pieceLayouts[index].pieces[i];
                         }
                     }
-                    obj.projectiles = new Array();
+                    obj.projectiles = [];
                     for (var index = 0; index < d.projectiles.length; index++) {
                         var proj = d.projectiles[index];
                         proj = Help_1.Help.merge(new LevelObjectProjectile_1.LevelObjectProjectile(proj.name), {

@@ -238,9 +238,9 @@ export class Help {
             case GameState.Editing:
                 let x = 0;
                 let y = 0;
-                if (SonicManager.instance.sonicLevel && SonicManager.instance.sonicLevel.StartPositions && SonicManager.instance.sonicLevel.StartPositions[0]) {
-                    x = SonicManager.instance.sonicLevel.StartPositions[0].x - 128 * scale.x;
-                    y = SonicManager.instance.sonicLevel.StartPositions[0].y - 128 * scale.y;
+                if (SonicManager.instance.sonicLevel && SonicManager.instance.sonicLevel.startPositions && SonicManager.instance.sonicLevel.startPositions[0]) {
+                    x = SonicManager.instance.sonicLevel.startPositions[0].x - 128 * scale.x;
+                    y = SonicManager.instance.sonicLevel.startPositions[0].y - 128 * scale.y;
                 }
                 return new IntersectingRectangle(x, y, window.innerWidth, window.innerHeight);
         }

@@ -9,6 +9,6 @@ export class TileInfo {
     public Palette: number=0;
     public Index: number=0;
     public GetTile(): Tile {
-        return SonicManager.instance.sonicLevel.GetTile(this._Tile);
+        return SonicManager.instance.sonicLevel.getTile(this._Tile);
     }
 }

@@ -263,7 +263,7 @@ System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../
                 }
                 Sensor.prototype.checkCollisionLineWrap = function (x1, x2, y1, y2, ignoreSolid) {
                     var _x = (x1 / 128) | 0;
-                    var _y = Help_1.Help.mod((y1 / 128) | 0, SonicManager_1.SonicManager.instance.sonicLevel.LevelHeight);
+                    var _y = Help_1.Help.mod((y1 / 128) | 0, SonicManager_1.SonicManager.instance.sonicLevel.levelHeight);
                     var tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, _y);
                     this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
                     var curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
@@ -272,8 +272,8 @@ System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../
                     var __y = y1 - _y * 128;
                     var length = 0;
                     if (y1 == y2) {
-                        if (Math.max(x1, x2) > SonicManager_1.SonicManager.instance.sonicLevel.LevelWidth * 128) {
-                            this.__currentM.value = SonicManager_1.SonicManager.instance.sonicLevel.LevelWidth * 128 - 20;
+                        if (Math.max(x1, x2) > SonicManager_1.SonicManager.instance.sonicLevel.levelWidth * 128) {
+                            this.__currentM.value = SonicManager_1.SonicManager.instance.sonicLevel.levelWidth * 128 - 20;
                             this.__currentM.angle = 0xff;
                             return this.__currentM;
                         }
@@ -377,7 +377,7 @@ System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../
                                 for (var i = 0; i < 128 * 2; i++) {
                                     while (true) {
                                         if (__y - i < 0) {
-                                            tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, Help_1.Help.mod((_y - 1), SonicManager_1.SonicManager.instance.sonicLevel.LevelHeight));
+                                            tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, Help_1.Help.mod((_y - 1), SonicManager_1.SonicManager.instance.sonicLevel.levelHeight));
                                             this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
                                             curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
                                             cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
@@ -396,7 +396,7 @@ System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../
                             for (var i = 0; i < length; i++) {
                                 while (true) {
                                     if (__y + i >= 128) {
-                                        tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, (_y + 1) % SonicManager_1.SonicManager.instance.sonicLevel.LevelHeight);
+                                        tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, (_y + 1) % SonicManager_1.SonicManager.instance.sonicLevel.levelHeight);
                                         this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
                                         curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
                                         cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
@@ -420,7 +420,7 @@ System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../
                                 for (var i = 0; i < 128 * 2; i++) {
                                     while (true) {
                                         if (__y + i >= 128) {
-                                            tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, (_y + 1) % SonicManager_1.SonicManager.instance.sonicLevel.LevelHeight);
+                                            tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, (_y + 1) % SonicManager_1.SonicManager.instance.sonicLevel.levelHeight);
                                             this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
                                             curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
                                             cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
@@ -439,7 +439,7 @@ System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../
                             for (var i = 0; i < length; i++) {
                                 while (true) {
                                     if (__y - i < 0) {
-                                        tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, Help_1.Help.mod((_y - 1), SonicManager_1.SonicManager.instance.sonicLevel.LevelHeight));
+                                        tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, Help_1.Help.mod((_y - 1), SonicManager_1.SonicManager.instance.sonicLevel.levelHeight));
                                         this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
                                         curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
                                         cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;

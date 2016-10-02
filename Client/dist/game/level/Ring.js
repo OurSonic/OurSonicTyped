@@ -37,7 +37,7 @@ System.register(["../../common/Utils", "../SonicManager", "../../common/Enums"],
                         this.x += this.Xsp;
                         this.y += this.Ysp;
                         var wl = SonicManager_1.SonicManager.instance.windowLocation;
-                        if (this.x < wl.x || this.y < wl.y || this.x > wl.x + wl.Width || this.y > wl.y + wl.Height) {
+                        if (this.x < wl.x || this.y < wl.y || this.x > wl.x + wl.width || this.y > wl.y + wl.height) {
                             this.TickCount = 0xfffffff;
                             return;
                         }

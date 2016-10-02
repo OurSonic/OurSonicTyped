@@ -17,7 +17,7 @@ export class TilePieceInfo {
     
     public Index: number=0;
     public GetTilePiece(): TilePiece {
-        return SonicManager.instance.sonicLevel.GetTilePiece(this.Block);
+        return SonicManager.instance.sonicLevel.getTilePiece(this.Block);
     }
     public SetTilePiece(tp: TilePiece): boolean {
         if (this.Block == tp.Index)
@@ -26,15 +26,15 @@ export class TilePieceInfo {
         return true;
     }
     public GetLayer1Angles(): number {
-        return SonicManager.instance.sonicLevel.Angles[SonicManager.instance.sonicLevel.CollisionIndexes1[this.Block]];
+        return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes1[this.Block]];
     }
     public GetLayer2Angles(): number {
-        return SonicManager.instance.sonicLevel.Angles[SonicManager.instance.sonicLevel.CollisionIndexes2[this.Block]];
+        return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes2[this.Block]];
     }
     public GetLayer1HeightMaps(): HeightMap {
-        return SonicManager.instance.sonicLevel.HeightMaps[SonicManager.instance.sonicLevel.CollisionIndexes1[this.Block]];
+        return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes1[this.Block]];
     }
     public GetLayer2HeightMaps(): HeightMap {
-        return SonicManager.instance.sonicLevel.HeightMaps[SonicManager.instance.sonicLevel.CollisionIndexes2[this.Block]];
+        return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes2[this.Block]];
     }
 }

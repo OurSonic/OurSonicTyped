@@ -92,8 +92,8 @@ export class SonicManager {
         this.mainCanvas = gameCanvas;
         this.windowLocation = Help.defaultWindowLocation(GameState.Editing, this.scale);
         this.bigWindowLocation = Help.defaultWindowLocation(GameState.Editing, this.scale);
-        this.bigWindowLocation.Width = (this.bigWindowLocation.Width * 1.8) | 0;
-        this.bigWindowLocation.Height = (this.bigWindowLocation.Height * 1.8) | 0;
+        this.bigWindowLocation.width = (this.bigWindowLocation.width * 1.8) | 0;
+        this.bigWindowLocation.height = (this.bigWindowLocation.height * 1.8) | 0;
         this.tileAnimations = new Array<TileAnimationData>();
         this.animationInstances = new Array<AnimationInstance>();
         this.showHeightMap = false;
@@ -102,8 +102,8 @@ export class SonicManager {
         this.forceResize = resize;
         this.background = null;
         this.currentGameState = GameState.Editing;
-        this.screenOffset = new Point(this.mainCanvas.domCanvas.width() / 2 - this.windowLocation.Width / 2,
-            this.mainCanvas.domCanvas.height() / 2 - this.windowLocation.Height / 2);
+        this.screenOffset = new Point(this.mainCanvas.domCanvas.width() / 2 - this.windowLocation.width / 2,
+            this.mainCanvas.domCanvas.height() / 2 - this.windowLocation.height / 2);
         this.clickState = ClickState.PlaceChunk;
         this.tickCount = 0;
         this.drawTickCount = 0;
@@ -121,6 +121,7 @@ export class SonicManager {
     }
 
     private effectClick(event: JQueryEventObject): boolean {
+        if(!this.sonicLevel)return;
         let e = new Point((event.clientX / this.scale.x / this.realScale.x + this.windowLocation.x),
             (event.clientY / this.scale.y / this.realScale.y + this.windowLocation.y));
         let ey: number;
@@ -169,14 +170,14 @@ export class SonicManager {
                 case ClickState.PlaceRing:
                     ex = e.x;
                     ey = e.y;
-                    this.sonicLevel.Rings.push(Help.merge(new Ring(true), { X: ex, Y: ey }));
+                    this.sonicLevel.rings.push(Help.merge(new Ring(true), { X: ex, Y: ey }));
                     return true;
                 case ClickState.PlaceObject:
                     {
                         ex = e.x;
                         ey = e.y;
                         let pos = new Point(ex, ey);
-                        for (let o of this.sonicLevel.Objects) {
+                        for (let o of this.sonicLevel.objects) {
                             if (IntersectingRectangle.IntersectsRect(o.getRect(), pos))
                                 alert("Object Data: " + Help.stringify(o));
                         }
@@ -190,7 +191,7 @@ export class SonicManager {
     private tickObjects(): void {
         let localPoint = new Point(0, 0);
         this.inFocusObjects = [];
-        let levelObjectInfos = this.sonicLevel.Objects;
+        let levelObjectInfos = this.sonicLevel.objects;
         for (let obj of levelObjectInfos) {
             localPoint.x = obj.x | 0;
             localPoint.y = obj.y | 0;
@@ -303,8 +304,8 @@ export class SonicManager {
             return;;
         }
         this.updatePositions(context);
-        let w1: number = (this.windowLocation.Width / 128 | 0) + 2;
-        let h1: number = (this.windowLocation.Height / 128 | 0) + 2;
+        let w1: number = (this.windowLocation.width / 128 | 0) + 2;
+        let h1: number = (this.windowLocation.height / 128 | 0) + 2;
         if (this.currentGameState == GameState.Editing) {
             w1 += 1;
             h1 += 1;
@@ -357,7 +358,7 @@ export class SonicManager {
             //this.shadePixels(canvas);
 
 
-            var imageData = this.pixelScaleManager.scale(canvas, this.pixelScale - 1, this.windowLocation.Width, this.windowLocation.Height);
+            var imageData = this.pixelScaleManager.scale(canvas, this.pixelScale - 1, this.windowLocation.width, this.windowLocation.height);
             var pixelScale = this.pixelScaleManager.getPixelScale(this.pixelScale - 1);
             canvas.scale(pixelScale.x, pixelScale.y);
 
@@ -378,12 +379,12 @@ export class SonicManager {
     }
 
     private shadePixels(canvas: CanvasRenderingContext2D) {
-        var img = canvas.getImageData(0, 0, this.windowLocation.Width, this.windowLocation.Height);
+        var img = canvas.getImageData(0, 0, this.windowLocation.width, this.windowLocation.height);
         var arr = img.data;
 
-        var newArr = PixelScaleManager.cachedArray(this.windowLocation.Width * this.windowLocation.Height);
+        var newArr = PixelScaleManager.cachedArray(this.windowLocation.width * this.windowLocation.height);
         for (var i = 0; i < arr.length; i += 4) {
-            this.transform(arr, newArr, i, this.windowLocation.Width, this.windowLocation.Height);
+            this.transform(arr, newArr, i, this.windowLocation.width, this.windowLocation.height);
         }
         img.data.set(newArr);
         canvas.putImageData(img, 0, 0);
@@ -419,12 +420,12 @@ export class SonicManager {
     }
 
     public ResetCanvases(): void {
-        this.lowChunkCanvas = this.lowChunkCanvas != null ? this.lowChunkCanvas : CanvasInformation.create(this.windowLocation.Width, this.windowLocation.Height, false);
-        this.sonicCanvas = this.sonicCanvas != null ? this.sonicCanvas : CanvasInformation.create(this.windowLocation.Width, this.windowLocation.Height, true);
-        this.highChuckCanvas = this.highChuckCanvas != null ? this.highChuckCanvas : CanvasInformation.create(this.windowLocation.Width, this.windowLocation.Height, false);
-        this.sonicCanvas.Context.clearRect(0, 0, this.windowLocation.Width, this.windowLocation.Height);
-        this.highChuckCanvas.Context.clearRect(0, 0, this.windowLocation.Width, this.windowLocation.Height);
-        this.lowChunkCanvas.Context.clearRect(0, 0, this.windowLocation.Width, this.windowLocation.Height);
+        this.lowChunkCanvas = this.lowChunkCanvas != null ? this.lowChunkCanvas : CanvasInformation.create(this.windowLocation.width, this.windowLocation.height, false);
+        this.sonicCanvas = this.sonicCanvas != null ? this.sonicCanvas : CanvasInformation.create(this.windowLocation.width, this.windowLocation.height, true);
+        this.highChuckCanvas = this.highChuckCanvas != null ? this.highChuckCanvas : CanvasInformation.create(this.windowLocation.width, this.windowLocation.height, false);
+        this.sonicCanvas.Context.clearRect(0, 0, this.windowLocation.width, this.windowLocation.height);
+        this.highChuckCanvas.Context.clearRect(0, 0, this.windowLocation.width, this.windowLocation.height);
+        this.lowChunkCanvas.Context.clearRect(0, 0, this.windowLocation.width, this.windowLocation.height);
     }
 
     public DestroyCanvases(): void {
@@ -461,14 +462,14 @@ export class SonicManager {
             }
         }
         canvas.translate(this.screenOffset.x, this.screenOffset.y);
-        this.windowLocation.x = <number>(this.sonicToon.x) - this.windowLocation.Width / 2;
-        this.windowLocation.y = <number>(this.sonicToon.y) - this.windowLocation.Height / 2;
-        this.bigWindowLocation.x = <number>(this.sonicToon.x) - this.bigWindowLocation.Width / 2;
-        this.bigWindowLocation.y = <number>(this.sonicToon.y) - this.bigWindowLocation.Height / 2;
-        this.bigWindowLocation.x = <number>(this.bigWindowLocation.x - this.windowLocation.Width * 0.2);
-        this.bigWindowLocation.y = <number>(this.bigWindowLocation.y - this.windowLocation.Height * 0.2);
-        this.bigWindowLocation.Width = <number>(this.windowLocation.Width * 1.8);
-        this.bigWindowLocation.Height = <number>(this.windowLocation.Height * 1.8);
+        this.windowLocation.x = <number>(this.sonicToon.x) - this.windowLocation.width / 2;
+        this.windowLocation.y = <number>(this.sonicToon.y) - this.windowLocation.height / 2;
+        this.bigWindowLocation.x = <number>(this.sonicToon.x) - this.bigWindowLocation.width / 2;
+        this.bigWindowLocation.y = <number>(this.sonicToon.y) - this.bigWindowLocation.height / 2;
+        this.bigWindowLocation.x = <number>(this.bigWindowLocation.x - this.windowLocation.width * 0.2);
+        this.bigWindowLocation.y = <number>(this.bigWindowLocation.y - this.windowLocation.height * 0.2);
+        this.bigWindowLocation.width = <number>(this.windowLocation.width * 1.8);
+        this.bigWindowLocation.height = <number>(this.windowLocation.height * 1.8);
     }
 
     private static drawLoading(canvas: CanvasRenderingContext2D): void {
@@ -493,8 +494,8 @@ export class SonicManager {
             let _yP: number = fyP + off.y;
             let _xPreal: number = fxP + off.x;
             let _yPreal: number = fyP + off.y;
-            _xP = Help.mod(_xP, this.sonicLevel.LevelWidth);
-            _yP = Help.mod(_yP, this.sonicLevel.LevelHeight);
+            _xP = Help.mod(_xP, this.sonicLevel.levelWidth);
+            _yP = Help.mod(_yP, this.sonicLevel.levelHeight);
             let chunk = this.sonicLevel.getChunkAt(_xP, _yP);
             if (chunk == null)
                 continue;
@@ -513,8 +514,8 @@ export class SonicManager {
             let _yP: number = fyP + off.y;
             let _xPreal: number = fxP + off.x;
             let _yPreal: number = fyP + off.y;
-            _xP = Help.mod(_xP, this.sonicLevel.LevelWidth);
-            _yP = Help.mod(_yP, this.sonicLevel.LevelHeight);
+            _xP = Help.mod(_xP, this.sonicLevel.levelWidth);
+            _yP = Help.mod(_yP, this.sonicLevel.levelHeight);
             let chunk = this.sonicLevel.getChunkAt(_xP, _yP);
             if (chunk == null)
                 continue;
@@ -546,8 +547,8 @@ export class SonicManager {
             let _yP: number = fyP + off.y;
             let _xPreal: number = fxP + off.x;
             let _yPreal: number = fyP + off.y;
-            _xP = Help.mod(_xP, this.sonicLevel.LevelWidth);
-            _yP = Help.mod(_yP, this.sonicLevel.LevelHeight);
+            _xP = Help.mod(_xP, this.sonicLevel.levelWidth);
+            _yP = Help.mod(_yP, this.sonicLevel.levelHeight);
             let chunk = this.sonicLevel.getChunkAt(_xP, _yP);
             if (chunk == null)
                 continue;
@@ -605,8 +606,8 @@ export class SonicManager {
     }
 
     private drawRings(canvas: CanvasRenderingContext2D, localPoint: Point): void {
-        for (let index: number = 0; index < this.sonicLevel.Rings.length; index++) {
-            let r = this.sonicLevel.Rings[index];
+        for (let index: number = 0; index < this.sonicLevel.rings.length; index++) {
+            let r = this.sonicLevel.rings[index];
             switch (this.currentGameState) {
                 case GameState.Playing:
                     if (!this.sonicToon.obtainedRing[index]) {
@@ -643,7 +644,7 @@ export class SonicManager {
     }
 
     private drawObjects(canvas: CanvasRenderingContext2D, localPoint: Point): void {
-        let levelObjectInfos: LevelObjectInfo[] = this.sonicLevel.Objects;
+        let levelObjectInfos: LevelObjectInfo[] = this.sonicLevel.objects;
         for (let o of levelObjectInfos) {
             localPoint.x = o.x;
             localPoint.y = o.y;
@@ -657,7 +658,7 @@ export class SonicManager {
     }
 
     private containsAnimatedTile(tile: number, sonLevel: SonicLevel): TileAnimationData {
-        for (let an of sonLevel.TileAnimations) {
+        for (let an of sonLevel.tileAnimations) {
             let anin = an.AnimationTileIndex;
             let num = an.NumberOfTiles;
             if (tile >= anin && tile < anin + num)
@@ -670,7 +671,7 @@ export class SonicManager {
         if (this.spriteCache != null)
             this.spriteCache.ClearCache();
         if (this.sonicLevel != null)
-            this.sonicLevel.ClearCache();
+            this.sonicLevel.clearCache();
         if (this.tilePaletteAnimationManager != null)
             this.tilePaletteAnimationManager.ClearCache();
         if (this.tileAnimationManager != null)
@@ -724,14 +725,14 @@ export class SonicManager {
         console.time("tileCache");
         this.tilePaletteAnimationManager = new TilePaletteAnimationManager(this);
         this.tileAnimationManager = new TileAnimationManager(this);
-        for (let chunk of this.sonicLevel.TileChunks) {
+        for (let chunk of this.sonicLevel.tileChunks) {
             chunk.initCache();
             chunk.warmCache();
         }
         console.timeEnd("tileCache");
         if (this.sonicToon != null) {
             console.time("collisionCache");
-            for (let chunk of this.sonicLevel.TileChunks) {
+            for (let chunk of this.sonicLevel.tileChunks) {
                 this.sonicToon.sensorManager.buildChunk(chunk, false);
                 this.sonicToon.sensorManager.buildChunk(chunk, true);
             }
@@ -748,8 +749,8 @@ export class SonicManager {
             let debugCanvases: CanvasInformation[] = new Array<CanvasInformation>();
             let totalHeight: number = 0;
             let broke = false;
-            for (let index: number = dropOffIndex; index < this.sonicLevel.TileChunks.length; index++) {
-                let chunk = this.sonicLevel.TileChunks[index];
+            for (let index: number = dropOffIndex; index < this.sonicLevel.tileChunks.length; index++) {
+                let chunk = this.sonicLevel.tileChunks[index];
                 let canvasCache = chunk.Debug_DrawCache();
                 totalHeight += canvasCache.canvas.height;
                 debugCanvases.push(canvasCache);
@@ -787,7 +788,7 @@ export class SonicManager {
 
     public loadObjects(objects: { key: string, value: string }[]): void {
         this.cachedObjects = {};
-        for (var t of this.sonicLevel.Objects) {
+        for (var t of this.sonicLevel.objects) {
             let o = t.key;
 
             if (this.cachedObjects[o]) {
@@ -822,20 +823,20 @@ export class SonicManager {
         this.loading = true;
         this.sonicLevel = new SonicLevel();
         for (let n = 0; n < sonicLevel.Rings.length; n++) {
-            this.sonicLevel.Rings[n] = new Ring(true);
-            this.sonicLevel.Rings[n].x = sonicLevel.Rings[n].X;
-            this.sonicLevel.Rings[n].y = sonicLevel.Rings[n].Y;
+            this.sonicLevel.rings[n] = new Ring(true);
+            this.sonicLevel.rings[n].x = sonicLevel.Rings[n].X;
+            this.sonicLevel.rings[n].y = sonicLevel.Rings[n].Y;
         }
-        this.sonicLevel.LevelWidth = sonicLevel.ForegroundWidth;
-        this.sonicLevel.LevelHeight = sonicLevel.ForegroundHeight;
-        this.sonicLevel.ChunkMap = sonicLevel.Foreground;
-        this.sonicLevel.BGChunkMap = sonicLevel.Background;
+        this.sonicLevel.levelWidth = sonicLevel.ForegroundWidth;
+        this.sonicLevel.levelHeight = sonicLevel.ForegroundHeight;
+        this.sonicLevel.chunkMap = sonicLevel.Foreground;
+        this.sonicLevel.bgChunkMap = sonicLevel.Background;
         for (let l: number = 0; l < sonicLevel.Objects.length; l++) {
-            this.sonicLevel.Objects[l] = new LevelObjectInfo(sonicLevel.Objects[l]);
-            this.sonicLevel.Objects[l].index = l;
+            this.sonicLevel.objects[l] = new LevelObjectInfo(sonicLevel.Objects[l]);
+            this.sonicLevel.objects[l].index = l;
         }
         let objectKeys = new Array<string>();
-        this.sonicLevel.Objects.forEach(t => {
+        this.sonicLevel.objects.forEach(t => {
             let o = t.key;
             if (objectKeys.filter(p => p != o).length == objectKeys.length)
                 objectKeys.push(o);
@@ -857,15 +858,15 @@ export class SonicManager {
             for (let n: number = 0; n < mj.length; n++) {
                 mfc[n % 8][n / 8 | 0] = mj[n];
             }
-            this.sonicLevel.Tiles[j] = new Tile(mfc);
-            this.sonicLevel.Tiles[j].index = j;
+            this.sonicLevel.tiles[j] = new Tile(mfc);
+            this.sonicLevel.tiles[j].index = j;
         }
-        let acs = this.sonicLevel.AnimatedChunks = new Array<TileChunk>();
+        let acs = this.sonicLevel.animatedChunks = new Array<TileChunk>();
         if (sonicLevel.AnimatedFiles) {
-            this.sonicLevel.AnimatedTileFiles = new Array(sonicLevel.AnimatedFiles.length);
+            this.sonicLevel.animatedTileFiles = new Array(sonicLevel.AnimatedFiles.length);
             for (let animatedFileIndex = 0; animatedFileIndex < sonicLevel.AnimatedFiles.length; animatedFileIndex++) {
                 let animatedFile = sonicLevel.AnimatedFiles[animatedFileIndex];
-                this.sonicLevel.AnimatedTileFiles[animatedFileIndex] = new Array(animatedFile.length);
+                this.sonicLevel.animatedTileFiles[animatedFileIndex] = new Array(animatedFile.length);
                 for (let filePiece: number = 0; filePiece < animatedFile.length; filePiece++) {
                     let c = animatedFile[filePiece];
                     let tiles = c;
@@ -885,7 +886,7 @@ export class SonicManager {
                     let tile: Tile = new Tile(mfc);
                     tile.isTileAnimated = true;
                     tile.index = filePiece * 10000 + animatedFileIndex;
-                    this.sonicLevel.AnimatedTileFiles[animatedFileIndex][filePiece] = tile;
+                    this.sonicLevel.animatedTileFiles[animatedFileIndex][filePiece] = tile;
                 }
             }
         }
@@ -905,10 +906,10 @@ export class SonicManager {
                 }));
             }
             mj.Init();
-            this.sonicLevel.TilePieces[j] = mj;
+            this.sonicLevel.tilePieces[j] = mj;
         }
-        this.sonicLevel.Angles = sonicLevel.Angles;
-        this.sonicLevel.TileAnimations = sonicLevel.Animations.map(a => Help.merge(new TileAnimationData(), {
+        this.sonicLevel.angles = sonicLevel.Angles;
+        this.sonicLevel.tileAnimations = sonicLevel.Animations.map(a => Help.merge(new TileAnimationData(), {
             AnimationTileFile: a.AnimationFile,
             AnimationTileIndex: a.AnimationTileIndex,
             AutomatedTiming: a.AutomatedTiming,
@@ -918,8 +919,8 @@ export class SonicManager {
                 StartingTileIndex: b.StartingTileIndex
             })).slice(0)
         }));
-        this.sonicLevel.CollisionIndexes1 = sonicLevel.CollisionIndexes1;
-        this.sonicLevel.CollisionIndexes2 = sonicLevel.CollisionIndexes2;
+        this.sonicLevel.collisionIndexes1 = sonicLevel.CollisionIndexes1;
+        this.sonicLevel.collisionIndexes2 = sonicLevel.CollisionIndexes2;
         for (let i: number = 0; i < sonicLevel.HeightMaps.length; i++) {
             let b1 = true;
             let b2 = true;
@@ -930,10 +931,10 @@ export class SonicManager {
                     b2 = false;
             }
             if (b1)
-                this.sonicLevel.HeightMaps[i] = HeightMap.FullHeight(false);
+                this.sonicLevel.heightMaps[i] = HeightMap.FullHeight(false);
             else if (b2)
-                this.sonicLevel.HeightMaps[i] = HeightMap.FullHeight(true);
-            else this.sonicLevel.HeightMaps[i] = new HeightMap(sonicLevel.HeightMaps[i], i);
+                this.sonicLevel.heightMaps[i] = HeightMap.FullHeight(true);
+            else this.sonicLevel.heightMaps[i] = new HeightMap(sonicLevel.HeightMaps[i], i);
         }
         for (let j: number = 0; j < sonicLevel.Chunks.length; j++) {
             let fc = sonicLevel.Chunks[j];
@@ -953,7 +954,7 @@ export class SonicManager {
                     YFlip: fc[p].YFlip
                 });
             }
-            this.sonicLevel.TileChunks[j] = mj;
+            this.sonicLevel.tileChunks[j] = mj;
             mj.TileAnimations = {};
             for (let tpX: number = 0; tpX < mj.TilePieces.length; tpX++) {
                 for (let tpY: number = 0; tpY < mj.TilePieces[tpX].length; tpY++) {
@@ -970,13 +971,13 @@ export class SonicManager {
                 }
             }
         }
-        this.sonicLevel.Palette = sonicLevel.Palette.map(a => a.map(b => "#" + b));
-        this.sonicLevel.StartPositions = sonicLevel.StartPositions.map(a => new Point(a.X, a.Y));
-        this.sonicLevel.AnimatedPalettes = new Array<PaletteItem>();
+        this.sonicLevel.palette = sonicLevel.Palette.map(a => a.map(b => "#" + b));
+        this.sonicLevel.startPositions = sonicLevel.StartPositions.map(a => new Point(a.X, a.Y));
+        this.sonicLevel.animatedPalettes = new Array<PaletteItem>();
         if (sonicLevel.PaletteItems.length > 0) {
             for (let k: number = 0; k < sonicLevel.PaletteItems[0].length; k++) {
                 let pal: AnimatedPaletteItem = sonicLevel.PaletteItems[0][k];
-                this.sonicLevel.AnimatedPalettes.push(Help.merge(new PaletteItem(), {
+                this.sonicLevel.animatedPalettes.push(Help.merge(new PaletteItem(), {
                     Palette: (<string[]>eval(pal.Palette)).map(b => "#" + b),
                     SkipIndex: pal.SkipIndex,
                     TotalLength: pal.TotalLength,
@@ -988,10 +989,10 @@ export class SonicManager {
                 }));
             }
         }
-        for (let tilePiece of this.sonicLevel.TilePieces) {
+        for (let tilePiece of this.sonicLevel.tilePieces) {
             tilePiece.AnimatedPaletteIndexes = new Array<number>();
             tilePiece.AnimatedTileIndexes = new Array<number>();
-            if (this.sonicLevel.AnimatedPalettes.length > 0) {
+            if (this.sonicLevel.animatedPalettes.length > 0) {
                 for (let mj of tilePiece.Tiles) {
                     let tile: Tile = mj.GetTile();
                     if (tile) {
@@ -999,8 +1000,8 @@ export class SonicManager {
                         let pl = tile.GetAllPaletteIndexes();
                         tile.paletteIndexesToBeAnimated = {};
                         tile.animatedTileIndexes = new Array<number>();
-                        for (let tileAnimationIndex: number = 0; tileAnimationIndex < this.sonicLevel.TileAnimations.length; tileAnimationIndex++) {
-                            let tileAnimationData = this.sonicLevel.TileAnimations[tileAnimationIndex];
+                        for (let tileAnimationIndex: number = 0; tileAnimationIndex < this.sonicLevel.tileAnimations.length; tileAnimationIndex++) {
+                            let tileAnimationData = this.sonicLevel.tileAnimations[tileAnimationIndex];
                             let anin = tileAnimationData.AnimationTileIndex;
                             let num = tileAnimationData.NumberOfTiles;
                             if (tile.index >= anin && tile.index < anin + num) {
@@ -1008,8 +1009,8 @@ export class SonicManager {
                                 tile.animatedTileIndexes.push(tileAnimationIndex);
                             }
                         }
-                        for (let animatedPaletteIndex: number = 0; animatedPaletteIndex < this.sonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
-                            let pal = this.sonicLevel.AnimatedPalettes[animatedPaletteIndex];
+                        for (let animatedPaletteIndex: number = 0; animatedPaletteIndex < this.sonicLevel.animatedPalettes.length; animatedPaletteIndex++) {
+                            let pal = this.sonicLevel.animatedPalettes[animatedPaletteIndex];
                             tile.paletteIndexesToBeAnimated[animatedPaletteIndex] = new Array<number>();
                             for (let mjce of pal.Pieces) {
                                 let mje1: PaletteItemPieces = mjce;

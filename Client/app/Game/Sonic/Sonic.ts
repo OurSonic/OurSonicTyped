@@ -56,8 +56,8 @@ export class Sonic {
         this.physicsVariables = SonicConstants.Sonic();
         let sonicManager = SonicManager.instance;
         this.sonicLevel = sonicManager.sonicLevel;
-        this.x = this.sonicLevel.StartPositions[0].x;
-        this.y = this.sonicLevel.StartPositions[0].y;
+        this.x = this.sonicLevel.startPositions[0].x;
+        this.y = this.sonicLevel.startPositions[0].y;
         this.sensorManager = new SensorManager();
         this.haltSmoke = new Array<Point>();
         this.rings = 7;
@@ -101,8 +101,8 @@ export class Sonic {
             if (this.holdingUp)
                 this.y -= debugSpeed;
 
-            this.x = ((sonicLevel.LevelWidth * 128) + (this.x)) % (sonicLevel.LevelWidth * 128);
-            this.y = ((sonicLevel.LevelHeight * 128) + (this.y)) % (sonicLevel.LevelHeight * 128);
+            this.x = ((sonicLevel.levelWidth * 128) + (this.x)) % (sonicLevel.levelWidth * 128);
+            this.y = ((sonicLevel.levelHeight * 128) + (this.y)) % (sonicLevel.levelHeight * 128);
             return
         }
         this.updateMode();
@@ -662,8 +662,8 @@ export class Sonic {
             this.gsp = 0;
             this.xsp = 0;
         }
-        this.x = ((this.sonicLevel.LevelWidth * 128) + (this.x + this.xsp)) % (this.sonicLevel.LevelWidth * 128);
-        this.y = ((this.sonicLevel.LevelHeight * 128) + (this.y + this.ysp)) % (this.sonicLevel.LevelHeight * 128);
+        this.x = ((this.sonicLevel.levelWidth * 128) + (this.x + this.xsp)) % (this.sonicLevel.levelWidth * 128);
+        this.y = ((this.sonicLevel.levelHeight * 128) + (this.y + this.ysp)) % (this.sonicLevel.levelHeight * 128);
     }
 
     public draw(canvas: CanvasRenderingContext2D): void {
@@ -868,7 +868,7 @@ export class Sonic {
         this.ringCollisionRect.y = 0;
         this.ringCollisionRect.Width = 8 * 2;
         this.ringCollisionRect.Height = 8 * 2;
-        let rings: Ring[] = SonicManager.instance.sonicLevel.Rings;
+        let rings: Ring[] = SonicManager.instance.sonicLevel.rings;
         for (let index: number = 0; index < rings.length; index++) {
             let ring = rings[index];
             let pos = ring;

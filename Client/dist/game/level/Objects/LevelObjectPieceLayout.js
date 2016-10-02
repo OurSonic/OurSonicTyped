@@ -17,15 +17,15 @@ System.register(["../../SonicManager", "../../../common/Utils"], function(export
                     this.name = name;
                     this.width = 350;
                     this.height = 280;
-                    this.pieces = new Array();
+                    this.pieces = [];
                 }
-                LevelObjectPieceLayout.prototype.Update = function () {
-                    for (var _i = 0, _a = SonicManager_1.SonicManager.instance.sonicLevel.Objects; _i < _a.length; _i++) {
+                LevelObjectPieceLayout.prototype.update = function () {
+                    for (var _i = 0, _a = SonicManager_1.SonicManager.instance.sonicLevel.objects; _i < _a.length; _i++) {
                         var t = _a[_i];
                         t.reset();
                     }
                 };
-                LevelObjectPieceLayout.prototype.DrawUI = function (canvas, showImages, selectedPieceIndex, levelObject) {
+                LevelObjectPieceLayout.prototype.drawUI = function (canvas, showImages, selectedPieceIndex, levelObject) {
                     canvas.save();
                     if (!showImages) {
                         canvas.strokeStyle = "#000000";
@@ -43,39 +43,39 @@ System.register(["../../SonicManager", "../../../common/Utils"], function(export
                         for (var i = 1; i < this.pieces.length; i++) {
                             var j = this.pieces[i];
                             canvas.beginPath();
-                            canvas.moveTo(j.X, j.Y);
-                            canvas.lineTo(this.pieces[i - 1].X, this.pieces[i - 1].Y);
+                            canvas.moveTo(j.x, j.y);
+                            canvas.lineTo(this.pieces[i - 1].x, this.pieces[i - 1].y);
                             canvas.stroke();
                         }
                     }
                     for (var _i = 0, _a = this.pieces; _i < _a.length; _i++) {
                         var levelObjectPieceLayoutPiece = _a[_i];
                         if (showImages) {
-                            var piece = levelObject.pieces[levelObjectPieceLayoutPiece.PieceIndex];
+                            var piece = levelObject.pieces[levelObjectPieceLayoutPiece.pieceIndex];
                             var asset = levelObject.assets[piece.assetIndex];
                             if (asset.frames.length > 0) {
                                 var frm = asset.frames[0];
-                                frm.DrawUI(canvas, new Utils_1.Point(levelObjectPieceLayoutPiece.X - frm.offsetX, levelObjectPieceLayoutPiece.Y - frm.offsetY), false, false, false, false, piece.xflip, piece.yflip);
+                                frm.drawUI(canvas, new Utils_1.Point(levelObjectPieceLayoutPiece.x - frm.offsetX, levelObjectPieceLayoutPiece.y - frm.offsetY), false, false, false, false, piece.xflip, piece.yflip);
                             }
                         }
                         else {
                             var drawRadial = void 0;
                             drawRadial = SonicManager_1.SonicManager.instance.mainCanvas.Context.createRadialGradient(0, 0, 0, 10, 10, 50);
                             drawRadial.addColorStop(0, "white");
-                            if (selectedPieceIndex == levelObjectPieceLayoutPiece.PieceIndex)
+                            if (selectedPieceIndex == levelObjectPieceLayoutPiece.pieceIndex)
                                 drawRadial.addColorStop(1, "yellow");
                             else
                                 drawRadial.addColorStop(1, "red");
                             canvas.fillStyle = drawRadial;
                             canvas.beginPath();
-                            canvas.arc(levelObjectPieceLayoutPiece.X, levelObjectPieceLayoutPiece.Y, 10, 0, Math.PI * 2, true);
+                            canvas.arc(levelObjectPieceLayoutPiece.x, levelObjectPieceLayoutPiece.y, 10, 0, Math.PI * 2, true);
                             canvas.closePath();
                             canvas.fill();
                         }
                     }
                     canvas.restore();
                 };
-                LevelObjectPieceLayout.prototype.Draw = function (canvas, x, y, framework, instance, showHeightMap) {
+                LevelObjectPieceLayout.prototype.draw = function (canvas, x, y, framework, instance, showHeightMap) {
                     for (var _i = 0, _a = instance.pieces; _i < _a.length; _i++) {
                         var j = _a[_i];
                         if (!j.visible)
@@ -84,22 +84,22 @@ System.register(["../../SonicManager", "../../../common/Utils"], function(export
                         var asset = framework.assets[piece.assetIndex];
                         if (asset.frames.length > 0) {
                             var frm = asset.frames[j.frameIndex];
-                            frm.DrawUI(canvas, new Utils_1.Point((x) - (frm.offsetX), (y) - (frm.offsetY)), false, showHeightMap, showHeightMap, false, instance.xflip !== !!piece.xflip, instance.yflip !== !!piece.yflip);
+                            frm.drawUI(canvas, new Utils_1.Point((x) - (frm.offsetX) + j.x, (y) - (frm.offsetY) + j.y), false, showHeightMap, showHeightMap, false, instance.xflip !== !!piece.xflip, instance.yflip !== !!piece.yflip);
                         }
                     }
                 };
-                LevelObjectPieceLayout.prototype.GetRectangle = function (levelObject) {
+                LevelObjectPieceLayout.prototype.getRectangle = function (levelObject) {
                     var left = 100000000;
                     var top = 100000000;
                     var right = -100000000;
                     var bottom = -100000000;
                     for (var _i = 0, _a = this.pieces; _i < _a.length; _i++) {
                         var levelObjectPieceLayoutPiece = _a[_i];
-                        var piece = levelObject.pieces[levelObjectPieceLayoutPiece.PieceIndex];
+                        var piece = levelObject.pieces[levelObjectPieceLayoutPiece.pieceIndex];
                         var asset = levelObject.assets[piece.assetIndex];
                         var frame = asset.frames[piece.frameIndex];
-                        var pieceX = levelObjectPieceLayoutPiece.X - frame.offsetX;
-                        var pieceY = levelObjectPieceLayoutPiece.Y - frame.offsetY;
+                        var pieceX = levelObjectPieceLayoutPiece.x - frame.offsetX;
+                        var pieceY = levelObjectPieceLayoutPiece.y - frame.offsetY;
                         var pieceWidth = frame.width;
                         var pieceHeight = frame.height;
                         if (pieceX < left) {

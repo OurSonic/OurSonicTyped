@@ -1,6 +1,6 @@
 <div draggable class="window" style="z-index: 10000; position: absolute;" [hidden]="!visible" [style.height]="'auto'" [style.left]="left" [style.top]="top">
-   <div class="window-header">
-       <h1 style="display:inline-block">{{windowTitle}}</h1>
+   <div class="window-header" style="padding-bottom:10px;">
+       <h1 style="display:inline-block; margin-top:6px; padding-right:20px;" >{{windowTitle}}</h1>
        <div style="float: right;">
            <button (click)="minimize()" class="btn red" *ngIf="isMinimized">_</button>
            <button (click)="minimize()" class="btn" *ngIf="!isMinimized">_</button>

@@ -8,43 +8,43 @@ System.register([], function(exports_1, context_1) {
             SonicLevel = (function () {
                 function SonicLevel() {
                     this.curHeightMap = false;
-                    this.LevelWidth = 0;
-                    this.LevelHeight = 0;
-                    this.CurPaletteIndex = 0;
-                    this.Tiles = new Array();
-                    this.TilePieces = new Array();
-                    this.TileChunks = new Array();
-                    this.ChunkMap = new Array(0);
-                    this.Rings = new Array();
-                    this.Objects = new Array();
-                    this.HeightMaps = new Array();
-                    this.Tiles = new Array();
+                    this.levelWidth = 0;
+                    this.levelHeight = 0;
+                    this.curPaletteIndex = 0;
+                    this.tiles = [];
+                    this.tilePieces = [];
+                    this.tileChunks = [];
+                    this.chunkMap = [];
+                    this.rings = [];
+                    this.objects = [];
+                    this.heightMaps = [];
+                    this.tiles = [];
                     this.curHeightMap = true;
-                    this.CurPaletteIndex = 0;
-                    this.LevelWidth = 0;
-                    this.LevelHeight = 0;
+                    this.curPaletteIndex = 0;
+                    this.levelWidth = 0;
+                    this.levelHeight = 0;
                 }
                 SonicLevel.prototype.getChunkAt = function (x, y) {
-                    return this.TileChunks[this.ChunkMap[x][y]];
+                    return this.tileChunks[this.chunkMap[x][y]];
                 };
-                SonicLevel.prototype.ClearCache = function () {
-                    for (var _i = 0, _a = this.Tiles; _i < _a.length; _i++) {
+                SonicLevel.prototype.clearCache = function () {
+                    for (var _i = 0, _a = this.tiles; _i < _a.length; _i++) {
                         var tile = _a[_i];
-                        tile.ClearCache();
+                        tile.clearCache();
                     }
-                    for (var _b = 0, _c = this.TileChunks; _b < _c.length; _b++) {
+                    for (var _b = 0, _c = this.tileChunks; _b < _c.length; _b++) {
                         var chunk = _c[_b];
                         chunk.clearCache();
                     }
                 };
-                SonicLevel.prototype.GetTile = function (tile) {
-                    return this.Tiles[tile];
+                SonicLevel.prototype.getTile = function (tile) {
+                    return this.tiles[tile];
                 };
-                SonicLevel.prototype.GetTilePiece = function (block) {
-                    return this.TilePieces[block];
+                SonicLevel.prototype.getTilePiece = function (block) {
+                    return this.tilePieces[block];
                 };
-                SonicLevel.prototype.SetChunkAt = function (x, y, tileChunk) {
-                    this.ChunkMap[x][y] = tileChunk.Index;
+                SonicLevel.prototype.setChunkAt = function (x, y, tileChunk) {
+                    this.chunkMap[x][y] = tileChunk.Index;
                 };
                 return SonicLevel;
             }());

@@ -1,9 +1,4 @@
-﻿import {Help } from "../../../common/Help";
-import {SonicManager } from "../../SonicManager";
-import {LevelObjectAsset } from "./LevelObjectAsset";
-import {LevelObjectAssetFrame } from "./LevelObjectAssetFrame";
-import {LevelObjectProjectile } from "./LevelObjectProjectile";
-import {LevelObjectData} from "./LevelObjectData";
+﻿import {SonicManager } from "../../SonicManager";
 import {LevelObject } from "./LevelObject";
 import {LevelObjectPiece} from "./LevelObjectPiece";
 import {LevelObjectPieceLayoutPiece} from "./LevelObjectPieceLayoutPiece";
@@ -23,14 +18,14 @@ export class LevelObjectPieceLayout {
         this.name = name;
         this.width = 350;
         this.height = 280;
-        this.pieces = new Array<LevelObjectPieceLayoutPiece>();
+        this.pieces = [];
     }
-    public Update(): void {
-        for (let t of SonicManager.instance.sonicLevel.Objects) {
+    public update(): void {
+        for (let t of SonicManager.instance.sonicLevel.objects) {
             t.reset();
         }
     }
-    public DrawUI(canvas: CanvasRenderingContext2D, showImages: boolean, selectedPieceIndex: number, levelObject: LevelObject): void {
+    public drawUI(canvas: CanvasRenderingContext2D, showImages: boolean, selectedPieceIndex: number, levelObject: LevelObject): void {
         canvas.save();
         if (!showImages) {
             canvas.strokeStyle = "#000000";
@@ -48,19 +43,19 @@ export class LevelObjectPieceLayout {
             for (let i = 1; i < this.pieces.length; i++) {
                 let j = this.pieces[i];
                 canvas.beginPath();
-                canvas.moveTo(j.X, j.Y);
-                canvas.lineTo(this.pieces[i - 1].X, this.pieces[i - 1].Y);
+                canvas.moveTo(j.x, j.y);
+                canvas.lineTo(this.pieces[i - 1].x, this.pieces[i - 1].y);
                 canvas.stroke();
             }
         }
         for (let levelObjectPieceLayoutPiece of this.pieces) {
             if (showImages) {
-                let piece: LevelObjectPiece = levelObject.pieces[levelObjectPieceLayoutPiece.PieceIndex];
+                let piece: LevelObjectPiece = levelObject.pieces[levelObjectPieceLayoutPiece.pieceIndex];
                 let asset = levelObject.assets[piece.assetIndex];
                 if (asset.frames.length > 0) {
                     let frm = asset.frames[0];
-                    frm.DrawUI(canvas,
-                        new Point(levelObjectPieceLayoutPiece.X - frm.offsetX, levelObjectPieceLayoutPiece.Y - frm.offsetY),
+                    frm.drawUI(canvas,
+                        new Point(levelObjectPieceLayoutPiece.x - frm.offsetX, levelObjectPieceLayoutPiece.y - frm.offsetY),
                         false,
                         false,
                         false,
@@ -73,19 +68,19 @@ export class LevelObjectPieceLayout {
                 let drawRadial: CanvasGradient;
                 drawRadial = SonicManager.instance.mainCanvas.Context.createRadialGradient(0, 0, 0, 10, 10, 50);
                 drawRadial.addColorStop(0, "white");
-                if (selectedPieceIndex == levelObjectPieceLayoutPiece.PieceIndex)
+                if (selectedPieceIndex == levelObjectPieceLayoutPiece.pieceIndex)
                     drawRadial.addColorStop(1, "yellow");
                 else drawRadial.addColorStop(1, "red");
                 canvas.fillStyle = drawRadial;
                 canvas.beginPath();
-                canvas.arc(levelObjectPieceLayoutPiece.X, levelObjectPieceLayoutPiece.Y, 10, 0, Math.PI * 2, true);
+                canvas.arc(levelObjectPieceLayoutPiece.x, levelObjectPieceLayoutPiece.y, 10, 0, Math.PI * 2, true);
                 canvas.closePath();
                 canvas.fill();
             }
         }
         canvas.restore();
     }
-    public Draw(canvas: CanvasRenderingContext2D, x: number, y: number, framework: LevelObject, instance: LevelObjectInfo, showHeightMap: boolean): void {
+    public draw(canvas: CanvasRenderingContext2D, x: number, y: number, framework: LevelObject, instance: LevelObjectInfo, showHeightMap: boolean): void {
         for (let j of instance.pieces) {
             if (!j.visible)
                 continue;
@@ -93,8 +88,8 @@ export class LevelObjectPieceLayout {
             let asset = framework.assets[piece.assetIndex];
             if (asset.frames.length > 0) {
                 let frm = asset.frames[j.frameIndex];
-                frm.DrawUI(canvas,
-                    new Point((x) - (frm.offsetX), (y) - (frm.offsetY)),
+                frm.drawUI( canvas,
+                    new Point((x) - (frm.offsetX)+j.x, (y) - (frm.offsetY)+j.y),
                     false,
                     showHeightMap,
                     showHeightMap,
@@ -104,17 +99,17 @@ export class LevelObjectPieceLayout {
             }
         }
     }
-    public GetRectangle(levelObject: LevelObject): Rectangle {
+    public getRectangle(levelObject: LevelObject): Rectangle {
         let left: number = 100000000;
         let top: number = 100000000;
         let right: number = -100000000;
         let bottom: number = -100000000;
         for (let levelObjectPieceLayoutPiece of this.pieces) {
-            let piece = levelObject.pieces[levelObjectPieceLayoutPiece.PieceIndex];
+            let piece = levelObject.pieces[levelObjectPieceLayoutPiece.pieceIndex];
             let asset = levelObject.assets[piece.assetIndex];
             let frame = asset.frames[piece.frameIndex];
-            let pieceX = levelObjectPieceLayoutPiece.X - frame.offsetX;
-            let pieceY = levelObjectPieceLayoutPiece.Y - frame.offsetY;
+            let pieceX = levelObjectPieceLayoutPiece.x - frame.offsetX;
+            let pieceY = levelObjectPieceLayoutPiece.y - frame.offsetY;
             let pieceWidth = frame.width;
             let pieceHeight = frame.height;
             if (pieceX < left) {

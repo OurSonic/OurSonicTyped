@@ -21,14 +21,14 @@ export class LevelObject {
     public pieces: LevelObjectPiece[];
     public pieceLayouts: LevelObjectPieceLayout[];
     public projectiles: LevelObjectProjectile[];
-    public InitScript: string;
-    public TickScript: string;
-    public CollideScript: string;
-    public HurtScript: string;
+    public initScript: string;
+    public tickScript: string;
+    public collideScript: string;
+    public hurtScript: string;
     public description: string;
     constructor(key: string) {
         this.key = key;
-        this.InitScript = "this.state = {\r\n\txsp: 0.0,\r\n\tysp: 0.0,\r\n\tfacing: false,\r\n};";
+        this.initScript = "this.state = {\r\n\txsp: 0.0,\r\n\tysp: 0.0,\r\n\tfacing: false,\r\n};";
         this.pieces = [];
         this.pieceLayouts = [];
         this.projectiles = [];
@@ -36,19 +36,19 @@ export class LevelObject {
     }
     public init($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): void {
         $object.reset();
-        this.evalMe("InitScript").apply($object, [$object, level, sonic]);
+        this.evalMe("initScript").apply($object, [$object, level, sonic]);
     }
     public onCollide($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic, sensor: string, piece: LevelObjectPiece): boolean {
-        return <boolean>this.evalMe("CollideScript").apply($object, [$object, level, sonic, sensor, piece])
+        return <boolean>this.evalMe("collideScript").apply($object, [$object, level, sonic, sensor, piece])
     }
     public onHurtSonic($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic, sensor: string, piece: LevelObjectPiece): boolean {
-        return <boolean>this.evalMe("HurtScript").apply($object, [$object, level, sonic, sensor, piece])
+        return <boolean>this.evalMe("hurtScript").apply($object, [$object, level, sonic, sensor, piece])
     }
     public tick($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): boolean {
         if ($object.lastDrawTick != SonicManager.instance.tickCount - 1)
             this.init($object, level, sonic);
         $object.lastDrawTick = SonicManager.instance.tickCount;
-        this.evalMe("TickScript").apply($object, [$object, level, sonic]);
+        this.evalMe("tickScript").apply($object, [$object, level, sonic]);
         if ($object.state) {
             $object.xsp = $object.state.xsp;
             $object.ysp = $object.state.ysp;

@@ -65,15 +65,15 @@ export class DoublePoint {
 
 
 export class IntersectingRectangle extends Point {
-    public Width: number;
-    public Height: number;
+    public width: number;
+    public height: number;
     constructor(x: number, y: number, width: number, height: number) {
         super(x,y);
-        this.Width = width;
-        this.Height = height;
+        this.width = width;
+        this.height = height;
     }
     public Intersects(p: Point): boolean {
-        return this.x < p.x && this.x + this.Width > p.x && this.y < p.y && this.y + this.Height > p.y;
+        return this.x < p.x && this.x + this.width > p.x && this.y < p.y && this.y + this.height > p.y;
     }
     public static IntersectsRect(r: Rectangle, p: Point): boolean {
         return r.x < p.x && r.x + r.Width > p.x && r.y < p.y && r.y + r.Height > p.y;

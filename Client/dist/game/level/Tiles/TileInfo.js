@@ -19,7 +19,7 @@ System.register(["../../SonicManager"], function(exports_1, context_1) {
                     this.Index = 0;
                 }
                 TileInfo.prototype.GetTile = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.GetTile(this._Tile);
+                    return SonicManager_1.SonicManager.instance.sonicLevel.getTile(this._Tile);
                 };
                 return TileInfo;
             }());

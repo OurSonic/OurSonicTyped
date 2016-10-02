@@ -46,7 +46,7 @@ System.register(["../../../common/CanvasInformation", "../../../common/Utils", "
                             oPos.y = -squareSize;
                             j.Context.scale(1, -1);
                         }
-                        var palette_ = SonicManager_1.SonicManager.instance.sonicLevel.Palette;
+                        var palette_ = SonicManager_1.SonicManager.instance.sonicLevel.palette;
                         var colorPaletteIndex = (palette + SonicManager_1.SonicManager.instance.indexedPalette) % palette_.length;
                         var x = oPos.x;
                         var y = oPos.y;
@@ -90,7 +90,7 @@ System.register(["../../../common/CanvasInformation", "../../../common/Utils", "
                             oPos.y = -squareSize;
                             j.Context.scale(1, -1);
                         }
-                        var palette_ = SonicManager_1.SonicManager.instance.sonicLevel.Palette;
+                        var palette_ = SonicManager_1.SonicManager.instance.sonicLevel.palette;
                         var colorPaletteIndex = (palette + SonicManager_1.SonicManager.instance.indexedPalette) % palette_.length;
                         var x = oPos.x;
                         var y = oPos.y;
@@ -152,7 +152,7 @@ System.register(["../../../common/CanvasInformation", "../../../common/Utils", "
                     }
                     return this.curPaletteIndexes;
                 };
-                Tile.prototype.ClearCache = function () {
+                Tile.prototype.clearCache = function () {
                     this.curPaletteIndexes = null;
                     this.baseCaches = {};
                 };

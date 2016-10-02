@@ -90,7 +90,7 @@ export class LevelObjectInfo {
             this._rect.Height = ObjectManager.broken.height;
             return this._rect;
         }
-        return this.objectData.pieceLayouts[this.pieceLayoutIndex].GetRectangle(this.objectData);
+        return this.objectData.pieceLayouts[this.pieceLayoutIndex].getRectangle(this.objectData);
     }
     public draw(canvas: CanvasRenderingContext2D, x: number, y: number, showHeightMap: boolean): void {
         if (this.dead || !this.objectData)
@@ -105,7 +105,7 @@ export class LevelObjectInfo {
         }
         let levelObjectPieceLayout = this.mainPieceLayout();
 
-        levelObjectPieceLayout.Draw(canvas, x, y, this.objectData, this, showHeightMap);
+        levelObjectPieceLayout.draw(canvas, x, y, this.objectData, this, showHeightMap);
         if (this.consoleLog != null) {
             let gr = this.getRect();
             canvas.save();

@@ -11,10 +11,10 @@ export class LevelObjectAssetFrame {
     public colorMap: number[][];
     public palette: string[];
     public name: string;
-    private Image: { [key: number]: CanvasInformation};
+    private image: { [key: number]: CanvasInformation};
     public transparentColor: string;
     constructor(name: string) {
-        this.Image = {};
+        this.image = {};
         this.name = name;
         this.collisionMap = new Array(100);
         this.hurtSonicMap = new Array(100);
@@ -26,30 +26,30 @@ export class LevelObjectAssetFrame {
     public SetWidth(w: number): void {
         this.width = w;
         this.collisionMap = this.collisionMap.slice(0, w);
-        this.ClearCache();
+        this.clearCache();
     }
-    public SetHeight(h: number): void {
+    public setHeight(h: number): void {
         this.height = h;
         for (let j = 0; j < this.width; j++) {
             this.collisionMap[j] = this.collisionMap[j].slice(0, h);
         }
-        this.ClearCache();
+        this.clearCache();
     }
-    public SetOffset(ex: number, ey: number): void {
+    public setOffset(ex: number, ey: number): void {
         this.offsetX = ex;
         this.offsetY = ey;
-        this.ClearCache();
+        this.clearCache();
     }
-    public DrawSimple(mainCanvas: CanvasRenderingContext2D, pos: Point, width: number, height: number, xflip: boolean, yflip: boolean): void {
-        let c = this.GetCache(false, false, false);
+    public drawSimple(mainCanvas: CanvasRenderingContext2D, pos: Point, width: number, height: number, xflip: boolean, yflip: boolean): void {
+        let c = this.getCache(false, false, false);
         mainCanvas.save();
         mainCanvas.translate(pos.x, pos.y);
         mainCanvas.scale((width / this.width) | 0, (height / this.height) | 0);
         mainCanvas.drawImage(c.canvas, 0, 0);
         mainCanvas.restore();
     }
-    public GetCache(showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): CanvasInformation {
-        let m = this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
+    public getCache(showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): CanvasInformation {
+        let m = this.image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
         if (m == null) {
             let mj = CanvasInformation.create(this.width, this.height, false);
             let canvas = mj.Context;
@@ -85,25 +85,25 @@ export class LevelObjectAssetFrame {
             }
             canvas.restore();
             m = mj;
-            this.SetCache(mj, showOutline, showCollideMap, showHurtMap);
+            this.setCache(mj, showOutline, showCollideMap, showHurtMap);
         }
         return m;
     }
-    public ClearCache(): void {
-        this.Image = {};
+    public clearCache(): void {
+        this.image = {};
     }
-    public SetCache(image: CanvasInformation, showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): void {
-        this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)] = image;
+    public setCache(image: CanvasInformation, showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): void {
+        this.image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)] = image;
     }
-    public DrawUI(_canvas: CanvasRenderingContext2D,
-        pos: Point,
-        showOutline: boolean,
-        showCollideMap: boolean,
-        showHurtMap: boolean,
-        showOffset: boolean,
-        xflip: boolean,
-        yflip: boolean): void {
-        let fd = this.GetCache(showOutline, showCollideMap, showHurtMap);
+    public drawUI(_canvas: CanvasRenderingContext2D,
+                  pos: Point,
+                  showOutline: boolean,
+                  showCollideMap: boolean,
+                  showHurtMap: boolean,
+                  showOffset: boolean,
+                  xflip: boolean,
+                  yflip: boolean): void {
+        let fd = this.getCache(showOutline, showCollideMap, showHurtMap);
         _canvas.save();
         _canvas.translate(pos.x, pos.y);
         if (xflip) {

@@ -40,7 +40,7 @@ System.register(["../../SonicManager"], function(exports_1, context_1) {
                     this.AutomatedTiming = 0;
                 }
                 TileAnimationData.prototype.GetAnimationFile = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.AnimatedTileFiles[this.AnimationTileFile];
+                    return SonicManager_1.SonicManager.instance.sonicLevel.animatedTileFiles[this.AnimationTileFile];
                 };
                 return TileAnimationData;
             }());

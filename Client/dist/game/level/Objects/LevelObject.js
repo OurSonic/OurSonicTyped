@@ -14,7 +14,7 @@ System.register(["../../SonicManager"], function(exports_1, context_1) {
                     this.cacheCompiled = {};
                     this.cacheLast = {};
                     this.key = key;
-                    this.InitScript = "this.state = {\r\n\txsp: 0.0,\r\n\tysp: 0.0,\r\n\tfacing: false,\r\n};";
+                    this.initScript = "this.state = {\r\n\txsp: 0.0,\r\n\tysp: 0.0,\r\n\tfacing: false,\r\n};";
                     this.pieces = [];
                     this.pieceLayouts = [];
                     this.projectiles = [];
@@ -22,19 +22,19 @@ System.register(["../../SonicManager"], function(exports_1, context_1) {
                 }
                 LevelObject.prototype.init = function ($object, level, sonic) {
                     $object.reset();
-                    this.evalMe("InitScript").apply($object, [$object, level, sonic]);
+                    this.evalMe("initScript").apply($object, [$object, level, sonic]);
                 };
                 LevelObject.prototype.onCollide = function ($object, level, sonic, sensor, piece) {
-                    return this.evalMe("CollideScript").apply($object, [$object, level, sonic, sensor, piece]);
+                    return this.evalMe("collideScript").apply($object, [$object, level, sonic, sensor, piece]);
                 };
                 LevelObject.prototype.onHurtSonic = function ($object, level, sonic, sensor, piece) {
-                    return this.evalMe("HurtScript").apply($object, [$object, level, sonic, sensor, piece]);
+                    return this.evalMe("hurtScript").apply($object, [$object, level, sonic, sensor, piece]);
                 };
                 LevelObject.prototype.tick = function ($object, level, sonic) {
                     if ($object.lastDrawTick != SonicManager_1.SonicManager.instance.tickCount - 1)
                         this.init($object, level, sonic);
                     $object.lastDrawTick = SonicManager_1.SonicManager.instance.tickCount;
-                    this.evalMe("TickScript").apply($object, [$object, level, sonic]);
+                    this.evalMe("tickScript").apply($object, [$object, level, sonic]);
                     if ($object.state) {
                         $object.xsp = $object.state.xsp;
                         $object.ysp = $object.state.ysp;

@@ -19,7 +19,7 @@ export class Ring extends Point {
             this.x += <number>this.Xsp;
             this.y += <number>this.Ysp;
             let wl = SonicManager.instance.windowLocation;
-            if (this.x < wl.x || this.y < wl.y || this.x > wl.x + wl.Width || this.y > wl.y + wl.Height) {
+            if (this.x < wl.x || this.y < wl.y || this.x > wl.x + wl.width || this.y > wl.y + wl.height) {
                 this.TickCount = 0xfffffff;
                 return
             }

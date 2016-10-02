@@ -22,23 +22,23 @@ export class ObjectManager {
     }
     public static ExtendObject(d: LevelObjectData): LevelObject {
         let obj: LevelObject = Help.merge(new LevelObject(d.key), {
-            CollideScript: d.collideScript,
-            HurtScript: d.hurtScript,
-            InitScript: d.initScript,
-            TickScript: d.tickScript
+            collideScript: d.collideScript,
+            hurtScript: d.hurtScript,
+            initScript: d.initScript,
+            tickScript: d.tickScript
         });
         obj.description = d.description;
-        obj.assets = new Array<LevelObjectAsset>();
+        obj.assets = [];
         for (let i: number = 0; i < d.assets.length; i++) {
             let asset = d.assets[i];
             let levelObjectAsset = Help.merge(new LevelObjectAsset(asset.name), { name: asset.name });
-            levelObjectAsset.frames = new Array<LevelObjectAssetFrame>();
+            levelObjectAsset.frames = [];
             for (let index: number = 0; index < asset.frames.length; index++) {
                 let fr = asset.frames[index];
                 levelObjectAsset.frames[index] = Help.merge(new LevelObjectAssetFrame(fr.name), {
                     offsetX: fr.offsetX,
                     width: fr.width,
-                    transparentColor: fr.transparentColor,
+                    transparentColor: fr.transparentColor||"000000",
                     height: fr.height,
                     offsetY: fr.offsetY,
                     hurtSonicMap: fr.hurtSonicMap,
@@ -49,24 +49,24 @@ export class ObjectManager {
             }
             obj.assets[i] = levelObjectAsset;
         }
-        obj.pieces = new Array<LevelObjectPiece>();
+        obj.pieces = [];
         for (let index: number = 0; index < d.pieces.length; index++) {
             let piece = d.pieces[index];
             obj.pieces[index] = piece;
         }
-        obj.pieceLayouts = new Array<LevelObjectPieceLayout>();
+        obj.pieceLayouts = [];
         for (let index: number = 0; index < d.pieceLayouts.length; index++) {
             let pl = d.pieceLayouts[index];
             obj.pieceLayouts[index] = Help.merge(new LevelObjectPieceLayout(pl.name), {
                 height: pl.height,
                 width: pl.width
             });
-            obj.pieceLayouts[index].pieces = new Array<LevelObjectPieceLayoutPiece>();
+            obj.pieceLayouts[index].pieces = [];
             for (let i: number = 0; i < d.pieceLayouts[index].pieces.length; i++) {
                 obj.pieceLayouts[index].pieces[i] = d.pieceLayouts[index].pieces[i];
             }
         }
-        obj.projectiles = new Array<LevelObjectProjectile>();
+        obj.projectiles = [];
         for (let index: number = 0; index < d.projectiles.length; index++) {
             let proj = d.projectiles[index];
             proj = Help.merge(new LevelObjectProjectile(proj.name), {

@@ -217,9 +217,9 @@ System.register(["./Utils", "./CanvasInformation", "./Color", "./Enums", "../gam
                         case Enums_1.GameState.Editing:
                             var x = 0;
                             var y = 0;
-                            if (SonicManager_1.SonicManager.instance.sonicLevel && SonicManager_1.SonicManager.instance.sonicLevel.StartPositions && SonicManager_1.SonicManager.instance.sonicLevel.StartPositions[0]) {
-                                x = SonicManager_1.SonicManager.instance.sonicLevel.StartPositions[0].x - 128 * scale.x;
-                                y = SonicManager_1.SonicManager.instance.sonicLevel.StartPositions[0].y - 128 * scale.y;
+                            if (SonicManager_1.SonicManager.instance.sonicLevel && SonicManager_1.SonicManager.instance.sonicLevel.startPositions && SonicManager_1.SonicManager.instance.sonicLevel.startPositions[0]) {
+                                x = SonicManager_1.SonicManager.instance.sonicLevel.startPositions[0].x - 128 * scale.x;
+                                y = SonicManager_1.SonicManager.instance.sonicLevel.startPositions[0].y - 128 * scale.y;
                             }
                             return new Utils_1.IntersectingRectangle(x, y, window.innerWidth, window.innerHeight);
                     }

@@ -11,7 +11,7 @@ System.register(["../../../common/CanvasInformation"], function(exports_1, conte
         execute: function() {
             LevelObjectAssetFrame = (function () {
                 function LevelObjectAssetFrame(name) {
-                    this.Image = {};
+                    this.image = {};
                     this.name = name;
                     this.collisionMap = new Array(100);
                     this.hurtSonicMap = new Array(100);
@@ -23,30 +23,30 @@ System.register(["../../../common/CanvasInformation"], function(exports_1, conte
                 LevelObjectAssetFrame.prototype.SetWidth = function (w) {
                     this.width = w;
                     this.collisionMap = this.collisionMap.slice(0, w);
-                    this.ClearCache();
+                    this.clearCache();
                 };
-                LevelObjectAssetFrame.prototype.SetHeight = function (h) {
+                LevelObjectAssetFrame.prototype.setHeight = function (h) {
                     this.height = h;
                     for (var j = 0; j < this.width; j++) {
                         this.collisionMap[j] = this.collisionMap[j].slice(0, h);
                     }
-                    this.ClearCache();
+                    this.clearCache();
                 };
-                LevelObjectAssetFrame.prototype.SetOffset = function (ex, ey) {
+                LevelObjectAssetFrame.prototype.setOffset = function (ex, ey) {
                     this.offsetX = ex;
                     this.offsetY = ey;
-                    this.ClearCache();
+                    this.clearCache();
                 };
-                LevelObjectAssetFrame.prototype.DrawSimple = function (mainCanvas, pos, width, height, xflip, yflip) {
-                    var c = this.GetCache(false, false, false);
+                LevelObjectAssetFrame.prototype.drawSimple = function (mainCanvas, pos, width, height, xflip, yflip) {
+                    var c = this.getCache(false, false, false);
                     mainCanvas.save();
                     mainCanvas.translate(pos.x, pos.y);
                     mainCanvas.scale((width / this.width) | 0, (height / this.height) | 0);
                     mainCanvas.drawImage(c.canvas, 0, 0);
                     mainCanvas.restore();
                 };
-                LevelObjectAssetFrame.prototype.GetCache = function (showOutline, showCollideMap, showHurtMap) {
-                    var m = this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
+                LevelObjectAssetFrame.prototype.getCache = function (showOutline, showCollideMap, showHurtMap) {
+                    var m = this.image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
                     if (m == null) {
                         var mj = CanvasInformation_1.CanvasInformation.create(this.width, this.height, false);
                         var canvas = mj.Context;
@@ -82,18 +82,18 @@ System.register(["../../../common/CanvasInformation"], function(exports_1, conte
                         }
                         canvas.restore();
                         m = mj;
-                        this.SetCache(mj, showOutline, showCollideMap, showHurtMap);
+                        this.setCache(mj, showOutline, showCollideMap, showHurtMap);
                     }
                     return m;
                 };
-                LevelObjectAssetFrame.prototype.ClearCache = function () {
-                    this.Image = {};
+                LevelObjectAssetFrame.prototype.clearCache = function () {
+                    this.image = {};
                 };
-                LevelObjectAssetFrame.prototype.SetCache = function (image, showOutline, showCollideMap, showHurtMap) {
-                    this.Image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)] = image;
+                LevelObjectAssetFrame.prototype.setCache = function (image, showOutline, showCollideMap, showHurtMap) {
+                    this.image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)] = image;
                 };
-                LevelObjectAssetFrame.prototype.DrawUI = function (_canvas, pos, showOutline, showCollideMap, showHurtMap, showOffset, xflip, yflip) {
-                    var fd = this.GetCache(showOutline, showCollideMap, showHurtMap);
+                LevelObjectAssetFrame.prototype.drawUI = function (_canvas, pos, showOutline, showCollideMap, showHurtMap, showOffset, xflip, yflip) {
+                    var fd = this.getCache(showOutline, showCollideMap, showHurtMap);
                     _canvas.save();
                     _canvas.translate(pos.x, pos.y);
                     if (xflip) {

@@ -154,16 +154,16 @@ System.register(["../../../common/Utils", "../../../common/CanvasInformation", "
                     return (this.shouldAnimate);
                 };
                 TilePiece.prototype.GetLayer1Angles = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.Angles[SonicManager_1.SonicManager.instance.sonicLevel.CollisionIndexes1[this.Index]];
+                    return SonicManager_1.SonicManager.instance.sonicLevel.angles[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
                 };
                 TilePiece.prototype.GetLayer2Angles = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.Angles[SonicManager_1.SonicManager.instance.sonicLevel.CollisionIndexes2[this.Index]];
+                    return SonicManager_1.SonicManager.instance.sonicLevel.angles[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes2[this.Index]];
                 };
                 TilePiece.prototype.GetLayer1HeightMaps = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.HeightMaps[SonicManager_1.SonicManager.instance.sonicLevel.CollisionIndexes1[this.Index]];
+                    return SonicManager_1.SonicManager.instance.sonicLevel.heightMaps[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
                 };
                 TilePiece.prototype.GetLayer2HeightMaps = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.HeightMaps[SonicManager_1.SonicManager.instance.sonicLevel.CollisionIndexes2[this.Index]];
+                    return SonicManager_1.SonicManager.instance.sonicLevel.heightMaps[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes2[this.Index]];
                 };
                 TilePiece.DrawInfo = [[0, 0], [1, 0], [0, 1], [1, 1]];
                 TilePiece.DrawOrder = [[3, 2, 1, 0], [1, 0, 3, 2], [2, 3, 0, 1], [0, 1, 2, 3]];

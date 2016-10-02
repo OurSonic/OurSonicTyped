@@ -8,61 +8,61 @@ import {TileAnimationData} from "./level/Animations/TileAnimationData";
 import {TileChunk  } from "./level/Tiles/TileChunk";
 
 export class SonicLevel {
-    public TileAnimations: TileAnimationData[];
-    public AnimatedTileFiles: Tile[][];
-    public ChunkMap: number[][];
-    public Rings: Ring[];
+    public tileAnimations: TileAnimationData[];
+    public animatedTileFiles: Tile[][];
+    public chunkMap: number[][];
+    public rings: Ring[];
     public curHeightMap: boolean=false;
-    public LevelWidth: number=0;
-    public LevelHeight: number=0;
-    public TileChunks: TileChunk[];
-    public Tiles: Tile[];
-    public TilePieces: TilePiece[];
-    public Objects: LevelObjectInfo[];
-    public AnimatedPalettes: PaletteItem[];
-    public Palette: string[][];
-    public StartPositions: Point[];
-    public CurPaletteIndex: number=0;
-    public Angles: number[];
-    public CollisionIndexes1: number[];
-    public CollisionIndexes2: number[];
-    public HeightMaps: HeightMap[];
-    public AnimatedChunks: TileChunk[];
-    public BGChunkMap: number[][];
+    public levelWidth: number=0;
+    public levelHeight: number=0;
+    public tileChunks: TileChunk[];
+    public tiles: Tile[];
+    public tilePieces: TilePiece[];
+    public objects: LevelObjectInfo[];
+    public animatedPalettes: PaletteItem[];
+    public palette: string[][];
+    public startPositions: Point[];
+    public curPaletteIndex: number=0;
+    public angles: number[];
+    public collisionIndexes1: number[];
+    public collisionIndexes2: number[];
+    public heightMaps: HeightMap[];
+    public animatedChunks: TileChunk[];
+    public bgChunkMap: number[][];
 
     constructor() {
-        this.Tiles = new Array<Tile>();
-        this.TilePieces = new Array<TilePiece>();
-        this.TileChunks = new Array<TileChunk>();
-        this.ChunkMap = new Array(0);
-        this.Rings = new Array<Ring>();
-        this.Objects = new Array<LevelObjectInfo>();
-        this.HeightMaps = new Array<HeightMap>();
-        this.Tiles = new Array<Tile>();
+        this.tiles = [];
+        this.tilePieces = [];
+        this.tileChunks = [];
+        this.chunkMap = [];
+        this.rings = [];
+        this.objects = [];
+        this.heightMaps = [];
+        this.tiles = [];
         this.curHeightMap = true;
-        this.CurPaletteIndex = 0;
-        this.LevelWidth = 0;
-        this.LevelHeight = 0;
+        this.curPaletteIndex = 0;
+        this.levelWidth = 0;
+        this.levelHeight = 0;
     }
     public getChunkAt(x: number, y: number): TileChunk {
-        return this.TileChunks[this.ChunkMap[x][y]];
+        return this.tileChunks[this.chunkMap[x][y]];
     }
-    public ClearCache(): void {
-        for (let tile of this.Tiles) {
-            tile.ClearCache();
+    public clearCache(): void {
+        for (let tile of this.tiles) {
+            tile.clearCache();
         }
-        for (let chunk of this.TileChunks) {
+        for (let chunk of this.tileChunks) {
             chunk.clearCache();
         }
     }
-    public GetTile(tile: number): Tile {
-        return this.Tiles[tile];
+    public getTile(tile: number): Tile {
+        return this.tiles[tile];
     }
-    public GetTilePiece(block: number): TilePiece {
-        return this.TilePieces[block];
+    public getTilePiece(block: number): TilePiece {
+        return this.tilePieces[block];
     }
-    public SetChunkAt(x: number, y: number, tileChunk: TileChunk): void {
-        this.ChunkMap[x][y] = tileChunk.Index;
+    public setChunkAt(x: number, y: number, tileChunk: TileChunk): void {
+        this.chunkMap[x][y] = tileChunk.Index;
     }
 }
 

@@ -22,7 +22,7 @@ System.register(["../../SonicManager", "../../../SLData"], function(exports_1, c
                     this.Index = 0;
                 }
                 TilePieceInfo.prototype.GetTilePiece = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.GetTilePiece(this.Block);
+                    return SonicManager_1.SonicManager.instance.sonicLevel.getTilePiece(this.Block);
                 };
                 TilePieceInfo.prototype.SetTilePiece = function (tp) {
                     if (this.Block == tp.Index)
@@ -31,16 +31,16 @@ System.register(["../../SonicManager", "../../../SLData"], function(exports_1, c
                     return true;
                 };
                 TilePieceInfo.prototype.GetLayer1Angles = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.Angles[SonicManager_1.SonicManager.instance.sonicLevel.CollisionIndexes1[this.Block]];
+                    return SonicManager_1.SonicManager.instance.sonicLevel.angles[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes1[this.Block]];
                 };
                 TilePieceInfo.prototype.GetLayer2Angles = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.Angles[SonicManager_1.SonicManager.instance.sonicLevel.CollisionIndexes2[this.Block]];
+                    return SonicManager_1.SonicManager.instance.sonicLevel.angles[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes2[this.Block]];
                 };
                 TilePieceInfo.prototype.GetLayer1HeightMaps = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.HeightMaps[SonicManager_1.SonicManager.instance.sonicLevel.CollisionIndexes1[this.Block]];
+                    return SonicManager_1.SonicManager.instance.sonicLevel.heightMaps[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes1[this.Block]];
                 };
                 TilePieceInfo.prototype.GetLayer2HeightMaps = function () {
-                    return SonicManager_1.SonicManager.instance.sonicLevel.HeightMaps[SonicManager_1.SonicManager.instance.sonicLevel.CollisionIndexes2[this.Block]];
+                    return SonicManager_1.SonicManager.instance.sonicLevel.heightMaps[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes2[this.Block]];
                 };
                 return TilePieceInfo;
             }());

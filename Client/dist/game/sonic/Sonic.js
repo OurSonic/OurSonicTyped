@@ -65,8 +65,8 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                     this.physicsVariables = SonicConstants_1.SonicConstants.Sonic();
                     var sonicManager = SonicManager_1.SonicManager.instance;
                     this.sonicLevel = sonicManager.sonicLevel;
-                    this.x = this.sonicLevel.StartPositions[0].x;
-                    this.y = this.sonicLevel.StartPositions[0].y;
+                    this.x = this.sonicLevel.startPositions[0].x;
+                    this.y = this.sonicLevel.startPositions[0].y;
                     this.sensorManager = new SensorManager_1.SensorManager();
                     this.haltSmoke = new Array();
                     this.rings = 7;
@@ -107,8 +107,8 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                             this.y += debugSpeed;
                         if (this.holdingUp)
                             this.y -= debugSpeed;
-                        this.x = ((sonicLevel.LevelWidth * 128) + (this.x)) % (sonicLevel.LevelWidth * 128);
-                        this.y = ((sonicLevel.LevelHeight * 128) + (this.y)) % (sonicLevel.LevelHeight * 128);
+                        this.x = ((sonicLevel.levelWidth * 128) + (this.x)) % (sonicLevel.levelWidth * 128);
+                        this.y = ((sonicLevel.levelHeight * 128) + (this.y)) % (sonicLevel.levelHeight * 128);
                         return;
                     }
                     this.updateMode();
@@ -659,8 +659,8 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                         this.gsp = 0;
                         this.xsp = 0;
                     }
-                    this.x = ((this.sonicLevel.LevelWidth * 128) + (this.x + this.xsp)) % (this.sonicLevel.LevelWidth * 128);
-                    this.y = ((this.sonicLevel.LevelHeight * 128) + (this.y + this.ysp)) % (this.sonicLevel.LevelHeight * 128);
+                    this.x = ((this.sonicLevel.levelWidth * 128) + (this.x + this.xsp)) % (this.sonicLevel.levelWidth * 128);
+                    this.y = ((this.sonicLevel.levelHeight * 128) + (this.y + this.ysp)) % (this.sonicLevel.levelHeight * 128);
                 };
                 Sonic.prototype.draw = function (canvas) {
                     var fx = (this.x) | 0;
@@ -832,7 +832,7 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                     this.ringCollisionRect.y = 0;
                     this.ringCollisionRect.Width = 8 * 2;
                     this.ringCollisionRect.Height = 8 * 2;
-                    var rings = SonicManager_1.SonicManager.instance.sonicLevel.Rings;
+                    var rings = SonicManager_1.SonicManager.instance.sonicLevel.rings;
                     for (var index = 0; index < rings.length; index++) {
                         var ring = rings[index];
                         var pos = ring;

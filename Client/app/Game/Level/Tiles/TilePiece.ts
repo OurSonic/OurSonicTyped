@@ -159,18 +159,18 @@ export class TilePiece {
     }
 
     public GetLayer1Angles():number {
-        return SonicManager.instance.sonicLevel.Angles[SonicManager.instance.sonicLevel.CollisionIndexes1[this.Index]];
+        return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
     }
 
     public GetLayer2Angles():number {
-        return SonicManager.instance.sonicLevel.Angles[SonicManager.instance.sonicLevel.CollisionIndexes2[this.Index]];
+        return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes2[this.Index]];
     }
 
     public GetLayer1HeightMaps():HeightMap {
-        return SonicManager.instance.sonicLevel.HeightMaps[SonicManager.instance.sonicLevel.CollisionIndexes1[this.Index]];
+        return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
     }
 
     public GetLayer2HeightMaps():HeightMap {
-        return SonicManager.instance.sonicLevel.HeightMaps[SonicManager.instance.sonicLevel.CollisionIndexes2[this.Index]];
+        return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes2[this.Index]];
     }
 }

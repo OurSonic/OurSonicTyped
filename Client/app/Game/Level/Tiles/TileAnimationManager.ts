@@ -10,8 +10,8 @@ export class TileAnimationManager {
     }
     private Init(): void {
         this.Animations = {};
-        for (let animatedTileIndex: number = 0; animatedTileIndex < this.SonicManager.sonicLevel.TileAnimations.length; animatedTileIndex++) {
-            this.Animations[animatedTileIndex] = new TileAnimation(this, this.SonicManager.sonicLevel.TileAnimations[animatedTileIndex]);
+        for (let animatedTileIndex: number = 0; animatedTileIndex < this.SonicManager.sonicLevel.tileAnimations.length; animatedTileIndex++) {
+            this.Animations[animatedTileIndex] = new TileAnimation(this, this.SonicManager.sonicLevel.tileAnimations[animatedTileIndex]);
             this.Animations[animatedTileIndex].init();
         }
     }

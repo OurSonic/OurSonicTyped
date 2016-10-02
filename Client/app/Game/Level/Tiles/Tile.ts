@@ -38,7 +38,7 @@ export class Tile {
                 oPos.y = -squareSize;
                 j.Context.scale(1, -1);
             }
-            let palette_ = SonicManager.instance.sonicLevel.Palette;
+            let palette_ = SonicManager.instance.sonicLevel.palette;
             let colorPaletteIndex: number = (palette + SonicManager.instance.indexedPalette) % palette_.length;
             let x = oPos.x;
             let y = oPos.y;
@@ -81,7 +81,7 @@ export class Tile {
                 oPos.y = -squareSize;
                 j.Context.scale(1, -1);
             }
-            let palette_ = SonicManager.instance.sonicLevel.Palette;
+            let palette_ = SonicManager.instance.sonicLevel.palette;
             let colorPaletteIndex: number = (palette + SonicManager.instance.indexedPalette) % palette_.length;
             let x = oPos.x;
             let y = oPos.y;
@@ -140,7 +140,7 @@ export class Tile {
         }
         return this.curPaletteIndexes;
     }
-    public ClearCache(): void {
+    public clearCache(): void {
         this.curPaletteIndexes = null;
         this.baseCaches={};
     }

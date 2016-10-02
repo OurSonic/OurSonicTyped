@@ -12,8 +12,8 @@ System.register([], function(exports_1, context_1) {
                 }
                 TilePaletteAnimationManager.prototype.Init = function () {
                     this.Animations = {};
-                    for (var animatedPaletteIndex = 0; animatedPaletteIndex < this.SonicManager.sonicLevel.AnimatedPalettes.length; animatedPaletteIndex++) {
-                        this.Animations[animatedPaletteIndex] = new TilePaletteAnimation(this, this.SonicManager.sonicLevel.AnimatedPalettes[animatedPaletteIndex]);
+                    for (var animatedPaletteIndex = 0; animatedPaletteIndex < this.SonicManager.sonicLevel.animatedPalettes.length; animatedPaletteIndex++) {
+                        this.Animations[animatedPaletteIndex] = new TilePaletteAnimation(this, this.SonicManager.sonicLevel.animatedPalettes[animatedPaletteIndex]);
                         this.Animations[animatedPaletteIndex].Init();
                     }
                 };
@@ -82,7 +82,7 @@ System.register([], function(exports_1, context_1) {
                     this.FrameIndex = frameIndex;
                 }
                 TilePaletteAnimationFrame.prototype.SetPalette = function () {
-                    var levelPalette = this.Animation.Manager.SonicManager.sonicLevel.Palette;
+                    var levelPalette = this.Animation.Manager.SonicManager.sonicLevel.palette;
                     this.clonePalette(levelPalette);
                     var pal = this.Animation.AnimatedPaletteData;
                     for (var index = 0; index < pal.Pieces.length; index++) {
@@ -107,7 +107,7 @@ System.register([], function(exports_1, context_1) {
                     }
                 };
                 TilePaletteAnimationFrame.prototype.ClearPalette = function () {
-                    this.Animation.Manager.SonicManager.sonicLevel.Palette = this.tempPalette;
+                    this.Animation.Manager.SonicManager.sonicLevel.palette = this.tempPalette;
                     this.tempPalette = null;
                 };
                 return TilePaletteAnimationFrame;
