@@ -20,7 +20,9 @@ System.register(['@angular/core'], function(exports_1, context_1) {
         execute: function() {
             DraggableDirective = (function () {
                 function DraggableDirective(el) {
-                    $(el.nativeElement).draggable({ cancel: ".window .inner-window" });
+                    setTimeout(function () {
+                        $(el.nativeElement).drags({ handle: '.window-header' });
+                    }, 1);
                 }
                 DraggableDirective = __decorate([
                     core_1.Directive({

@@ -5,7 +5,9 @@ import {Directive, ElementRef, Inject} from '@angular/core';
 })
 export class DraggableDirective {
     constructor(el:ElementRef) {
-        (<any>$(el.nativeElement)).draggable({cancel: ".window .inner-window"});
+        setTimeout(()=>{
+            (<any>$(el.nativeElement)).drags({ handle:'.window-header'});
+        },1)
     }
 }
  
