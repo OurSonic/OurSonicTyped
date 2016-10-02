@@ -1,6 +1,6 @@
 ﻿
 
-import {Sonic } from "Sonic";
+import {Sonic } from "./Sonic";
 import {Solidity} from "../../SLData";
 import {HeightMap } from "../level/HeightMap";
 import {Help } from "../../common/Help";

@@ -1,10 +1,10 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {WindowComponent} from '../windowComponent/WindowComponent'
 
 @Component({
     selector: 'object-selector',
     templateUrl: 'app/layout/objectSelector/objectSelector.html',
-    directives: [WindowComponent]
+//    viewProviders: [WindowComponent]
 })
 export class ObjectSelector {
 }

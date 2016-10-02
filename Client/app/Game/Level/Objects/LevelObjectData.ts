@@ -1,8 +1,8 @@
 ﻿
 import {Rectangle, Point } from "../../../common/Utils";
-import {LevelObjectAsset} from "LevelObjectAsset";
+import {LevelObjectAsset} from "./LevelObjectAsset";
 import {SonicManager} from "../../SonicManager";
-import {LevelObjectProjectile} from "LevelObjectProjectile";
+import {LevelObjectProjectile} from "./LevelObjectProjectile";
 import {SensorM } from "../../sonic/SensorManager";
 import {SLDataObjectEntry  } from "../../../SLData";
 import {ObjectManager } from "./ObjectManager";

@@ -1,0 +1,8 @@
+{
+  "name": "oursonic",
+  "globalDependencies": {
+    "core-js": "registry:dt/core-js#0.0.0+20160725163759",
+        "node": "registry:dt/node#6.0.0+20160909174046"
+
+  }
+}

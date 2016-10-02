@@ -1,18 +1,25 @@
-﻿/// <reference path="../typings/Compress.d.ts" />
-/// <reference path="../node_modules/angular2/typings/browser.d.ts" />
-/// <reference path="../node_modules/angular2/core.d.ts" />
-/// <reference path="../node_modules/angular2/http.d.ts" />
-
-import {bootstrap}    from 'angular2/platform/browser';
-import {Layout} from './layout/Layout';
-import {HTTP_PROVIDERS} from 'angular2/http';
+﻿/// <reference path="../typings/Compress.d.ts" /> 
 import {SonicEngine} from "./game/SonicEngine";
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { Layout }   from './layout/Layout';
+import {ObjectSelector} from "./layout/objectSelector/ObjectSelector";
+import {LevelSelector} from "./layout/levelSelector/LevelSelector";
+import {WindowComponent} from "./layout/windowComponent/WindowComponent";
+import {DraggableDirective} from "./layout/directives/draggableDirective";
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import {HttpModule } from '@angular/http';
 
-export class Main {
-    static run() {
-        new SonicEngine();
-        bootstrap(Layout, [HTTP_PROVIDERS]);
-    }
-}
+const platform = platformBrowserDynamic();
 
-Main.run();
+
+@NgModule({
+    imports: [BrowserModule, HttpModule],
+    declarations: [Layout, ObjectSelector, LevelSelector, WindowComponent, DraggableDirective],
+    bootstrap: [Layout]
+})
+export class AppModule { }
+platform.bootstrapModule(AppModule);
+
+new SonicEngine();
+ 

@@ -1,6 +1,6 @@
 <div draggable class="window" style="z-index: 10000; position: absolute;" [hidden]="!visible"  [style.left]="left" [style.top]="top">
-    <h1>{{windowTitle}}</h1>
-    <div >
+    <h1 style="display:inline-block">{{windowTitle}}</h1>
+    <div style="float: right;">
         <button (click)="close()" class="btn">X</button>
     </div>
 

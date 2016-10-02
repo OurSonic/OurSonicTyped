@@ -1,11 +1,11 @@
-import {Component, ElementRef,Output, Input, EventEmitter} from 'angular2/core';
+import {Component, ElementRef,Output, Input, EventEmitter} from '@angular/core';
 import {DraggableDirective} from "../directives/draggableDirective";
 
 
 @Component({
     selector: 'window',
     templateUrl: 'app/layout/windowComponent/windowComponent.html',
-    directives: [DraggableDirective],
+//    viewProviders: [DraggableDirective],
 
 })
 export class WindowComponent {
@@ -17,7 +17,7 @@ export class WindowComponent {
     @Input() public top:string;
     @Input() public windowTitle:string;
 
-    @Output() public onclose:EventEmitter<boolean> = new EventEmitter();
+    @Output() public onclose:EventEmitter<boolean> = new EventEmitter<boolean>();
 
     constructor(el:ElementRef) {
         this.visible = true;

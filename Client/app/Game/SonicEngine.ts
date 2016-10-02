@@ -10,6 +10,15 @@ import {Sonic} from "./sonic/Sonic";
 import {SLData} from "../SLData";
 import {Help} from "../common/Help";
 
+/*class _Point {
+    constructor(public x:number, public y:number) {
+    }
+}
+class _Line {
+    constructor(public p1:_Point, public p2:_Point) {
+    }
+}*/
+
 export class SonicEngine {
     private wideScreen:boolean = true;
     private fullscreenMode:boolean = false;
@@ -26,6 +35,7 @@ export class SonicEngine {
         const gameCanvasName = "gameLayer";
         this.gameCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById(gameCanvasName), 0, 0, true);
 
+
         this.canvasWidth = 0;
         this.canvasHeight = 0;
         this.bindInput();
@@ -34,10 +44,147 @@ export class SonicEngine {
         jQuery(document).resize(e => this.resizeCanvas(true));
         this.sonicManager = new SonicManager(this, this.gameCanvas, () => this.resizeCanvas(true));
         this.sonicManager.indexedPalette = 0;
-        window.setInterval(() => this.sonicManager.Tick(), 1000 / 60);
-        window.setInterval(() => this.GameDraw(), 1000 / 60);
+         window.setInterval(() => this.sonicManager.tick(), 1000 / 60);
+         window.setInterval(() => this.GameDraw(), 1000 / 60);
         this.resizeCanvas(true);
+
+
+//        this.startThing();
+
     }
+
+/*
+    private startThing() {
+
+        let points:_Point[] = [];
+        let lines:{p1:_Point,p2:_Point}[] = [];
+
+        for (var i = 0; i < 5000; i++) {
+            points.push(new _Point(Math.random() * 1000 | 0, Math.random() * 1000 | 0));
+        }
+
+        let allPoints:_Point[] = points.slice();
+
+        let nextPoint = allPoints[0];
+        allPoints.splice(0, 1);
+
+        while (allPoints.length > 0) {
+            let closest = this.closests(nextPoint, allPoints);
+            lines.push(new _Line(nextPoint, closest));
+            allPoints.splice(allPoints.indexOf(closest), 1);
+            nextPoint = closest;
+        }
+
+
+  /*      while (allPoints.length > 0) {
+            let closest = allPoints[0];
+            lines.push(new _Line(nextPoint, closest));
+            allPoints.splice(allPoints.indexOf(closest), 1);
+            nextPoint = closest;
+        }#1#
+
+
+        lines.push(new _Line(nextPoint, lines[0].p1));
+        let dist = this.distance(lines);
+        this.draw(points, lines, dist);
+
+        let count = 0;
+        let md = setInterval(()=> {
+            count++;
+            if (count > 1000000) {
+                clearInterval(md);
+                console.log('done');
+
+                return;
+            }
+            for (let j = 0; j < 100; j++) {
+                var p1 = (Math.random() * points.length | 0);
+                var p2 = (Math.random() * points.length | 0);
+                if (p1 == p2)return;
+
+                var nLines = this.swap(lines, points[p1], points[p2]);
+                var nDist = this.distance(nLines);
+                if (nDist < dist) {
+                    dist=nDist;
+                    lines = nLines;
+                    console.log('swap');
+                    this.draw(points, lines, dist);
+                }
+            }
+        }, 1);
+
+
+    }
+
+    private swap(lines:_Line[], p1:_Point, p2:_Point):_Line[] {
+        var nLines = lines.slice();
+        for (var i = 0; i < nLines.length; i++) {
+            var line = nLines[i];
+            if (line.p1 == p1) {
+                line.p1 = p2;
+            } else if (line.p1 == p2) {
+                line.p1 = p1;
+            }
+
+            if (line.p2 == p1) {
+                line.p2 = p2;
+            } else if (line.p2 == p2) {
+                line.p2 = p1;
+            }
+        }
+        return nLines;
+    }
+
+
+    private closests(me:_Point, points:_Point[]):_Point {
+        var distance = 1000000000;
+        let good:_Point;
+        for (var j = 0; j < points.length; j++) {
+            var point = points[j];
+            var dis = this.pointDistance(me, point);
+            if (dis < distance) {
+                distance = dis;
+                good = points[j];
+            }
+        }
+        return good;
+    }
+
+    private pointDistance(p1:_Point, p2:_Point):number {
+        return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+    }
+
+    private distance(lines:_Line[]):number {
+        let dist = 0;
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            dist += this.pointDistance(line.p1, line.p2);
+        }
+        return dist;
+    }
+
+    private draw(points:_Point[], lines:_Line[], dist:number) {
+        this.gameCanvas.canvas.width = this.gameCanvas.canvas.width;
+        this.gameCanvas.Context.save();
+        this.gameCanvas.Context.scale(1.5,1.5);
+        this.gameCanvas.Context.fillStyle = 'white';
+        for (var i = 0; i < points.length; i++) {
+            var point = points[i];
+            this.gameCanvas.Context.fillRect(point.x - 5, point.y - 5, 10, 10);
+        }
+
+        this.gameCanvas.Context.strokeStyle = 'red';
+        this.gameCanvas.Context.lineWidth = 3;
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            this.gameCanvas.Context.moveTo(line.p1.x, line.p1.y);
+            this.gameCanvas.Context.lineTo(line.p2.x, line.p2.y);
+            this.gameCanvas.Context.stroke();
+        }
+        this.gameCanvas.Context.fillText(dist.toString(), 0, 30);
+        this.gameCanvas.Context.restore();
+
+    }*/
 
     private bindInput():void {
         this.gameCanvas.domCanvas.mousedown((e:JQueryEventObject) => this.canvasOnClick(e));
@@ -74,7 +221,7 @@ export class SonicEngine {
         keyboardJS.bind("2",
             () => {
                 this.sonicManager.pixelScale += 1;
-                if (this.sonicManager.pixelScale == 6)this.sonicManager.pixelScale = 1;
+                if (this.sonicManager.pixelScale == 5)this.sonicManager.pixelScale = 1;
             },
             () => {
 
@@ -238,7 +385,7 @@ export class SonicEngine {
     }
 
 
-    public RunSonic(level:SLData):void {
+    public RunSonic(level: SLData): void {
         this.sonicManager.clearCache();
         this.sonicManager.Load(level);
         this.sonicManager.windowLocation.x = 0;
@@ -248,13 +395,11 @@ export class SonicEngine {
         this.sonicManager.bigWindowLocation.Width = (this.sonicManager.windowLocation.Width * 1.8) | 0;
         this.sonicManager.bigWindowLocation.Height = (this.sonicManager.windowLocation.Height * 1.8) | 0;
         let dl = Help.getQueryString();
+        this.sonicManager.currentGameState = GameState.Editing;
         if (dl["run"]) {
-            if (this.sonicManager.currentGameState == GameState.Playing)
-                this.runGame();
             this.runGame();
         }
         this.sonicManager.cacheTiles();
-
         this.runGame();
     }
 
@@ -285,7 +430,7 @@ export class SonicEngine {
 
     private canvasOnClick(queryEvent:JQueryEventObject):void {
         queryEvent.preventDefault();
-        this.sonicManager.OnClick(queryEvent);
+        this.sonicManager.onClick(queryEvent);
     }
 
     private canvasMouseUp(queryEvent:JQueryEventObject):void {
@@ -304,9 +449,9 @@ export class SonicEngine {
             this.sonicManager.overrideRealScale = DoublePoint.create(this.sonicManager.realScale);
         else this.sonicManager.realScale = DoublePoint.create(this.sonicManager.overrideRealScale);
         this.gameCanvas.domCanvas.attr("width",
-            (this.sonicManager.windowLocation.Width * (this.sonicManager.currentGameState == GameState.Playing ? this.sonicManager.scale.x * this.sonicManager.realScale.x : 1)).toString());
+            (this.sonicManager.windowLocation.Width * (this.sonicManager.currentGameState === GameState.Playing ? this.sonicManager.scale.x * this.sonicManager.realScale.x : 1)).toString());
         this.gameCanvas.domCanvas.attr("height",
-            (this.sonicManager.windowLocation.Height * (this.sonicManager.currentGameState == GameState.Playing ? this.sonicManager.scale.y * this.sonicManager.realScale.y : 1)).toString());
+            (this.sonicManager.windowLocation.Height * (this.sonicManager.currentGameState === GameState.Playing ? this.sonicManager.scale.y * this.sonicManager.realScale.y : 1)).toString());
         this.gameGoodWidth = <number>(this.sonicManager.windowLocation.Width * (this.sonicManager.currentGameState == GameState.Playing ? this.sonicManager.scale.x * this.sonicManager.realScale.x : 1));
         let screenOffset = this.sonicManager.currentGameState == GameState.Playing ? new DoublePoint(((this.canvasWidth / 2 - this.sonicManager.windowLocation.Width * this.sonicManager.scale.x * this.sonicManager.realScale.x / 2)),
             (this.canvasHeight / 2 - this.sonicManager.windowLocation.Height * this.sonicManager.scale.y * this.sonicManager.realScale.y / 2)) : new DoublePoint(0, 0);
@@ -316,7 +461,7 @@ export class SonicEngine {
         this.sonicManager.ResetCanvases();
     }
 
-    public Clear(canv:CanvasInformation):void {
+    public clear(canv:CanvasInformation):void {
         (<any>canv.domCanvas[0]).width = this.gameGoodWidth;
         (<any>this.gameCanvas.Context).mozImageSmoothingEnabled = false; /// future
         (<any>this.gameCanvas.Context).msImageSmoothingEnabled = false; /// future
@@ -327,4 +472,5 @@ export class SonicEngine {
     public GameDraw():void {
         this.sonicManager.MainDraw(this.gameCanvas);
     }
+
 }

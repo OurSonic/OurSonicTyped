@@ -1,5 +1,5 @@
 
-import {LevelObjectAssetFrame} from "LevelObjectAssetFrame";
+import {LevelObjectAssetFrame} from "./LevelObjectAssetFrame";
 
 export class LevelObjectAsset {
     public frames: LevelObjectAssetFrame[];

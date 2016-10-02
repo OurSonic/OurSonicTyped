@@ -1,10 +1,10 @@
-import {Directive, ElementRef, Inject} from 'angular2/core';
+import {Directive, ElementRef, Inject} from '@angular/core';
 
 @Directive({
-    selector: '[draggable]',
+    selector: '[draggable]'
 })
 export class DraggableDirective {
-    constructor(@(Inject) el:ElementRef) {
+    constructor(el:ElementRef) {
         (<any>$(el.nativeElement)).draggable({cancel: ".window .inner-window"});
     }
 }
