@@ -1,10 +1,12 @@
 <div draggable class="window" style="z-index: 10000; position: absolute;" [hidden]="!visible"  [style.left]="left" [style.top]="top">
     <h1 style="display:inline-block">{{windowTitle}}</h1>
     <div style="float: right;">
+        <button (click)="minimize()" class="btn red" *ngIf="isMinimized">_</button>
+        <button (click)="minimize()" class="btn" *ngIf="!isMinimized">_</button>
         <button (click)="close()" class="btn">X</button>
     </div>
 
-    <div class="inner-window">
+    <div class="inner-window" *ngIf="!isMinimized">
         <div [style.width]="width" [style.height]="height" style="overflow:scroll;">
             <ng-content></ng-content>
         </div>

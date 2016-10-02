@@ -134,24 +134,24 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                     if (best != null) {
                         switch (this.mode) {
                             case Enums_1.RotationMode.Floor:
-                                this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? 12 : -12)));
+                                this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter === "m1" ? 12 : -12)));
                                 this.gsp = 0;
                                 if (this.inAir)
                                     this.xsp = 0;
                                 break;
                             case Enums_1.RotationMode.LeftWall:
-                                this.y = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? 12 : -12)));
+                                this.y = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter === "m1" ? 12 : -12)));
                                 if (this.inAir)
                                     this.xsp = 0;
                                 break;
                             case Enums_1.RotationMode.Ceiling:
-                                this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? -12 : 12)));
+                                this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter === "m1" ? -12 : 12)));
                                 this.gsp = 0;
                                 if (this.inAir)
                                     this.xsp = 0;
                                 break;
                             case Enums_1.RotationMode.RightWall:
-                                this.y = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter == "m1" ? -12 : 12)));
+                                this.y = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter === "m1" ? -12 : 12)));
                                 this.gsp = 0;
                                 if (this.inAir)
                                     this.xsp = 0;
@@ -345,7 +345,7 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                     var cur = SonicManager_1.SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
                     var xOffset = 0;
                     var yOffset = 0;
-                    if (cur.height != 40) {
+                    if (cur.height !== 40) {
                         var n = void 0;
                         switch (this.mode) {
                             case Enums_1.RotationMode.Floor:
@@ -375,49 +375,49 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                     var word = this.spriteState.substring(0, this.spriteState.length - 1);
                     var j = parseInt(this.spriteState.substring(this.spriteState.length - 1, this.spriteState.length));
                     if (this.breaking > 0) {
-                        if (this.gsp > 0 || this.gsp == 0 || this.spriteState == "breaking3") {
+                        if (this.gsp > 0 || this.gsp === 0 || this.spriteState === "breaking3") {
                             this.facing = false;
                             this.breaking = 0;
                         }
                     }
                     else if (this.breaking < 0) {
-                        if (this.gsp < 0 || this.gsp == 0 || this.spriteState == "breaking3") {
+                        if (this.gsp < 0 || this.gsp === 0 || this.spriteState === "breaking3") {
                             this.breaking = 0;
                             this.facing = true;
                         }
                     }
                     var epsilon = 0.00001;
                     if (this.justHit) {
-                        if (word != "hit") {
+                        if (word !== "hit") {
                             this.spriteState = "hit0";
                             this.runningTick = 1;
                         }
-                        else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) == 0))
+                        else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) === 0))
                             this.spriteState = "hit1";
                     }
                     else if (this.spinDash) {
-                        if (word != "spindash") {
+                        if (word !== "spindash") {
                             this.spriteState = "spindash0";
                             this.runningTick = 1;
                         }
-                        else if (((this.runningTick++) % Math.floor(2 - absgsp) | 0) == 0)
+                        else if (((this.runningTick++) % Math.floor(2 - absgsp) | 0) === 0)
                             this.spriteState = "spindash" + ((j + 1) % 6);
                     }
                     else if (Math.abs(absgsp - 0) < epsilon && !this.inAir) {
                         if (this.ducking) {
-                            if (word != "duck") {
+                            if (word !== "duck") {
                                 this.spriteState = "duck0";
                                 this.runningTick = 1;
                             }
-                            else if (((this.runningTick++) % Math.floor(4 - absgsp) | 0) == 0)
+                            else if (((this.runningTick++) % Math.floor(4 - absgsp) | 0) === 0)
                                 this.spriteState = "duck1";
                         }
                         else if (this.holdingUp) {
-                            if (word != "lookingup") {
+                            if (word !== "lookingup") {
                                 this.spriteState = "lookingup0";
                                 this.runningTick = 1;
                             }
-                            else if (((this.runningTick++) % Math.floor(4 - absgsp) | 0) == 0)
+                            else if (((this.runningTick++) % Math.floor(4 - absgsp) | 0) === 0)
                                 this.spriteState = "lookingup1";
                         }
                         else {
@@ -427,39 +427,39 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                             this.runningTick = 0;
                         }
                     }
-                    else if (this.breaking != 0) {
-                        if (word != "breaking") {
+                    else if (this.breaking !== 0) {
+                        if (word !== "breaking") {
                             this.spriteState = "breaking0";
                             this.runningTick = 1;
                         }
-                        else if ((this.runningTick++) % (7) == 0) {
+                        else if ((this.runningTick++) % (7) === 0) {
                             this.spriteState = "breaking" + ((j + 1) % 4);
-                            if (j == 0)
+                            if (j === 0)
                                 this.haltSmoke.push(new Utils_1.Point(this.x, this.y));
                         }
                     }
                     else if (this.currentlyBall) {
-                        if (word != "balls") {
+                        if (word !== "balls") {
                             this.spriteState = "balls0";
                             this.runningTick = 1;
                         }
-                        else if (((this.runningTick++) % Math.floor(8 - absgsp) == 0) || (8 - absgsp < 1))
+                        else if (((this.runningTick++) % (Math.floor(8 - absgsp)) === 0) || (8 - absgsp < 1))
                             this.spriteState = "balls" + ((j + 1) % 5);
                     }
                     else if (absgsp < 6) {
-                        if (word != "running") {
+                        if (word !== "running") {
                             this.spriteState = "running0";
                             this.runningTick = 1;
                         }
-                        else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) == 0) || (8 - absgsp < 1))
+                        else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) === 0) || (8 - absgsp < 1))
                             this.spriteState = "running" + ((j + 1) % 8);
                     }
                     else if (absgsp >= 6) {
-                        if (word != "fastrunning") {
+                        if (word !== "fastrunning") {
                             this.spriteState = "fastrunning0";
                             this.runningTick = 1;
                         }
-                        else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) == 0) || (8 - absgsp < 1))
+                        else if (((this.runningTick++) % (Math.floor(8 - absgsp) | 0) === 0) || (8 - absgsp < 1))
                             this.spriteState = "fastrunning" + ((j + 1) % 4);
                     }
                 };
@@ -562,7 +562,7 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                         this.gsp -= (Math.min(Math.abs(this.gsp), this.watcher.Multiply(physics.rfrc)) * (this.gsp > 0 ? 1 : -1));
                         this.oldSign = Help_1.Help.sign(this.gsp);
                         var ang = Help_1.Help.sin(this.angle);
-                        if ((ang > 0) == (this.gsp > 0))
+                        if ((ang > 0) === (this.gsp > 0))
                             this.gsp += this.watcher.Multiply(-physics.slpRollingUp) * ang;
                         else
                             this.gsp += this.watcher.Multiply(-physics.slpRollingDown) * ang;
@@ -570,7 +570,7 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                             this.gsp = max * 2.5;
                         if (this.gsp < -max * 2.5)
                             this.gsp = -max * 2.5;
-                        if (this.oldSign != Help_1.Help.sign(this.gsp) && this.oldSign != 0)
+                        if (this.oldSign !== Help_1.Help.sign(this.gsp) && this.oldSign != 0)
                             this.hLock = 30;
                         if (Math.abs(this.gsp) < 0.53125) {
                             this.rolling = false;
@@ -638,11 +638,11 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                         this.xsp = this.gsp * Help_1.Help.cos(this.angle);
                         this.ysp = this.gsp * -Help_1.Help.sin(this.angle);
                         if (Math.abs(this.gsp) < 2.5 && this.mode != Enums_1.RotationMode.Floor) {
-                            if (this.mode == Enums_1.RotationMode.RightWall)
+                            if (this.mode === Enums_1.RotationMode.RightWall)
                                 this.x += 0;
-                            else if (this.mode == Enums_1.RotationMode.LeftWall)
+                            else if (this.mode === Enums_1.RotationMode.LeftWall)
                                 this.x += 0;
-                            else if (this.mode == Enums_1.RotationMode.Ceiling)
+                            else if (this.mode === Enums_1.RotationMode.Ceiling)
                                 this.y += 0;
                             var oldMode = this.mode;
                             this.updateMode();
@@ -719,26 +719,28 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                         }
                     }
                 };
-                Sonic.prototype.DrawUI = function (canvas, pos) {
-                    canvas.save();
-                    {
-                        if (canvas.font != "13pt Arial bold")
-                            canvas.font = "13pt Arial bold";
-                        canvas.fillStyle = "White";
-                        canvas.fillText("Rings: " + this.rings, pos.x + 90, pos.y + 45);
-                        canvas.fillText("Angle: " + this.angle.toString(16), pos.x + 90, pos.y + 75);
-                        canvas.fillText("Position: " + (this.x) + ", " + (this.y), pos.x + 90, pos.y + 105);
-                        canvas.fillText("Speed: g: " + this.gsp.toFixed(3) + " x:" + this.xsp.toFixed(3) + " y:" + this.ysp.toFixed(3), pos.x + 90, pos.y + 135);
-                        canvas.fillText("Mode: " + this.mode.toString(), pos.x + 90, pos.y + 165);
-                        canvas.fillText("Multiplier: " + this.watcher.mult, pos.x + 90, pos.y + 195);
-                        if (this.inAir)
-                            canvas.fillText("air ", pos.x + 220, pos.y + 45);
-                        if (this.hLock > 0)
-                            canvas.fillText("HLock: " + this.hLock, pos.x + 90, pos.y + 195);
+                Sonic.prototype.drawUI = function (canvas, pos) {
+                    if (false) {
+                        canvas.save();
+                        {
+                            if (canvas.font != "13pt Arial bold")
+                                canvas.font = "13pt Arial bold";
+                            canvas.fillStyle = "White";
+                            canvas.fillText("Rings: " + this.rings, pos.x + 90, pos.y + 45);
+                            canvas.fillText("Angle: " + this.angle.toString(16), pos.x + 90, pos.y + 75);
+                            canvas.fillText("Position: " + (this.x) + ", " + (this.y), pos.x + 90, pos.y + 105);
+                            canvas.fillText("Speed: g: " + this.gsp.toFixed(3) + " x:" + this.xsp.toFixed(3) + " y:" + this.ysp.toFixed(3), pos.x + 90, pos.y + 135);
+                            canvas.fillText("Mode: " + this.mode.toString(), pos.x + 90, pos.y + 165);
+                            canvas.fillText("Multiplier: " + this.watcher.mult, pos.x + 90, pos.y + 195);
+                            if (this.inAir)
+                                canvas.fillText("air ", pos.x + 220, pos.y + 45);
+                            if (this.hLock > 0)
+                                canvas.fillText("HLock: " + this.hLock, pos.x + 90, pos.y + 195);
+                        }
+                        canvas.restore();
                     }
-                    canvas.restore();
                 };
-                Sonic.prototype.Hit = function (x, y) {
+                Sonic.prototype.hit = function (x, y) {
                     if (SonicManager_1.SonicManager.instance.drawTickCount - this.sonicLastHitTick < 120)
                         return;
                     this.justHit = true;
@@ -769,56 +771,58 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                     }
                     this.rings = 0;
                 };
-                Sonic.prototype.Debug = function () {
+                Sonic.prototype.debug = function () {
                     this.debugging = !this.debugging;
                     this.xsp = 0;
                     this.gsp = 0;
                     this.ysp = 0;
                     this.spriteState = "normal";
                 };
-                Sonic.prototype.PressUp = function () {
+                Sonic.prototype.pressUp = function () {
                     this.holdingUp = true;
                 };
-                Sonic.prototype.ReleaseUp = function () {
+                Sonic.prototype.releaseUp = function () {
                     this.holdingUp = false;
                 };
-                Sonic.prototype.PressCrouch = function () {
+                Sonic.prototype.pressCrouch = function () {
                     this.crouching = true;
                 };
-                Sonic.prototype.ReleaseCrouch = function () {
+                Sonic.prototype.releaseCrouch = function () {
                     this.crouching = false;
                 };
-                Sonic.prototype.PressLeft = function () {
+                Sonic.prototype.pressLeft = function () {
                     this.holdingLeft = true;
                 };
-                Sonic.prototype.ReleaseLeft = function () {
+                Sonic.prototype.releaseLeft = function () {
                     this.holdingLeft = false;
                 };
-                Sonic.prototype.PressRight = function () {
+                Sonic.prototype.pressRight = function () {
                     this.holdingRight = true;
                 };
-                Sonic.prototype.ReleaseRight = function () {
+                Sonic.prototype.releaseRight = function () {
                     this.holdingRight = false;
                 };
-                Sonic.prototype.PressJump = function () {
+                Sonic.prototype.pressJump = function () {
                     this.jumping = true;
                 };
-                Sonic.prototype.ReleaseJump = function () {
+                Sonic.prototype.releaseJump = function () {
                     this.jumping = false;
                 };
-                Sonic.prototype.CheckCollisionWithObjects = function (x, y, letter) {
+                Sonic.prototype.checkCollisionWithObjects = function (x, y, letter) {
                     this.objectCollision.x = x;
                     this.objectCollision.y = y;
                     var me = this.objectCollision;
                     var levelObjectInfos = SonicManager_1.SonicManager.instance.inFocusObjects;
                     for (var _i = 0, levelObjectInfos_1 = levelObjectInfos; _i < levelObjectInfos_1.length; _i++) {
                         var ob = levelObjectInfos_1[_i];
-                        var dj = ob.Collides(me);
-                        var dj2 = ob.HurtsSonic(me);
-                        if (dj)
-                            return ob.Collide(this, letter, dj);
-                        if (dj2)
-                            return ob.HurtSonic(this, letter, dj2);
+                        var dj = ob.collides(me);
+                        var dj2 = ob.hurtsSonic(me);
+                        if (dj) {
+                            return ob.collide(this, letter, dj);
+                        }
+                        if (dj2) {
+                            return ob.hurtSonic(this, letter, dj2);
+                        }
                     }
                     return false;
                 };
@@ -842,7 +846,7 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                         }
                     }
                 };
-                Sonic.prototype.CheckCollisionLine = function (p0, p1, p2, p3) {
+                Sonic.prototype.checkCollisionLine = function (p0, p1, p2, p3) {
                     return null;
                 };
                 return Sonic;
@@ -876,3 +880,4 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
         }
     }
 });
+//# sourceMappingURL=Sonic.js.map

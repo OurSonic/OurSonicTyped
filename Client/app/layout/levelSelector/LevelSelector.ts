@@ -12,6 +12,7 @@ import {SonicEngine} from "../../game/SonicEngine";
 export class LevelSelector implements OnInit {
     levels: SonicLevelData[];
     loading: boolean = false;
+    isMinimized:boolean=false;
     constructor(private _levelService: LevelService) {
     }
 
@@ -25,6 +26,7 @@ export class LevelSelector implements OnInit {
         this.loading = true;
         this._levelService.getLevel(level.name).subscribe(level => {
             SonicEngine.instance.LoadLevel(level);
+            this.isMinimized = true;
             this.loading = false;
         });
     }

@@ -65,3 +65,4 @@ System.register(["./game/SonicEngine", '@angular/core', '@angular/platform-brows
         }
     }
 });
+//# sourceMappingURL=main.js.map

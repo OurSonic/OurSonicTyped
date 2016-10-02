@@ -28,6 +28,7 @@ System.register(['@angular/core', "../services/LevelService", "../../game/SonicE
                 function LevelSelector(_levelService) {
                     this._levelService = _levelService;
                     this.loading = false;
+                    this.isMinimized = false;
                 }
                 LevelSelector.prototype.ngOnInit = function () {
                     var _this = this;
@@ -40,6 +41,7 @@ System.register(['@angular/core', "../services/LevelService", "../../game/SonicE
                     this.loading = true;
                     this._levelService.getLevel(level.name).subscribe(function (level) {
                         SonicEngine_1.SonicEngine.instance.LoadLevel(level);
+                        _this.isMinimized = true;
                         _this.loading = false;
                     });
                 };
@@ -61,3 +63,4 @@ System.register(['@angular/core', "../services/LevelService", "../../game/SonicE
         }
     }
 });
+//# sourceMappingURL=LevelSelector.js.map

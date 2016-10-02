@@ -7,7 +7,7 @@ System.register([], function(exports_1, context_1) {
         execute: function() {
             SonicLevel = (function () {
                 function SonicLevel() {
-                    this.CurHeightMap = false;
+                    this.curHeightMap = false;
                     this.LevelWidth = 0;
                     this.LevelHeight = 0;
                     this.CurPaletteIndex = 0;
@@ -19,7 +19,7 @@ System.register([], function(exports_1, context_1) {
                     this.Objects = new Array();
                     this.HeightMaps = new Array();
                     this.Tiles = new Array();
-                    this.CurHeightMap = true;
+                    this.curHeightMap = true;
                     this.CurPaletteIndex = 0;
                     this.LevelWidth = 0;
                     this.LevelHeight = 0;
@@ -69,3 +69,4 @@ System.register([], function(exports_1, context_1) {
         }
     }
 });
+//# sourceMappingURL=SonicLevel.js.map

@@ -69,11 +69,12 @@ export class SonicManager {
     public tileChunkDebugDrawOptions: TileChunkDebugDrawOptions;
     public tilePaletteAnimationManager: TilePaletteAnimationManager;
     public tileAnimationManager: TileAnimationManager;
-    public pixelScale: number = 1;
+    public pixelScale: number = 0;
     private pixelScaleManager: PixelScaleManager = new PixelScaleManager();
 
     constructor(engine: SonicEngine, gameCanvas: CanvasInformation, resize: () => void) {
         SonicManager.instance = this;
+        (<any>window).OurSonic = { SonicManager: { instance: SonicManager.instance}, SonicEngine: engine };
         this.engine = engine;
         this.engine.canvasWidth = $(window).width();
         this.engine.canvasHeight = $(window).height();
@@ -176,7 +177,7 @@ export class SonicManager {
                         ey = e.y;
                         let pos = new Point(ex, ey);
                         for (let o of this.sonicLevel.Objects) {
-                            if (IntersectingRectangle.IntersectsRect(o.GetRect(), pos))
+                            if (IntersectingRectangle.IntersectsRect(o.getRect(), pos))
                                 alert("Object Data: " + Help.stringify(o));
                         }
                         return true;
@@ -188,14 +189,14 @@ export class SonicManager {
 
     private tickObjects(): void {
         let localPoint = new Point(0, 0);
-        this.inFocusObjects = new Array<LevelObjectInfo>();
+        this.inFocusObjects = [];
         let levelObjectInfos = this.sonicLevel.Objects;
         for (let obj of levelObjectInfos) {
-            localPoint.x = obj.X | 0;
-            localPoint.y = obj.Y | 0;
+            localPoint.x = obj.x | 0;
+            localPoint.y = obj.y | 0;
             if (this.bigWindowLocation.Intersects(localPoint)) {
                 this.inFocusObjects.push(obj);
-                obj.Tick(obj, this.sonicLevel, this.sonicToon);
+                obj.tick(obj, this.sonicLevel, this.sonicToon);
             }
         }
         //        if (this.UIManager.UIManagerAreas.LiveObjectsArea != null)
@@ -343,7 +344,7 @@ export class SonicManager {
         this.drawCanveses(context, localPoint);
         context.restore();
         if (this.currentGameState === GameState.Playing)
-            this.sonicToon.DrawUI(context, new Point(this.screenOffset.x, this.screenOffset.y));
+            this.sonicToon.drawUI(context, new Point(this.screenOffset.x, this.screenOffset.y));
     }
 
     private drawCanveses(canvas: CanvasRenderingContext2D, localPoint: Point): void {
@@ -525,7 +526,7 @@ export class SonicManager {
                 chunk.draw(canvas, localPoint, ChunkLayerState.High);
             }
             if (this.showHeightMap) {
-                let fd = this.spriteCache.HeightMapChunks[(this.sonicLevel.CurHeightMap ? 1 : 2) + " " + chunk.Index];
+                let fd = this.spriteCache.HeightMapChunks[(this.sonicLevel.curHeightMap ? 1 : 2) + " " + chunk.Index];
                 if (fd == null) {
                     fd = this.cacheHeightMapForChunk(chunk);
                 }
@@ -568,8 +569,8 @@ export class SonicManager {
         for (let _y = 0; _y < 8; _y++) {
             for (let _x = 0; _x < 8; _x++) {
                 let tp = md.TilePieces[_x][_y];
-                let solid = <number>(this.sonicLevel.CurHeightMap ? tp.Solid1 : tp.Solid2);
-                let hd = this.sonicLevel.CurHeightMap ? tp.GetLayer1HeightMaps() : tp.GetLayer2HeightMaps();
+                let solid = <number>(this.sonicLevel.curHeightMap ? tp.Solid1 : tp.Solid2);
+                let hd = this.sonicLevel.curHeightMap ? tp.GetLayer1HeightMaps() : tp.GetLayer2HeightMaps();
                 let __x = _x;
                 let __y = _y;
                 let vangle = 0;
@@ -589,12 +590,12 @@ export class SonicManager {
                     }
                 }
                 else {
-                    vangle = this.sonicLevel.CurHeightMap ? tp.GetLayer1Angles() : tp.GetLayer2Angles();
+                    vangle = this.sonicLevel.curHeightMap ? tp.GetLayer1Angles() : tp.GetLayer2Angles();
                     hd.Draw(ctx, posm, tp.XFlip, tp.YFlip, solid, vangle);
                 }
             }
         }
-        return this.spriteCache.HeightMapChunks[(this.sonicLevel.CurHeightMap ? 1 : 2) + " " + md.Index] = canv;
+        return this.spriteCache.HeightMapChunks[(this.sonicLevel.curHeightMap ? 1 : 2) + " " + md.Index] = canv;
     }
 
     private drawSonic(canvas: CanvasRenderingContext2D): void {
@@ -644,10 +645,10 @@ export class SonicManager {
     private drawObjects(canvas: CanvasRenderingContext2D, localPoint: Point): void {
         let levelObjectInfos: LevelObjectInfo[] = this.sonicLevel.Objects;
         for (let o of levelObjectInfos) {
-            localPoint.x = o.X;
-            localPoint.y = o.Y;
-            if (o.Dead || this.bigWindowLocation.Intersects(localPoint)) {
-                o.Draw(canvas,
+            localPoint.x = o.x;
+            localPoint.y = o.y;
+            if (o.dead || this.bigWindowLocation.Intersects(localPoint)) {
+                o.draw(canvas,
                     ((localPoint.x - this.windowLocation.x)) | 0,
                     ((localPoint.y - this.windowLocation.y)) | 0,
                     this.showHeightMap);
@@ -787,15 +788,15 @@ export class SonicManager {
     public loadObjects(objects: { key: string, value: string }[]): void {
         this.cachedObjects = {};
         for (var t of this.sonicLevel.Objects) {
-            let o = t.Key;
+            let o = t.key;
 
             if (this.cachedObjects[o]) {
-                t.SetObjectData(this.cachedObjects[o]);
+                t.setObjectData(this.cachedObjects[o]);
                 continue;
             }
             let d = objects.filter(p => p.key == o)[0];
             if (!d) {
-                t.SetObjectData(new LevelObject(o));
+                t.setObjectData(new LevelObject(o));
                 continue;
             }
             let dat: LevelObjectData;
@@ -804,7 +805,7 @@ export class SonicManager {
             else dat = <LevelObjectData>JSON.parse(d.value);
             let dr = ObjectManager.ExtendObject(dat);
             this.cachedObjects[o] = dr;
-            t.SetObjectData(dr);
+            t.setObjectData(dr);
 
         }
 
@@ -831,11 +832,11 @@ export class SonicManager {
         this.sonicLevel.BGChunkMap = sonicLevel.Background;
         for (let l: number = 0; l < sonicLevel.Objects.length; l++) {
             this.sonicLevel.Objects[l] = new LevelObjectInfo(sonicLevel.Objects[l]);
-            this.sonicLevel.Objects[l].Index = l;
+            this.sonicLevel.Objects[l].index = l;
         }
         let objectKeys = new Array<string>();
         this.sonicLevel.Objects.forEach(t => {
-            let o = t.Key;
+            let o = t.key;
             if (objectKeys.filter(p => p != o).length == objectKeys.length)
                 objectKeys.push(o);
         });

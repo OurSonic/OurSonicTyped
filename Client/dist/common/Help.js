@@ -232,3 +232,4 @@ System.register(["./Utils", "./CanvasInformation", "./Color", "./Enums", "../gam
         }
     }
 });
+//# sourceMappingURL=Help.js.map

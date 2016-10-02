@@ -173,3 +173,4 @@ System.register(["../../../common/Utils", "../../../common/CanvasInformation", "
         }
     }
 });
+//# sourceMappingURL=TilePiece.js.map

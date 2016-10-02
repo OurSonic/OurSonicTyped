@@ -66,3 +66,4 @@ System.register(["../../common/Utils", "../SonicManager", "../../common/Enums"],
         }
     }
 });
+//# sourceMappingURL=Ring.js.map

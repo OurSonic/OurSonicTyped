@@ -22,7 +22,7 @@ System.register(["../../SonicManager", "../../../common/Utils"], function(export
                 LevelObjectPieceLayout.prototype.Update = function () {
                     for (var _i = 0, _a = SonicManager_1.SonicManager.instance.sonicLevel.Objects; _i < _a.length; _i++) {
                         var t = _a[_i];
-                        t.Reset();
+                        t.reset();
                     }
                 };
                 LevelObjectPieceLayout.prototype.DrawUI = function (canvas, showImages, selectedPieceIndex, levelObject) {
@@ -51,8 +51,8 @@ System.register(["../../SonicManager", "../../../common/Utils"], function(export
                     for (var _i = 0, _a = this.pieces; _i < _a.length; _i++) {
                         var levelObjectPieceLayoutPiece = _a[_i];
                         if (showImages) {
-                            var piece = levelObject.Pieces[levelObjectPieceLayoutPiece.PieceIndex];
-                            var asset = levelObject.Assets[piece.assetIndex];
+                            var piece = levelObject.pieces[levelObjectPieceLayoutPiece.PieceIndex];
+                            var asset = levelObject.assets[piece.assetIndex];
                             if (asset.frames.length > 0) {
                                 var frm = asset.frames[0];
                                 frm.DrawUI(canvas, new Utils_1.Point(levelObjectPieceLayoutPiece.X - frm.offsetX, levelObjectPieceLayoutPiece.Y - frm.offsetY), false, false, false, false, piece.xflip, piece.yflip);
@@ -76,15 +76,15 @@ System.register(["../../SonicManager", "../../../common/Utils"], function(export
                     canvas.restore();
                 };
                 LevelObjectPieceLayout.prototype.Draw = function (canvas, x, y, framework, instance, showHeightMap) {
-                    for (var _i = 0, _a = instance.Pieces; _i < _a.length; _i++) {
+                    for (var _i = 0, _a = instance.pieces; _i < _a.length; _i++) {
                         var j = _a[_i];
                         if (!j.visible)
                             continue;
-                        var piece = framework.Pieces[j.pieceIndex];
-                        var asset = framework.Assets[piece.assetIndex];
+                        var piece = framework.pieces[j.pieceIndex];
+                        var asset = framework.assets[piece.assetIndex];
                         if (asset.frames.length > 0) {
                             var frm = asset.frames[j.frameIndex];
-                            frm.DrawUI(canvas, new Utils_1.Point((x) - (frm.offsetX), (y) - (frm.offsetY)), false, showHeightMap, showHeightMap, false, instance.Xflip !== !!piece.xflip, instance.Yflip !== !!piece.yflip);
+                            frm.DrawUI(canvas, new Utils_1.Point((x) - (frm.offsetX), (y) - (frm.offsetY)), false, showHeightMap, showHeightMap, false, instance.xflip !== !!piece.xflip, instance.yflip !== !!piece.yflip);
                         }
                     }
                 };
@@ -95,8 +95,8 @@ System.register(["../../SonicManager", "../../../common/Utils"], function(export
                     var bottom = -100000000;
                     for (var _i = 0, _a = this.pieces; _i < _a.length; _i++) {
                         var levelObjectPieceLayoutPiece = _a[_i];
-                        var piece = levelObject.Pieces[levelObjectPieceLayoutPiece.PieceIndex];
-                        var asset = levelObject.Assets[piece.assetIndex];
+                        var piece = levelObject.pieces[levelObjectPieceLayoutPiece.PieceIndex];
+                        var asset = levelObject.assets[piece.assetIndex];
                         var frame = asset.frames[piece.frameIndex];
                         var pieceX = levelObjectPieceLayoutPiece.X - frame.offsetX;
                         var pieceY = levelObjectPieceLayoutPiece.Y - frame.offsetY;
@@ -123,3 +123,4 @@ System.register(["../../SonicManager", "../../../common/Utils"], function(export
         }
     }
 });
+//# sourceMappingURL=LevelObjectPieceLayout.js.map

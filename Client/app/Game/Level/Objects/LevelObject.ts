@@ -16,48 +16,48 @@ export class LevelObject {
     private cacheCompiled: { [key: string]: (_: LevelObjectInfo, __: SonicLevel, ___: Sonic, ____: SensorM, _____: LevelObjectPiece) => boolean } = {};
     private cacheLast: { [key: string]: string } = {};
     public oldKey: string;
-    public Key: string;
-    public Assets: LevelObjectAsset[];
-    public Pieces: LevelObjectPiece[];
-    public PieceLayouts: LevelObjectPieceLayout[];
-    public Projectiles: LevelObjectProjectile[];
+    public key: string;
+    public assets: LevelObjectAsset[];
+    public pieces: LevelObjectPiece[];
+    public pieceLayouts: LevelObjectPieceLayout[];
+    public projectiles: LevelObjectProjectile[];
     public InitScript: string;
     public TickScript: string;
     public CollideScript: string;
     public HurtScript: string;
-    public Description: string;
+    public description: string;
     constructor(key: string) {
-        this.Key = key;
+        this.key = key;
         this.InitScript = "this.state = {\r\n\txsp: 0.0,\r\n\tysp: 0.0,\r\n\tfacing: false,\r\n};";
-        this.Pieces = [];
-        this.PieceLayouts = [];
-        this.Projectiles = [];
-        this.Assets = [];
+        this.pieces = [];
+        this.pieceLayouts = [];
+        this.projectiles = [];
+        this.assets = [];
     }
-    public Init($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): void {
-        $object.Reset();
+    public init($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): void {
+        $object.reset();
         this.evalMe("InitScript").apply($object, [$object, level, sonic]);
     }
-    public OnCollide($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic, sensor: string, piece: LevelObjectPiece): boolean {
+    public onCollide($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic, sensor: string, piece: LevelObjectPiece): boolean {
         return <boolean>this.evalMe("CollideScript").apply($object, [$object, level, sonic, sensor, piece])
     }
-    public OnHurtSonic($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic, sensor: string, piece: LevelObjectPiece): boolean {
+    public onHurtSonic($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic, sensor: string, piece: LevelObjectPiece): boolean {
         return <boolean>this.evalMe("HurtScript").apply($object, [$object, level, sonic, sensor, piece])
     }
-    public Tick($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): boolean {
+    public tick($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): boolean {
         if ($object.lastDrawTick != SonicManager.instance.tickCount - 1)
-            this.Init($object, level, sonic);
+            this.init($object, level, sonic);
         $object.lastDrawTick = SonicManager.instance.tickCount;
         this.evalMe("TickScript").apply($object, [$object, level, sonic]);
-        if ($object.State) {
-            $object.Xsp = $object.State.Xsp;
-            $object.Ysp = $object.State.Ysp;
+        if ($object.state) {
+            $object.xsp = $object.state.xsp;
+            $object.ysp = $object.state.ysp;
         }
-        $object.X += $object.Xsp;
-        $object.Y += $object.Ysp;
+        $object.x += $object.xsp;
+        $object.y += $object.ysp;
         return true;
     }
-    public Die(): void {
+    public die(): void {
 
     }
 

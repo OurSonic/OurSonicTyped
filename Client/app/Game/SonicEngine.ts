@@ -245,7 +245,7 @@ export class SonicEngine {
         keyboardJS.bind("h",
             () => {
                 if (this.sonicManager.currentGameState == GameState.Playing)
-                    this.sonicManager.sonicToon.Hit(this.sonicManager.sonicToon.x, this.sonicManager.sonicToon.y);
+                    this.sonicManager.sonicToon.hit(this.sonicManager.sonicToon.x, this.sonicManager.sonicToon.y);
             },
             () => {
 
@@ -261,7 +261,7 @@ export class SonicEngine {
         keyboardJS.bind("c",
             () => {
                 if (this.sonicManager.currentGameState == GameState.Playing)
-                    this.sonicManager.sonicToon.Debug();
+                    this.sonicManager.sonicToon.debug();
             },
             () => {
 
@@ -270,7 +270,7 @@ export class SonicEngine {
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
-                        this.sonicManager.sonicToon.PressUp();
+                        this.sonicManager.sonicToon.pressUp();
                         break;
                     case GameState.Editing:
                         this.sonicManager.windowLocation.y -= 128;
@@ -281,7 +281,7 @@ export class SonicEngine {
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
-                        this.sonicManager.sonicToon.ReleaseUp();
+                        this.sonicManager.sonicToon.releaseUp();
                         break;
                     case GameState.Editing:
                         break;
@@ -291,7 +291,7 @@ export class SonicEngine {
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
-                        this.sonicManager.sonicToon.PressCrouch();
+                        this.sonicManager.sonicToon.pressCrouch();
                         break;
                     case GameState.Editing:
                         this.sonicManager.windowLocation.y += 128;
@@ -302,7 +302,7 @@ export class SonicEngine {
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
-                        this.sonicManager.sonicToon.ReleaseCrouch();
+                        this.sonicManager.sonicToon.releaseCrouch();
                         break;
                     case GameState.Editing:
                         break;
@@ -312,7 +312,7 @@ export class SonicEngine {
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
-                        this.sonicManager.sonicToon.PressLeft();
+                        this.sonicManager.sonicToon.pressLeft();
                         break;
                     case GameState.Editing:
                         this.sonicManager.windowLocation.x -= 128;
@@ -323,7 +323,7 @@ export class SonicEngine {
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
-                        this.sonicManager.sonicToon.ReleaseLeft();
+                        this.sonicManager.sonicToon.releaseLeft();
                         break;
                     case GameState.Editing:
                         break;
@@ -333,7 +333,7 @@ export class SonicEngine {
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
-                        this.sonicManager.sonicToon.PressRight();
+                        this.sonicManager.sonicToon.pressRight();
                         break;
                     case GameState.Editing:
                         this.sonicManager.windowLocation.x += 128;
@@ -344,7 +344,7 @@ export class SonicEngine {
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
-                        this.sonicManager.sonicToon.ReleaseRight();
+                        this.sonicManager.sonicToon.releaseRight();
                         break;
                     case GameState.Editing:
                         break;
@@ -354,7 +354,7 @@ export class SonicEngine {
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
-                        this.sonicManager.sonicToon.PressJump();
+                        this.sonicManager.sonicToon.pressJump();
                         break;
                     case GameState.Editing:
                         break;
@@ -363,7 +363,7 @@ export class SonicEngine {
             () => {
                 switch (this.sonicManager.currentGameState) {
                     case GameState.Playing:
-                        this.sonicManager.sonicToon.ReleaseJump();
+                        this.sonicManager.sonicToon.releaseJump();
                         break;
                     case GameState.Editing:
                         break;
@@ -371,7 +371,7 @@ export class SonicEngine {
             });
         keyboardJS.bind("e",
             () => {
-                this.sonicManager.sonicLevel.CurHeightMap = !this.sonicManager.sonicLevel.CurHeightMap;
+                this.sonicManager.sonicLevel.curHeightMap = !this.sonicManager.sonicLevel.curHeightMap;
             },
             () => {
 

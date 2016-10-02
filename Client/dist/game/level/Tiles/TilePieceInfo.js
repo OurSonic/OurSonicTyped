@@ -48,3 +48,4 @@ System.register(["../../SonicManager", "../../../SLData"], function(exports_1, c
         }
     }
 });
+//# sourceMappingURL=TilePieceInfo.js.map

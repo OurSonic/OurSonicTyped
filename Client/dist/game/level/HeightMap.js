@@ -124,3 +124,4 @@ System.register(["../../common/Utils", "../SonicManager", "../../common/CanvasIn
         }
     }
 });
+//# sourceMappingURL=HeightMap.js.map

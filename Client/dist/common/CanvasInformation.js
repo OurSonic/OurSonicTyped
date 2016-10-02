@@ -50,3 +50,4 @@ System.register([], function(exports_1, context_1) {
         }
     }
 });
+//# sourceMappingURL=CanvasInformation.js.map

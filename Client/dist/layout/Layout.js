@@ -35,3 +35,4 @@ System.register(['@angular/core', 'rxjs/Rx'], function(exports_1, context_1) {
         }
     }
 });
+//# sourceMappingURL=Layout.js.map

@@ -12,7 +12,7 @@ export class SonicLevel {
     public AnimatedTileFiles: Tile[][];
     public ChunkMap: number[][];
     public Rings: Ring[];
-    public CurHeightMap: boolean=false;
+    public curHeightMap: boolean=false;
     public LevelWidth: number=0;
     public LevelHeight: number=0;
     public TileChunks: TileChunk[];
@@ -39,7 +39,7 @@ export class SonicLevel {
         this.Objects = new Array<LevelObjectInfo>();
         this.HeightMaps = new Array<HeightMap>();
         this.Tiles = new Array<Tile>();
-        this.CurHeightMap = true;
+        this.curHeightMap = true;
         this.CurPaletteIndex = 0;
         this.LevelWidth = 0;
         this.LevelHeight = 0;

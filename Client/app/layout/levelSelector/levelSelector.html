@@ -1,5 +1,5 @@
 <!--onclose="callback.windowClosed()"-->
-<window [left]="'15%'" [top]="'25%'" [width]="'390px'" [height]="'300px'" [windowTitle]="'Level Selector'" [visible]="true" (onclose)="closedWindow($event)" >
+<window [left]="'0%'" [top]="'0%'" [width]="'400px'" [height]="'300px'" [windowTitle]="'Level Selector'" [visible]="true" (onclose)="closedWindow($event)" [isMinimized]="isMinimized" >
     <div *ngIf="loading">Loading...</div>
     <ul style="margin: 0;">
         <li *ngFor="let level of levels" >

@@ -162,3 +162,4 @@ System.register(["../../../common/CanvasInformation", "../../../common/Utils", "
         }
     }
 });
+//# sourceMappingURL=Tile.js.map

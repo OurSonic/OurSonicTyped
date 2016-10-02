@@ -27,8 +27,8 @@ export class ObjectManager {
             InitScript: d.initScript,
             TickScript: d.tickScript
         });
-        obj.Description = d.description;
-        obj.Assets = new Array<LevelObjectAsset>();
+        obj.description = d.description;
+        obj.assets = new Array<LevelObjectAsset>();
         for (let i: number = 0; i < d.assets.length; i++) {
             let asset = d.assets[i];
             let levelObjectAsset = Help.merge(new LevelObjectAsset(asset.name), { name: asset.name });
@@ -47,26 +47,26 @@ export class ObjectManager {
                     palette: fr.palette
                 });
             }
-            obj.Assets[i] = levelObjectAsset;
+            obj.assets[i] = levelObjectAsset;
         }
-        obj.Pieces = new Array<LevelObjectPiece>();
+        obj.pieces = new Array<LevelObjectPiece>();
         for (let index: number = 0; index < d.pieces.length; index++) {
             let piece = d.pieces[index];
-            obj.Pieces[index] = piece;
+            obj.pieces[index] = piece;
         }
-        obj.PieceLayouts = new Array<LevelObjectPieceLayout>();
+        obj.pieceLayouts = new Array<LevelObjectPieceLayout>();
         for (let index: number = 0; index < d.pieceLayouts.length; index++) {
             let pl = d.pieceLayouts[index];
-            obj.PieceLayouts[index] = Help.merge(new LevelObjectPieceLayout(pl.name), {
+            obj.pieceLayouts[index] = Help.merge(new LevelObjectPieceLayout(pl.name), {
                 height: pl.height,
                 width: pl.width
             });
-            obj.PieceLayouts[index].pieces = new Array<LevelObjectPieceLayoutPiece>();
+            obj.pieceLayouts[index].pieces = new Array<LevelObjectPieceLayoutPiece>();
             for (let i: number = 0; i < d.pieceLayouts[index].pieces.length; i++) {
-                obj.PieceLayouts[index].pieces[i] = d.pieceLayouts[index].pieces[i];
+                obj.pieceLayouts[index].pieces[i] = d.pieceLayouts[index].pieces[i];
             }
         }
-        obj.Projectiles = new Array<LevelObjectProjectile>();
+        obj.projectiles = new Array<LevelObjectProjectile>();
         for (let index: number = 0; index < d.projectiles.length; index++) {
             let proj = d.projectiles[index];
             proj = Help.merge(new LevelObjectProjectile(proj.name), {
@@ -79,7 +79,7 @@ export class ObjectManager {
                 assetIndex: proj.assetIndex,
                 frameIndex: proj.frameIndex
             });
-            obj.Projectiles[index] = proj;
+            obj.projectiles[index] = proj;
         }
         return obj;
     }

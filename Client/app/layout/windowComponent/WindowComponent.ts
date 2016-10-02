@@ -16,6 +16,7 @@ export class WindowComponent {
     @Input() public left:string;
     @Input() public top:string;
     @Input() public windowTitle:string;
+    @Input() public isMinimized:boolean;
 
     @Output() public onclose:EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -24,7 +25,7 @@ export class WindowComponent {
     }
 
     public minimize():void {
-        this.visible = false;
+        this.isMinimized = !this.isMinimized;
     }
 
     public maximize():void {

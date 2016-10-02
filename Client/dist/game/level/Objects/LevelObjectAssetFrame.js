@@ -141,3 +141,4 @@ System.register(["../../../common/CanvasInformation"], function(exports_1, conte
         }
     }
 });
+//# sourceMappingURL=LevelObjectAssetFrame.js.map

@@ -27,7 +27,7 @@ export class LevelObjectPieceLayout {
     }
     public Update(): void {
         for (let t of SonicManager.instance.sonicLevel.Objects) {
-            t.Reset();
+            t.reset();
         }
     }
     public DrawUI(canvas: CanvasRenderingContext2D, showImages: boolean, selectedPieceIndex: number, levelObject: LevelObject): void {
@@ -55,8 +55,8 @@ export class LevelObjectPieceLayout {
         }
         for (let levelObjectPieceLayoutPiece of this.pieces) {
             if (showImages) {
-                let piece: LevelObjectPiece = levelObject.Pieces[levelObjectPieceLayoutPiece.PieceIndex];
-                let asset = levelObject.Assets[piece.assetIndex];
+                let piece: LevelObjectPiece = levelObject.pieces[levelObjectPieceLayoutPiece.PieceIndex];
+                let asset = levelObject.assets[piece.assetIndex];
                 if (asset.frames.length > 0) {
                     let frm = asset.frames[0];
                     frm.DrawUI(canvas,
@@ -86,11 +86,11 @@ export class LevelObjectPieceLayout {
         canvas.restore();
     }
     public Draw(canvas: CanvasRenderingContext2D, x: number, y: number, framework: LevelObject, instance: LevelObjectInfo, showHeightMap: boolean): void {
-        for (let j of instance.Pieces) {
+        for (let j of instance.pieces) {
             if (!j.visible)
                 continue;
-            let piece = framework.Pieces[j.pieceIndex];
-            let asset = framework.Assets[piece.assetIndex];
+            let piece = framework.pieces[j.pieceIndex];
+            let asset = framework.assets[piece.assetIndex];
             if (asset.frames.length > 0) {
                 let frm = asset.frames[j.frameIndex];
                 frm.DrawUI(canvas,
@@ -99,8 +99,8 @@ export class LevelObjectPieceLayout {
                     showHeightMap,
                     showHeightMap,
                     false,
-                    instance.Xflip !== !!piece.xflip,
-                    instance.Yflip !== !!piece.yflip);
+                    instance.xflip !== !!piece.xflip,
+                    instance.yflip !== !!piece.yflip);
             }
         }
     }
@@ -110,8 +110,8 @@ export class LevelObjectPieceLayout {
         let right: number = -100000000;
         let bottom: number = -100000000;
         for (let levelObjectPieceLayoutPiece of this.pieces) {
-            let piece = levelObject.Pieces[levelObjectPieceLayoutPiece.PieceIndex];
-            let asset = levelObject.Assets[piece.assetIndex];
+            let piece = levelObject.pieces[levelObjectPieceLayoutPiece.PieceIndex];
+            let asset = levelObject.assets[piece.assetIndex];
             let frame = asset.frames[piece.frameIndex];
             let pieceX = levelObjectPieceLayoutPiece.X - frame.offsetX;
             let pieceY = levelObjectPieceLayoutPiece.Y - frame.offsetY;

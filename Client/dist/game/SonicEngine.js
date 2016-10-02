@@ -231,7 +231,7 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     });
                     keyboardJS.bind("h", function () {
                         if (_this.sonicManager.currentGameState == Enums_1.GameState.Playing)
-                            _this.sonicManager.sonicToon.Hit(_this.sonicManager.sonicToon.x, _this.sonicManager.sonicToon.y);
+                            _this.sonicManager.sonicToon.hit(_this.sonicManager.sonicToon.x, _this.sonicManager.sonicToon.y);
                     }, function () {
                     });
                     keyboardJS.bind("u", function () {
@@ -241,13 +241,13 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     });
                     keyboardJS.bind("c", function () {
                         if (_this.sonicManager.currentGameState == Enums_1.GameState.Playing)
-                            _this.sonicManager.sonicToon.Debug();
+                            _this.sonicManager.sonicToon.debug();
                     }, function () {
                     });
                     keyboardJS.bind("up", function () {
                         switch (_this.sonicManager.currentGameState) {
                             case Enums_1.GameState.Playing:
-                                _this.sonicManager.sonicToon.PressUp();
+                                _this.sonicManager.sonicToon.pressUp();
                                 break;
                             case Enums_1.GameState.Editing:
                                 _this.sonicManager.windowLocation.y -= 128;
@@ -257,7 +257,7 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     }, function () {
                         switch (_this.sonicManager.currentGameState) {
                             case Enums_1.GameState.Playing:
-                                _this.sonicManager.sonicToon.ReleaseUp();
+                                _this.sonicManager.sonicToon.releaseUp();
                                 break;
                             case Enums_1.GameState.Editing:
                                 break;
@@ -266,7 +266,7 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     keyboardJS.bind("down", function () {
                         switch (_this.sonicManager.currentGameState) {
                             case Enums_1.GameState.Playing:
-                                _this.sonicManager.sonicToon.PressCrouch();
+                                _this.sonicManager.sonicToon.pressCrouch();
                                 break;
                             case Enums_1.GameState.Editing:
                                 _this.sonicManager.windowLocation.y += 128;
@@ -276,7 +276,7 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     }, function () {
                         switch (_this.sonicManager.currentGameState) {
                             case Enums_1.GameState.Playing:
-                                _this.sonicManager.sonicToon.ReleaseCrouch();
+                                _this.sonicManager.sonicToon.releaseCrouch();
                                 break;
                             case Enums_1.GameState.Editing:
                                 break;
@@ -285,7 +285,7 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     keyboardJS.bind("left", function () {
                         switch (_this.sonicManager.currentGameState) {
                             case Enums_1.GameState.Playing:
-                                _this.sonicManager.sonicToon.PressLeft();
+                                _this.sonicManager.sonicToon.pressLeft();
                                 break;
                             case Enums_1.GameState.Editing:
                                 _this.sonicManager.windowLocation.x -= 128;
@@ -295,7 +295,7 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     }, function () {
                         switch (_this.sonicManager.currentGameState) {
                             case Enums_1.GameState.Playing:
-                                _this.sonicManager.sonicToon.ReleaseLeft();
+                                _this.sonicManager.sonicToon.releaseLeft();
                                 break;
                             case Enums_1.GameState.Editing:
                                 break;
@@ -304,7 +304,7 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     keyboardJS.bind("right", function () {
                         switch (_this.sonicManager.currentGameState) {
                             case Enums_1.GameState.Playing:
-                                _this.sonicManager.sonicToon.PressRight();
+                                _this.sonicManager.sonicToon.pressRight();
                                 break;
                             case Enums_1.GameState.Editing:
                                 _this.sonicManager.windowLocation.x += 128;
@@ -314,7 +314,7 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     }, function () {
                         switch (_this.sonicManager.currentGameState) {
                             case Enums_1.GameState.Playing:
-                                _this.sonicManager.sonicToon.ReleaseRight();
+                                _this.sonicManager.sonicToon.releaseRight();
                                 break;
                             case Enums_1.GameState.Editing:
                                 break;
@@ -323,7 +323,7 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     keyboardJS.bind("space", function () {
                         switch (_this.sonicManager.currentGameState) {
                             case Enums_1.GameState.Playing:
-                                _this.sonicManager.sonicToon.PressJump();
+                                _this.sonicManager.sonicToon.pressJump();
                                 break;
                             case Enums_1.GameState.Editing:
                                 break;
@@ -331,14 +331,14 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     }, function () {
                         switch (_this.sonicManager.currentGameState) {
                             case Enums_1.GameState.Playing:
-                                _this.sonicManager.sonicToon.ReleaseJump();
+                                _this.sonicManager.sonicToon.releaseJump();
                                 break;
                             case Enums_1.GameState.Editing:
                                 break;
                         }
                     });
                     keyboardJS.bind("e", function () {
-                        _this.sonicManager.sonicLevel.CurHeightMap = !_this.sonicManager.sonicLevel.CurHeightMap;
+                        _this.sonicManager.sonicLevel.curHeightMap = !_this.sonicManager.sonicLevel.curHeightMap;
                     }, function () {
                     });
                 };
@@ -430,3 +430,4 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
         }
     }
 });
+//# sourceMappingURL=SonicEngine.js.map

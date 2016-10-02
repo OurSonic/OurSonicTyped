@@ -65,3 +65,4 @@ System.register([], function(exports_1, context_1) {
         }
     }
 });
+//# sourceMappingURL=SpriteLoader.js.map

@@ -24,7 +24,7 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                     this.visible = true;
                 }
                 WindowComponent.prototype.minimize = function () {
-                    this.visible = false;
+                    this.isMinimized = !this.isMinimized;
                 };
                 WindowComponent.prototype.maximize = function () {
                     this.visible = false;
@@ -58,6 +58,10 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                     __metadata('design:type', String)
                 ], WindowComponent.prototype, "windowTitle", void 0);
                 __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Boolean)
+                ], WindowComponent.prototype, "isMinimized", void 0);
+                __decorate([
                     core_1.Output(), 
                     __metadata('design:type', core_1.EventEmitter)
                 ], WindowComponent.prototype, "onclose", void 0);
@@ -74,3 +78,4 @@ System.register(['@angular/core'], function(exports_1, context_1) {
         }
     }
 });
+//# sourceMappingURL=WindowComponent.js.map
