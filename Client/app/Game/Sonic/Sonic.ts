@@ -738,26 +738,25 @@ export class Sonic {
     }
 
     public drawUI(canvas: CanvasRenderingContext2D, pos: Point): void {
-        if (false) {
-            canvas.save();
-            {
-                if (canvas.font != "13pt Arial bold")
-                    canvas.font = "13pt Arial bold";
-                canvas.fillStyle = "White";
-                canvas.fillText("Rings: " + this.rings, pos.x + 90, pos.y + 45);
-                canvas.fillText("Angle: " + this.angle.toString(16), pos.x + 90, pos.y + 75);
-                canvas.fillText("Position: " + (this.x) + ", " + (this.y), pos.x + 90, pos.y + 105);
-                canvas.fillText("Speed: g: " + this.gsp.toFixed(3) + " x:" + this.xsp.toFixed(3) + " y:" + this.ysp.toFixed(3), pos.x + 90, pos.y + 135);
-                canvas.fillText("Mode: " + (<number>this.mode).toString(), pos.x + 90, pos.y + 165);
-                canvas.fillText("Multiplier: " + this.watcher.mult, pos.x + 90, pos.y + 195);
-                if (this.inAir)
-                    canvas.fillText("air ", pos.x + 220, pos.y + 45);
-                if (this.hLock > 0)
-                    canvas.fillText("HLock: " + this.hLock, pos.x + 90, pos.y + 195);
-            }
-            canvas.restore();
-
+/*
+        canvas.save();
+        {
+            if (canvas.font != "13pt Arial bold")
+                canvas.font = "13pt Arial bold";
+            canvas.fillStyle = "White";
+            canvas.fillText("Rings: " + this.rings, pos.x + 90, pos.y + 45);
+            canvas.fillText("Angle: " + this.angle.toString(16), pos.x + 90, pos.y + 75);
+            canvas.fillText("Position: " + (this.x) + ", " + (this.y), pos.x + 90, pos.y + 105);
+            canvas.fillText("Speed: g: " + this.gsp.toFixed(3) + " x:" + this.xsp.toFixed(3) + " y:" + this.ysp.toFixed(3), pos.x + 90, pos.y + 135);
+            canvas.fillText("Mode: " + (<number>this.mode).toString(), pos.x + 90, pos.y + 165);
+            canvas.fillText("Multiplier: " + this.watcher.mult, pos.x + 90, pos.y + 195);
+            if (this.inAir)
+                canvas.fillText("air ", pos.x + 220, pos.y + 45);
+            if (this.hLock > 0)
+                canvas.fillText("HLock: " + this.hLock, pos.x + 90, pos.y + 195);
         }
+        canvas.restore();
+*/
     }
 
     public hit(x: number, y: number): void {

@@ -32,6 +32,7 @@ export class SonicEngine {
     constructor() {
         SonicEngine.instance = this;
 
+
         const gameCanvasName = "gameLayer";
         this.gameCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById(gameCanvasName), 0, 0, true);
 
@@ -47,6 +48,33 @@ export class SonicEngine {
          window.setInterval(() => this.sonicManager.tick(), 1000 / 60);
          window.setInterval(() => this.GameDraw(), 1000 / 60);
         this.resizeCanvas(true);
+/*
+        (<any>window).GameController.init({
+            canvas:gameCanvasName,
+            left: {
+                type: 'joystick',
+                position: {
+                    bottom: '15%',
+                    left: '15%'
+                }
+            },
+            right: {
+                position: {
+                    right: '15%',
+                    bottom: '15%'
+                },
+                type: 'buttons',
+                buttons: [
+                    {
+                        label: 'jump',radius:'10%', fontSize: 13, touchStart:  ()=> {
+                        // do something
+                    }
+                    },
+                    false, false, false
+                ]
+            }
+        });
+*/
 
 
 //        this.startThing();

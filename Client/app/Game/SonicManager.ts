@@ -94,11 +94,11 @@ export class SonicManager {
         this.bigWindowLocation = Help.defaultWindowLocation(GameState.Editing, this.scale);
         this.bigWindowLocation.width = (this.bigWindowLocation.width * 1.8) | 0;
         this.bigWindowLocation.height = (this.bigWindowLocation.height * 1.8) | 0;
-        this.tileAnimations = new Array<TileAnimationData>();
-        this.animationInstances = new Array<AnimationInstance>();
+        this.tileAnimations = [];
+        this.animationInstances = [];
         this.showHeightMap = false;
         this.goodRing = new Ring(false);
-        this.activeRings = new Array<Ring>();
+        this.activeRings = [];
         this.forceResize = resize;
         this.background = null;
         this.currentGameState = GameState.Editing;

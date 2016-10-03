@@ -1,4 +1,3 @@
-<!--onclose="callback.windowClosed()"-->
 <window [left]="'0%'" [top]="'0%'" [width]="'400px'" [height]="'300px'" [windowTitle]="'Levels '+(loading?'Loading':'')" [visible]="true" (onclose)="closedWindow($event)" [isMinimized]="isMinimized" >
     <ul style="margin: 0;">
         <li *ngFor="let level of levels" >

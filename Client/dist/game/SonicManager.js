@@ -95,11 +95,11 @@ System.register(["../common/Utils", "../common/CanvasInformation", "../common/En
                     this.bigWindowLocation = Help_1.Help.defaultWindowLocation(Enums_1.GameState.Editing, this.scale);
                     this.bigWindowLocation.width = (this.bigWindowLocation.width * 1.8) | 0;
                     this.bigWindowLocation.height = (this.bigWindowLocation.height * 1.8) | 0;
-                    this.tileAnimations = new Array();
-                    this.animationInstances = new Array();
+                    this.tileAnimations = [];
+                    this.animationInstances = [];
                     this.showHeightMap = false;
                     this.goodRing = new Ring_1.Ring(false);
-                    this.activeRings = new Array();
+                    this.activeRings = [];
                     this.forceResize = resize;
                     this.background = null;
                     this.currentGameState = Enums_1.GameState.Editing;
