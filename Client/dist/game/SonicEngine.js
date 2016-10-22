@@ -43,15 +43,16 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     this.canvasWidth = 0;
                     this.canvasHeight = 0;
                     SonicEngine.instance = this;
-                    var gameCanvasName = "gameLayer";
-                    this.gameCanvas = CanvasInformation_1.CanvasInformation.CreateFromElement(document.getElementById(gameCanvasName), 0, 0, true);
+                    this.lowTileCanvas = CanvasInformation_1.CanvasInformation.CreateFromElement(document.getElementById('lowTileLayer'), 0, 0, true);
+                    this.spriteCanvas = CanvasInformation_1.CanvasInformation.CreateFromElement(document.getElementById('spriteLayer'), 0, 0, true);
+                    this.highTileCanvas = CanvasInformation_1.CanvasInformation.CreateFromElement(document.getElementById('highTileLayer'), 0, 0, true);
                     this.canvasWidth = 0;
                     this.canvasHeight = 0;
                     this.bindInput();
                     this.fullscreenMode = true;
                     window.addEventListener("resize", function (e) { return _this.resizeCanvas(true); });
                     jQuery(document).resize(function (e) { return _this.resizeCanvas(true); });
-                    this.sonicManager = new SonicManager_1.SonicManager(this, this.gameCanvas, function () { return _this.resizeCanvas(true); });
+                    this.sonicManager = new SonicManager_1.SonicManager(this, this.lowTileCanvas, this.spriteCanvas, this.highTileCanvas, function () { return _this.resizeCanvas(true); });
                     this.sonicManager.indexedPalette = 0;
                     window.setInterval(function () { return _this.sonicManager.tick(); }, 1000 / 60);
                     window.setInterval(function () { return _this.GameDraw(); }, 1000 / 60);
@@ -219,13 +220,13 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                     }*/
                 SonicEngine.prototype.bindInput = function () {
                     var _this = this;
-                    this.gameCanvas.domCanvas.mousedown(function (e) { return _this.canvasOnClick(e); });
-                    this.gameCanvas.domCanvas.mouseup(function (e) { return _this.canvasMouseUp(e); });
-                    this.gameCanvas.domCanvas.mousemove(function (e) { return _this.canvasMouseMove(e); });
-                    this.gameCanvas.domCanvas.bind("touchstart", function (e) { return _this.canvasOnClick(e); });
-                    this.gameCanvas.domCanvas.bind("touchend", function (e) { return _this.canvasMouseUp(e); });
-                    this.gameCanvas.domCanvas.bind("touchmove", function (e) { return _this.canvasMouseMove(e); });
-                    this.gameCanvas.domCanvas.bind("contextmenu", function (e) { return e.preventDefault(); });
+                    this.highTileCanvas.domCanvas.mousedown(function (e) { return _this.canvasOnClick(e); });
+                    this.highTileCanvas.domCanvas.mouseup(function (e) { return _this.canvasMouseUp(e); });
+                    this.highTileCanvas.domCanvas.mousemove(function (e) { return _this.canvasMouseMove(e); });
+                    this.highTileCanvas.domCanvas.bind("touchstart", function (e) { return _this.canvasOnClick(e); });
+                    this.highTileCanvas.domCanvas.bind("touchend", function (e) { return _this.canvasMouseUp(e); });
+                    this.highTileCanvas.domCanvas.bind("touchmove", function (e) { return _this.canvasMouseMove(e); });
+                    this.highTileCanvas.domCanvas.bind("contextmenu", function (e) { return e.preventDefault(); });
                     keyboardJS.bind("f", function () {
                         _this.sonicManager.showHeightMap = !_this.sonicManager.showHeightMap;
                     }, function () {
@@ -406,7 +407,7 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                             sonicManager.sonicToon = new Sonic_1.Sonic();
                             break;
                     }
-                    sonicManager.DestroyCanvases();
+                    // sonicManager.DestroyCanvases();
                     sonicManager.ResetCanvases();
                 };
                 SonicEngine.prototype.canvasMouseMove = function (queryEvent) {
@@ -432,24 +433,26 @@ System.register(["../common/CanvasInformation", "./SonicManager", "../common/Enu
                         this.sonicManager.overrideRealScale = Utils_1.DoublePoint.create(this.sonicManager.realScale);
                     else
                         this.sonicManager.realScale = Utils_1.DoublePoint.create(this.sonicManager.overrideRealScale);
-                    this.gameCanvas.domCanvas.attr("width", (this.sonicManager.windowLocation.width * (this.sonicManager.currentGameState === Enums_1.GameState.Playing ? this.sonicManager.scale.x * this.sonicManager.realScale.x : 1)).toString());
-                    this.gameCanvas.domCanvas.attr("height", (this.sonicManager.windowLocation.height * (this.sonicManager.currentGameState === Enums_1.GameState.Playing ? this.sonicManager.scale.y * this.sonicManager.realScale.y : 1)).toString());
                     this.gameGoodWidth = (this.sonicManager.windowLocation.width * (this.sonicManager.currentGameState == Enums_1.GameState.Playing ? this.sonicManager.scale.x * this.sonicManager.realScale.x : 1));
-                    var screenOffset = this.sonicManager.currentGameState == Enums_1.GameState.Playing ? new Utils_1.DoublePoint(((this.canvasWidth / 2 - this.sonicManager.windowLocation.width * this.sonicManager.scale.x * this.sonicManager.realScale.x / 2)), (this.canvasHeight / 2 - this.sonicManager.windowLocation.height * this.sonicManager.scale.y * this.sonicManager.realScale.y / 2)) : new Utils_1.DoublePoint(0, 0);
-                    this.gameCanvas.domCanvas.css("left", screenOffset.x + 'px');
-                    this.gameCanvas.domCanvas.css("top", screenOffset.y + 'px');
-                    this.sonicManager.DestroyCanvases();
+                    // this.sonicManager.DestroyCanvases();
                     this.sonicManager.ResetCanvases();
                 };
-                SonicEngine.prototype.clear = function (canv) {
-                    canv.domCanvas[0].width = this.gameGoodWidth;
-                    this.gameCanvas.Context.mozImageSmoothingEnabled = false; /// future
-                    this.gameCanvas.Context.msImageSmoothingEnabled = false; /// future
-                    this.gameCanvas.Context.imageSmoothingEnabled = false; /// future
-                    this.gameCanvas.Context.imageSmoothingEnabled = false;
+                SonicEngine.prototype.clear = function () {
+                    this.lowTileCanvas.domCanvas[0].width = 320;
+                    this.spriteCanvas.domCanvas[0].width = 320;
+                    this.highTileCanvas.domCanvas[0].width = 320;
+                    this.lowTileCanvas.Context.mozImageSmoothingEnabled = false; /// future
+                    this.lowTileCanvas.Context.msImageSmoothingEnabled = false; /// future
+                    this.lowTileCanvas.Context.imageSmoothingEnabled = false; /// future
+                    this.spriteCanvas.Context.mozImageSmoothingEnabled = false; /// future
+                    this.spriteCanvas.Context.msImageSmoothingEnabled = false; /// future
+                    this.spriteCanvas.Context.imageSmoothingEnabled = false; /// future
+                    this.highTileCanvas.Context.mozImageSmoothingEnabled = false; /// future
+                    this.highTileCanvas.Context.msImageSmoothingEnabled = false; /// future
+                    this.highTileCanvas.Context.imageSmoothingEnabled = false; /// future
                 };
                 SonicEngine.prototype.GameDraw = function () {
-                    this.sonicManager.MainDraw(this.gameCanvas);
+                    this.sonicManager.MainDraw();
                 };
                 return SonicEngine;
             }());

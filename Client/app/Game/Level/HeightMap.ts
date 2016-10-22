@@ -70,7 +70,7 @@ export class HeightMap {
                     for (let y: number = 0; y < 16; y++) {
                         let jx = 0;
                         let jy = 0;
-                        if (HeightMap.ItemsGood(this.Items, x, y)) {
+                        if (HeightMap.itemsGood(this.Items, x, y)) {
                             jx = x;
                             jy = y;
                             let _x = jx;
@@ -97,7 +97,7 @@ export class HeightMap {
         pos.x = oPos.x;
         pos.y = oPos.y;
     }
-    public static ItemsGood(items: number[], x: number, y: number): boolean {
+    public static itemsGood(items: number[], x: number, y: number): boolean {
         if (items[x] < 0)
             return Math.abs(items[x]) >= y;
         return items[x] >= 16 - y;

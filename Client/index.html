@@ -2,13 +2,13 @@
 
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Our Sonic</title>
-    <link rel="stylesheet" href="css/app.css" type="text/css" />
+    <link rel="stylesheet" href="css/app.css" type="text/css"/>
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 
     <script src="libs/jquery-1.12.3.js"></script>
     <script src="libs/jquery-ui.js"></script>
@@ -23,16 +23,38 @@
     <script src="node_modules/systemjs/dist/system.src.js"></script>
     <!-- 2. Configure SystemJS -->
     <script src="dist/systemjs.config.js"></script>
-    <script>
-      System.import('app').catch(function(err){ console.error(err); });
-    </script>  
+    <style>
+        .game-canvas {
+            left: 0px;
+            margin: 0px;
+            position: absolute;
+            top: 0px;
+            z-index: 0;
+            width:100%;
+            height:100%;
+            image-rendering: auto;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;         /* Firefox */
+            image-rendering:   -o-crisp-edges;         /* Opera */
+            image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+            image-rendering: crisp-edges;
+            -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+        }
+    </style>
 </head>
 <body style="background-color: #000080;">
-    <canvas id="gameLayer" style="left: 0px; margin: 0px; position: absolute; top: 0px; z-index: 0;"></canvas>
+<canvas id="lowTileLayer" class="game-canvas"></canvas>
+<canvas id="spriteLayer" class="game-canvas"></canvas>
+<canvas id="highTileLayer" class="game-canvas"></canvas>
 
-    <layout>
-        <h1 style="color:white;">Loading...</h1>
-    </layout>
-
+<layout>
+    <h1 style="color:white;">Loading...</h1>
+</layout>
+<script>
+    System.import('app').catch(function (err) {
+        console.error(err);
+    });
+</script>
 </body>
 </html>

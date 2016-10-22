@@ -85,7 +85,7 @@ System.register(["../../common/Utils", "../SonicManager", "../../common/CanvasIn
                                 for (var y = 0; y < 16; y++) {
                                     var jx = 0;
                                     var jy = 0;
-                                    if (HeightMap.ItemsGood(this.Items, x, y)) {
+                                    if (HeightMap.itemsGood(this.Items, x, y)) {
                                         jx = x;
                                         jy = y;
                                         var _x = jx;
@@ -112,7 +112,7 @@ System.register(["../../common/Utils", "../SonicManager", "../../common/CanvasIn
                     pos.x = oPos.x;
                     pos.y = oPos.y;
                 };
-                HeightMap.ItemsGood = function (items, x, y) {
+                HeightMap.itemsGood = function (items, x, y) {
                     if (items[x] < 0)
                         return Math.abs(items[x]) >= y;
                     return items[x] >= 16 - y;

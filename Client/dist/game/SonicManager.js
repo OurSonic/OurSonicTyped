@@ -70,18 +70,25 @@ System.register(["../common/Utils", "../common/CanvasInformation", "../common/En
             }],
         execute: function() {
             SonicManager = (function () {
-                function SonicManager(engine, gameCanvas, resize) {
+                function SonicManager(engine, lowTileCanvas, spriteCanvas, highTileCanvas, resize) {
                     var _this = this;
                     this.sonicSprites = {};
                     this.pixelScale = 0;
                     this.pixelScaleManager = new PixelScaleManager();
                     SonicManager.instance = this;
+                    this.lowTileCanvas = lowTileCanvas;
+                    this.spriteCanvas = spriteCanvas;
+                    this.highTileCanvas = highTileCanvas;
                     window.OurSonic = { SonicManager: { instance: SonicManager.instance }, SonicEngine: engine };
                     this.engine = engine;
                     this.engine.canvasWidth = $(window).width();
                     this.engine.canvasHeight = $(window).height();
-                    gameCanvas.domCanvas[0].setAttribute("width", this.engine.canvasWidth.toString());
-                    gameCanvas.domCanvas[0].setAttribute("height", this.engine.canvasHeight.toString());
+                    this.lowTileCanvas.domCanvas[0].setAttribute("width", "320");
+                    this.lowTileCanvas.domCanvas[0].setAttribute("height", "240");
+                    this.spriteCanvas.domCanvas[0].setAttribute("width", "320");
+                    this.spriteCanvas.domCanvas[0].setAttribute("height", "240");
+                    this.highTileCanvas.domCanvas[0].setAttribute("width", "320");
+                    this.highTileCanvas.domCanvas[0].setAttribute("height", "240");
                     jQuery.getJSON("assets/content/sprites/sonic.js", function (data) {
                         _this.sonicSprites = data;
                     });
@@ -90,7 +97,6 @@ System.register(["../common/Utils", "../common/CanvasInformation", "../common/En
                     var scl = 2;
                     this.scale = new Utils_1.Point(scl, scl);
                     this.realScale = new Utils_1.DoublePoint(1, 1);
-                    this.mainCanvas = gameCanvas;
                     this.windowLocation = Help_1.Help.defaultWindowLocation(Enums_1.GameState.Editing, this.scale);
                     this.bigWindowLocation = Help_1.Help.defaultWindowLocation(Enums_1.GameState.Editing, this.scale);
                     this.bigWindowLocation.width = (this.bigWindowLocation.width * 1.8) | 0;
@@ -103,7 +109,6 @@ System.register(["../common/Utils", "../common/CanvasInformation", "../common/En
                     this.forceResize = resize;
                     this.background = null;
                     this.currentGameState = Enums_1.GameState.Editing;
-                    this.screenOffset = new Utils_1.Point(this.mainCanvas.domCanvas.width() / 2 - this.windowLocation.width / 2, this.mainCanvas.domCanvas.height() / 2 - this.windowLocation.height / 2);
                     this.clickState = Enums_1.ClickState.PlaceChunk;
                     this.tickCount = 0;
                     this.drawTickCount = 0;
@@ -274,24 +279,22 @@ System.register(["../common/Utils", "../common/CanvasInformation", "../common/En
                         this.spriteLoader.AddIterationToStep(sonicStep, 0);
                     }
                 };
-                SonicManager.prototype.MainDraw = function (canvas) {
-                    var context = canvas.Context;
+                SonicManager.prototype.MainDraw = function () {
                     if (this.inHaltMode)
-                        if (this.drawHaltMode(context))
+                        if (this.drawHaltMode(this.highTileCanvas.Context))
                             return;
-                    this.engine.clear(canvas);
+                    this.engine.clear();
                     if (this.sonicLevel == null)
                         return;
-                    context.save();
+                    this.highTileCanvas.Context.save();
                     var localPoint = new Utils_1.Point(0, 0);
                     this.drawTickCount++;
                     if (this.spriteLoader && !this.spriteLoader.Tick() || this.loading) {
-                        SonicManager.drawLoading(context);
-                        context.restore();
+                        SonicManager.drawLoading(this.highTileCanvas.Context);
+                        this.highTileCanvas.Context.restore();
                         return;
-                        ;
                     }
-                    this.updatePositions(context);
+                    this.updatePositions();
                     var w1 = (this.windowLocation.width / 128 | 0) + 2;
                     var h1 = (this.windowLocation.height / 128 | 0) + 2;
                     if (this.currentGameState == Enums_1.GameState.Editing) {
@@ -313,49 +316,55 @@ System.register(["../common/Utils", "../common/CanvasInformation", "../common/En
                         var movex = (wOffset / bw) * bw;
                         localPoint.x = -this.windowLocation.x + movex;
                         localPoint.y = -this.windowLocation.y / 4;
-                        this.background.Draw(this.lowChunkCanvas.Context, localPoint, wOffset);
+                        this.background.Draw(this.lowTileCanvas.Context, localPoint, wOffset);
                         localPoint.x = -this.windowLocation.x + movex + this.background.Width;
                         localPoint.y = -this.windowLocation.y / 4;
-                        this.background.Draw(this.lowChunkCanvas.Context, localPoint, wOffset);
+                        this.background.Draw(this.lowTileCanvas.Context, localPoint, wOffset);
                     }
-                    this.drawLowChunks(this.lowChunkCanvas.Context, zero, offs, fyP, fxP);
+                    this.drawLowChunks(this.lowTileCanvas.Context, zero, offs, fyP, fxP);
                     if (this.showHeightMap)
-                        this.drawHighChunks(this.lowChunkCanvas.Context, fxP, fyP, offs, zero);
-                    this.drawObjects(this.sonicCanvas.Context, zero);
-                    this.drawAnimations(this.sonicCanvas.Context);
-                    this.drawRings(this.sonicCanvas.Context, zero);
-                    this.drawSonic(this.sonicCanvas.Context);
+                        this.drawHighChunks(this.lowTileCanvas.Context, fxP, fyP, offs, zero);
+                    this.drawObjects(this.spriteCanvas.Context, zero);
+                    this.drawAnimations(this.spriteCanvas.Context);
+                    this.drawRings(this.spriteCanvas.Context, zero);
+                    this.drawSonic(this.spriteCanvas.Context);
                     if (!this.showHeightMap)
-                        this.drawHighChunks(this.highChuckCanvas.Context, fxP, fyP, offs, zero);
-                    this.drawDebugTextChunks(this.highChuckCanvas.Context, fxP, fyP, offs, zero);
+                        this.drawHighChunks(this.highTileCanvas.Context, fxP, fyP, offs, zero);
+                    this.drawDebugTextChunks(this.highTileCanvas.Context, fxP, fyP, offs, zero);
                     //        this.lowChunkCanvas.Context.OffsetPixelsForWater();
                     //        this.highChuckCanvas.Context.OffsetPixelsForWater();
-                    this.drawCanveses(context, localPoint);
-                    context.restore();
-                    if (this.currentGameState === Enums_1.GameState.Playing)
-                        this.sonicToon.drawUI(context, new Utils_1.Point(this.screenOffset.x, this.screenOffset.y));
-                };
+                    // this.drawCanveses(context, localPoint);
+                    this.highTileCanvas.Context.restore();
+                    /*      if (this.currentGameState === GameState.Playing)
+                              this.sonicToon.drawUI(context, new Point(this.screenOffset.x, this.screenOffset.y));
+                  */ };
                 SonicManager.prototype.drawCanveses = function (canvas, localPoint) {
-                    if (this.pixelScale > 0) {
-                        canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
-                        canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
-                        canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
-                        //this.shadePixels(canvas);
-                        var imageData = this.pixelScaleManager.scale(canvas, this.pixelScale - 1, this.windowLocation.width, this.windowLocation.height);
-                        var pixelScale = this.pixelScaleManager.getPixelScale(this.pixelScale - 1);
-                        canvas.scale(pixelScale.x, pixelScale.y);
-                        canvas.scale(this.realScale.x, this.realScale.y);
-                        canvas.scale(this.scale.x, this.scale.y);
-                        canvas.drawImage(imageData, localPoint.x, localPoint.y);
-                    }
-                    else {
-                        canvas.scale(this.realScale.x, this.realScale.y);
-                        canvas.scale(this.scale.x, this.scale.y);
-                        //this.shadePixels(canvas);
-                        canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
-                        canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
-                        canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
-                    }
+                    /*
+                            if (this.pixelScale > 0) {
+                                canvas.drawImage(((this.lowTileCanvas.canvas)), localPoint.x, localPoint.y);
+                                canvas.drawImage(((this.son.canvas)), localPoint.x, localPoint.y);
+                                canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
+                    
+                                //this.shadePixels(canvas);
+                    
+                                var imageData = this.pixelScaleManager.scale(canvas, this.pixelScale - 1, this.windowLocation.width, this.windowLocation.height);
+                                var pixelScale = this.pixelScaleManager.getPixelScale(this.pixelScale - 1);
+                                canvas.scale(pixelScale.x, pixelScale.y);
+                    
+                                canvas.scale(this.realScale.x, this.realScale.y);
+                                canvas.scale(this.scale.x, this.scale.y);
+                    
+                                canvas.drawImage(imageData, localPoint.x, localPoint.y);
+                            } else {
+                                canvas.scale(this.realScale.x, this.realScale.y);
+                                canvas.scale(this.scale.x, this.scale.y);
+                                //this.shadePixels(canvas);
+                                canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
+                                canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
+                                canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
+                    
+                            }
+                    */
                 };
                 SonicManager.prototype.shadePixels = function (canvas) {
                     var img = canvas.getImageData(0, 0, this.windowLocation.width, this.windowLocation.height);
@@ -387,18 +396,17 @@ System.register(["../common/Utils", "../common/CanvasInformation", "../common/En
                     arr2[i + 2] = m;
                 };
                 SonicManager.prototype.ResetCanvases = function () {
-                    this.lowChunkCanvas = this.lowChunkCanvas != null ? this.lowChunkCanvas : CanvasInformation_1.CanvasInformation.create(this.windowLocation.width, this.windowLocation.height, false);
-                    this.sonicCanvas = this.sonicCanvas != null ? this.sonicCanvas : CanvasInformation_1.CanvasInformation.create(this.windowLocation.width, this.windowLocation.height, true);
-                    this.highChuckCanvas = this.highChuckCanvas != null ? this.highChuckCanvas : CanvasInformation_1.CanvasInformation.create(this.windowLocation.width, this.windowLocation.height, false);
-                    this.sonicCanvas.Context.clearRect(0, 0, this.windowLocation.width, this.windowLocation.height);
-                    this.highChuckCanvas.Context.clearRect(0, 0, this.windowLocation.width, this.windowLocation.height);
-                    this.lowChunkCanvas.Context.clearRect(0, 0, this.windowLocation.width, this.windowLocation.height);
+                    this.spriteCanvas.Context.clearRect(0, 0, 320, 240);
+                    this.highTileCanvas.Context.clearRect(0, 0, 320, 240);
+                    this.lowTileCanvas.Context.clearRect(0, 0, 320, 240);
                 };
-                SonicManager.prototype.DestroyCanvases = function () {
-                    this.lowChunkCanvas = null;
-                    this.sonicCanvas = null;
-                    this.highChuckCanvas = null;
-                };
+                /*
+                    public DestroyCanvases(): void {
+                        this.lowChunkCanvas = null;
+                        this.sonicCanvas = null;
+                        this.highChuckCanvas = null;
+                    }
+                */
                 SonicManager.getOffs = function (w1, h1) {
                     var hash = (w1 + 1) * (h1 + 1);
                     if (SonicManager._cachedOffs[hash])
@@ -410,13 +418,13 @@ System.register(["../common/Utils", "../common/CanvasInformation", "../common/En
                             offs[ca++] = (new Utils_1.Point(x, y));
                     return SonicManager._cachedOffs[hash] = offs;
                 };
-                SonicManager.prototype.updatePositions = function (canvas) {
-                    this.screenOffset.x = 0;
-                    this.screenOffset.y = 0;
+                SonicManager.prototype.updatePositions = function () {
+                    /*this.screenOffset.x = 0;
+                    this.screenOffset.y = 0;*/
                     if (this.currentGameState == Enums_1.GameState.Playing)
-                        this.updatePositionsForPlaying(canvas);
+                        this.updatePositionsForPlaying();
                 };
-                SonicManager.prototype.updatePositionsForPlaying = function (canvas) {
+                SonicManager.prototype.updatePositionsForPlaying = function () {
                     // canvas.scale(this.realScale.x, this.realScale.y);
                     if (this.sonicToon.ticking) {
                         while (true) {
@@ -424,7 +432,7 @@ System.register(["../common/Utils", "../common/CanvasInformation", "../common/En
                                 break;
                         }
                     }
-                    canvas.translate(this.screenOffset.x, this.screenOffset.y);
+                    // canvas.translate(this.screenOffset.x, this.screenOffset.y);
                     this.windowLocation.x = (this.sonicToon.x) - this.windowLocation.width / 2;
                     this.windowLocation.y = (this.sonicToon.y) - this.windowLocation.height / 2;
                     this.bigWindowLocation.x = (this.sonicToon.x) - this.bigWindowLocation.width / 2;
@@ -525,7 +533,7 @@ System.register(["../common/Utils", "../common/CanvasInformation", "../common/En
                     var posj1 = new Utils_1.Point(0, 0);
                     var canv = CanvasInformation_1.CanvasInformation.create(128, 128, false);
                     var ctx = canv.Context;
-                    this.engine.clear(canv);
+                    // this.engine.clear(canv);
                     for (var _y = 0; _y < 8; _y++) {
                         for (var _x = 0; _x < 8; _x++) {
                             var tp = md.TilePieces[_x][_y];

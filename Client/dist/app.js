@@ -841,7 +841,7 @@ System.register("game/level/HeightMap", ["common/Utils", "game/SonicManager", "c
                                 for (var y = 0; y < 16; y++) {
                                     var jx = 0;
                                     var jy = 0;
-                                    if (HeightMap.ItemsGood(this.Items, x, y)) {
+                                    if (HeightMap.itemsGood(this.Items, x, y)) {
                                         jx = x;
                                         jy = y;
                                         var _x = jx;
@@ -868,7 +868,7 @@ System.register("game/level/HeightMap", ["common/Utils", "game/SonicManager", "c
                     pos.x = oPos.x;
                     pos.y = oPos.y;
                 };
-                HeightMap.ItemsGood = function (items, x, y) {
+                HeightMap.itemsGood = function (items, x, y) {
                     if (items[x] < 0)
                         return Math.abs(items[x]) >= y;
                     return items[x] >= 16 - y;
@@ -3135,7 +3135,7 @@ System.register("game/sonic/SensorManager", ["SLData", "game/level/HeightMap", "
                                                 case 1:
                                                 case 2:
                                                 case 3:
-                                                    hb1[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap_1.HeightMap.ItemsGood(heightMaskItems, __x, __y) ? tp.Solid1 : 0;
+                                                    hb1[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap_1.HeightMap.itemsGood(heightMaskItems, __x, __y) ? tp.Solid1 : 0;
                                                     break;
                                             }
                                         }
@@ -3222,7 +3222,7 @@ System.register("game/sonic/SensorManager", ["SLData", "game/level/HeightMap", "
                                                 case 1:
                                                 case 2:
                                                 case 3:
-                                                    hb2[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap_1.HeightMap.ItemsGood(hd2Items, __x, __y) ? tp.Solid2 : 0;
+                                                    hb2[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap_1.HeightMap.itemsGood(hd2Items, __x, __y) ? tp.Solid2 : 0;
                                                     break;
                                             }
                                         }

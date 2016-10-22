@@ -47,7 +47,7 @@ export class SensorManager {
     public buildChunk(chunk: TileChunk, isLayerOne: boolean): void {
         if (isLayerOne) {
             if (chunk.HeightBlocks1)
-                return
+                return;
             let hb1 = chunk.HeightBlocks1 = new Array(128);
             let ab1 = chunk.AngleMap1 = new Array(8);
             for (let _1 = 0; _1 < 128; _1++) {
@@ -128,7 +128,7 @@ export class SensorManager {
                                     case <Solidity>1:
                                     case <Solidity>2:
                                     case <Solidity>3:
-                                        hb1[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap.ItemsGood(heightMaskItems, __x, __y) ? tp.Solid1 : 0;
+                                        hb1[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap.itemsGood(heightMaskItems, __x, __y) ? tp.Solid1 : 0;
                                         break;
                                 }
                             }
@@ -139,7 +139,7 @@ export class SensorManager {
         }
         else {
             if (chunk.HeightBlocks2)
-                return
+                return;
             let hb2 = chunk.HeightBlocks2 = new Array(128);
             let ab2 = chunk.AngleMap2 = new Array(8);
             for (let _1 = 0; _1 < 128; _1++) {
@@ -214,7 +214,7 @@ export class SensorManager {
                                     case <Solidity>1:
                                     case <Solidity>2:
                                     case <Solidity>3:
-                                        hb2[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap.ItemsGood(hd2Items, __x, __y) ? tp.Solid2 : 0;
+                                        hb2[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap.itemsGood(hd2Items, __x, __y) ? tp.Solid2 : 0;
                                         break;
                                 }
                             }

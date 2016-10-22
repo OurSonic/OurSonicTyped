@@ -60,7 +60,7 @@ System.register(["../../SonicManager", "../../../common/Utils"], function(export
                         }
                         else {
                             var drawRadial = void 0;
-                            drawRadial = SonicManager_1.SonicManager.instance.mainCanvas.Context.createRadialGradient(0, 0, 0, 10, 10, 50);
+                            drawRadial = SonicManager_1.SonicManager.instance.lowTileCanvas.Context.createRadialGradient(0, 0, 0, 10, 10, 50);
                             drawRadial.addColorStop(0, "white");
                             if (selectedPieceIndex == levelObjectPieceLayoutPiece.pieceIndex)
                                 drawRadial.addColorStop(1, "yellow");

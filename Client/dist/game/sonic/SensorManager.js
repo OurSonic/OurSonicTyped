@@ -141,7 +141,7 @@ System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../
                                                 case 1:
                                                 case 2:
                                                 case 3:
-                                                    hb1[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap_1.HeightMap.ItemsGood(heightMaskItems, __x, __y) ? tp.Solid1 : 0;
+                                                    hb1[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap_1.HeightMap.itemsGood(heightMaskItems, __x, __y) ? tp.Solid1 : 0;
                                                     break;
                                             }
                                         }
@@ -228,7 +228,7 @@ System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../
                                                 case 1:
                                                 case 2:
                                                 case 3:
-                                                    hb2[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap_1.HeightMap.ItemsGood(hd2Items, __x, __y) ? tp.Solid2 : 0;
+                                                    hb2[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap_1.HeightMap.itemsGood(hd2Items, __x, __y) ? tp.Solid2 : 0;
                                                     break;
                                             }
                                         }

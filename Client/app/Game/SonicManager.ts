@@ -29,7 +29,6 @@ import {TilePieceInfo} from "./level/Tiles/TilePieceInfo";
 export class SonicManager {
     public static instance: SonicManager;
     private static _cachedOffs: { [key: number]: Point[] } = {};
-    public mainCanvas: CanvasInformation;
     private engine: SonicEngine;
     public objectManager: ObjectManager;
     public drawTickCount: number;
@@ -40,9 +39,6 @@ export class SonicManager {
     public tickCount: number;
     private waitingForDrawContinue: boolean;
     public waitingForTickContinue: boolean;
-    private lowChunkCanvas: CanvasInformation;
-    private sonicCanvas: CanvasInformation;
-    private highChuckCanvas: CanvasInformation;
     public currentGameState: GameState;
     public bigWindowLocation: IntersectingRectangle;
     public sonicToon: Sonic;
@@ -55,7 +51,6 @@ export class SonicManager {
     public animationInstances: AnimationInstance[];
     public goodRing: Ring;
     public showHeightMap: boolean;
-    public screenOffset: Point;
     public activeRings: Ring[];
     public forceResize: () => void;
     public background: SonicBackground;
@@ -72,14 +67,28 @@ export class SonicManager {
     public pixelScale: number = 0;
     private pixelScaleManager: PixelScaleManager = new PixelScaleManager();
 
-    constructor(engine: SonicEngine, gameCanvas: CanvasInformation, resize: () => void) {
+    lowTileCanvas:CanvasInformation;
+    private spriteCanvas:CanvasInformation;
+    private highTileCanvas:CanvasInformation;
+
+
+    constructor(engine: SonicEngine, lowTileCanvas: CanvasInformation,spriteCanvas: CanvasInformation,highTileCanvas: CanvasInformation, resize: () => void) {
         SonicManager.instance = this;
+        this.lowTileCanvas=lowTileCanvas;
+        this.spriteCanvas=spriteCanvas;
+        this.highTileCanvas=highTileCanvas;
+
         (<any>window).OurSonic = { SonicManager: { instance: SonicManager.instance}, SonicEngine: engine };
         this.engine = engine;
         this.engine.canvasWidth = $(window).width();
         this.engine.canvasHeight = $(window).height();
-        gameCanvas.domCanvas[0].setAttribute("width", this.engine.canvasWidth.toString());
-        gameCanvas.domCanvas[0].setAttribute("height", this.engine.canvasHeight.toString());
+
+        this.lowTileCanvas.domCanvas[0].setAttribute("width", "320");
+        this.lowTileCanvas.domCanvas[0].setAttribute("height", "240");
+        this.spriteCanvas.domCanvas[0].setAttribute("width", "320");
+        this.spriteCanvas.domCanvas[0].setAttribute("height", "240");
+        this.highTileCanvas.domCanvas[0].setAttribute("width", "320");
+        this.highTileCanvas.domCanvas[0].setAttribute("height", "240");
 
         jQuery.getJSON("assets/content/sprites/sonic.js", (data: { [key: string]: SonicImage }) => {
             this.sonicSprites = data;
@@ -89,7 +98,6 @@ export class SonicManager {
         let scl: number = 2;
         this.scale = new Point(scl, scl);
         this.realScale = new DoublePoint(1, 1);
-        this.mainCanvas = gameCanvas;
         this.windowLocation = Help.defaultWindowLocation(GameState.Editing, this.scale);
         this.bigWindowLocation = Help.defaultWindowLocation(GameState.Editing, this.scale);
         this.bigWindowLocation.width = (this.bigWindowLocation.width * 1.8) | 0;
@@ -102,8 +110,6 @@ export class SonicManager {
         this.forceResize = resize;
         this.background = null;
         this.currentGameState = GameState.Editing;
-        this.screenOffset = new Point(this.mainCanvas.domCanvas.width() / 2 - this.windowLocation.width / 2,
-            this.mainCanvas.domCanvas.height() / 2 - this.windowLocation.height / 2);
         this.clickState = ClickState.PlaceChunk;
         this.tickCount = 0;
         this.drawTickCount = 0;
@@ -287,23 +293,22 @@ export class SonicManager {
         }
     }
 
-    public MainDraw(canvas: CanvasInformation): void {
-        let context = canvas.Context;
+    public MainDraw(): void {
         if (this.inHaltMode)
-            if (this.drawHaltMode(context))
+            if (this.drawHaltMode(this.highTileCanvas.Context))
                 return;
-        this.engine.clear(canvas);
+        this.engine.clear();
         if (this.sonicLevel == null)
             return;
-        context.save();
+        this.highTileCanvas.Context.save();
         let localPoint = new Point(0, 0);
         this.drawTickCount++;
         if (this.spriteLoader && !this.spriteLoader.Tick() || this.loading) {
-            SonicManager.drawLoading(context);
-            context.restore();
-            return;;
+            SonicManager.drawLoading(this.highTileCanvas.Context);
+            this.highTileCanvas.Context.restore();
+            return;
         }
-        this.updatePositions(context);
+        this.updatePositions();
         let w1: number = (this.windowLocation.width / 128 | 0) + 2;
         let h1: number = (this.windowLocation.height / 128 | 0) + 2;
         if (this.currentGameState == GameState.Editing) {
@@ -325,43 +330,42 @@ export class SonicManager {
             let movex: number = (wOffset / bw) * bw;
             localPoint.x = -this.windowLocation.x + movex;
             localPoint.y = -this.windowLocation.y / 4;
-            this.background.Draw(this.lowChunkCanvas.Context, localPoint, wOffset);
+            this.background.Draw(this.lowTileCanvas.Context, localPoint, wOffset);
             localPoint.x = -this.windowLocation.x + movex + this.background.Width;
             localPoint.y = -this.windowLocation.y / 4;
-            this.background.Draw(this.lowChunkCanvas.Context, localPoint, wOffset);
+            this.background.Draw(this.lowTileCanvas.Context, localPoint, wOffset);
         }
-        this.drawLowChunks(this.lowChunkCanvas.Context, zero, offs, fyP, fxP);
+        this.drawLowChunks(this.lowTileCanvas.Context, zero, offs, fyP, fxP);
         if (this.showHeightMap)
-            this.drawHighChunks(this.lowChunkCanvas.Context, fxP, fyP, offs, zero);
-        this.drawObjects(this.sonicCanvas.Context, zero);
-        this.drawAnimations(this.sonicCanvas.Context);
-        this.drawRings(this.sonicCanvas.Context, zero);
-        this.drawSonic(this.sonicCanvas.Context);
+            this.drawHighChunks(this.lowTileCanvas.Context, fxP, fyP, offs, zero);
+        this.drawObjects(this.spriteCanvas.Context, zero);
+        this.drawAnimations(this.spriteCanvas.Context);
+        this.drawRings(this.spriteCanvas.Context, zero);
+        this.drawSonic(this.spriteCanvas.Context);
         if (!this.showHeightMap)
-            this.drawHighChunks(this.highChuckCanvas.Context, fxP, fyP, offs, zero);
-        this.drawDebugTextChunks(this.highChuckCanvas.Context, fxP, fyP, offs, zero);
+            this.drawHighChunks(this.highTileCanvas.Context, fxP, fyP, offs, zero);
+        this.drawDebugTextChunks(this.highTileCanvas.Context, fxP, fyP, offs, zero);
         //        this.lowChunkCanvas.Context.OffsetPixelsForWater();
         //        this.highChuckCanvas.Context.OffsetPixelsForWater();
-        this.drawCanveses(context, localPoint);
-        context.restore();
-        if (this.currentGameState === GameState.Playing)
+        // this.drawCanveses(context, localPoint);
+        this.highTileCanvas.Context.restore();
+  /*      if (this.currentGameState === GameState.Playing)
             this.sonicToon.drawUI(context, new Point(this.screenOffset.x, this.screenOffset.y));
-    }
+*/    }
 
     private drawCanveses(canvas: CanvasRenderingContext2D, localPoint: Point): void {
 
+/*
         if (this.pixelScale > 0) {
-            canvas.drawImage(((this.lowChunkCanvas.canvas)), localPoint.x, localPoint.y);
-            canvas.drawImage(((this.sonicCanvas.canvas)), localPoint.x, localPoint.y);
+            canvas.drawImage(((this.lowTileCanvas.canvas)), localPoint.x, localPoint.y);
+            canvas.drawImage(((this.son.canvas)), localPoint.x, localPoint.y);
             canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
 
             //this.shadePixels(canvas);
 
-
             var imageData = this.pixelScaleManager.scale(canvas, this.pixelScale - 1, this.windowLocation.width, this.windowLocation.height);
             var pixelScale = this.pixelScaleManager.getPixelScale(this.pixelScale - 1);
             canvas.scale(pixelScale.x, pixelScale.y);
-
 
             canvas.scale(this.realScale.x, this.realScale.y);
             canvas.scale(this.scale.x, this.scale.y);
@@ -376,6 +380,7 @@ export class SonicManager {
             canvas.drawImage(((this.highChuckCanvas.canvas)), localPoint.x, localPoint.y);
 
         }
+*/
     }
 
     private shadePixels(canvas: CanvasRenderingContext2D) {
@@ -420,19 +425,18 @@ export class SonicManager {
     }
 
     public ResetCanvases(): void {
-        this.lowChunkCanvas = this.lowChunkCanvas != null ? this.lowChunkCanvas : CanvasInformation.create(this.windowLocation.width, this.windowLocation.height, false);
-        this.sonicCanvas = this.sonicCanvas != null ? this.sonicCanvas : CanvasInformation.create(this.windowLocation.width, this.windowLocation.height, true);
-        this.highChuckCanvas = this.highChuckCanvas != null ? this.highChuckCanvas : CanvasInformation.create(this.windowLocation.width, this.windowLocation.height, false);
-        this.sonicCanvas.Context.clearRect(0, 0, this.windowLocation.width, this.windowLocation.height);
-        this.highChuckCanvas.Context.clearRect(0, 0, this.windowLocation.width, this.windowLocation.height);
-        this.lowChunkCanvas.Context.clearRect(0, 0, this.windowLocation.width, this.windowLocation.height);
+        this.spriteCanvas.Context.clearRect(0, 0, 320, 240);
+        this.highTileCanvas.Context.clearRect(0, 0, 320, 240);
+        this.lowTileCanvas.Context.clearRect(0, 0, 320, 240);
     }
 
+/*
     public DestroyCanvases(): void {
         this.lowChunkCanvas = null;
         this.sonicCanvas = null;
         this.highChuckCanvas = null;
     }
+*/
 
     private static getOffs(w1: number, h1: number): Point[] {
         let hash: number = (w1 + 1) * (h1 + 1);
@@ -446,14 +450,14 @@ export class SonicManager {
         return SonicManager._cachedOffs[hash] = offs;
     }
 
-    private updatePositions(canvas: CanvasRenderingContext2D): void {
-        this.screenOffset.x = 0;
-        this.screenOffset.y = 0;
+    private updatePositions(): void {
+        /*this.screenOffset.x = 0;
+        this.screenOffset.y = 0;*/
         if (this.currentGameState == GameState.Playing)
-            this.updatePositionsForPlaying(canvas);
+            this.updatePositionsForPlaying();
     }
 
-    private updatePositionsForPlaying(canvas: CanvasRenderingContext2D): void {
+    private updatePositionsForPlaying(): void {
         // canvas.scale(this.realScale.x, this.realScale.y);
         if (this.sonicToon.ticking) {
             while (true) {
@@ -461,7 +465,7 @@ export class SonicManager {
                     break;
             }
         }
-        canvas.translate(this.screenOffset.x, this.screenOffset.y);
+        // canvas.translate(this.screenOffset.x, this.screenOffset.y);
         this.windowLocation.x = <number>(this.sonicToon.x) - this.windowLocation.width / 2;
         this.windowLocation.y = <number>(this.sonicToon.y) - this.windowLocation.height / 2;
         this.bigWindowLocation.x = <number>(this.sonicToon.x) - this.bigWindowLocation.width / 2;
@@ -566,7 +570,7 @@ export class SonicManager {
         let posj1 = new Point(0, 0);
         let canv = CanvasInformation.create(128, 128, false);
         let ctx = canv.Context;
-        this.engine.clear(canv);
+        // this.engine.clear(canv);
         for (let _y = 0; _y < 8; _y++) {
             for (let _x = 0; _x < 8; _x++) {
                 let tp = md.TilePieces[_x][_y];
