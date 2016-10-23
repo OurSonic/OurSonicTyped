@@ -1,18 +1,14 @@
 ﻿import {Sonic} from "./Sonic";
 import {Solidity} from "../../SLData";
-import {HeightMap} from "../level/HeightMap";
 import {Help} from "../../common/Help";
 import {SonicManager} from "../SonicManager";
 import {RotationMode} from "../../common/Enums";
-import {TileChunk} from "../level/Tiles/TileChunk";
-import {TilePiece} from "../Level/Tiles/TilePiece";
-import {TilePieceInfo} from "../Level/Tiles/TilePieceInfo";
 
 export class SensorManager {
 
     protected sensors: { [sensorKey: string]: Sensor };
 
-    protected sensorResults: { [sensorKey: string]: SensorM };
+    public sensorResults: { [sensorKey: string]: SensorM };
 
     constructor() {
         this.sensors = {};
@@ -25,12 +21,12 @@ export class SensorManager {
         return sensor;
     }
 
-    public createVerticalSensor(letter: string, x: number, y1: number, y2: number, color: string, ignoreSolid: boolean = false): Sensor {
-        return this.addSensor(letter, new Sensor(x, x, y1, y2, this, color, ignoreSolid, letter));
+    public createVerticalSensor(letter: string, x: number, y1: number, y2: number, color: string): Sensor {
+        return this.addSensor(letter, new Sensor(x, x, y1, y2, this, color, letter));
     }
 
-    public createHorizontalSensor(letter: string, y: number, x1: number, x2: number, color: string, ignoreSolid: boolean = false): Sensor {
-        return this.addSensor(letter, new Sensor(x1, x2, y, y, this, color, ignoreSolid, letter));
+    public createHorizontalSensor(letter: string, y: number, x1: number, x2: number, color: string): Sensor {
+        return this.addSensor(letter, new Sensor(x1, x2, y, y, this, color, letter));
     }
 
     public check(character: Sonic): boolean {
@@ -54,11 +50,7 @@ export class SensorManager {
 }
 export class Sensor {
     private __currentM: SensorM = new SensorM(0, 0);
-    public value: number = 0;
-    public angle: number = 0;
     public letter: string;
-    public chosen: boolean = false;
-    protected ignoreSolid: boolean = false;
     protected color: string;
     protected manager: SensorManager;
     protected x1: number = 0;
@@ -66,27 +58,24 @@ export class Sensor {
     protected y1: number = 0;
     protected y2: number = 0;
 
-    constructor(x1: number, x2: number, y1: number, y2: number, manager: SensorManager, color: string, ignoreSolid: boolean, letter: string) {
+    constructor(x1: number, x2: number, y1: number, y2: number, manager: SensorManager, color: string, letter: string) {
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
         this.manager = manager;
         this.color = color;
-        this.ignoreSolid = ignoreSolid;
         this.letter = letter;
     }
 
-    private checkCollisionLineWrap(startX: number, endX: number, startY: number, endY: number, ignoreSolid: boolean): SensorM {
-        /*
-         startY = Help.mod(startY, SonicManager.instance.sonicLevel.levelHeight * 128);
-         endY = Help.mod(endY, SonicManager.instance.sonicLevel.levelHeight * 128);
-         */
-
-
+    private checkCollisionLineWrap(startX: number, endX: number, startY: number, endY: number, allowTopSolid: boolean): SensorM {
         var xIncrease = startX == endX ? (0) : (startX > endX ? -1 : 1);
         var yIncrease = startY == endY ? (0) : (startY > endY ? -1 : 1);
 
+        var minSolidity = 0;
+        if (!allowTopSolid) {
+            minSolidity = 1;
+        }
 
         var oneTryX = startX === endX;
 
@@ -96,7 +85,7 @@ export class Sensor {
             for (var testY = startY; oneTryY || Math.abs(testY - endY) !== 0; testY += yIncrease) {
                 oneTryY = false;
                 let tileChunkX = (testX / 128) | 0;
-                let tileChunkY = (testY / 128) | 0;
+                let tileChunkY = (Help.mod(testY, SonicManager.instance.sonicLevel.levelHeight * 128) / 128) | 0;
 
                 let chunk = SonicManager.instance.sonicLevel.getChunkAt(tileChunkX, tileChunkY);
 
@@ -147,9 +136,10 @@ export class Sensor {
                     }
                 }
 
-                if ((solidity !=0 && collisionMap[interTileX + interTileY * 16]) || SonicManager.instance.sonicToon.checkCollisionWithObjects(testX, testY, this.letter)) {
+                if ((solidity > minSolidity && collisionMap[interTileX + interTileY * 16]) || SonicManager.instance.sonicToon.checkCollisionWithObjects(testX, testY, this.letter)) {
                     this.__currentM.value = startY == endY ? testX : testY;
                     this.__currentM.angle = tileAngle;
+                    this.__currentM.solidity = solidity;
 
                     /*
                      if (this.letter === 'b') {
@@ -185,192 +175,6 @@ export class Sensor {
                 }
             }
         }
-
-
-        /*
-         let length = 0;
-         if (startY == endY) {//left right sensor
-
-         if (Math.max(startX, endX) > SonicManager.instance.sonicLevel.levelWidth * 128) {
-         //edge of a level
-         this.__currentM.value = SonicManager.instance.sonicLevel.levelWidth * 128 - 20;
-         this.__currentM.angle = 0xff;
-         return this.__currentM;
-         }
-
-
-         if (startX < endX) {//facing left sensor
-         length = endX - startX;
-         if (startHeightMap[(startInterChunkX)][startInterChunkY] >= <Solidity>2) {
-         for (let i = 0; i < 128 * 2; i++) {
-         while (true) {
-         if (startInterChunkX - i < 0) {
-         if (startTileChunkX - 1 < 0) {
-         this.__currentM.value = 0;
-         this.__currentM.angle = 0xFF;
-         return this.__currentM;
-         }
-         startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX - 1, startTileChunkY);
-         this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
-         startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
-         startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
-         startInterChunkX += 128;
-         }
-         else break;
-         }
-         if (startHeightMap[(startInterChunkX - i)][startInterChunkY] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX - i, startY, this.letter)) {
-         this.__currentM.value = startX - i;
-         this.__currentM.angle = startTileAngle[(startInterChunkX - i) / 16 | 0][(startInterChunkY) / 16 | 0];
-         return this.__currentM;
-         }
-         }
-         }
-         for (let i = 0; i < length; i++) {
-         while (true) {
-         if (startInterChunkX + i >= 128) {
-         startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX + 1, startTileChunkY);
-         this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
-         startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
-         startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
-         startInterChunkX -= 128;
-         }
-         else break;
-         }
-         if (startHeightMap[(startInterChunkX + i)][startInterChunkY] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX + i, startY, this.letter)) {
-         this.__currentM.value = startX + i;
-         this.__currentM.angle = startTileAngle[(startInterChunkX + i) / 16 | 0][(startInterChunkY) / 16 | 0];
-         return this.__currentM;
-         }
-         }
-         }
-         else {//facing right sensor
-         length = startX - endX;
-         if (startHeightMap[(startInterChunkX)][startInterChunkY] >= <Solidity>2) {
-         for (let i = 0; i < 128 * 2; i++) {
-         while (true) {
-         if (startInterChunkX + i >= 128) {
-         startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX + 1, startTileChunkY);
-         this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
-         startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
-         startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
-         startInterChunkX -= 128;
-         }
-         else break;
-         }
-         if (startHeightMap[(startInterChunkX + i)][startInterChunkY] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX + i, startY, this.letter)) {
-         this.__currentM.value = startX + i;
-         this.__currentM.angle = startTileAngle[(startInterChunkX + i) / 16 | 0][(startInterChunkY) / 16 | 0];
-         return this.__currentM;
-         }
-         }
-         }
-         for (let i = 0; i < length; i++) {
-         while (true) {
-         if (startInterChunkX - i < 0) {
-         if (startTileChunkX - 1 < 0) {
-         this.__currentM.value = 0;
-         this.__currentM.angle = 0xFF;
-         return this.__currentM;
-         }
-         startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX - 1, startTileChunkY);
-         this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
-         startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
-         startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
-         startInterChunkX += 128;
-         }
-         else break;
-         }
-         if (startHeightMap[(startInterChunkX - i)][startInterChunkY] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX - i, startY, this.letter)) {
-         this.__currentM.value = startX - i;
-         this.__currentM.angle = startTileAngle[(startInterChunkX - i) / 16 | 0][(startInterChunkY) / 16 | 0];
-         return this.__currentM;
-         }
-         }
-         }
-         }
-         else {//up down sensor
-         if (startY < endY) {//upward sensor
-         length = endY - startY;
-         if (startHeightMap[(startInterChunkX)][startInterChunkY] >= <Solidity>2) {
-         for (let i = 0; i < 128 * 2; i++) {
-         while (true) {
-         if (startInterChunkY - i < 0) {
-         startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX, Help.mod((startTileChunkY - 1), SonicManager.instance.sonicLevel.levelHeight));
-         this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
-         startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
-         startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
-         startInterChunkY += 128;
-         }
-         else break;
-         }
-         if (startHeightMap[startInterChunkX][startInterChunkY - i] > <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX, startY - i, this.letter)) {
-         this.__currentM.value = startY - i;
-         this.__currentM.angle = startTileAngle[(startInterChunkX) / 16 | 0][(startInterChunkY - i) / 16 | 0];
-         return this.__currentM;
-         }
-         }
-         }
-         for (let i = 0; i < length; i++) {
-         while (true) {
-         if (startInterChunkY + i >= 128) {
-         startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX, (startTileChunkY + 1) % SonicManager.instance.sonicLevel.levelHeight);
-         this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
-         startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
-         startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
-         startInterChunkY -= 128;
-         }
-         else break;
-         }
-         if (startHeightMap[startInterChunkX][startInterChunkY + i] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX, startY + i, this.letter)) {
-         if (startHeightMap[startInterChunkX][startInterChunkY + i] == <Solidity>1 && SonicManager.instance.sonicToon.inAir && SonicManager.instance.sonicToon.ysp < 0)
-         continue;
-         this.__currentM.value = startY + i;
-         this.__currentM.angle = startTileAngle[(startInterChunkX) / 16 | 0][(startInterChunkY + i) / 16 | 0];
-         return this.__currentM;
-         }
-         }
-         }
-         else {//downward sensor
-         length = startY - endY;
-         if (startHeightMap[(startInterChunkX)][startInterChunkY] >= <Solidity>2) {
-         for (let i = 0; i < 128 * 2; i++) {
-         while (true) {
-         if (startInterChunkY + i >= 128) {
-         startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX, (startTileChunkY + 1) % SonicManager.instance.sonicLevel.levelHeight);
-         this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
-         startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
-         startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
-         startInterChunkY -= 128;
-         }
-         else break;
-         }
-         if (startHeightMap[startInterChunkX][startInterChunkY + i] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX, startY + i, this.letter)) {
-         this.__currentM.value = startY + i;
-         this.__currentM.angle = startTileAngle[(startInterChunkX) / 16 | 0][(startInterChunkY + i) / 16 | 0];
-         return this.__currentM;
-         }
-         }
-         }
-         for (let i = 0; i < length; i++) {
-         while (true) {
-         if (startInterChunkY - i < 0) {
-         startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX, Help.mod((startTileChunkY - 1), SonicManager.instance.sonicLevel.levelHeight));
-         this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
-         startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
-         startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
-         startInterChunkY += 128;
-         }
-         else break;
-         }
-         if (startHeightMap[startInterChunkX][startInterChunkY - i] > <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX, startY + i, this.letter)) {
-         this.__currentM.value = startY - i;
-         this.__currentM.angle = startTileAngle[(startInterChunkX) / 16 | 0][(startInterChunkY - i) / 16 | 0];
-         return this.__currentM;
-         }
-         }
-         }
-         }
-         */
         return null;
     }
 
@@ -408,39 +212,109 @@ export class Sensor {
         canvas.stroke();
     }
 
-    public check(character: Sonic): SensorM {
-        let _y2 = character.inAir ? this.y2 : this.y2;
-        let m: SensorM = null;
-        let x = Help.floor(character.x);
-        let y = Help.floor(character.y);
-        switch (character.mode) {
+    public check(sonic: Sonic): SensorM {
+        let _y2 = sonic.inAir ? this.y2 : this.y2;
+        let sensor: SensorM = null;
+        let x = Help.floor(sonic.x);
+        let y = Help.floor(sonic.y);
+        switch (sonic.mode) {
             case RotationMode.Floor:
-                m = this.checkCollisionLineWrap(x + this.x1, x + this.x2, y + this.y1, y + _y2, this.ignoreSolid);
+                let allowTopSolid = true;
+                switch (this.letter) {
+                    case "a":
+                    case "b":
+                        if (sonic.inAir && sonic.ysp < 0) {
+                            allowTopSolid = false;
+                        }
+                        break;
+                    case "c":
+                    case "d":
+                        allowTopSolid = false;
+                        break;
+                    case "m1":
+                    case "m2":
+                        if (sonic.inAir) {
+                            allowTopSolid = false;
+                        }
+                        break;
+                }
+
+                sensor = this.checkCollisionLineWrap(x + this.x1, x + this.x2, y + this.y1, y + _y2, allowTopSolid);
                 break;
             case RotationMode.LeftWall:
-                m = this.checkCollisionLineWrap(x - this.y1, x - _y2, y + this.x1, y + this.x2, this.ignoreSolid);
+                let allowTopSolid = true;
+                switch (this.letter) {
+                    case "a":
+                    case "b":
+                        if (sonic.ysp < 0) {
+                            allowTopSolid = false;
+                        }
+                        break;
+                    case "c":
+                    case "d":
+                        allowTopSolid = false;
+                        break;
+                    case "m1":
+                        allowTopSolid = false;
+                        break;
+                    case "m2":
+                        if (sonic.ysp < 0) {
+                            allowTopSolid = false;
+                        }
+                        break;
+                }
+                sensor = this.checkCollisionLineWrap(x - this.y1, x - _y2, y + this.x1, y + this.x2, allowTopSolid);
                 break;
             case RotationMode.Ceiling:
-                m = this.checkCollisionLineWrap(x - this.x1, x - this.x2, y - this.y1, y - _y2, this.ignoreSolid);
+                sensor = this.checkCollisionLineWrap(x - this.x1, x - this.x2, y - this.y1, y - _y2, true);
                 break;
             case RotationMode.RightWall:
-                m = this.checkCollisionLineWrap(x + this.y1, x + _y2, y - this.x1, y - this.x2, this.ignoreSolid);
+                let allowTopSolid = true;
+                switch (this.letter) {
+                    case "a":
+                    case "b":
+                        if (sonic.ysp < 0) {
+                            allowTopSolid = false;
+                        }
+                        break;
+                    case "c":
+                    case "d":
+                        allowTopSolid = false;
+                        break;
+                    case "m1":
+                        if (sonic.ysp < 0) {
+                            allowTopSolid = false;
+                        }
+                        break;
+                    case "m2":
+                        allowTopSolid = false;
+                        break;
+                }
+                sensor = this.checkCollisionLineWrap(x + this.y1, x + _y2, y - this.x1, y - this.x2, allowTopSolid);
                 break;
         }
-        if (m != null) {
-            m.letter = this.letter;
-            if (m.angle == 255 || m.angle == 0 || m.angle == 1) {
-                if (character.mode == RotationMode.Floor)
-                    m.angle = 255;
-                if (character.mode == RotationMode.LeftWall)
-                    m.angle = 64;
-                if (character.mode == RotationMode.Ceiling)
-                    m.angle = 128;
-                if (character.mode == RotationMode.RightWall)
-                    m.angle = 192;
+        if (sensor != null) {
+            sensor.letter = this.letter;
+            if (sensor.angle == 255 || sensor.angle == 0 || sensor.angle == 1) {
+                switch (sonic.mode) {
+                    case RotationMode.Floor:
+                        sensor.angle = 255;
+                        break;
+                    case RotationMode.LeftWall:
+                        sensor.angle = 64;
+                        break;
+                    case RotationMode.Ceiling:
+                        sensor.angle = 128;
+                        break;
+                    case RotationMode.RightWall:
+                        sensor.angle = 192;
+                        break;
+                }
             }
+
+
         }
-        return m;
+        return sensor;
     }
 }
 
@@ -449,6 +323,7 @@ export class SensorM {
     public angle: number = 0;
     public letter: string;
     public chosen: boolean = false;
+    public solidity: Solidity = 0;
 
     constructor(value: number, angle: number) {
         this.value = value;

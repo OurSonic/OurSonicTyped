@@ -1,11 +1,12 @@
 ﻿import {Rectangle, Point, IntersectingRectangle} from "../../common/Utils";
 import {SensorManager, SensorM} from "./SensorManager";
-import {SonicLevel, } from "../SonicLevel";
+import {SonicLevel,} from "../SonicLevel";
 import {RotationMode} from "../../common/Enums";
 import {SonicManager} from "../SonicManager";
 import {Help} from "../../common/Help";
 import {Ring} from "../level/Ring";
 import {SonicConstants} from "./SonicConstants";
+import {Solidity} from "../../SLData";
 
 export class Sonic {
     public myRec: Rectangle;
@@ -126,7 +127,6 @@ export class Sonic {
         let sensorM2 = this.sensorManager.getResult("m2");
         let best = this.getBestSensor(sensorM1, sensorM2, this.mode);
         if (best != null) {
-            console.log('m1 m2');
             switch (this.mode) {
                 case RotationMode.Floor:
                     this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter === "m1" ? 12 : -12)));
@@ -161,8 +161,7 @@ export class Sonic {
         let hSize = this.getHalfImageSize();
         if (!this.inAir) {
             best = this.getBestSensor(sensorA, sensorB, this.mode);
-            if (best == null)
-            {
+            if (best == null) {
                 console.log('in air');
                 this.inAir = true;
             }
@@ -194,9 +193,25 @@ export class Sonic {
             this.updateMode();
         }
         else {
+
+
+            if ((sensorA && sensorA.solidity == Solidity.TopSolid) &&
+                this.ysp < 0) {
+                sensorA = null;
+                this.sensorManager.sensorResults["a"]=null;
+            }
+            if ((sensorB && sensorB.solidity == Solidity.TopSolid) &&
+                this.ysp < 0) {
+                sensorB = null;
+                this.sensorManager.sensorResults["b"]=null;
+            }
+
+
             if (sensorA == null && sensorB == null)
                 this.inAir = true;
             else {
+
+
                 if ((sensorA != null && sensorA.value >= 0) && (sensorB != null && sensorB.value >= 0)) {
                     if (sensorA.value < sensorB.value) {
                         if (this.y + (20) >= sensorA.value) {
@@ -240,11 +255,12 @@ export class Sonic {
             this.sensorManager.check(this);
             let sensorC = this.sensorManager.getResult("c");
             let sensorD = this.sensorManager.getResult("d");
+
+
             if ((sensorC == null && sensorD == null)) {
 
             }
             else {
-                console.log('c d');
                 if (sensorD != null && (sensorC != null) && (sensorC.value >= 0 && sensorD.value >= 0)) {
                     if (sensorC.value < sensorD.value) {
                         if (this.y + (__h) >= sensorC.value) {
@@ -439,8 +455,7 @@ export class Sonic {
             }
             else if ((this.runningTick++) % (7) === 0) {
                 this.spriteState = "breaking" + ((j + 1) % 4);
-                if (j === 0 && !this.inAir)
-                {
+                if (j === 0 && !this.inAir) {
                     this.haltSmoke.push(new Point(this.x, this.y));
                 }
             }
@@ -745,25 +760,25 @@ export class Sonic {
     }
 
     public drawUI(canvas: CanvasRenderingContext2D, pos: Point): void {
-/*
-        canvas.save();
-        {
-            if (canvas.font != "13pt Arial bold")
-                canvas.font = "13pt Arial bold";
-            canvas.fillStyle = "White";
-            canvas.fillText("Rings: " + this.rings, pos.x + 90, pos.y + 45);
-            canvas.fillText("Angle: " + this.angle.toString(16), pos.x + 90, pos.y + 75);
-            canvas.fillText("Position: " + (this.x) + ", " + (this.y), pos.x + 90, pos.y + 105);
-            canvas.fillText("Speed: g: " + this.gsp.toFixed(3) + " x:" + this.xsp.toFixed(3) + " y:" + this.ysp.toFixed(3), pos.x + 90, pos.y + 135);
-            canvas.fillText("Mode: " + (<number>this.mode).toString(), pos.x + 90, pos.y + 165);
-            canvas.fillText("Multiplier: " + this.watcher.mult, pos.x + 90, pos.y + 195);
-            if (this.inAir)
-                canvas.fillText("air ", pos.x + 220, pos.y + 45);
-            if (this.hLock > 0)
-                canvas.fillText("HLock: " + this.hLock, pos.x + 90, pos.y + 195);
-        }
-        canvas.restore();
-*/
+        /*
+         canvas.save();
+         {
+         if (canvas.font != "13pt Arial bold")
+         canvas.font = "13pt Arial bold";
+         canvas.fillStyle = "White";
+         canvas.fillText("Rings: " + this.rings, pos.x + 90, pos.y + 45);
+         canvas.fillText("Angle: " + this.angle.toString(16), pos.x + 90, pos.y + 75);
+         canvas.fillText("Position: " + (this.x) + ", " + (this.y), pos.x + 90, pos.y + 105);
+         canvas.fillText("Speed: g: " + this.gsp.toFixed(3) + " x:" + this.xsp.toFixed(3) + " y:" + this.ysp.toFixed(3), pos.x + 90, pos.y + 135);
+         canvas.fillText("Mode: " + (<number>this.mode).toString(), pos.x + 90, pos.y + 165);
+         canvas.fillText("Multiplier: " + this.watcher.mult, pos.x + 90, pos.y + 195);
+         if (this.inAir)
+         canvas.fillText("air ", pos.x + 220, pos.y + 45);
+         if (this.hLock > 0)
+         canvas.fillText("HLock: " + this.hLock, pos.x + 90, pos.y + 195);
+         }
+         canvas.restore();
+         */
     }
 
     public hit(x: number, y: number): void {
