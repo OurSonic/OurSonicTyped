@@ -49,7 +49,7 @@ export class SensorManager {
     }
 }
 export class Sensor {
-    private __currentM: SensorM = new SensorM(0, 0);
+    private cachedReturnSensor: SensorM = new SensorM(0, 0);
     public letter: string;
     protected color: string;
     protected manager: SensorManager;
@@ -78,12 +78,27 @@ export class Sensor {
         }
 
         var oneTryX = startX === endX;
+        var levelWidth = SonicManager.instance.sonicLevel.levelWidth * 128;
 
         for (var testX = startX; oneTryX || Math.abs(testX - endX) !== 0; testX += xIncrease) {
             oneTryX = false;
+            if (testX == 0) {
+                this.cachedReturnSensor.value = 0;
+                this.cachedReturnSensor.angle = 0;
+                this.cachedReturnSensor.solidity = Solidity.AllSolid;
+                return this.cachedReturnSensor;
+            }
+            if (testX == levelWidth) {
+                this.cachedReturnSensor.value = 0;
+                this.cachedReturnSensor.angle = 0;
+                this.cachedReturnSensor.solidity = Solidity.AllSolid;
+                return this.cachedReturnSensor;
+            }
+
             var oneTryY = startY === endY;
             for (var testY = startY; oneTryY || Math.abs(testY - endY) !== 0; testY += yIncrease) {
                 oneTryY = false;
+
                 let tileChunkX = (testX / 128) | 0;
                 let tileChunkY = (Help.mod(testY, SonicManager.instance.sonicLevel.levelHeight * 128) / 128) | 0;
 
@@ -137,41 +152,11 @@ export class Sensor {
                 }
 
                 if ((solidity > minSolidity && collisionMap[interTileX + interTileY * 16]) || SonicManager.instance.sonicToon.checkCollisionWithObjects(testX, testY, this.letter)) {
-                    this.__currentM.value = startY == endY ? testX : testY;
-                    this.__currentM.angle = tileAngle;
-                    this.__currentM.solidity = solidity;
+                    this.cachedReturnSensor.value = startY == endY ? testX : testY;
+                    this.cachedReturnSensor.angle = tileAngle;
+                    this.cachedReturnSensor.solidity = solidity;
 
-                    /*
-                     if (this.letter === 'b') {
-
-                     console.log(
-                     "tilechunkx", tileChunkX,
-                     "tilechunky", tileChunkY,
-
-                     "interchunkx", interChunkX,
-                     "interchunky", interChunkY,
-
-                     "tilex", tileX,
-                     "tiley", tileY,
-
-                     "interTileX", interTileX,
-                     "interTileY", interTileY,
-
-                     "startx", startX,
-                     "endx", endX,
-
-                     "starty", startY,
-                     "endy", endY,
-
-                     "testx", testX,
-                     "testy", testY,
-
-                     "items",JSON.stringify(heightMap.Items)
-                     );
-                     }
-                     */
-                    return this.__currentM;
-
+                    return this.cachedReturnSensor;
                 }
             }
         }
@@ -307,6 +292,23 @@ export class Sensor {
                         break;
                     case RotationMode.RightWall:
                         sensor.angle = 192;
+                        break;
+                }
+            }
+
+            if (sonic.mode == RotationMode.Floor) {
+                switch (this.letter) {
+                    case "c":
+                    case "d":
+                        if (sensor.angle < 160) {
+                            sensor.angle = 0;
+                        }
+                        break;
+                    case "m1":
+                    case "m2":
+                        if (sensor.angle < 160) {
+                            sensor.angle = 0;
+                        }
                         break;
                 }
             }

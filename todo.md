@@ -1,4 +1,3 @@
-collisions with pink tiles
 object editor, scripter
 live object view
 object xflip yflip
@@ -11,10 +10,8 @@ level editor
 tiles
 scripting
 fix crouching animation
-fix collision code
 tutorial on keys freemove and shit
 gamepad for mobile
-    jumping into a angle
 jump fronm an angle
 different color angle lines for sector
     show object number in box
@@ -25,7 +22,10 @@ build motion path for sonic when he hits a certain line
 use typed arrays
     collisions object
 junkless tick
-add fps
 
 
 '/ separate canvas layer
+'/ collisions with pink tiles
+'/ fix collision code
+'/ jumping into a angle
+'/ add fps

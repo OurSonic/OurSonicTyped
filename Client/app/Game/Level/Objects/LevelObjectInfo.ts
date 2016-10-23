@@ -146,10 +146,12 @@ export class LevelObjectInfo {
     public collision(sonic: Point, isHurtMap: boolean): LevelObjectPiece {
         if (this.dead || !this.objectData || this.objectData.pieceLayouts.length == 0)
             return null;
-        let pcs = this.pieces;
+        let pieces = this.pieces;
         let mX: number = ((sonic.x) - this.x) | 0;
         let mY: number = ((sonic.y) - this.y)|0;
-        for (let j of pcs) {
+        var piecesLength = pieces.length;
+        for (var i = 0; i < piecesLength; i++) {
+            var j = pieces[i];
             let piece = this.objectData.pieces[j.pieceIndex];
             let asset = this.objectData.assets[piece.assetIndex];
             if (asset.frames.length > 0) {

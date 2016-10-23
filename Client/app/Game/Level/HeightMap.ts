@@ -66,7 +66,7 @@ export class HeightMap {
             canvas.drawImage(fd.canvas, pos.x, pos.y);
         else {
             let ntcanvas = CanvasInformation.create(16, 16, false);
-            let ncanvas = ntcanvas.Context;
+            let ncanvas = ntcanvas.context;
             if (solid > 0) {
                 ncanvas.fillStyle = HeightMap.colors[solid];
                 for (let x: number = 0; x < 16; x++) {

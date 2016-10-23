@@ -77,7 +77,7 @@ export class TilePiece {
                     let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
                     localPoint.x = df[0] * tilePieceLength;
                     localPoint.y = df[1] * tilePieceLength;
-                    tile.drawBase(ac.Context, localPoint, _xf, _yf, tileItem.Palette);
+                    tile.drawBase(ac.context, localPoint, _xf, _yf, tileItem.Palette);
                 }
             }
             i++;
@@ -111,7 +111,7 @@ export class TilePiece {
                         let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
                         localPoint.x = df[0] * tilePieceLength;
                         localPoint.y = df[1] * tilePieceLength;
-                        tile.DrawAnimatedPalette(ac.Context, localPoint, _xf, _yf, tileItem.Palette, animatedPaletteIndex);
+                        tile.DrawAnimatedPalette(ac.context, localPoint, _xf, _yf, tileItem.Palette, animatedPaletteIndex);
                     }
                 }
                 i++;
@@ -137,7 +137,7 @@ export class TilePiece {
                     let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
                     localPoint.x = df[0] * tilePieceLength;
                     localPoint.y = df[1] * tilePieceLength;
-                    tile.drawAnimatedTile(ac.Context, localPoint, _xf, _yf, tileItem.Palette, animatedTileIndex);
+                    tile.drawAnimatedTile(ac.context, localPoint, _xf, _yf, tileItem.Palette, animatedTileIndex);
                 }
             }
             i++;

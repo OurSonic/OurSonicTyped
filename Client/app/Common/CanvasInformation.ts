@@ -3,7 +3,7 @@
 export class CanvasInformation {
     private static blackPixel: HTMLCanvasElement;
     
-    public Context: CanvasRenderingContext2D;
+    public context: CanvasRenderingContext2D;
     
     public domCanvas: JQuery;
     
@@ -11,14 +11,14 @@ export class CanvasInformation {
     public static get BlackPixel(): HTMLCanvasElement {
         if (CanvasInformation.blackPixel == null) {
             let m = CanvasInformation.create(0, 0, false);
-            m.Context.fillStyle = "black";
-            m.Context.fillRect(0, 0, 1, 1);
+            m.context.fillStyle = "black";
+            m.context.fillRect(0, 0, 1, 1);
             CanvasInformation.blackPixel = m.canvas;
         }
         return CanvasInformation.blackPixel;
     }
     constructor(context: CanvasRenderingContext2D, domCanvas: JQuery) {
-        this.Context = context;
+        this.context = context;
         this.domCanvas = domCanvas;
         this.canvas = <HTMLCanvasElement>domCanvas[0];
     }

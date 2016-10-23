@@ -30,14 +30,20 @@ export class SonicEngine {
     public canvasHeight:number = 0;
     public sonicManager:SonicManager;
     public static instance:SonicEngine;
+    private fpsMeter;
 
     constructor() {
         SonicEngine.instance = this;
 
+        this.fpsMeter = new (<any>window).FPSMeter({
+            right:'5px',
+            left:'auto',
+            heat:1
+        });
 
-        this.lowTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('lowTileLayer'), 0, 0, true);
-        this.spriteCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('spriteLayer'), 0, 0, true);
-        this.highTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('highTileLayer'), 0, 0, true);
+        this.lowTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('lowTileLayer'), 320, 240, true);
+        this.spriteCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('spriteLayer'), 320, 240, true);
+        this.highTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('highTileLayer'), 320, 240, true);
 
 
         this.canvasWidth = 0;
@@ -48,8 +54,11 @@ export class SonicEngine {
         jQuery(document).resize(e => this.resizeCanvas(true));
         this.sonicManager = new SonicManager(this, this.lowTileCanvas,this.spriteCanvas,this.highTileCanvas, () => this.resizeCanvas(true));
         this.sonicManager.indexedPalette = 0;
-         window.setInterval(() => this.sonicManager.tick(), 1000 / 60);
-         window.setInterval(() => this.GameDraw(), 1000 / 60);
+         window.setInterval(() => {
+             this.sonicManager.tick();
+             this.GameDraw();
+             this.fpsMeter.tick();
+         }, 1000 / 60);
         this.resizeCanvas(true);
 /*
         (<any>window).GameController.init({
@@ -485,21 +494,10 @@ export class SonicEngine {
     }
 
     public clear():void {
-        (<any>this.lowTileCanvas.domCanvas[0]).width=320;
-        (<any>this.spriteCanvas.domCanvas[0]).width=320;
-        (<any>this.highTileCanvas.domCanvas[0]).width=320;
+        this.lowTileCanvas.context.clearRect(0,0,320,240);
+        this.spriteCanvas.context.clearRect(0,0,320,240);
+        this.highTileCanvas.context.clearRect(0,0,320,240);
 
-        (<any>this.lowTileCanvas.Context).mozImageSmoothingEnabled = false; /// future
-        (<any>this.lowTileCanvas.Context).msImageSmoothingEnabled = false; /// future
-        (<any>this.lowTileCanvas.Context).imageSmoothingEnabled = false; /// future
-
-        (<any>this.spriteCanvas.Context).mozImageSmoothingEnabled = false; /// future
-        (<any>this.spriteCanvas.Context).msImageSmoothingEnabled = false; /// future
-        (<any>this.spriteCanvas.Context).imageSmoothingEnabled = false; /// future
-
-        (<any>this.highTileCanvas.Context).mozImageSmoothingEnabled = false; /// future
-        (<any>this.highTileCanvas.Context).msImageSmoothingEnabled = false; /// future
-        (<any>this.highTileCanvas.Context).imageSmoothingEnabled = false; /// future
 
     }
 

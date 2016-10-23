@@ -52,7 +52,7 @@ export class LevelObjectAssetFrame {
         let m = this.image[(((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)];
         if (m == null) {
             let mj = CanvasInformation.create(this.width, this.height, false);
-            let canvas = mj.Context;
+            let canvas = mj.context;
             canvas.save();
             canvas.strokeStyle = "#000000";
             canvas.lineWidth = 1;

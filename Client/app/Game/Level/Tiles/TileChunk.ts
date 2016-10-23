@@ -280,7 +280,7 @@ export class TileChunk {
         if (layer == ChunkLayerState.Low ? (this.OnlyForeground()) : (this.onlyBackground()))
             return
         this.baseCanvasCache[layer] = CanvasInformation.create(TileChunk.TilePieceSideLength * TileChunk.tilePiecesSquareSize, TileChunk.TilePieceSideLength * TileChunk.tilePiecesSquareSize, false);
-        this.drawTilePiecesBase(this.baseCanvasCache[layer].Context, layer, TileChunk.tilePiecesSquareSize);
+        this.drawTilePiecesBase(this.baseCanvasCache[layer].context, layer, TileChunk.tilePiecesSquareSize);
     }
 
     public cachePaletteAnimation(layer: ChunkLayerState): void {
@@ -299,10 +299,10 @@ export class TileChunk {
                 currentFrame.SetPalette();
                 let tilePaletteCanvas = CanvasInformation.create(rect.Width * TileChunk.tilePiecesSquareSize, rect.Height * TileChunk.tilePiecesSquareSize, false);
                 paletteAnimationCanvasFrame.canvas = tilePaletteCanvas;
-                paletteAnimationCanvasFrame.canvas.Context.save();
-                paletteAnimationCanvasFrame.canvas.Context.translate(-rect.x * TileChunk.tilePiecesSquareSize, -rect.y * TileChunk.tilePiecesSquareSize);
-                this.drawTilePiecesAnimatedPalette(tilePaletteCanvas.Context, layer, TileChunk.tilePiecesSquareSize, paletteAnimationIndex);
-                paletteAnimationCanvasFrame.canvas.Context.restore();
+                paletteAnimationCanvasFrame.canvas.context.save();
+                paletteAnimationCanvasFrame.canvas.context.translate(-rect.x * TileChunk.tilePiecesSquareSize, -rect.y * TileChunk.tilePiecesSquareSize);
+                this.drawTilePiecesAnimatedPalette(tilePaletteCanvas.context, layer, TileChunk.tilePiecesSquareSize, paletteAnimationIndex);
+                paletteAnimationCanvasFrame.canvas.context.restore();
                 currentFrame.ClearPalette();
             }
             tilePaletteAnimation.CurrentFrame = 0;
@@ -324,10 +324,10 @@ export class TileChunk {
                 let tileTileCanvas = CanvasInformation.create(rect.Width * TileChunk.tilePiecesSquareSize, rect.Height * TileChunk.tilePiecesSquareSize, false);
                 tileAnimationCanvasFrame.canvas = tileTileCanvas;
                 tileAnimation.currentFrame = currentFrame.frameIndex;
-                tileAnimationCanvasFrame.canvas.Context.save();
-                tileAnimationCanvasFrame.canvas.Context.translate(-rect.x * TileChunk.tilePiecesSquareSize, -rect.y * TileChunk.tilePiecesSquareSize);
-                this.drawTilePiecesAnimatedTile(tileTileCanvas.Context, layer, TileChunk.tilePiecesSquareSize, tileAnimationIndex);
-                tileAnimationCanvasFrame.canvas.Context.restore();
+                tileAnimationCanvasFrame.canvas.context.save();
+                tileAnimationCanvasFrame.canvas.context.translate(-rect.x * TileChunk.tilePiecesSquareSize, -rect.y * TileChunk.tilePiecesSquareSize);
+                this.drawTilePiecesAnimatedTile(tileTileCanvas.context, layer, TileChunk.tilePiecesSquareSize, tileAnimationIndex);
+                tileAnimationCanvasFrame.canvas.context.restore();
             }
             tileAnimation.currentFrame = 0;
         }
@@ -396,7 +396,7 @@ export class TileChunk {
 
     public DrawAnimationDebug(canvas: CanvasRenderingContext2D, position: Point, layer: ChunkLayerState, debugDrawOptions: TileChunkDebugDrawOptions): void {
         if (debugDrawOptions == null)
-            return
+            return;
         canvas.save();
         canvas.fillStyle = "White";
         canvas.textBaseline = "top";
@@ -495,38 +495,38 @@ export class TileChunk {
             }
         }
         let canvas = CanvasInformation.create((numWide * 128), (Math.ceil(numOfChunks / numWide) | 0) * 128, false);
-        canvas.Context.fillStyle = "#111111";
-        canvas.Context.fillRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+        canvas.context.fillStyle = "#111111";
+        canvas.context.fillRect(0, 0, canvas.canvas.width, canvas.canvas.height);
         numOfChunks = 0;
-        canvas.Context.strokeStyle = "#FFFFFF";
-        canvas.Context.lineWidth = 4;
+        canvas.context.strokeStyle = "#FFFFFF";
+        canvas.context.lineWidth = 4;
         for (let i: number = 0; i < 2; i++) {
             let chunkLayer = <ChunkLayerState>i;
-            canvas.Context.strokeStyle = chunkLayer == ChunkLayerState.Low ? "Green" : "Yellow";
+            canvas.context.strokeStyle = chunkLayer == ChunkLayerState.Low ? "Green" : "Yellow";
             if (this.baseCanvasCache[chunkLayer] != null) {
-                let context = canvas.Context;
+                let context = canvas.context;
                 context.save();
                 let x = ((numOfChunks % numWide) * 128) | 0;
                 let y = (Math.floor(numOfChunks / numWide) | 0) * 128;
                 context.translate(x, y);
-                canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
+                canvas.context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                 context.fillRect(0, 0, 128, 128);
                 context.drawImage(this.baseCanvasCache[chunkLayer].canvas, 0, 0);
                 context.strokeRect(0, 0, 128, 128);
                 context.restore();
                 numOfChunks++;
             }
-            canvas.Context.strokeStyle = chunkLayer == ChunkLayerState.Low ? "pink" : "purple";
+            canvas.context.strokeStyle = chunkLayer == ChunkLayerState.Low ? "pink" : "purple";
             for (let paletteAnimationCanvasCache in this.paletteAnimationCanvasesCache[chunkLayer]) {
                 let m = this.paletteAnimationCanvasesCache[chunkLayer][paletteAnimationCanvasCache];
                 for (let f in m.frames) {
                     let frame = m.frames[f];
-                    let context = canvas.Context;
+                    let context = canvas.context;
                     context.save();
                     let x = ((numOfChunks % numWide) * 128) | 0;
                     let y = (Math.floor(numOfChunks / numWide) | 0) * 128;
                     context.translate(x, y);
-                    canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
+                    canvas.context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                     context.fillRect(0, 0, 128, 128);
                     context.drawImage(frame.canvas.canvas, m.position.x, m.position.y);
                     context.strokeRect(0, 0, 128, 128);
@@ -534,17 +534,17 @@ export class TileChunk {
                     numOfChunks++;
                 }
             }
-            canvas.Context.strokeStyle = chunkLayer == ChunkLayerState.Low ? "red" : "orange";
+            canvas.context.strokeStyle = chunkLayer == ChunkLayerState.Low ? "red" : "orange";
             for (let tileAnimationCanvasCache in this.tileAnimationCanvasesCache[chunkLayer]) {
                 let m = this.tileAnimationCanvasesCache[chunkLayer][tileAnimationCanvasCache];
                 for (let f in m.frames) {
                     let frame = m.frames[f];
-                    let context = canvas.Context;
+                    let context = canvas.context;
                     context.save();
                     let x = ((numOfChunks % numWide) * 128) | 0;
                     let y = (Math.floor(numOfChunks / numWide) | 0) * 128;
                     context.translate(x, y);
-                    canvas.Context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
+                    canvas.context.fillStyle = chunkLayer == ChunkLayerState.Low ? "#333333" : "#777777";
                     context.fillRect(0, 0, 128, 128);
                     context.drawImage(frame.canvas.canvas, m.position.y, m.position.y);
                     context.strokeRect(0, 0, 128, 128);
@@ -553,11 +553,11 @@ export class TileChunk {
                 }
             }
         }
-        canvas.Context.strokeStyle = "blue";
-        canvas.Context.strokeRect(0, 0, canvas.canvas.width, canvas.canvas.height);
-        canvas.Context.fillStyle = "white";
-        canvas.Context.font = "20px bold";
-        canvas.Context.fillText("Number Of Chunks: " + numOfChunks, 50, 50);
+        canvas.context.strokeStyle = "blue";
+        canvas.context.strokeRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+        canvas.context.fillStyle = "white";
+        canvas.context.font = "20px bold";
+        canvas.context.fillText("Number Of Chunks: " + numOfChunks, 50, 50);
         return canvas;
     }
 

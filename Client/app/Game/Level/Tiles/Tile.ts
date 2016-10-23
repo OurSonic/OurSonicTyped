@@ -32,11 +32,11 @@ export class Tile {
             let oPos = new Point(0, 0);
             if (xflip) {
                 oPos.x = -squareSize;
-                j.Context.scale(-1, 1);
+                j.context.scale(-1, 1);
             }
             if (yflip) {
                 oPos.y = -squareSize;
-                j.Context.scale(1, -1);
+                j.context.scale(1, -1);
             }
             let palette_ = SonicManager.instance.sonicLevel.palette;
             let colorPaletteIndex: number = (palette + SonicManager.instance.indexedPalette) % palette_.length;
@@ -47,8 +47,8 @@ export class Tile {
                     let colorIndex = this.colors[_x][_y];
                     if (colorIndex == 0)
                         continue;
-                    j.Context.fillStyle = palette_[colorPaletteIndex][colorIndex];
-                    j.Context.fillRect(x + _x, y + _y, 1, 1);
+                    j.context.fillStyle = palette_[colorPaletteIndex][colorIndex];
+                    j.context.fillRect(x + _x, y + _y, 1, 1);
                 }
             }
             this.baseCaches[baseCacheIndex] = baseCache = j;
@@ -75,11 +75,11 @@ export class Tile {
             let oPos = new Point(0, 0);
             if (xflip) {
                 oPos.x = -squareSize;
-                j.Context.scale(-1, 1);
+                j.context.scale(-1, 1);
             }
             if (yflip) {
                 oPos.y = -squareSize;
-                j.Context.scale(1, -1);
+                j.context.scale(1, -1);
             }
             let palette_ = SonicManager.instance.sonicLevel.palette;
             let colorPaletteIndex: number = (palette + SonicManager.instance.indexedPalette) % palette_.length;
@@ -92,8 +92,8 @@ export class Tile {
                         continue;
                     if (this.paletteIndexesToBeAnimated[animatedPaletteIndex].indexOf(colorIndex) == -1)
                         continue;
-                    j.Context.fillStyle = palette_[colorPaletteIndex][colorIndex];
-                    j.Context.fillRect(x + _x, y + _y, 1, 1);
+                    j.context.fillStyle = palette_[colorPaletteIndex][colorIndex];
+                    j.context.fillRect(x + _x, y + _y, 1, 1);
                 }
             }
             this.animatedPaletteCaches[animatedPaletteCacheIndex] = animatedPaletteCache = j;

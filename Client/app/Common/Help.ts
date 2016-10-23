@@ -53,10 +53,10 @@ export class Help {
     }
     public static scaleSprite(image: HTMLImageElement, scale: Point): CanvasInformation {
         let canv = CanvasInformation.create(image.width * scale.x, image.height * scale.y, true);
-        canv.Context.save();
-        canv.Context.scale(scale.x, scale.y);
-        canv.Context.drawImage(image, 0, 0);
-        canv.Context.restore();
+        canv.context.save();
+        canv.context.scale(scale.x, scale.y);
+        canv.context.drawImage(image, 0, 0);
+        canv.context.restore();
         return canv;
     }
     public static scalePixelData(scale: Point, data: ImageData): ImageData {
@@ -65,7 +65,7 @@ export class Help {
         for (let f: number = 0; f < Uint8ClampedArray.length; f += 4) {
             colors[f / 4|0] = (Help.colorObjectFromData(Uint8ClampedArray, f));
         }
-        let d = CanvasInformation.create(1, 1, false).Context.createImageData(data.width * scale.x, data.height * scale.y);
+        let d = CanvasInformation.create(1, 1, false).context.createImageData(data.width * scale.x, data.height * scale.y);
         Help.setDataFromColors(d.data, colors, scale, data.width, colors[0]);
         return d;
     }
@@ -132,7 +132,7 @@ export class Help {
             colors[f] = new Color(c[0], c[1], c[2], c[3]);
         }
         let dc = CanvasInformation.create(1, 1, false);
-        let d = dc.Context.createImageData(image.Width * scale.x, image.Height * scale.y);
+        let d = dc.context.createImageData(image.Width * scale.x, image.Height * scale.y);
         Help.setDataFromColors(d.data, colors, scale, image.Width, colors[0]);
         return Help.loadSprite(Help.getBase64Image(d), complete);
     }
@@ -210,7 +210,7 @@ export class Help {
     }
     public static safeResize(block: CanvasInformation, width: number, height: number): CanvasInformation {
         let m = CanvasInformation.create(width, height, false);
-        m.Context.drawImage(block.canvas, 0, 0);
+        m.context.drawImage(block.canvas, 0, 0);
         return m;
     }
     public static getQueryString(): { [key: string]: string } {

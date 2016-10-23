@@ -83,13 +83,6 @@ export class SonicManager {
         this.engine.canvasWidth = $(window).width();
         this.engine.canvasHeight = $(window).height();
 
-        this.lowTileCanvas.domCanvas[0].setAttribute("width", "320");
-        this.lowTileCanvas.domCanvas[0].setAttribute("height", "240");
-        this.spriteCanvas.domCanvas[0].setAttribute("width", "320");
-        this.spriteCanvas.domCanvas[0].setAttribute("height", "240");
-        this.highTileCanvas.domCanvas[0].setAttribute("width", "320");
-        this.highTileCanvas.domCanvas[0].setAttribute("height", "240");
-
         jQuery.getJSON("assets/content/sprites/sonic.js", (data: { [key: string]: SonicImage }) => {
             this.sonicSprites = data;
         });
@@ -116,10 +109,10 @@ export class SonicManager {
         this.inHaltMode = false;
         this.waitingForTickContinue = false;
         this.waitingForDrawContinue = false;
-        this.tileChunkDebugDrawOptions = new TileChunkDebugDrawOptions();
         /*
-        this.tileChunkDebugDrawOptions.outlineTilePieces=true;
-        this.tileChunkDebugDrawOptions.putlineChunk=true;
+         this.tileChunkDebugDrawOptions = new TileChunkDebugDrawOptions();
+         this.tileChunkDebugDrawOptions.outlineTilePieces=true;
+         this.tileChunkDebugDrawOptions.putlineChunk=true;
          this.tileChunkDebugDrawOptions.outlineTiles=true;
          */
 
@@ -264,7 +257,7 @@ export class SonicManager {
                     Help.loadSprite(spriteLocations[i],
                         jd => {
                             ci[i] = CanvasInformation.create(jd.width, jd.height, false);
-                            ci[i].Context.drawImage(jd, 0, 0);
+                            ci[i].context.drawImage(jd, 0, 0);
                             done();
                         });
                 },
@@ -299,17 +292,17 @@ export class SonicManager {
 
     public MainDraw(): void {
         if (this.inHaltMode)
-            if (this.drawHaltMode(this.highTileCanvas.Context))
+            if (this.drawHaltMode(this.highTileCanvas.context))
                 return;
         this.engine.clear();
         if (this.sonicLevel == null)
             return;
-        this.highTileCanvas.Context.save();
+        this.highTileCanvas.context.save();
         let localPoint = new Point(0, 0);
         this.drawTickCount++;
         if (this.spriteLoader && !this.spriteLoader.Tick() || this.loading) {
-            SonicManager.drawLoading(this.highTileCanvas.Context);
-            this.highTileCanvas.Context.restore();
+            SonicManager.drawLoading(this.highTileCanvas.context);
+            this.highTileCanvas.context.restore();
             return;
         }
         this.updatePositions();
@@ -334,25 +327,25 @@ export class SonicManager {
             let movex: number = (wOffset / bw) * bw;
             localPoint.x = -this.windowLocation.x + movex;
             localPoint.y = -this.windowLocation.y / 4;
-            this.background.Draw(this.lowTileCanvas.Context, localPoint, wOffset);
+            this.background.Draw(this.lowTileCanvas.context, localPoint, wOffset);
             localPoint.x = -this.windowLocation.x + movex + this.background.Width;
             localPoint.y = -this.windowLocation.y / 4;
-            this.background.Draw(this.lowTileCanvas.Context, localPoint, wOffset);
+            this.background.Draw(this.lowTileCanvas.context, localPoint, wOffset);
         }
-        this.drawLowChunks(this.lowTileCanvas.Context, zero, offs, fyP, fxP);
+        this.drawLowChunks(this.lowTileCanvas.context, zero, offs, fyP, fxP);
         if (this.showHeightMap)
-            this.drawHighChunks(this.lowTileCanvas.Context, fxP, fyP, offs, zero);
-        this.drawObjects(this.spriteCanvas.Context, zero);
-        this.drawAnimations(this.spriteCanvas.Context);
-        this.drawRings(this.spriteCanvas.Context, zero);
-        this.drawSonic(this.spriteCanvas.Context);
+            this.drawHighChunks(this.lowTileCanvas.context, fxP, fyP, offs, zero);
+        this.drawObjects(this.spriteCanvas.context, zero);
+        this.drawAnimations(this.spriteCanvas.context);
+        this.drawRings(this.spriteCanvas.context, zero);
+        this.drawSonic(this.spriteCanvas.context);
         if (!this.showHeightMap)
-            this.drawHighChunks(this.highTileCanvas.Context, fxP, fyP, offs, zero);
-        this.drawDebugTextChunks(this.highTileCanvas.Context, fxP, fyP, offs, zero);
+            this.drawHighChunks(this.highTileCanvas.context, fxP, fyP, offs, zero);
+        this.drawDebugTextChunks(this.highTileCanvas.context, fxP, fyP, offs, zero);
         //        this.lowChunkCanvas.Context.OffsetPixelsForWater();
         //        this.highChuckCanvas.Context.OffsetPixelsForWater();
         // this.drawCanveses(context, localPoint);
-        this.highTileCanvas.Context.restore();
+        this.highTileCanvas.context.restore();
         /*      if (this.currentGameState === GameState.Playing)
          this.sonicToon.drawUI(context, new Point(this.screenOffset.x, this.screenOffset.y));
          */
@@ -430,9 +423,9 @@ export class SonicManager {
     }
 
     public ResetCanvases(): void {
-        this.spriteCanvas.Context.clearRect(0, 0, 320, 240);
-        this.highTileCanvas.Context.clearRect(0, 0, 320, 240);
-        this.lowTileCanvas.Context.clearRect(0, 0, 320, 240);
+        this.spriteCanvas.context.clearRect(0, 0, 320, 240);
+        this.highTileCanvas.context.clearRect(0, 0, 320, 240);
+        this.lowTileCanvas.context.clearRect(0, 0, 320, 240);
     }
 
     /*
@@ -551,6 +544,8 @@ export class SonicManager {
     }
 
     private drawDebugTextChunks(canvas: CanvasRenderingContext2D, fxP: number, fyP: number, offs: Point[], localPoint: Point): void {
+        if (!this.tileChunkDebugDrawOptions)return;
+
         for (let off of offs) {
             let _xP: number = fxP + off.x;
             let _yP: number = fyP + off.y;
@@ -574,7 +569,7 @@ export class SonicManager {
         let md = chunk;
         let posj1 = new Point(0, 0);
         let canv = CanvasInformation.create(128, 128, false);
-        let ctx = canv.Context;
+        let ctx = canv.context;
         // this.engine.clear(canv);
         for (let _y = 0; _y < 8; _y++) {
             for (let _x = 0; _x < 8; _x++) {
@@ -752,7 +747,7 @@ export class SonicManager {
             let currentPosition: number = 0;
             for (let index: number = 0; index < debugCanvases.length; index++) {
                 let canvasInformation = debugCanvases[index];
-                bigOne.Context.drawImage(canvasInformation.canvas, 0, currentPosition);
+                bigOne.context.drawImage(canvasInformation.canvas, 0, currentPosition);
                 currentPosition += canvasInformation.canvas.height;
             }
             pieces.push(bigOne.canvas.toDataURL());
@@ -910,21 +905,21 @@ export class SonicManager {
         this.sonicLevel.collisionIndexes1 = sonicLevel.CollisionIndexes1;
         this.sonicLevel.collisionIndexes2 = sonicLevel.CollisionIndexes2;
         for (let i = 0; i < sonicLevel.HeightMaps.length; i++) {
-           /* let b1 = true;
-            let b2 = true;
-            for (let m: number = 0; m < sonicLevel.HeightMaps[i].length; m++) {
-                if (b1 && sonicLevel.HeightMaps[i][m] !== 0)
-                    b1 = false;
-                if (b2 && sonicLevel.HeightMaps[i][m] !== 16)
-                    b2 = false;
-            }
-            if (b1) {
-                this.sonicLevel.heightMaps[i] = HeightMap.fullHeight(false);
-            }
-            else if (b2) {
-                this.sonicLevel.heightMaps[i] = HeightMap.fullHeight(true);
-            }*/
-               this.sonicLevel.heightMaps[i] = new HeightMap(sonicLevel.HeightMaps[i], i);
+            /* let b1 = true;
+             let b2 = true;
+             for (let m: number = 0; m < sonicLevel.HeightMaps[i].length; m++) {
+             if (b1 && sonicLevel.HeightMaps[i][m] !== 0)
+             b1 = false;
+             if (b2 && sonicLevel.HeightMaps[i][m] !== 16)
+             b2 = false;
+             }
+             if (b1) {
+             this.sonicLevel.heightMaps[i] = HeightMap.fullHeight(false);
+             }
+             else if (b2) {
+             this.sonicLevel.heightMaps[i] = HeightMap.fullHeight(true);
+             }*/
+            this.sonicLevel.heightMaps[i] = new HeightMap(sonicLevel.HeightMaps[i], i);
         }
         for (let j: number = 0; j < sonicLevel.Chunks.length; j++) {
             let fc = sonicLevel.Chunks[j];
