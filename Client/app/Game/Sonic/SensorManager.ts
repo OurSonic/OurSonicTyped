@@ -217,9 +217,10 @@ export class Sensor {
         let sensor: SensorM = null;
         let x = Help.floor(sonic.x);
         let y = Help.floor(sonic.y);
+        let allowTopSolid = true;
+
         switch (sonic.mode) {
             case RotationMode.Floor:
-                let allowTopSolid = true;
                 switch (this.letter) {
                     case "a":
                     case "b":
@@ -242,7 +243,6 @@ export class Sensor {
                 sensor = this.checkCollisionLineWrap(x + this.x1, x + this.x2, y + this.y1, y + _y2, allowTopSolid);
                 break;
             case RotationMode.LeftWall:
-                let allowTopSolid = true;
                 switch (this.letter) {
                     case "a":
                     case "b":
@@ -266,10 +266,9 @@ export class Sensor {
                 sensor = this.checkCollisionLineWrap(x - this.y1, x - _y2, y + this.x1, y + this.x2, allowTopSolid);
                 break;
             case RotationMode.Ceiling:
-                sensor = this.checkCollisionLineWrap(x - this.x1, x - this.x2, y - this.y1, y - _y2, true);
+                sensor = this.checkCollisionLineWrap(x - this.x1, x - this.x2, y - this.y1, y - _y2, allowTopSolid);
                 break;
             case RotationMode.RightWall:
-                let allowTopSolid = true;
                 switch (this.letter) {
                     case "a":
                     case "b":
