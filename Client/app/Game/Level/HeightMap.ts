@@ -1,29 +1,30 @@
-﻿import {Point } from "../../common/Utils";
+﻿import {Point} from "../../common/Utils";
 import {SonicManager} from "../SonicManager";
 import {CanvasInformation} from "../../common/CanvasInformation";
 import {Help} from "../../common/Help";
-import {RotationMode  } from "../../common/Enums";
+import {RotationMode} from "../../common/Enums";
 
 export class HeightMap {
+
     public static colors: string[] = new Array("", "rgba(255,98,235,0.6)", "rgba(24,218,235,0.6)", "rgba(24,98,235,0.6)");
-    protected Width: number=0;
-    protected Height: number=0;
+    protected Width: number = 0;
+    protected Height: number = 0;
     public Items: number[];
-    protected Index: number=0;
-    public Full: boolean=undefined;
+    public Index: number = 0;
+    public collisionBlock: boolean[];
+    public collisionBlockXFlip: boolean[];
+    public collisionBlockYFlip: boolean[];
+    public collisionBlockXFlipYFlip: boolean[];
+
     constructor(heightMap: number[], i: number) {
         this.Items = heightMap;
         this.Width = 16;
         this.Height = 16;
         this.Index = i;
-        this.Full = undefined;
+        this.buildCollisionBlocks();
     }
-    static FullHeight(full: boolean): HeightMap {
-        let h = new HeightMap(null, 0);
-        h.Full = full;
-        return h;
-    }
-    public SetItem(x: number, y: number, rotationMode: RotationMode): void {
+
+    public setItem(x: number, y: number, rotationMode: RotationMode): void {
         let jx = 0;
         let jy = 0;
         switch (rotationMode) {
@@ -46,9 +47,10 @@ export class HeightMap {
         }
         this.Items[jx] = 16 - jy;
     }
-    public Draw(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, solid: number, angle: number): void {
+
+    public draw(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, solid: number, angle: number): void {
         if (this.Items == null)
-            return
+            return;
         canvas.save();
         let oPos = Point.Create(pos);
         if (xflip) {
@@ -66,6 +68,7 @@ export class HeightMap {
             let ntcanvas = CanvasInformation.create(16, 16, false);
             let ncanvas = ntcanvas.Context;
             if (solid > 0) {
+                ncanvas.fillStyle = HeightMap.colors[solid];
                 for (let x: number = 0; x < 16; x++) {
                     for (let y: number = 0; y < 16; y++) {
                         let jx = 0;
@@ -76,7 +79,6 @@ export class HeightMap {
                             let _x = jx;
                             let _y = jy;
                             ncanvas.lineWidth = 1;
-                            ncanvas.fillStyle = HeightMap.colors[solid];
                             ncanvas.fillRect(_x, _y, 1, 1);
                             if (angle != 255) {
                                 ncanvas.beginPath();
@@ -97,9 +99,29 @@ export class HeightMap {
         pos.x = oPos.x;
         pos.y = oPos.y;
     }
+
     public static itemsGood(items: number[], x: number, y: number): boolean {
         if (items[x] < 0)
             return Math.abs(items[x]) >= y;
         return items[x] >= 16 - y;
     }
+
+    private buildCollisionBlocks() {
+        this.collisionBlock = new Array(64);
+        this.collisionBlockXFlip = new Array(64);
+        this.collisionBlockYFlip = new Array(64);
+        this.collisionBlockXFlipYFlip = new Array(64);
+        for (var y = 0; y < 16; y++) {
+            for (var x = 0; x < 16; x++) {
+                this.collisionBlock[(x) + (y) * 16] = HeightMap.itemsGood(this.Items, x, y);
+                this.collisionBlockXFlip[(15 - x) + (y) * 16] = HeightMap.itemsGood(this.Items, x, y);
+                this.collisionBlockYFlip[(x) + (15 - y) * 16] = HeightMap.itemsGood(this.Items, x, y);
+                this.collisionBlockXFlipYFlip[(15 - x) + (15 - y) * 16] = HeightMap.itemsGood(this.Items, x, y);
+            }
+        }
+
+    }
+
+    static fullCollision = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
+    static empty = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
 }

@@ -26,19 +26,13 @@ System.register(["../../common/Utils", "../SonicManager", "../../common/CanvasIn
                     this.Width = 0;
                     this.Height = 0;
                     this.Index = 0;
-                    this.Full = undefined;
                     this.Items = heightMap;
                     this.Width = 16;
                     this.Height = 16;
                     this.Index = i;
-                    this.Full = undefined;
+                    this.buildCollisionBlocks();
                 }
-                HeightMap.FullHeight = function (full) {
-                    var h = new HeightMap(null, 0);
-                    h.Full = full;
-                    return h;
-                };
-                HeightMap.prototype.SetItem = function (x, y, rotationMode) {
+                HeightMap.prototype.setItem = function (x, y, rotationMode) {
                     var jx = 0;
                     var jy = 0;
                     switch (rotationMode) {
@@ -61,7 +55,7 @@ System.register(["../../common/Utils", "../SonicManager", "../../common/CanvasIn
                     }
                     this.Items[jx] = 16 - jy;
                 };
-                HeightMap.prototype.Draw = function (canvas, pos, xflip, yflip, solid, angle) {
+                HeightMap.prototype.draw = function (canvas, pos, xflip, yflip, solid, angle) {
                     if (this.Items == null)
                         return;
                     canvas.save();
@@ -81,6 +75,7 @@ System.register(["../../common/Utils", "../SonicManager", "../../common/CanvasIn
                         var ntcanvas = CanvasInformation_1.CanvasInformation.create(16, 16, false);
                         var ncanvas = ntcanvas.Context;
                         if (solid > 0) {
+                            ncanvas.fillStyle = HeightMap.colors[solid];
                             for (var x = 0; x < 16; x++) {
                                 for (var y = 0; y < 16; y++) {
                                     var jx = 0;
@@ -91,7 +86,6 @@ System.register(["../../common/Utils", "../SonicManager", "../../common/CanvasIn
                                         var _x = jx;
                                         var _y = jy;
                                         ncanvas.lineWidth = 1;
-                                        ncanvas.fillStyle = HeightMap.colors[solid];
                                         ncanvas.fillRect(_x, _y, 1, 1);
                                         if (angle != 255) {
                                             ncanvas.beginPath();
@@ -117,7 +111,23 @@ System.register(["../../common/Utils", "../SonicManager", "../../common/CanvasIn
                         return Math.abs(items[x]) >= y;
                     return items[x] >= 16 - y;
                 };
+                HeightMap.prototype.buildCollisionBlocks = function () {
+                    this.collisionBlock = new Array(64);
+                    this.collisionBlockXFlip = new Array(64);
+                    this.collisionBlockYFlip = new Array(64);
+                    this.collisionBlockXFlipYFlip = new Array(64);
+                    for (var y = 0; y < 16; y++) {
+                        for (var x = 0; x < 16; x++) {
+                            this.collisionBlock[(x) + (y) * 16] = HeightMap.itemsGood(this.Items, x, y);
+                            this.collisionBlockXFlip[(15 - x) + (y) * 16] = HeightMap.itemsGood(this.Items, x, y);
+                            this.collisionBlockYFlip[(x) + (15 - y) * 16] = HeightMap.itemsGood(this.Items, x, y);
+                            this.collisionBlockXFlipYFlip[(15 - x) + (15 - y) * 16] = HeightMap.itemsGood(this.Items, x, y);
+                        }
+                    }
+                };
                 HeightMap.colors = new Array("", "rgba(255,98,235,0.6)", "rgba(24,218,235,0.6)", "rgba(24,98,235,0.6)");
+                HeightMap.fullCollision = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
+                HeightMap.empty = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
                 return HeightMap;
             }());
             exports_1("HeightMap", HeightMap);

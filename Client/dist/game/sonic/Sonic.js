@@ -68,7 +68,7 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                     this.x = this.sonicLevel.startPositions[0].x;
                     this.y = this.sonicLevel.startPositions[0].y;
                     this.sensorManager = new SensorManager_1.SensorManager();
-                    this.haltSmoke = new Array();
+                    this.haltSmoke = [];
                     this.rings = 7;
                     this.sensorManager.createVerticalSensor("a", -9, 0, 36, "#F202F2");
                     this.sensorManager.createVerticalSensor("b", 9, 0, 36, "#02C2F2");
@@ -98,7 +98,7 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                 };
                 Sonic.prototype.tick = function (sonicLevel) {
                     if (this.debugging) {
-                        var debugSpeed = this.watcher.Multiply(15);
+                        var debugSpeed = this.watcher.Multiply(16);
                         if (this.holdingRight)
                             this.x += debugSpeed;
                         if (this.holdingLeft)
@@ -132,6 +132,7 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                     var sensorM2 = this.sensorManager.getResult("m2");
                     var best = this.getBestSensor(sensorM1, sensorM2, this.mode);
                     if (best != null) {
+                        console.log('m1 m2');
                         switch (this.mode) {
                             case Enums_1.RotationMode.Floor:
                                 this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter === "m1" ? 12 : -12)));
@@ -166,8 +167,10 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                     var hSize = this.getHalfImageSize();
                     if (!this.inAir) {
                         best = this.getBestSensor(sensorA, sensorB, this.mode);
-                        if (best == null)
+                        if (best == null) {
+                            console.log('in air');
                             this.inAir = true;
+                        }
                         else {
                             this.justHit = false;
                             switch (this.mode) {
@@ -245,6 +248,7 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                         if ((sensorC == null && sensorD == null)) {
                         }
                         else {
+                            console.log('c d');
                             if (sensorD != null && (sensorC != null) && (sensorC.value >= 0 && sensorD.value >= 0)) {
                                 if (sensorC.value < sensorD.value) {
                                     if (this.y + (__h) >= sensorC.value) {
@@ -434,8 +438,9 @@ System.register(["../../common/Utils", "./SensorManager", "../../common/Enums", 
                         }
                         else if ((this.runningTick++) % (7) === 0) {
                             this.spriteState = "breaking" + ((j + 1) % 4);
-                            if (j === 0)
+                            if (j === 0 && !this.inAir) {
                                 this.haltSmoke.push(new Utils_1.Point(this.x, this.y));
+                            }
                         }
                     }
                     else if (this.currentlyBall) {

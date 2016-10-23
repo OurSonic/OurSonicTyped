@@ -59,7 +59,7 @@ export class Sonic {
         this.x = this.sonicLevel.startPositions[0].x;
         this.y = this.sonicLevel.startPositions[0].y;
         this.sensorManager = new SensorManager();
-        this.haltSmoke = new Array<Point>();
+        this.haltSmoke = [];
         this.rings = 7;
         this.sensorManager.createVerticalSensor("a", -9, 0, 36, "#F202F2");
         this.sensorManager.createVerticalSensor("b", 9, 0, 36, "#02C2F2");
@@ -91,7 +91,7 @@ export class Sonic {
 
     public tick(sonicLevel: SonicLevel): void {
         if (this.debugging) {
-            let debugSpeed = this.watcher.Multiply(15);
+            let debugSpeed = this.watcher.Multiply(16);
             if (this.holdingRight)
                 this.x += debugSpeed;
             if (this.holdingLeft)
@@ -126,6 +126,7 @@ export class Sonic {
         let sensorM2 = this.sensorManager.getResult("m2");
         let best = this.getBestSensor(sensorM1, sensorM2, this.mode);
         if (best != null) {
+            console.log('m1 m2');
             switch (this.mode) {
                 case RotationMode.Floor:
                     this.x = (best.value + (sensorM2 != null && sensorM1 != null && (sensorM1.value == sensorM2.value) ? 12 : (best.letter === "m1" ? 12 : -12)));
@@ -161,7 +162,10 @@ export class Sonic {
         if (!this.inAir) {
             best = this.getBestSensor(sensorA, sensorB, this.mode);
             if (best == null)
+            {
+                console.log('in air');
                 this.inAir = true;
+            }
             else {
                 this.justHit = false;
                 switch (this.mode) {
@@ -240,6 +244,7 @@ export class Sonic {
 
             }
             else {
+                console.log('c d');
                 if (sensorD != null && (sensorC != null) && (sensorC.value >= 0 && sensorD.value >= 0)) {
                     if (sensorC.value < sensorD.value) {
                         if (this.y + (__h) >= sensorC.value) {
@@ -434,8 +439,10 @@ export class Sonic {
             }
             else if ((this.runningTick++) % (7) === 0) {
                 this.spriteState = "breaking" + ((j + 1) % 4);
-                if (j === 0)
+                if (j === 0 && !this.inAir)
+                {
                     this.haltSmoke.push(new Point(this.x, this.y));
+                }
             }
         }
         else if (this.currentlyBall) {

@@ -21,25 +21,25 @@ System.register(["../../SonicManager", "../../../SLData"], function(exports_1, c
                     this.Solid2 = SLData_1.Solidity.NotSolid;
                     this.Index = 0;
                 }
-                TilePieceInfo.prototype.GetTilePiece = function () {
+                TilePieceInfo.prototype.getTilePiece = function () {
                     return SonicManager_1.SonicManager.instance.sonicLevel.getTilePiece(this.Block);
                 };
-                TilePieceInfo.prototype.SetTilePiece = function (tp) {
+                TilePieceInfo.prototype.setTilePiece = function (tp) {
                     if (this.Block == tp.Index)
                         return false;
                     this.Block = tp.Index;
                     return true;
                 };
-                TilePieceInfo.prototype.GetLayer1Angles = function () {
+                TilePieceInfo.prototype.getLayer1Angles = function () {
                     return SonicManager_1.SonicManager.instance.sonicLevel.angles[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes1[this.Block]];
                 };
-                TilePieceInfo.prototype.GetLayer2Angles = function () {
+                TilePieceInfo.prototype.getLayer2Angles = function () {
                     return SonicManager_1.SonicManager.instance.sonicLevel.angles[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes2[this.Block]];
                 };
-                TilePieceInfo.prototype.GetLayer1HeightMaps = function () {
+                TilePieceInfo.prototype.getLayer1HeightMaps = function () {
                     return SonicManager_1.SonicManager.instance.sonicLevel.heightMaps[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes1[this.Block]];
                 };
-                TilePieceInfo.prototype.GetLayer2HeightMaps = function () {
+                TilePieceInfo.prototype.getLayer2HeightMaps = function () {
                     return SonicManager_1.SonicManager.instance.sonicLevel.heightMaps[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes2[this.Block]];
                 };
                 return TilePieceInfo;

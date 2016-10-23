@@ -153,16 +153,16 @@ System.register(["../../../common/Utils", "../../../common/CanvasInformation", "
                     }
                     return (this.shouldAnimate);
                 };
-                TilePiece.prototype.GetLayer1Angles = function () {
+                TilePiece.prototype.getLayer1Angle = function () {
                     return SonicManager_1.SonicManager.instance.sonicLevel.angles[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
                 };
-                TilePiece.prototype.GetLayer2Angles = function () {
+                TilePiece.prototype.getLayer2Angle = function () {
                     return SonicManager_1.SonicManager.instance.sonicLevel.angles[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes2[this.Index]];
                 };
-                TilePiece.prototype.GetLayer1HeightMaps = function () {
+                TilePiece.prototype.getLayer1HeightMap = function () {
                     return SonicManager_1.SonicManager.instance.sonicLevel.heightMaps[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
                 };
-                TilePiece.prototype.GetLayer2HeightMaps = function () {
+                TilePiece.prototype.getLayer2HeightMap = function () {
                     return SonicManager_1.SonicManager.instance.sonicLevel.heightMaps[SonicManager_1.SonicManager.instance.sonicLevel.collisionIndexes2[this.Index]];
                 };
                 TilePiece.DrawInfo = [[0, 0], [1, 0], [0, 1], [1, 1]];

@@ -83,6 +83,7 @@ export class TilePiece {
             i++;
         }
         canvas.drawImage(ac.canvas, position.x, position.y);
+
     }
 
     private getAnimatedPaletteCacheIndex(xflip:boolean, yflip:boolean, animatedPaletteIndex:number, frameIndex:number):number {
@@ -158,19 +159,19 @@ export class TilePiece {
         return (this.shouldAnimate);
     }
 
-    public GetLayer1Angles():number {
+    public getLayer1Angle():number {
         return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
     }
 
-    public GetLayer2Angles():number {
+    public getLayer2Angle():number {
         return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes2[this.Index]];
     }
 
-    public GetLayer1HeightMaps():HeightMap {
+    public getLayer1HeightMap():HeightMap {
         return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
     }
 
-    public GetLayer2HeightMaps():HeightMap {
+    public getLayer2HeightMap():HeightMap {
         return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes2[this.Index]];
     }
 }

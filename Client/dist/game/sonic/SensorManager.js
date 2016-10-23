@@ -1,16 +1,10 @@
-System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../SonicManager", "../../common/Enums"], function(exports_1, context_1) {
+System.register(["../../common/Help", "../SonicManager", "../../common/Enums"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var SLData_1, HeightMap_1, Help_1, SonicManager_1, Enums_1;
+    var Help_1, SonicManager_1, Enums_1;
     var SensorManager, Sensor, SensorM;
     return {
         setters:[
-            function (SLData_1_1) {
-                SLData_1 = SLData_1_1;
-            },
-            function (HeightMap_1_1) {
-                HeightMap_1 = HeightMap_1_1;
-            },
             function (Help_1_1) {
                 Help_1 = Help_1_1;
             },
@@ -55,189 +49,6 @@ System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../
                         this.sensors[sensor].draw(canvas, sonic, this.sensorResults[sensor]);
                     }
                 };
-                SensorManager.prototype.buildChunk = function (chunk, isLayerOne) {
-                    if (isLayerOne) {
-                        if (chunk.HeightBlocks1)
-                            return;
-                        var hb1 = chunk.HeightBlocks1 = new Array(128);
-                        var ab1 = chunk.AngleMap1 = new Array(8);
-                        for (var _1 = 0; _1 < 128; _1++) {
-                            hb1[_1] = new Array(128);
-                            for (var _2 = 0; _2 < 128; _2++) {
-                                hb1[_1][_2] = 0;
-                            }
-                        }
-                        for (var _1 = 0; _1 < 8; _1++) {
-                            ab1[_1] = new Array(8);
-                            for (var _2 = 0; _2 < 8; _2++) {
-                                ab1[_1][_2] = 0;
-                            }
-                        }
-                        for (var _y = 0; _y < 8; _y++) {
-                            for (var _x = 0; _x < 8; _x++) {
-                                var tp = chunk.TilePieces[_x][_y];
-                                ab1[_x][_y] = tp.GetLayer1Angles();
-                                if (!(ab1[_x][_y] == 0 || ab1[_x][_y] == 255 || ab1[_x][_y] == 1)) {
-                                    if (tp.XFlip) {
-                                        if (tp.YFlip) {
-                                            ab1[_x][_y] = 192 - ab1[_x][_y] + 192;
-                                            ab1[_x][_y] = 128 - ab1[_x][_y] + 128;
-                                        }
-                                        else
-                                            ab1[_x][_y] = 128 - ab1[_x][_y] + 128;
-                                    }
-                                    else {
-                                        if (tp.YFlip)
-                                            ab1[_x][_y] = 192 - ab1[_x][_y] + 192;
-                                        else
-                                            ab1[_x][_y] = (ab1[_x][_y]);
-                                    }
-                                }
-                                var heightMask = tp.GetLayer1HeightMaps();
-                                var heightMaskItems = null;
-                                if (heightMask == null)
-                                    continue;
-                                var mj = void 0;
-                                if (heightMask.Full !== undefined) {
-                                    mj = heightMask.Full === false ? 0 : tp.Solid1;
-                                    for (var __y = 0; __y < 16; __y++) {
-                                        for (var __x = 0; __x < 16; __x++) {
-                                            hb1[(_x * 16 + __x)][(_y * 16 + __y)] = mj;
-                                        }
-                                    }
-                                }
-                                else {
-                                    heightMaskItems = heightMask.Items;
-                                }
-                                for (var __y = 0; __y < 16; __y++) {
-                                    for (var __x = 0; __x < 16; __x++) {
-                                        var jx = 0;
-                                        var jy = 0;
-                                        if (tp.XFlip) {
-                                            if (tp.YFlip) {
-                                                jx = 15 - __x;
-                                                jy = 15 - __y;
-                                            }
-                                            else {
-                                                jx = 15 - __x;
-                                                jy = __y;
-                                            }
-                                        }
-                                        else {
-                                            if (tp.YFlip) {
-                                                jx = __x;
-                                                jy = 15 - __y;
-                                            }
-                                            else {
-                                                jx = __x;
-                                                jy = __y;
-                                            }
-                                        }
-                                        if (heightMask.Full === undefined) {
-                                            switch (tp.Solid1) {
-                                                case 0:
-                                                    hb1[(_x * 16 + jx)][(_y * 16 + jy)] = 0;
-                                                    break;
-                                                case 1:
-                                                case 2:
-                                                case 3:
-                                                    hb1[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap_1.HeightMap.itemsGood(heightMaskItems, __x, __y) ? tp.Solid1 : 0;
-                                                    break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        if (chunk.HeightBlocks2)
-                            return;
-                        var hb2 = chunk.HeightBlocks2 = new Array(128);
-                        var ab2 = chunk.AngleMap2 = new Array(8);
-                        for (var _1 = 0; _1 < 128; _1++) {
-                            hb2[_1] = new Array(128);
-                        }
-                        for (var _1 = 0; _1 < 8; _1++) {
-                            ab2[_1] = new Array(8);
-                        }
-                        for (var _y = 0; _y < 8; _y++) {
-                            for (var _x = 0; _x < 8; _x++) {
-                                var tp = chunk.TilePieces[_x][_y];
-                                ab2[_x][_y] = tp.GetLayer2Angles();
-                                if (!(ab2[_x][_y] == 0 || ab2[_x][_y] == 255 || ab2[_x][_y] == 1)) {
-                                    if (tp.XFlip) {
-                                        if (tp.YFlip) {
-                                            ab2[_x][_y] = 192 - ab2[_x][_y] + 192;
-                                            ab2[_x][_y] = 128 - ab2[_x][_y] + 128;
-                                        }
-                                        else
-                                            ab2[_x][_y] = 128 - ab2[_x][_y] + 128;
-                                    }
-                                    else {
-                                        if (tp.YFlip)
-                                            ab2[_x][_y] = 192 - ab2[_x][_y] + 192;
-                                        else
-                                            ab2[_x][_y] = (ab2[_x][_y]);
-                                    }
-                                }
-                                var hd2 = tp.GetLayer2HeightMaps();
-                                if (hd2 == null)
-                                    continue;
-                                var mj = void 0;
-                                var hd2Items = null;
-                                if (hd2.Full !== undefined) {
-                                    mj = hd2.Full === false ? 0 : tp.Solid2;
-                                    for (var __y = 0; __y < 16; __y++) {
-                                        for (var __x = 0; __x < 16; __x++) {
-                                            hb2[(_x * 16 + __x)][(_y * 16 + __y)] = mj;
-                                        }
-                                    }
-                                }
-                                else
-                                    hd2Items = hd2.Items;
-                                for (var __y = 0; __y < 16; __y++) {
-                                    for (var __x = 0; __x < 16; __x++) {
-                                        var jx = 0;
-                                        var jy = 0;
-                                        if (tp.XFlip) {
-                                            if (tp.YFlip) {
-                                                jx = 15 - __x;
-                                                jy = 15 - __y;
-                                            }
-                                            else {
-                                                jx = 15 - __x;
-                                                jy = __y;
-                                            }
-                                        }
-                                        else {
-                                            if (tp.YFlip) {
-                                                jx = __x;
-                                                jy = 15 - __y;
-                                            }
-                                            else {
-                                                jx = __x;
-                                                jy = __y;
-                                            }
-                                        }
-                                        if (hd2.Full === undefined) {
-                                            switch (tp.Solid2) {
-                                                case 0:
-                                                    hb2[(_x * 16 + jx)][(_y * 16 + jy)] = SLData_1.Solidity.NotSolid;
-                                                    break;
-                                                case 1:
-                                                case 2:
-                                                case 3:
-                                                    hb2[(_x * 16 + jx)][(_y * 16 + jy)] = HeightMap_1.HeightMap.itemsGood(hd2Items, __x, __y) ? tp.Solid2 : 0;
-                                                    break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                };
                 return SensorManager;
             }());
             exports_1("SensorManager", SensorManager);
@@ -261,201 +72,286 @@ System.register(["../../SLData", "../level/HeightMap", "../../common/Help", "../
                     this.ignoreSolid = ignoreSolid;
                     this.letter = letter;
                 }
-                Sensor.prototype.checkCollisionLineWrap = function (x1, x2, y1, y2, ignoreSolid) {
-                    var _x = (x1 / 128) | 0;
-                    var _y = Help_1.Help.mod((y1 / 128) | 0, SonicManager_1.SonicManager.instance.sonicLevel.levelHeight);
-                    var tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, _y);
-                    this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
-                    var curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                    var cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
-                    var __x = x1 - _x * 128;
-                    var __y = y1 - _y * 128;
-                    var length = 0;
-                    if (y1 == y2) {
-                        if (Math.max(x1, x2) > SonicManager_1.SonicManager.instance.sonicLevel.levelWidth * 128) {
-                            this.__currentM.value = SonicManager_1.SonicManager.instance.sonicLevel.levelWidth * 128 - 20;
-                            this.__currentM.angle = 0xff;
-                            return this.__currentM;
-                        }
-                        if (x1 < x2) {
-                            length = x2 - x1;
-                            if (curh[(__x)][__y] >= 2) {
-                                for (var i = 0; i < 128 * 2; i++) {
-                                    while (true) {
-                                        if (__x - i < 0) {
-                                            if (_x - 1 < 0) {
-                                                this.__currentM.value = 0;
-                                                this.__currentM.angle = 0xFF;
-                                                return this.__currentM;
-                                            }
-                                            tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x - 1, _y);
-                                            this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
-                                            curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                            cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
-                                            __x += 128;
-                                        }
-                                        else
-                                            break;
-                                    }
-                                    if (curh[(__x - i)][__y] >= 1 || SonicManager_1.SonicManager.instance.sonicToon.checkCollisionWithObjects(x1 - i, y1, this.letter)) {
-                                        this.__currentM.value = x1 - i;
-                                        this.__currentM.angle = cura[(__x - i) / 16 | 0][(__y) / 16 | 0];
-                                        return this.__currentM;
-                                    }
-                                }
-                            }
-                            for (var i = 0; i < length; i++) {
-                                while (true) {
-                                    if (__x + i >= 128) {
-                                        tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x + 1, _y);
-                                        this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
-                                        curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                        cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
-                                        __x -= 128;
+                Sensor.prototype.checkCollisionLineWrap = function (startX, endX, startY, endY, ignoreSolid) {
+                    /*
+                     startY = Help.mod(startY, SonicManager.instance.sonicLevel.levelHeight * 128);
+                     endY = Help.mod(endY, SonicManager.instance.sonicLevel.levelHeight * 128);
+                     */
+                    var xIncrease = startX == endX ? (0) : (startX > endX ? -1 : 1);
+                    var yIncrease = startY == endY ? (0) : (startY > endY ? -1 : 1);
+                    var oneTryX = startX === endX;
+                    for (var testX = startX; oneTryX || Math.abs(testX - endX) !== 0; testX += xIncrease) {
+                        oneTryX = false;
+                        var oneTryY = startY === endY;
+                        for (var testY = startY; oneTryY || Math.abs(testY - endY) !== 0; testY += yIncrease) {
+                            oneTryY = false;
+                            var tileChunkX = (testX / 128) | 0;
+                            var tileChunkY = (testY / 128) | 0;
+                            var chunk = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(tileChunkX, tileChunkY);
+                            var interChunkX = testX - tileChunkX * 128;
+                            var interChunkY = testY - tileChunkY * 128;
+                            var tileX = (interChunkX / 16) | 0;
+                            var tileY = (interChunkY / 16) | 0;
+                            var interTileX = interChunkX - tileX * 16;
+                            var interTileY = interChunkY - tileY * 16;
+                            var tilePiece = chunk.getTilePieceAt(tileX, tileY, false);
+                            var tilePieceInfo = chunk.getTilePieceInfo(tileX, tileY, false);
+                            var solidity = (SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tilePieceInfo.Solid1 : tilePieceInfo.Solid2);
+                            var heightMap = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tilePiece.getLayer1HeightMap() : tilePiece.getLayer2HeightMap();
+                            var tileAngle = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tilePiece.getLayer1Angle() : tilePiece.getLayer2Angle();
+                            if (!(tileAngle == 0 || tileAngle == 255 || tileAngle == 1)) {
+                                if (tilePieceInfo.XFlip) {
+                                    if (tilePieceInfo.YFlip) {
+                                        tileAngle = 192 - tileAngle + 192;
+                                        tileAngle = 128 - tileAngle + 128;
                                     }
                                     else
-                                        break;
+                                        tileAngle = 128 - tileAngle + 128;
                                 }
-                                if (curh[(__x + i)][__y] >= 1 || SonicManager_1.SonicManager.instance.sonicToon.checkCollisionWithObjects(x1 + i, y1, this.letter)) {
-                                    this.__currentM.value = x1 + i;
-                                    this.__currentM.angle = cura[(__x + i) / 16 | 0][(__y) / 16 | 0];
-                                    return this.__currentM;
-                                }
-                            }
-                        }
-                        else {
-                            length = x1 - x2;
-                            if (curh[(__x)][__y] >= 2) {
-                                for (var i = 0; i < 128 * 2; i++) {
-                                    while (true) {
-                                        if (__x + i >= 128) {
-                                            tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x + 1, _y);
-                                            this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
-                                            curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                            cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
-                                            __x -= 128;
-                                        }
-                                        else
-                                            break;
-                                    }
-                                    if (curh[(__x + i)][__y] >= 1 || SonicManager_1.SonicManager.instance.sonicToon.checkCollisionWithObjects(x1 + i, y1, this.letter)) {
-                                        this.__currentM.value = x1 + i;
-                                        this.__currentM.angle = cura[(__x + i) / 16 | 0][(__y) / 16 | 0];
-                                        return this.__currentM;
-                                    }
-                                }
-                            }
-                            for (var i = 0; i < length; i++) {
-                                while (true) {
-                                    if (__x - i < 0) {
-                                        if (_x - 1 < 0) {
-                                            this.__currentM.value = 0;
-                                            this.__currentM.angle = 0xFF;
-                                            return this.__currentM;
-                                        }
-                                        tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x - 1, _y);
-                                        this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
-                                        curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                        cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
-                                        __x += 128;
-                                    }
+                                else {
+                                    if (tilePieceInfo.YFlip)
+                                        tileAngle = 192 - tileAngle + 192;
                                     else
-                                        break;
+                                        tileAngle = (tileAngle);
                                 }
-                                if (curh[(__x - i)][__y] >= 1 || SonicManager_1.SonicManager.instance.sonicToon.checkCollisionWithObjects(x1 - i, y1, this.letter)) {
-                                    this.__currentM.value = x1 - i;
-                                    this.__currentM.angle = cura[(__x - i) / 16 | 0][(__y) / 16 | 0];
-                                    return this.__currentM;
+                            }
+                            var collisionMap;
+                            if (tilePieceInfo.XFlip) {
+                                if (tilePieceInfo.YFlip) {
+                                    collisionMap = heightMap.collisionBlockXFlipYFlip;
                                 }
+                                else {
+                                    collisionMap = heightMap.collisionBlockXFlip;
+                                }
+                            }
+                            else {
+                                if (tilePieceInfo.YFlip) {
+                                    collisionMap = heightMap.collisionBlockYFlip;
+                                }
+                                else {
+                                    collisionMap = heightMap.collisionBlock;
+                                }
+                            }
+                            if ((solidity != 0 && collisionMap[interTileX + interTileY * 16]) || SonicManager_1.SonicManager.instance.sonicToon.checkCollisionWithObjects(testX, testY, this.letter)) {
+                                this.__currentM.value = startY == endY ? testX : testY;
+                                this.__currentM.angle = tileAngle;
+                                /*
+                                 if (this.letter === 'b') {
+            
+                                 console.log(
+                                 "tilechunkx", tileChunkX,
+                                 "tilechunky", tileChunkY,
+            
+                                 "interchunkx", interChunkX,
+                                 "interchunky", interChunkY,
+            
+                                 "tilex", tileX,
+                                 "tiley", tileY,
+            
+                                 "interTileX", interTileX,
+                                 "interTileY", interTileY,
+            
+                                 "startx", startX,
+                                 "endx", endX,
+            
+                                 "starty", startY,
+                                 "endy", endY,
+            
+                                 "testx", testX,
+                                 "testy", testY,
+            
+                                 "items",JSON.stringify(heightMap.Items)
+                                 );
+                                 }
+                                 */
+                                return this.__currentM;
                             }
                         }
                     }
-                    else {
-                        if (y1 < y2) {
-                            length = y2 - y1;
-                            if (curh[(__x)][__y] >= 2) {
-                                for (var i = 0; i < 128 * 2; i++) {
-                                    while (true) {
-                                        if (__y - i < 0) {
-                                            tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, Help_1.Help.mod((_y - 1), SonicManager_1.SonicManager.instance.sonicLevel.levelHeight));
-                                            this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
-                                            curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                            cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
-                                            __y += 128;
-                                        }
-                                        else
-                                            break;
-                                    }
-                                    if (curh[__x][__y - i] > 1 || SonicManager_1.SonicManager.instance.sonicToon.checkCollisionWithObjects(x1, y1 - i, this.letter)) {
-                                        this.__currentM.value = y1 - i;
-                                        this.__currentM.angle = cura[(__x) / 16 | 0][(__y - i) / 16 | 0];
-                                        return this.__currentM;
-                                    }
-                                }
-                            }
-                            for (var i = 0; i < length; i++) {
-                                while (true) {
-                                    if (__y + i >= 128) {
-                                        tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, (_y + 1) % SonicManager_1.SonicManager.instance.sonicLevel.levelHeight);
-                                        this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
-                                        curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                        cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
-                                        __y -= 128;
-                                    }
-                                    else
-                                        break;
-                                }
-                                if (curh[__x][__y + i] >= 1 || SonicManager_1.SonicManager.instance.sonicToon.checkCollisionWithObjects(x1, y1 + i, this.letter)) {
-                                    if (curh[__x][__y + i] == 1 && SonicManager_1.SonicManager.instance.sonicToon.inAir && SonicManager_1.SonicManager.instance.sonicToon.ysp < 0)
-                                        continue;
-                                    this.__currentM.value = y1 + i;
-                                    this.__currentM.angle = cura[(__x) / 16 | 0][(__y + i) / 16 | 0];
-                                    return this.__currentM;
-                                }
-                            }
-                        }
-                        else {
-                            length = y1 - y2;
-                            if (curh[(__x)][__y] >= 2) {
-                                for (var i = 0; i < 128 * 2; i++) {
-                                    while (true) {
-                                        if (__y + i >= 128) {
-                                            tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, (_y + 1) % SonicManager_1.SonicManager.instance.sonicLevel.levelHeight);
-                                            this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
-                                            curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                            cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
-                                            __y -= 128;
-                                        }
-                                        else
-                                            break;
-                                    }
-                                    if (curh[__x][__y + i] >= 1 || SonicManager_1.SonicManager.instance.sonicToon.checkCollisionWithObjects(x1, y1 + i, this.letter)) {
-                                        this.__currentM.value = y1 + i;
-                                        this.__currentM.angle = cura[(__x) / 16 | 0][(__y + i) / 16 | 0];
-                                        return this.__currentM;
-                                    }
-                                }
-                            }
-                            for (var i = 0; i < length; i++) {
-                                while (true) {
-                                    if (__y - i < 0) {
-                                        tc = SonicManager_1.SonicManager.instance.sonicLevel.getChunkAt(_x, Help_1.Help.mod((_y - 1), SonicManager_1.SonicManager.instance.sonicLevel.levelHeight));
-                                        this.manager.buildChunk(tc, SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap);
-                                        curh = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.HeightBlocks1 : tc.HeightBlocks2;
-                                        cura = SonicManager_1.SonicManager.instance.sonicLevel.curHeightMap ? tc.AngleMap1 : tc.AngleMap2;
-                                        __y += 128;
-                                    }
-                                    else
-                                        break;
-                                }
-                                if (curh[__x][__y - i] > 1 || SonicManager_1.SonicManager.instance.sonicToon.checkCollisionWithObjects(x1, y1 + i, this.letter)) {
-                                    this.__currentM.value = y1 - i;
-                                    this.__currentM.angle = cura[(__x) / 16 | 0][(__y - i) / 16 | 0];
-                                    return this.__currentM;
-                                }
-                            }
-                        }
-                    }
+                    /*
+                     let length = 0;
+                     if (startY == endY) {//left right sensor
+            
+                     if (Math.max(startX, endX) > SonicManager.instance.sonicLevel.levelWidth * 128) {
+                     //edge of a level
+                     this.__currentM.value = SonicManager.instance.sonicLevel.levelWidth * 128 - 20;
+                     this.__currentM.angle = 0xff;
+                     return this.__currentM;
+                     }
+            
+            
+                     if (startX < endX) {//facing left sensor
+                     length = endX - startX;
+                     if (startHeightMap[(startInterChunkX)][startInterChunkY] >= <Solidity>2) {
+                     for (let i = 0; i < 128 * 2; i++) {
+                     while (true) {
+                     if (startInterChunkX - i < 0) {
+                     if (startTileChunkX - 1 < 0) {
+                     this.__currentM.value = 0;
+                     this.__currentM.angle = 0xFF;
+                     return this.__currentM;
+                     }
+                     startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX - 1, startTileChunkY);
+                     this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
+                     startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
+                     startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
+                     startInterChunkX += 128;
+                     }
+                     else break;
+                     }
+                     if (startHeightMap[(startInterChunkX - i)][startInterChunkY] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX - i, startY, this.letter)) {
+                     this.__currentM.value = startX - i;
+                     this.__currentM.angle = startTileAngle[(startInterChunkX - i) / 16 | 0][(startInterChunkY) / 16 | 0];
+                     return this.__currentM;
+                     }
+                     }
+                     }
+                     for (let i = 0; i < length; i++) {
+                     while (true) {
+                     if (startInterChunkX + i >= 128) {
+                     startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX + 1, startTileChunkY);
+                     this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
+                     startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
+                     startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
+                     startInterChunkX -= 128;
+                     }
+                     else break;
+                     }
+                     if (startHeightMap[(startInterChunkX + i)][startInterChunkY] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX + i, startY, this.letter)) {
+                     this.__currentM.value = startX + i;
+                     this.__currentM.angle = startTileAngle[(startInterChunkX + i) / 16 | 0][(startInterChunkY) / 16 | 0];
+                     return this.__currentM;
+                     }
+                     }
+                     }
+                     else {//facing right sensor
+                     length = startX - endX;
+                     if (startHeightMap[(startInterChunkX)][startInterChunkY] >= <Solidity>2) {
+                     for (let i = 0; i < 128 * 2; i++) {
+                     while (true) {
+                     if (startInterChunkX + i >= 128) {
+                     startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX + 1, startTileChunkY);
+                     this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
+                     startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
+                     startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
+                     startInterChunkX -= 128;
+                     }
+                     else break;
+                     }
+                     if (startHeightMap[(startInterChunkX + i)][startInterChunkY] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX + i, startY, this.letter)) {
+                     this.__currentM.value = startX + i;
+                     this.__currentM.angle = startTileAngle[(startInterChunkX + i) / 16 | 0][(startInterChunkY) / 16 | 0];
+                     return this.__currentM;
+                     }
+                     }
+                     }
+                     for (let i = 0; i < length; i++) {
+                     while (true) {
+                     if (startInterChunkX - i < 0) {
+                     if (startTileChunkX - 1 < 0) {
+                     this.__currentM.value = 0;
+                     this.__currentM.angle = 0xFF;
+                     return this.__currentM;
+                     }
+                     startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX - 1, startTileChunkY);
+                     this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
+                     startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
+                     startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
+                     startInterChunkX += 128;
+                     }
+                     else break;
+                     }
+                     if (startHeightMap[(startInterChunkX - i)][startInterChunkY] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX - i, startY, this.letter)) {
+                     this.__currentM.value = startX - i;
+                     this.__currentM.angle = startTileAngle[(startInterChunkX - i) / 16 | 0][(startInterChunkY) / 16 | 0];
+                     return this.__currentM;
+                     }
+                     }
+                     }
+                     }
+                     else {//up down sensor
+                     if (startY < endY) {//upward sensor
+                     length = endY - startY;
+                     if (startHeightMap[(startInterChunkX)][startInterChunkY] >= <Solidity>2) {
+                     for (let i = 0; i < 128 * 2; i++) {
+                     while (true) {
+                     if (startInterChunkY - i < 0) {
+                     startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX, Help.mod((startTileChunkY - 1), SonicManager.instance.sonicLevel.levelHeight));
+                     this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
+                     startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
+                     startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
+                     startInterChunkY += 128;
+                     }
+                     else break;
+                     }
+                     if (startHeightMap[startInterChunkX][startInterChunkY - i] > <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX, startY - i, this.letter)) {
+                     this.__currentM.value = startY - i;
+                     this.__currentM.angle = startTileAngle[(startInterChunkX) / 16 | 0][(startInterChunkY - i) / 16 | 0];
+                     return this.__currentM;
+                     }
+                     }
+                     }
+                     for (let i = 0; i < length; i++) {
+                     while (true) {
+                     if (startInterChunkY + i >= 128) {
+                     startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX, (startTileChunkY + 1) % SonicManager.instance.sonicLevel.levelHeight);
+                     this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
+                     startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
+                     startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
+                     startInterChunkY -= 128;
+                     }
+                     else break;
+                     }
+                     if (startHeightMap[startInterChunkX][startInterChunkY + i] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX, startY + i, this.letter)) {
+                     if (startHeightMap[startInterChunkX][startInterChunkY + i] == <Solidity>1 && SonicManager.instance.sonicToon.inAir && SonicManager.instance.sonicToon.ysp < 0)
+                     continue;
+                     this.__currentM.value = startY + i;
+                     this.__currentM.angle = startTileAngle[(startInterChunkX) / 16 | 0][(startInterChunkY + i) / 16 | 0];
+                     return this.__currentM;
+                     }
+                     }
+                     }
+                     else {//downward sensor
+                     length = startY - endY;
+                     if (startHeightMap[(startInterChunkX)][startInterChunkY] >= <Solidity>2) {
+                     for (let i = 0; i < 128 * 2; i++) {
+                     while (true) {
+                     if (startInterChunkY + i >= 128) {
+                     startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX, (startTileChunkY + 1) % SonicManager.instance.sonicLevel.levelHeight);
+                     this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
+                     startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
+                     startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
+                     startInterChunkY -= 128;
+                     }
+                     else break;
+                     }
+                     if (startHeightMap[startInterChunkX][startInterChunkY + i] >= <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX, startY + i, this.letter)) {
+                     this.__currentM.value = startY + i;
+                     this.__currentM.angle = startTileAngle[(startInterChunkX) / 16 | 0][(startInterChunkY + i) / 16 | 0];
+                     return this.__currentM;
+                     }
+                     }
+                     }
+                     for (let i = 0; i < length; i++) {
+                     while (true) {
+                     if (startInterChunkY - i < 0) {
+                     startChunk = SonicManager.instance.sonicLevel.getChunkAt(startTileChunkX, Help.mod((startTileChunkY - 1), SonicManager.instance.sonicLevel.levelHeight));
+                     this.manager.buildChunk(startChunk, SonicManager.instance.sonicLevel.curHeightMap);
+                     startHeightMap = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.HeightBlocks1 : startChunk.HeightBlocks2;
+                     startTileAngle = SonicManager.instance.sonicLevel.curHeightMap ? startChunk.AngleMap1 : startChunk.AngleMap2;
+                     startInterChunkY += 128;
+                     }
+                     else break;
+                     }
+                     if (startHeightMap[startInterChunkX][startInterChunkY - i] > <Solidity>1 || SonicManager.instance.sonicToon.checkCollisionWithObjects(startX, startY + i, this.letter)) {
+                     this.__currentM.value = startY - i;
+                     this.__currentM.angle = startTileAngle[(startInterChunkX) / 16 | 0][(startInterChunkY - i) / 16 | 0];
+                     return this.__currentM;
+                     }
+                     }
+                     }
+                     }
+                     */
                     return null;
                 };
                 Sensor.prototype.draw = function (canvas, character, sensorResult) {

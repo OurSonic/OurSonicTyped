@@ -16,25 +16,25 @@ export class TilePieceInfo {
     public Solid2: Solidity=Solidity.NotSolid;
     
     public Index: number=0;
-    public GetTilePiece(): TilePiece {
+    public getTilePiece(): TilePiece {
         return SonicManager.instance.sonicLevel.getTilePiece(this.Block);
     }
-    public SetTilePiece(tp: TilePiece): boolean {
+    public setTilePiece(tp: TilePiece): boolean {
         if (this.Block == tp.Index)
             return false;
         this.Block = tp.Index;
         return true;
     }
-    public GetLayer1Angles(): number {
+    public getLayer1Angles(): number {
         return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes1[this.Block]];
     }
-    public GetLayer2Angles(): number {
+    public getLayer2Angles(): number {
         return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes2[this.Block]];
     }
-    public GetLayer1HeightMaps(): HeightMap {
+    public getLayer1HeightMaps(): HeightMap {
         return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes1[this.Block]];
     }
-    public GetLayer2HeightMaps(): HeightMap {
+    public getLayer2HeightMaps(): HeightMap {
         return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes2[this.Block]];
     }
 }

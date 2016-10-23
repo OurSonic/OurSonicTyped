@@ -23,16 +23,16 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                     this.myLocalPoint = new Utils_1.Point(0, 0);
                     this.IsOnlyBackground = null;
                 }
-                TileChunk.prototype.GetTilePieceAt = function (x, y, large) {
-                    return this.GetTilePieceInfo(x, y, large).GetTilePiece();
+                TileChunk.prototype.getTilePieceAt = function (x, y, large) {
+                    return this.getTilePieceInfo(x, y, large).getTilePiece();
                 };
-                TileChunk.prototype.SetTilePieceAt = function (x, y, tp, large) {
-                    if (this.GetTilePieceInfo(x, y, large).SetTilePiece(tp))
+                TileChunk.prototype.setTilePieceAt = function (x, y, tp, large) {
+                    if (this.getTilePieceInfo(x, y, large).setTilePiece(tp))
                         this.clearCache();
                 };
-                TileChunk.prototype.GetTilePieceInfo = function (x, y, large) {
+                TileChunk.prototype.getTilePieceInfo = function (x, y, large) {
                     if (large) {
-                        return this.TilePieces[(x / TileChunk.TilePiecesSquareSize) | 0][(y / TileChunk.TilePiecesSquareSize) | 0];
+                        return this.TilePieces[(x / TileChunk.tilePiecesSquareSize) | 0][(y / TileChunk.tilePiecesSquareSize) | 0];
                     }
                     else {
                         return this.TilePieces[x][y];
@@ -79,7 +79,7 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                     var __result = [];
                     for (var pieceY = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
                         for (var pieceX = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
-                            var tilePiece = this.TilePieces[pieceX][pieceY].GetTilePiece();
+                            var tilePiece = this.TilePieces[pieceX][pieceY].getTilePiece();
                             if (tilePiece != null) {
                                 __result.push(tilePiece);
                             }
@@ -175,7 +175,7 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                     for (var pieceY = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
                         for (var pieceX = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
                             var pieceInfo = this.TilePieces[pieceX][pieceY];
-                            var piece = pieceInfo.GetTilePiece();
+                            var piece = pieceInfo.getTilePiece();
                             if (piece == null)
                                 continue;
                             if (piece.AnimatedPaletteIndexes.indexOf(animatedPaletteIndex) == -1)
@@ -192,7 +192,7 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                     for (var pieceY = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
                         for (var pieceX = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
                             var pieceInfo = this.TilePieces[pieceX][pieceY];
-                            var piece = pieceInfo.GetTilePiece();
+                            var piece = pieceInfo.getTilePiece();
                             if (piece == null)
                                 continue;
                             if (piece.AnimatedTileIndexes.indexOf(animatedTileIndex) == -1)
@@ -209,7 +209,7 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                     for (var pieceY = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
                         for (var pieceX = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
                             var pieceInfo = this.TilePieces[pieceX][pieceY];
-                            var piece = pieceInfo.GetTilePiece();
+                            var piece = pieceInfo.getTilePiece();
                             if (piece == null)
                                 continue;
                             if (layer == Enums_1.ChunkLayerState.Low ? (piece.OnlyForeground()) : (piece.OnlyBackground()))
@@ -251,8 +251,8 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                 TileChunk.prototype.cacheBase = function (layer) {
                     if (layer == Enums_1.ChunkLayerState.Low ? (this.OnlyForeground()) : (this.onlyBackground()))
                         return;
-                    this.baseCanvasCache[layer] = CanvasInformation_1.CanvasInformation.create(TileChunk.TilePieceSideLength * TileChunk.TilePiecesSquareSize, TileChunk.TilePieceSideLength * TileChunk.TilePiecesSquareSize, false);
-                    this.drawTilePiecesBase(this.baseCanvasCache[layer].Context, layer, TileChunk.TilePiecesSquareSize);
+                    this.baseCanvasCache[layer] = CanvasInformation_1.CanvasInformation.create(TileChunk.TilePieceSideLength * TileChunk.tilePiecesSquareSize, TileChunk.TilePieceSideLength * TileChunk.tilePiecesSquareSize, false);
+                    this.drawTilePiecesBase(this.baseCanvasCache[layer].Context, layer, TileChunk.tilePiecesSquareSize);
                 };
                 TileChunk.prototype.cachePaletteAnimation = function (layer) {
                     var paletteAnimationCanvases = this.paletteAnimationCanvasesCache[layer];
@@ -264,17 +264,17 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                         }
                         var paletteAnimationCanvasFrames = paletteAnimationCanvases[paletteAnimationIndex] = new PaletteAnimationCanvasFrames(paletteAnimationIndex);
                         var tilePaletteAnimation = SonicManager_1.SonicManager.instance.tilePaletteAnimationManager.Animations[paletteAnimationIndex];
-                        paletteAnimationCanvasFrames.position = new Utils_1.Point(rect.x * TileChunk.TilePiecesSquareSize, rect.y * TileChunk.TilePiecesSquareSize);
+                        paletteAnimationCanvasFrames.position = new Utils_1.Point(rect.x * TileChunk.tilePiecesSquareSize, rect.y * TileChunk.tilePiecesSquareSize);
                         for (var _b = 0, _c = tilePaletteAnimation.Frames; _b < _c.length; _b++) {
                             var currentFrame = _c[_b];
                             tilePaletteAnimation.CurrentFrame = currentFrame.FrameIndex;
                             var paletteAnimationCanvasFrame = paletteAnimationCanvasFrames.frames[currentFrame.FrameIndex] = new PaletteAnimationCanvasFrame();
                             currentFrame.SetPalette();
-                            var tilePaletteCanvas = CanvasInformation_1.CanvasInformation.create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
+                            var tilePaletteCanvas = CanvasInformation_1.CanvasInformation.create(rect.Width * TileChunk.tilePiecesSquareSize, rect.Height * TileChunk.tilePiecesSquareSize, false);
                             paletteAnimationCanvasFrame.canvas = tilePaletteCanvas;
                             paletteAnimationCanvasFrame.canvas.Context.save();
-                            paletteAnimationCanvasFrame.canvas.Context.translate(-rect.x * TileChunk.TilePiecesSquareSize, -rect.y * TileChunk.TilePiecesSquareSize);
-                            this.drawTilePiecesAnimatedPalette(tilePaletteCanvas.Context, layer, TileChunk.TilePiecesSquareSize, paletteAnimationIndex);
+                            paletteAnimationCanvasFrame.canvas.Context.translate(-rect.x * TileChunk.tilePiecesSquareSize, -rect.y * TileChunk.tilePiecesSquareSize);
+                            this.drawTilePiecesAnimatedPalette(tilePaletteCanvas.Context, layer, TileChunk.tilePiecesSquareSize, paletteAnimationIndex);
                             paletteAnimationCanvasFrame.canvas.Context.restore();
                             currentFrame.ClearPalette();
                         }
@@ -291,16 +291,16 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                         }
                         var tileAnimationCanvasFrames = tileAnimationCanvases[tileAnimationIndex] = new TileAnimationCanvasFrames(tileAnimationIndex);
                         var tileAnimation = SonicManager_1.SonicManager.instance.tileAnimationManager.Animations[tileAnimationIndex];
-                        tileAnimationCanvasFrames.position = new Utils_1.Point(rect.x * TileChunk.TilePiecesSquareSize, rect.y * TileChunk.TilePiecesSquareSize);
+                        tileAnimationCanvasFrames.position = new Utils_1.Point(rect.x * TileChunk.tilePiecesSquareSize, rect.y * TileChunk.tilePiecesSquareSize);
                         for (var _b = 0, _c = tileAnimation.frames; _b < _c.length; _b++) {
                             var currentFrame = _c[_b];
                             var tileAnimationCanvasFrame = tileAnimationCanvasFrames.frames[currentFrame.frameIndex] = new TileAnimationCanvasFrame();
-                            var tileTileCanvas = CanvasInformation_1.CanvasInformation.create(rect.Width * TileChunk.TilePiecesSquareSize, rect.Height * TileChunk.TilePiecesSquareSize, false);
+                            var tileTileCanvas = CanvasInformation_1.CanvasInformation.create(rect.Width * TileChunk.tilePiecesSquareSize, rect.Height * TileChunk.tilePiecesSquareSize, false);
                             tileAnimationCanvasFrame.canvas = tileTileCanvas;
                             tileAnimation.currentFrame = currentFrame.frameIndex;
                             tileAnimationCanvasFrame.canvas.Context.save();
-                            tileAnimationCanvasFrame.canvas.Context.translate(-rect.x * TileChunk.TilePiecesSquareSize, -rect.y * TileChunk.TilePiecesSquareSize);
-                            this.drawTilePiecesAnimatedTile(tileTileCanvas.Context, layer, TileChunk.TilePiecesSquareSize, tileAnimationIndex);
+                            tileAnimationCanvasFrame.canvas.Context.translate(-rect.x * TileChunk.tilePiecesSquareSize, -rect.y * TileChunk.tilePiecesSquareSize);
+                            this.drawTilePiecesAnimatedTile(tileTileCanvas.Context, layer, TileChunk.tilePiecesSquareSize, tileAnimationIndex);
                             tileAnimationCanvasFrame.canvas.Context.restore();
                         }
                         tileAnimation.currentFrame = 0;
@@ -314,7 +314,7 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                     for (var pieceY = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
                         for (var pieceX = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
                             var pieceInfo = this.TilePieces[pieceX][pieceY];
-                            var piece = pieceInfo.GetTilePiece();
+                            var piece = pieceInfo.getTilePiece();
                             if (piece == null)
                                 continue;
                             if (layer == Enums_1.ChunkLayerState.Low ? (piece.OnlyForeground()) : (piece.OnlyBackground()))
@@ -342,7 +342,7 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                     var highestY = -10000000;
                     for (var pieceY = 0; pieceY < TileChunk.TilePieceSideLength; pieceY++) {
                         for (var pieceX = 0; pieceX < TileChunk.TilePieceSideLength; pieceX++) {
-                            var piece = this.TilePieces[pieceX][pieceY].GetTilePiece();
+                            var piece = this.TilePieces[pieceX][pieceY].getTilePiece();
                             if (piece == null)
                                 continue;
                             if (layer == Enums_1.ChunkLayerState.Low ? (piece.OnlyForeground()) : (piece.OnlyBackground()))
@@ -415,10 +415,10 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                         }
                     }
                     if (debugDrawOptions.outlineTilePieces) {
-                        canvas.strokeStyle = "purple";
                         for (var x = 0; x < TileChunk.TilePieceSideLength; x++) {
                             for (var y = 0; y < TileChunk.TilePieceSideLength; y++) {
-                                canvas.strokeRect(position.x + (x * TileChunk.TilePiecesSquareSize), position.y + (y * TileChunk.TilePiecesSquareSize), TileChunk.TilePiecesSquareSize, TileChunk.TilePiecesSquareSize);
+                                canvas.strokeStyle = "purple";
+                                canvas.strokeRect(position.x + (x * TileChunk.tilePiecesSquareSize), position.y + (y * TileChunk.tilePiecesSquareSize), TileChunk.tilePiecesSquareSize, TileChunk.tilePiecesSquareSize);
                             }
                         }
                     }
@@ -428,14 +428,14 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                         canvas.strokeStyle = "yellow";
                         for (var x = 0; x < TileChunk.TilePieceSideLength; x++) {
                             for (var y = 0; y < TileChunk.TilePieceSideLength; y++) {
-                                var tilePieceInfo = this.GetTilePieceInfo(x, y, false);
+                                var tilePieceInfo = this.getTilePieceInfo(x, y, false);
                                 if (tilePieceInfo == null)
                                     continue;
-                                var tilePiece = tilePieceInfo.GetTilePiece();
+                                var tilePiece = tilePieceInfo.getTilePiece();
                                 if (tilePiece == null)
                                     continue;
                                 if (tilePiece.Index == debugDrawOptions.outlineTilePiece.Block) {
-                                    canvas.strokeRect(position.x + (x * TileChunk.TilePiecesSquareSize), position.y + (y * TileChunk.TilePiecesSquareSize), TileChunk.TilePiecesSquareSize, TileChunk.TilePiecesSquareSize);
+                                    canvas.strokeRect(position.x + (x * TileChunk.tilePiecesSquareSize), position.y + (y * TileChunk.tilePiecesSquareSize), TileChunk.tilePiecesSquareSize, TileChunk.tilePiecesSquareSize);
                                 }
                             }
                         }
@@ -526,9 +526,9 @@ System.register(["../../../common/Utils", "../../SonicManager", "../../../common
                     canvas.Context.fillText("Number Of Chunks: " + numOfChunks, 50, 50);
                     return canvas;
                 };
-                TileChunk.TilePiecesSquareSize = 16;
+                TileChunk.tilePiecesSquareSize = 16;
                 TileChunk.TileSquareSize = 8;
-                TileChunk.Size = TileChunk.TilePiecesSquareSize * TileChunk.TilePieceSideLength;
+                TileChunk.Size = TileChunk.tilePiecesSquareSize * TileChunk.TilePieceSideLength;
                 TileChunk.TilePieceSideLength = 8;
                 TileChunk.TileSideLength = 16;
                 return TileChunk;
