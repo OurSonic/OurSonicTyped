@@ -198,12 +198,12 @@ export class Sonic {
             if ((sensorA && sensorA.solidity == Solidity.TopSolid) &&
                 this.ysp < 0) {
                 sensorA = null;
-                this.sensorManager.sensorResults["a"]=null;
+                this.sensorManager.sensorResults["a"] = null;
             }
             if ((sensorB && sensorB.solidity == Solidity.TopSolid) &&
                 this.ysp < 0) {
                 sensorB = null;
-                this.sensorManager.sensorResults["b"]=null;
+                this.sensorManager.sensorResults["b"] = null;
             }
 
 
@@ -723,7 +723,18 @@ export class Sonic {
                 canvas.scale(-1, 1);
                 if (!this.currentlyBall && !this.spinDash)
                     canvas.rotate(-Help.fixAngle(this.angle));
-                canvas.drawImage(cur, -cur.width / 2, -cur.height / 2);
+
+                var offsetX = 0;
+                console.log(this.spriteState,!this.facing);
+                if (this.spriteState == 'duck0') {
+                    offsetX = 6;
+                }
+                else if (this.spriteState == 'duck1') {
+                    offsetX = 7;
+                }
+
+
+                canvas.drawImage(cur, -cur.width / 2 + offsetX, -cur.height / 2);
                 if (this.spinDash) {
                     canvas.drawImage(SonicManager.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager.instance.drawTickCount % 14) / 2 | 0))],
                         (-cur.width / 2) - 19,
@@ -735,7 +746,17 @@ export class Sonic {
             else {
                 if (!this.currentlyBall && !this.spinDash)
                     canvas.rotate(Help.fixAngle(this.angle));
-                canvas.drawImage(cur, -cur.width / 2, -cur.height / 2);
+
+                var offsetX=0;
+                console.log(this.spriteState);
+                if(this.spriteState=='duck0'){
+                    offsetX=6;
+                }
+                else if(this.spriteState=='duck1'){
+                    offsetX=6;
+                }
+
+                canvas.drawImage(cur, -cur.width / 2+offsetX, -cur.height / 2);
                 if (this.spinDash) {
                     canvas.drawImage(SonicManager.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager.instance.drawTickCount % 14) / 2 | 0))],
                         (-cur.width / 2) - 19,

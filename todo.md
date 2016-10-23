@@ -9,7 +9,6 @@ tile editor
 level editor
 tiles
 scripting
-fix crouching animation
 tutorial on keys freemove and shit
 gamepad for mobile
 jump fronm an angle
@@ -29,3 +28,4 @@ junkless tick
 '/ fix collision code
 '/ jumping into a angle
 '/ add fps
+'/ fix crouching animation
