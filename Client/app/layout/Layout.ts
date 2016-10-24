@@ -4,7 +4,6 @@ import 'rxjs/Rx';
 @Component({
     selector: 'layout',
     templateUrl: 'app/layout/layout.html',
-//    viewProviders:[ObjectSelector,LevelSelector]
 })
 export class Layout {
     tabItems: {label: string,image: string}[] = [];
