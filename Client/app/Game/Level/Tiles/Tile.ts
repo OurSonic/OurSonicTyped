@@ -22,7 +22,7 @@ export class Tile {
         if (this.animatedTileIndexes != null && (!isAnimatedTile && this.animatedTileIndexes.length > 0))
             return;
         let baseCacheIndex = this.getBaseCacheIndex(xflip, yflip, palette);
-        let baseCache: CanvasInformation = this.baseCaches[baseCacheIndex];
+        let baseCache = this.baseCaches[baseCacheIndex];
         if (baseCache == null) {
         let squareSize = this.colors.length;
             let j: CanvasInformation;
@@ -102,7 +102,7 @@ export class Tile {
     }
     public drawAnimatedTile(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, palette: number, animatedTileIndex: number): void {
         if (this.animatedTileIndexes.indexOf(animatedTileIndex) == -1)
-            return
+            return;
         let tileAnimationFrame = SonicManager.instance.tileAnimationManager.getCurrentFrame(animatedTileIndex);
         let tileAnimation = tileAnimationFrame.animation;
         let tileAnimationData = tileAnimation.animatedTileData;

@@ -7,8 +7,8 @@ tile chunk editor
 tile peice editor
 tile editor
 level editor
-tiles
-scripting
+    tiles
+    scripting
 tutorial on keys freemove and shit
 gamepad for mobile
 jump fronm an angle

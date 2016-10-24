@@ -35,15 +35,15 @@ export class SonicEngine {
     constructor() {
         SonicEngine.instance = this;
 
-        this.fpsMeter = new (<any>window).FPSMeter({
+        this.fpsMeter = new (<any>window).FPSMeter(document.getElementById('canvasBox'),{
             right:'5px',
             left:'auto',
             heat:1
         });
 
-        this.lowTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('lowTileLayer'), 320, 240, true);
-        this.spriteCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('spriteLayer'), 320, 240, true);
-        this.highTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('highTileLayer'), 320, 240, true);
+        this.lowTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('lowTileLayer'), 320, 224, true);
+        this.spriteCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('spriteLayer'), 320, 224, true);
+        this.highTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('highTileLayer'), 320, 224, true);
 
 
         this.canvasWidth = 0;
@@ -234,6 +234,8 @@ export class SonicEngine {
         this.highTileCanvas.domCanvas.bind("touchend", (e:JQueryEventObject) => this.canvasMouseUp(e));
         this.highTileCanvas.domCanvas.bind("touchmove", (e:JQueryEventObject) => this.canvasMouseMove(e));
         this.highTileCanvas.domCanvas.bind("contextmenu", (e) => e.preventDefault());
+
+        // (<any>keyboardJS).watch(document.getElementById('canvasBox'));
         keyboardJS.bind("f",
             () => {
                 this.sonicManager.showHeightMap = !this.sonicManager.showHeightMap;
@@ -419,7 +421,7 @@ export class SonicEngine {
 
     }
 
-    LoadLevel(data:string):void {
+    loadLevel(data:string):void {
         let l = JSON.parse(Help.decodeString(data));
         SonicEngine.instance.RunSonic(l);
     }
@@ -494,9 +496,9 @@ export class SonicEngine {
     }
 
     public clear():void {
-        this.lowTileCanvas.context.clearRect(0,0,320,240);
-        this.spriteCanvas.context.clearRect(0,0,320,240);
-        this.highTileCanvas.context.clearRect(0,0,320,240);
+        this.lowTileCanvas.context.clearRect(0,0,320,224);
+        this.spriteCanvas.context.clearRect(0,0,320,224);
+        this.highTileCanvas.context.clearRect(0,0,320,224);
 
 
     }

@@ -83,7 +83,7 @@ export class SonicManager {
         this.engine.canvasWidth = $(window).width();
         this.engine.canvasHeight = $(window).height();
 
-        jQuery.getJSON("assets/content/sprites/sonic.js", (data: { [key: string]: SonicImage }) => {
+        jQuery.getJSON("assets/content/sprites/sonic.json", (data: { [key: string]: SonicImage }) => {
             this.sonicSprites = data;
         });
         this.objectManager = new ObjectManager(this);
@@ -423,18 +423,11 @@ export class SonicManager {
     }
 
     public ResetCanvases(): void {
-        this.spriteCanvas.context.clearRect(0, 0, 320, 240);
-        this.highTileCanvas.context.clearRect(0, 0, 320, 240);
-        this.lowTileCanvas.context.clearRect(0, 0, 320, 240);
+        this.spriteCanvas.context.clearRect(0, 0, 320, 224);
+        this.highTileCanvas.context.clearRect(0, 0, 320, 224);
+        this.lowTileCanvas.context.clearRect(0, 0, 320, 224);
     }
 
-    /*
-     public DestroyCanvases(): void {
-     this.lowChunkCanvas = null;
-     this.sonicCanvas = null;
-     this.highChuckCanvas = null;
-     }
-     */
 
     private static getOffs(w1: number, h1: number): Point[] {
         let hash: number = (w1 + 1) * (h1 + 1);

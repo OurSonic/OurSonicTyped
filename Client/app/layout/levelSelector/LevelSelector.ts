@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {WindowComponent} from "../windowComponent/WindowComponent";
+import {Component, OnInit, Input} from '@angular/core';
 import {LevelService, SonicLevelData} from "../services/LevelService";
 import {SonicEngine} from "../../game/SonicEngine";
+import {TileAnimationLayout} from "../tileAnimationLayout/TileAnimationLayout";
+import {Layout} from "../Layout";
 
 @Component({
     selector: 'level-selector',
@@ -10,9 +11,8 @@ import {SonicEngine} from "../../game/SonicEngine";
     providers: [LevelService]
 })
 export class LevelSelector implements OnInit {
+    @Input() public layout: Layout;
     levels: SonicLevelData[];
-    loading: boolean = false;
-    isMinimized:boolean=false;
     constructor(private _levelService: LevelService) {
     }
 
@@ -23,16 +23,13 @@ export class LevelSelector implements OnInit {
     }
 
     public loadLevel(level: SonicLevelData): void {
-        this.loading = true;
+        this.layout.loading = true;
+
+        document.getElementById('canvasBox').focus();
         this._levelService.getLevel(level.name).subscribe(level => {
-            SonicEngine.instance.LoadLevel(level);
-            this.isMinimized = true;
-            this.loading = false;
+            SonicEngine.instance.loadLevel(level);
+            // TileAnimationLayout.instance.loadLevel(SonicEngine.instance.sonicManager);
+            this.layout.loading = false;
         });
-    }
-
-
-    public closedWindow(done: boolean): void {
-        console.log(done);
     }
 }

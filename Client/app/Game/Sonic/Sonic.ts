@@ -725,7 +725,6 @@ export class Sonic {
                     canvas.rotate(-Help.fixAngle(this.angle));
 
                 var offsetX = 0;
-                console.log(this.spriteState,!this.facing);
                 if (this.spriteState == 'duck0') {
                     offsetX = 6;
                 }
@@ -748,7 +747,6 @@ export class Sonic {
                     canvas.rotate(Help.fixAngle(this.angle));
 
                 var offsetX=0;
-                console.log(this.spriteState);
                 if(this.spriteState=='duck0'){
                     offsetX=6;
                 }
@@ -843,18 +841,22 @@ export class Sonic {
     }
 
     public pressUp(): void {
+        if(this.holdingLeft || this.holdingRight)return;
         this.holdingUp = true;
     }
 
     public releaseUp(): void {
+        if(this.holdingLeft || this.holdingRight)return;
         this.holdingUp = false;
     }
 
     public pressCrouch(): void {
+        if(this.holdingLeft || this.holdingRight)return;
         this.crouching = true;
     }
 
     public releaseCrouch(): void {
+        if(this.holdingLeft || this.holdingRight)return;
         this.crouching = false;
     }
 

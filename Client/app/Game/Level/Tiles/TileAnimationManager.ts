@@ -40,7 +40,7 @@ export class TileAnimation {
     constructor(manager: TileAnimationManager, animatedTileData: TileAnimationData) {
         this.manager = manager;
         this.animatedTileData = animatedTileData;
-        this.frames = new Array<TileAnimationFrame>();
+        this.frames = [];
         this.currentFrame = 0;
     }
     public getCurrentFrame(): TileAnimationFrame {

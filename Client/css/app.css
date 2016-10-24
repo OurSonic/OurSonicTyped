@@ -1,5 +1,8 @@
 ﻿.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+html {
+    font-family: GillSans, Calibri, Trebuchet, sans-serif;
+}
 
 html,
 body
