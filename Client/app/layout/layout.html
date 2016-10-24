@@ -27,7 +27,7 @@
                      (click)="tabClick(ind)"
                      [style.background-color]="ind==selectedTabIndex?'#29B6F6':'#81D4FA'">
                     <div>
-                        <img style="display:block; " width="94" height="94" [src]="item.image">
+                        <img style="display:block;image-rendering: pixelated;" width="94" height="94" [src]="item.image" >
                         <span style="text-align: center;">{{item.label}}</span>
                     </div>
                 </div>

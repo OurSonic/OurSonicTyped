@@ -26,7 +26,6 @@ export class Layout {
     tabClick(index: number) {
         this.selectedTabIndex = index;
         this.title = this.tabItems[this.selectedTabIndex].label;
-        console.log(this.selectedTabIndex);
     }
 
     collapse(value:boolean) {
