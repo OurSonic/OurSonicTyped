@@ -13,7 +13,7 @@ export class LevelService {
 
     getLevels():Observable<SonicLevelData[]> {
         return this.http.get(this._getLevelsUrl)
-            .map((res)=>res.json());
+            .map((res)=>res.json()) ;
     }
 
     getLevel(level:string):Observable<string> {
