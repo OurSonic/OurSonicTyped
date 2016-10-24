@@ -790,7 +790,6 @@ export class SonicManager {
 
     public downloadObjects(objects: string[]): void {
         $.getJSON('https://api.oursonic.org/objects?object-keys=' + objects.join('~')).then((data) => {
-            console.log(data);
             this.loadObjects(data);
         });
     }

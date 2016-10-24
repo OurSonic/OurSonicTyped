@@ -15,7 +15,7 @@ export class LevelService {
 
     getLevels(): Observable<SonicLevelData[]> {
         if (LevelService.storedLevels) {
-            return new Observable((observer)=> observer.next(LevelService.storedLevels));
+            return new Observable<SonicLevelData[]>((observer)=> observer.next(LevelService.storedLevels));
         } else {
             return this.http.get(this._getLevelsUrl)
                 .map((res)=>res.json())

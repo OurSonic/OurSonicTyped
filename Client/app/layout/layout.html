@@ -1,5 +1,6 @@
 
 <div class="col" style="padding :0; margin:0;position:relative;height:100vh;border:10px solid black;" [class.s8]="!collapseSide" [class.s12]="collapseSide" id="canvasBox">
+    <button style="width:1px;height:1px; left:-200px;top:-200px;position:absolute;" id="hiddenBox">a</button>
     <canvas id="lowTileLayer" width="320" height="224" class="game-canvas"></canvas>
     <canvas id="spriteLayer" width="320" height="224" class="game-canvas"></canvas>
     <canvas id="highTileLayer" width="320" height="224" class="game-canvas"></canvas>
@@ -8,7 +9,7 @@
 
 <div class="col s4" style="padding :0; margin:0;height:100vh;position:relative;" *ngIf="!collapseSide">
     <div style="width:100%;background-color:white;height:100%;">
-        <div class="row" style="padding :0; margin:0; height:100%;">
+        <div class="row" style="padding :0; margin:0; height:100%; background-color: #81D4FA">
 
 
             <div class="col s9" style="padding :0; margin:0;position:relative; height:100%; display:flex;flex-flow:column nowrap;">
@@ -21,7 +22,7 @@
 
 
 
-            <div class="col s3" style="padding :0; margin:0;position:relative;">
+            <div class="col s3" style="padding :0; margin:0;position:relative; ">
                 <div *ngFor="let item of tabItems; let ind = index;"
                      style="display:flex;justify-content:center;align-items:center;padding:15px; color:white;"
                      (click)="tabClick(ind)"

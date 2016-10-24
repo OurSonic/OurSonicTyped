@@ -25,7 +25,7 @@ export class LevelSelector implements OnInit {
     public loadLevel(level: SonicLevelData): void {
         this.layout.loading = true;
 
-        document.getElementById('canvasBox').focus();
+        document.getElementById('hiddenBox').focus();
         this._levelService.getLevel(level.name).subscribe(level => {
             SonicEngine.instance.loadLevel(level);
             // TileAnimationLayout.instance.loadLevel(SonicEngine.instance.sonicManager);

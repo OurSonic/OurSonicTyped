@@ -11,34 +11,34 @@ import {SLData} from "../SLData";
 import {Help} from "../common/Help";
 
 /*class _Point {
-    constructor(public x:number, public y:number) {
-    }
-}
-class _Line {
-    constructor(public p1:_Point, public p2:_Point) {
-    }
-}*/
+ constructor(public x:number, public y:number) {
+ }
+ }
+ class _Line {
+ constructor(public p1:_Point, public p2:_Point) {
+ }
+ }*/
 
 export class SonicEngine {
-    private wideScreen:boolean = true;
-    private fullscreenMode:boolean = false;
-    private lowTileCanvas:CanvasInformation;
-    private spriteCanvas:CanvasInformation;
-    private highTileCanvas:CanvasInformation;
-    private gameGoodWidth:number = 0;
-    public canvasWidth:number = 0;
-    public canvasHeight:number = 0;
-    public sonicManager:SonicManager;
-    public static instance:SonicEngine;
+    private wideScreen: boolean = true;
+    private fullscreenMode: boolean = false;
+    private lowTileCanvas: CanvasInformation;
+    private spriteCanvas: CanvasInformation;
+    private highTileCanvas: CanvasInformation;
+    private gameGoodWidth: number = 0;
+    public canvasWidth: number = 0;
+    public canvasHeight: number = 0;
+    public sonicManager: SonicManager;
+    public static instance: SonicEngine;
     private fpsMeter;
 
     constructor() {
         SonicEngine.instance = this;
 
-        this.fpsMeter = new (<any>window).FPSMeter(document.getElementById('canvasBox'),{
-            right:'5px',
-            left:'auto',
-            heat:1
+        this.fpsMeter = new (<any>window).FPSMeter(document.getElementById('canvasBox'), {
+            right: '5px',
+            left: 'auto',
+            heat: 1
         });
 
         this.lowTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('lowTileLayer'), 320, 224, true);
@@ -52,187 +52,191 @@ export class SonicEngine {
         this.fullscreenMode = true;
         window.addEventListener("resize", e => this.resizeCanvas(true));
         jQuery(document).resize(e => this.resizeCanvas(true));
-        this.sonicManager = new SonicManager(this, this.lowTileCanvas,this.spriteCanvas,this.highTileCanvas, () => this.resizeCanvas(true));
+        this.sonicManager = new SonicManager(this, this.lowTileCanvas, this.spriteCanvas, this.highTileCanvas, () => this.resizeCanvas(true));
         this.sonicManager.indexedPalette = 0;
-         window.setInterval(() => {
-             this.sonicManager.tick();
-             this.GameDraw();
-             this.fpsMeter.tick();
-         }, 1000 / 60);
+        window.setInterval(() => {
+            // var t0 = performance.now();
+            this.sonicManager.tick();
+            // var t1 = performance.now();
+            this.GameDraw();
+            // var t2 = performance.now();
+            // console.log('tick:', (t1 - t0), 'draw:', (t2 - t1));
+            this.fpsMeter.tick();
+        }, 1000 / 60);
         this.resizeCanvas(true);
-/*
-        (<any>window).GameController.init({
-            canvas:gameCanvasName,
-            left: {
-                type: 'joystick',
-                position: {
-                    bottom: '15%',
-                    left: '15%'
-                }
-            },
-            right: {
-                position: {
-                    right: '15%',
-                    bottom: '15%'
-                },
-                type: 'buttons',
-                buttons: [
-                    {
-                        label: 'jump',radius:'10%', fontSize: 13, touchStart:  ()=> {
-                        // do something
-                    }
-                    },
-                    false, false, false
-                ]
-            }
-        });
-*/
+        /*
+         (<any>window).GameController.init({
+         canvas:gameCanvasName,
+         left: {
+         type: 'joystick',
+         position: {
+         bottom: '15%',
+         left: '15%'
+         }
+         },
+         right: {
+         position: {
+         right: '15%',
+         bottom: '15%'
+         },
+         type: 'buttons',
+         buttons: [
+         {
+         label: 'jump',radius:'10%', fontSize: 13, touchStart:  ()=> {
+         // do something
+         }
+         },
+         false, false, false
+         ]
+         }
+         });
+         */
 
 
 //        this.startThing();
 
     }
 
-/*
-    private startThing() {
+    /*
+     private startThing() {
 
-        let points:_Point[] = [];
-        let lines:{p1:_Point,p2:_Point}[] = [];
+     let points:_Point[] = [];
+     let lines:{p1:_Point,p2:_Point}[] = [];
 
-        for (var i = 0; i < 5000; i++) {
-            points.push(new _Point(Math.random() * 1000 | 0, Math.random() * 1000 | 0));
-        }
+     for (var i = 0; i < 5000; i++) {
+     points.push(new _Point(Math.random() * 1000 | 0, Math.random() * 1000 | 0));
+     }
 
-        let allPoints:_Point[] = points.slice();
+     let allPoints:_Point[] = points.slice();
 
-        let nextPoint = allPoints[0];
-        allPoints.splice(0, 1);
+     let nextPoint = allPoints[0];
+     allPoints.splice(0, 1);
 
-        while (allPoints.length > 0) {
-            let closest = this.closests(nextPoint, allPoints);
-            lines.push(new _Line(nextPoint, closest));
-            allPoints.splice(allPoints.indexOf(closest), 1);
-            nextPoint = closest;
-        }
-
-
-  /*      while (allPoints.length > 0) {
-            let closest = allPoints[0];
-            lines.push(new _Line(nextPoint, closest));
-            allPoints.splice(allPoints.indexOf(closest), 1);
-            nextPoint = closest;
-        }#1#
+     while (allPoints.length > 0) {
+     let closest = this.closests(nextPoint, allPoints);
+     lines.push(new _Line(nextPoint, closest));
+     allPoints.splice(allPoints.indexOf(closest), 1);
+     nextPoint = closest;
+     }
 
 
-        lines.push(new _Line(nextPoint, lines[0].p1));
-        let dist = this.distance(lines);
-        this.draw(points, lines, dist);
-
-        let count = 0;
-        let md = setInterval(()=> {
-            count++;
-            if (count > 1000000) {
-                clearInterval(md);
-                console.log('done');
-
-                return;
-            }
-            for (let j = 0; j < 100; j++) {
-                var p1 = (Math.random() * points.length | 0);
-                var p2 = (Math.random() * points.length | 0);
-                if (p1 == p2)return;
-
-                var nLines = this.swap(lines, points[p1], points[p2]);
-                var nDist = this.distance(nLines);
-                if (nDist < dist) {
-                    dist=nDist;
-                    lines = nLines;
-                    console.log('swap');
-                    this.draw(points, lines, dist);
-                }
-            }
-        }, 1);
+     /*      while (allPoints.length > 0) {
+     let closest = allPoints[0];
+     lines.push(new _Line(nextPoint, closest));
+     allPoints.splice(allPoints.indexOf(closest), 1);
+     nextPoint = closest;
+     }#1#
 
 
-    }
+     lines.push(new _Line(nextPoint, lines[0].p1));
+     let dist = this.distance(lines);
+     this.draw(points, lines, dist);
 
-    private swap(lines:_Line[], p1:_Point, p2:_Point):_Line[] {
-        var nLines = lines.slice();
-        for (var i = 0; i < nLines.length; i++) {
-            var line = nLines[i];
-            if (line.p1 == p1) {
-                line.p1 = p2;
-            } else if (line.p1 == p2) {
-                line.p1 = p1;
-            }
+     let count = 0;
+     let md = setInterval(()=> {
+     count++;
+     if (count > 1000000) {
+     clearInterval(md);
+     console.log('done');
 
-            if (line.p2 == p1) {
-                line.p2 = p2;
-            } else if (line.p2 == p2) {
-                line.p2 = p1;
-            }
-        }
-        return nLines;
-    }
+     return;
+     }
+     for (let j = 0; j < 100; j++) {
+     var p1 = (Math.random() * points.length | 0);
+     var p2 = (Math.random() * points.length | 0);
+     if (p1 == p2)return;
+
+     var nLines = this.swap(lines, points[p1], points[p2]);
+     var nDist = this.distance(nLines);
+     if (nDist < dist) {
+     dist=nDist;
+     lines = nLines;
+     console.log('swap');
+     this.draw(points, lines, dist);
+     }
+     }
+     }, 1);
 
 
-    private closests(me:_Point, points:_Point[]):_Point {
-        var distance = 1000000000;
-        let good:_Point;
-        for (var j = 0; j < points.length; j++) {
-            var point = points[j];
-            var dis = this.pointDistance(me, point);
-            if (dis < distance) {
-                distance = dis;
-                good = points[j];
-            }
-        }
-        return good;
-    }
+     }
 
-    private pointDistance(p1:_Point, p2:_Point):number {
-        return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-    }
+     private swap(lines:_Line[], p1:_Point, p2:_Point):_Line[] {
+     var nLines = lines.slice();
+     for (var i = 0; i < nLines.length; i++) {
+     var line = nLines[i];
+     if (line.p1 == p1) {
+     line.p1 = p2;
+     } else if (line.p1 == p2) {
+     line.p1 = p1;
+     }
 
-    private distance(lines:_Line[]):number {
-        let dist = 0;
-        for (var i = 0; i < lines.length; i++) {
-            var line = lines[i];
-            dist += this.pointDistance(line.p1, line.p2);
-        }
-        return dist;
-    }
+     if (line.p2 == p1) {
+     line.p2 = p2;
+     } else if (line.p2 == p2) {
+     line.p2 = p1;
+     }
+     }
+     return nLines;
+     }
 
-    private draw(points:_Point[], lines:_Line[], dist:number) {
-        this.gameCanvas.canvas.width = this.gameCanvas.canvas.width;
-        this.gameCanvas.Context.save();
-        this.gameCanvas.Context.scale(1.5,1.5);
-        this.gameCanvas.Context.fillStyle = 'white';
-        for (var i = 0; i < points.length; i++) {
-            var point = points[i];
-            this.gameCanvas.Context.fillRect(point.x - 5, point.y - 5, 10, 10);
-        }
 
-        this.gameCanvas.Context.strokeStyle = 'red';
-        this.gameCanvas.Context.lineWidth = 3;
-        for (var i = 0; i < lines.length; i++) {
-            var line = lines[i];
-            this.gameCanvas.Context.moveTo(line.p1.x, line.p1.y);
-            this.gameCanvas.Context.lineTo(line.p2.x, line.p2.y);
-            this.gameCanvas.Context.stroke();
-        }
-        this.gameCanvas.Context.fillText(dist.toString(), 0, 30);
-        this.gameCanvas.Context.restore();
+     private closests(me:_Point, points:_Point[]):_Point {
+     var distance = 1000000000;
+     let good:_Point;
+     for (var j = 0; j < points.length; j++) {
+     var point = points[j];
+     var dis = this.pointDistance(me, point);
+     if (dis < distance) {
+     distance = dis;
+     good = points[j];
+     }
+     }
+     return good;
+     }
 
-    }*/
+     private pointDistance(p1:_Point, p2:_Point):number {
+     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+     }
 
-    private bindInput():void {
-        this.highTileCanvas.domCanvas.mousedown((e:JQueryEventObject) => this.canvasOnClick(e));
-        this.highTileCanvas.domCanvas.mouseup((e:JQueryEventObject) => this.canvasMouseUp(e));
-        this.highTileCanvas.domCanvas.mousemove((e:JQueryEventObject) => this.canvasMouseMove(e));
-        this.highTileCanvas.domCanvas.bind("touchstart", (e:JQueryEventObject) => this.canvasOnClick(e));
-        this.highTileCanvas.domCanvas.bind("touchend", (e:JQueryEventObject) => this.canvasMouseUp(e));
-        this.highTileCanvas.domCanvas.bind("touchmove", (e:JQueryEventObject) => this.canvasMouseMove(e));
+     private distance(lines:_Line[]):number {
+     let dist = 0;
+     for (var i = 0; i < lines.length; i++) {
+     var line = lines[i];
+     dist += this.pointDistance(line.p1, line.p2);
+     }
+     return dist;
+     }
+
+     private draw(points:_Point[], lines:_Line[], dist:number) {
+     this.gameCanvas.canvas.width = this.gameCanvas.canvas.width;
+     this.gameCanvas.Context.save();
+     this.gameCanvas.Context.scale(1.5,1.5);
+     this.gameCanvas.Context.fillStyle = 'white';
+     for (var i = 0; i < points.length; i++) {
+     var point = points[i];
+     this.gameCanvas.Context.fillRect(point.x - 5, point.y - 5, 10, 10);
+     }
+
+     this.gameCanvas.Context.strokeStyle = 'red';
+     this.gameCanvas.Context.lineWidth = 3;
+     for (var i = 0; i < lines.length; i++) {
+     var line = lines[i];
+     this.gameCanvas.Context.moveTo(line.p1.x, line.p1.y);
+     this.gameCanvas.Context.lineTo(line.p2.x, line.p2.y);
+     this.gameCanvas.Context.stroke();
+     }
+     this.gameCanvas.Context.fillText(dist.toString(), 0, 30);
+     this.gameCanvas.Context.restore();
+
+     }*/
+
+    private bindInput(): void {
+        this.highTileCanvas.domCanvas.mousedown((e: JQueryEventObject) => this.canvasOnClick(e));
+        this.highTileCanvas.domCanvas.mouseup((e: JQueryEventObject) => this.canvasMouseUp(e));
+        this.highTileCanvas.domCanvas.mousemove((e: JQueryEventObject) => this.canvasMouseMove(e));
+        this.highTileCanvas.domCanvas.bind("touchstart", (e: JQueryEventObject) => this.canvasOnClick(e));
+        this.highTileCanvas.domCanvas.bind("touchend", (e: JQueryEventObject) => this.canvasMouseUp(e));
+        this.highTileCanvas.domCanvas.bind("touchmove", (e: JQueryEventObject) => this.canvasMouseMove(e));
         this.highTileCanvas.domCanvas.bind("contextmenu", (e) => e.preventDefault());
 
         // (<any>keyboardJS).watch(document.getElementById('canvasBox'));
@@ -421,7 +425,7 @@ export class SonicEngine {
 
     }
 
-    loadLevel(data:string):void {
+    loadLevel(data: string): void {
         let l = JSON.parse(Help.decodeString(data));
         SonicEngine.instance.RunSonic(l);
     }
@@ -445,7 +449,7 @@ export class SonicEngine {
         this.runGame();
     }
 
-    public runGame():void {
+    public runGame(): void {
         let sonicManager = SonicManager.instance;
         switch (sonicManager.currentGameState) {
             case GameState.Playing:
@@ -465,22 +469,22 @@ export class SonicEngine {
         sonicManager.ResetCanvases();
     }
 
-    private canvasMouseMove(queryEvent:JQueryEventObject):void {
+    private canvasMouseMove(queryEvent: JQueryEventObject): void {
         queryEvent.preventDefault();
         this.sonicManager.mouseMove(queryEvent);
     }
 
-    private canvasOnClick(queryEvent:JQueryEventObject):void {
+    private canvasOnClick(queryEvent: JQueryEventObject): void {
         queryEvent.preventDefault();
         this.sonicManager.onClick(queryEvent);
     }
 
-    private canvasMouseUp(queryEvent:JQueryEventObject):void {
+    private canvasMouseUp(queryEvent: JQueryEventObject): void {
         queryEvent.preventDefault();
         this.sonicManager.mouseUp(queryEvent);
     }
 
-    public resizeCanvas(resetOverride:boolean):void {
+    public resizeCanvas(resetOverride: boolean): void {
         this.canvasWidth = $(window).width();
         this.canvasHeight = $(window).height();
         this.sonicManager.windowLocation = Help.defaultWindowLocation(this.sonicManager.currentGameState, this.sonicManager.scale);
@@ -495,15 +499,15 @@ export class SonicEngine {
         this.sonicManager.ResetCanvases();
     }
 
-    public clear():void {
-        this.lowTileCanvas.context.clearRect(0,0,320,224);
-        this.spriteCanvas.context.clearRect(0,0,320,224);
-        this.highTileCanvas.context.clearRect(0,0,320,224);
+    public clear(): void {
+        this.lowTileCanvas.context.clearRect(0, 0, 320, 224);
+        this.spriteCanvas.context.clearRect(0, 0, 320, 224);
+        this.highTileCanvas.context.clearRect(0, 0, 320, 224);
 
 
     }
 
-    public GameDraw():void {
+    public GameDraw(): void {
         this.sonicManager.MainDraw();
     }
 

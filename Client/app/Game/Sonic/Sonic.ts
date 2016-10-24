@@ -162,7 +162,6 @@ export class Sonic {
         if (!this.inAir) {
             best = this.getBestSensor(sensorA, sensorB, this.mode);
             if (best == null) {
-                console.log('in air');
                 this.inAir = true;
             }
             else {
@@ -725,11 +724,17 @@ export class Sonic {
                     canvas.rotate(-Help.fixAngle(this.angle));
 
                 var offsetX = 0;
-                if (this.spriteState == 'duck0') {
+                if (this.spriteState == 'duck0'  ) {
                     offsetX = 6;
                 }
-                else if (this.spriteState == 'duck1') {
+                else if (this.spriteState == 'duck1'  ) {
                     offsetX = 7;
+                }
+                if ( this.spriteState == 'lookingup0') {
+                    offsetX =-1;
+                }
+                else if (this.spriteState == 'lookingup1') {
+                    offsetX = -2;
                 }
 
 
@@ -746,15 +751,21 @@ export class Sonic {
                 if (!this.currentlyBall && !this.spinDash)
                     canvas.rotate(Help.fixAngle(this.angle));
 
-                var offsetX=0;
-                if(this.spriteState=='duck0'){
-                    offsetX=6;
+                var offsetX = 0;
+                if (this.spriteState == 'duck0'  ) {
+                    offsetX = 6;
                 }
-                else if(this.spriteState=='duck1'){
-                    offsetX=6;
+                else if (this.spriteState == 'duck1'  ) {
+                    offsetX = 6;
+                }
+                if ( this.spriteState == 'lookingup0') {
+                    offsetX =-1;
+                }
+                else if (this.spriteState == 'lookingup1') {
+                    offsetX = -3;
                 }
 
-                canvas.drawImage(cur, -cur.width / 2+offsetX, -cur.height / 2);
+                canvas.drawImage(cur, -cur.width / 2 + offsetX, -cur.height / 2);
                 if (this.spinDash) {
                     canvas.drawImage(SonicManager.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager.instance.drawTickCount % 14) / 2 | 0))],
                         (-cur.width / 2) - 19,
@@ -841,26 +852,24 @@ export class Sonic {
     }
 
     public pressUp(): void {
-        if(this.holdingLeft || this.holdingRight)return;
         this.holdingUp = true;
     }
 
     public releaseUp(): void {
-        if(this.holdingLeft || this.holdingRight)return;
         this.holdingUp = false;
     }
 
     public pressCrouch(): void {
-        if(this.holdingLeft || this.holdingRight)return;
+        // if (this.holdingLeft || this.holdingRight)return;
         this.crouching = true;
     }
 
     public releaseCrouch(): void {
-        if(this.holdingLeft || this.holdingRight)return;
         this.crouching = false;
     }
 
     public pressLeft(): void {
+        // if (this.crouching)return;
         this.holdingLeft = true;
     }
 
@@ -869,6 +878,7 @@ export class Sonic {
     }
 
     public pressRight(): void {
+        // if (this.crouching)return;
         this.holdingRight = true;
     }
 
