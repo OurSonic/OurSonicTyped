@@ -28,7 +28,6 @@ export class LevelSelector implements OnInit {
         document.getElementById('hiddenBox').focus();
         this._levelService.getLevel(level.name).subscribe(level => {
             SonicEngine.instance.loadLevel(level);
-            // TileAnimationLayout.instance.loadLevel(SonicEngine.instance.sonicManager);
             this.layout.loading = false;
         });
     }

@@ -13,7 +13,7 @@ export class Ring extends Point {
         super(0, 0);
         this.Active = active;
     }
-    public Draw(canvas: CanvasRenderingContext2D, pos: Point): void {
+    public Draw(canvas: CanvasRenderingContext2D, x:number,y:number): void {
         if (this.Active) {
             this.Ysp += 0.09375;
             this.x += <number>this.Xsp;
@@ -39,6 +39,6 @@ export class Ring extends Point {
             sprites = SonicManager.instance.spriteCache.Rings;
         else throw ("bad ring animation");
         let sps = sprites[this.AnimationIndex];
-        canvas.drawImage(sps.canvas, (pos.x - 8), (pos.y - 8));
+        canvas.drawImage(sps.canvas, (x - 8), (y - 8));
     }
 }

@@ -72,8 +72,8 @@ export class IntersectingRectangle extends Point {
         this.width = width;
         this.height = height;
     }
-    public Intersects(p: Point): boolean {
-        return this.x < p.x && this.x + this.width > p.x && this.y < p.y && this.y + this.height > p.y;
+    public Intersects(x:number,y:number): boolean {
+        return this.x < x && this.x + this.width > x && this.y < y && this.y + this.height > y;
     }
     public static IntersectsRect(r: Rectangle, p: Point): boolean {
         return r.x < p.x && r.x + r.Width > p.x && r.y < p.y && r.y + r.Height > p.y;

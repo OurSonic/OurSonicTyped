@@ -35,12 +35,12 @@ export class SonicEngine {
     constructor() {
         SonicEngine.instance = this;
 
-        this.fpsMeter = new (<any>window).FPSMeter(document.getElementById('canvasBox'), {
-            right: '5px',
-            left: 'auto',
-            heat: 1
-        });
-
+        /*  this.fpsMeter = new (<any>window).FPSMeter(document.getElementById('canvasBox'), {
+              right: '5px',
+              left: 'auto',
+              heat: 1
+          });
+  */
         this.lowTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('lowTileLayer'), 320, 224, true);
         this.spriteCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('spriteLayer'), 320, 224, true);
         this.highTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('highTileLayer'), 320, 224, true);
@@ -54,15 +54,27 @@ export class SonicEngine {
         jQuery(document).resize(e => this.resizeCanvas(true));
         this.sonicManager = new SonicManager(this, this.lowTileCanvas, this.spriteCanvas, this.highTileCanvas, () => this.resizeCanvas(true));
         this.sonicManager.indexedPalette = 0;
-        window.setInterval(() => {
-            // var t0 = performance.now();
+
+
+        var tick = () => {
+            var t0 = performance.now();
             this.sonicManager.tick();
-            // var t1 = performance.now();
-            this.GameDraw();
-            // var t2 = performance.now();
-            // console.log('tick:', (t1 - t0), 'draw:', (t2 - t1));
-            this.fpsMeter.tick();
-        }, 1000 / 60);
+            var t1 = performance.now();
+            this.sonicManager.mainDraw();
+            var t2 = performance.now();
+            if ((t2 - t1) > 20 || (t1 - t0) > 1.4) {
+                if ((t1 - t0) + (t2 - t1) > 16) {
+                    console.error('tick:', (t1 - t0).toFixed(1), 'draw:', (t2 - t1).toFixed(1));
+                } else {
+
+                }
+            }
+            // this.fpsMeter.tick();
+            window.requestAnimationFrame(tick.bind(this));
+        };
+        window.requestAnimationFrame(tick.bind(this));
+
+
         this.resizeCanvas(true);
         /*
          (<any>window).GameController.init({
@@ -267,7 +279,7 @@ export class SonicEngine {
         keyboardJS.bind("2",
             () => {
                 this.sonicManager.pixelScale += 1;
-                if (this.sonicManager.pixelScale == 5)this.sonicManager.pixelScale = 1;
+                if (this.sonicManager.pixelScale == 5) this.sonicManager.pixelScale = 1;
             },
             () => {
 
@@ -442,10 +454,10 @@ export class SonicEngine {
         this.sonicManager.bigWindowLocation.height = (this.sonicManager.windowLocation.height * 1.8) | 0;
         let dl = Help.getQueryString();
         this.sonicManager.currentGameState = GameState.Editing;
+        this.sonicManager.cacheTiles();
         if (dl["run"]) {
             this.runGame();
         }
-        this.sonicManager.cacheTiles();
         this.runGame();
     }
 
@@ -466,7 +478,7 @@ export class SonicEngine {
                 break;
         }
         // sonicManager.DestroyCanvases();
-        sonicManager.ResetCanvases();
+        sonicManager.resetCanvases();
     }
 
     private canvasMouseMove(queryEvent: JQueryEventObject): void {
@@ -496,19 +508,8 @@ export class SonicEngine {
         else this.sonicManager.realScale = DoublePoint.create(this.sonicManager.overrideRealScale);
         this.gameGoodWidth = <number>(this.sonicManager.windowLocation.width * (this.sonicManager.currentGameState == GameState.Playing ? this.sonicManager.scale.x * this.sonicManager.realScale.x : 1));
         // this.sonicManager.DestroyCanvases();
-        this.sonicManager.ResetCanvases();
+        this.sonicManager.resetCanvases();
     }
 
-    public clear(): void {
-        this.lowTileCanvas.context.clearRect(0, 0, 320, 224);
-        this.spriteCanvas.context.clearRect(0, 0, 320, 224);
-        this.highTileCanvas.context.clearRect(0, 0, 320, 224);
-
-
-    }
-
-    public GameDraw(): void {
-        this.sonicManager.MainDraw();
-    }
 
 }

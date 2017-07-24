@@ -20,14 +20,13 @@ export class SonicLevel {
     public tilePieces: TilePiece[];
     public objects: LevelObjectInfo[];
     public animatedPalettes: PaletteItem[];
-    public palette: string[][];
+    public palette: number[][];
     public startPositions: Point[];
     public curPaletteIndex: number=0;
     public angles: number[];
     public collisionIndexes1: number[];
     public collisionIndexes2: number[];
     public heightMaps: HeightMap[];
-    public animatedChunks: TileChunk[];
     public bgChunkMap: number[][];
 
     constructor() {
@@ -51,9 +50,7 @@ export class SonicLevel {
         for (let tile of this.tiles) {
             tile.clearCache();
         }
-        for (let chunk of this.tileChunks) {
-            chunk.clearCache();
-        }
+
     }
     public getTile(tile: number): Tile {
         return this.tiles[tile];
@@ -67,7 +64,7 @@ export class SonicLevel {
 }
 
 export class PaletteItem {
-    public Palette: string[];
+    public Palette: number[];
     public SkipIndex: number=0;
     public TotalLength: number=0;
     public Pieces: PaletteItemPieces[];

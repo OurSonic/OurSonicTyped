@@ -39,7 +39,7 @@
         this.steps.push(new SpriteLoaderStep(title, method, onFinish));
         return this.steps.length - 1;
     }
-    public AddIterationToStep(spriteStep: number, i: number): void {
+    public addIterationToStep(spriteStep: number, i: number): void {
         if (spriteStep == -1)
             return
         this.steps[spriteStep].Iterations.push(i);
