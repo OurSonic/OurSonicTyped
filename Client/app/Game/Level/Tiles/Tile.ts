@@ -8,7 +8,7 @@ export class Tile {
     colors: number[][];
     public index: number = 0;
     public isTileAnimated: boolean = false;
-    public animatedTileIndex: number=null;
+    public animatedTileIndex: number = null;
     public paletteIndexesToBeAnimated: { [key: number]: number[] };
 
     constructor(colors: number[][]) {
@@ -22,24 +22,18 @@ export class Tile {
     }
 
     public GetAllPaletteIndexes(): number[] {
-        if (this.curPaletteIndexes == null) {
-            let d: number[] = [];
-            for (let _x: number = 0; _x < this.colors.length; _x++) {
-                let color = this.colors[_x];
-                for (let _y: number = 0; _y < color.length; _y++) {
-                    let col = color[_y];
-                    if (col == 0)
-                        continue;
-                    if (d.filter(a => a != col).length == d.length)
-                        d.push(col);
-                }
+        let d: number[] = [];
+        for (let _x: number = 0; _x < this.colors.length; _x++) {
+            let color = this.colors[_x];
+            for (let _y: number = 0; _y < color.length; _y++) {
+                let col = color[_y];
+                if (col == 0)
+                    continue;
+                if (d.filter(a => a != col).length === d.length)
+                    d.push(col);
             }
-            this.curPaletteIndexes = d.slice(0);
         }
-        return this.curPaletteIndexes;
+        return d;
     }
 
-    public clearCache(): void {
-        this.curPaletteIndexes = null;
-    }
 }

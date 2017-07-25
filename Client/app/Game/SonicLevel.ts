@@ -46,12 +46,6 @@ export class SonicLevel {
     public getChunkAt(x: number, y: number): TileChunk {
         return this.tileChunks[this.chunkMap[x][y]];
     }
-    public clearCache(): void {
-        for (let tile of this.tiles) {
-            tile.clearCache();
-        }
-
-    }
     public getTile(tile: number): Tile {
         return this.tiles[tile];
     }

@@ -950,13 +950,13 @@ export class Watcher {
             this.mult = 1;
             return
         }
-        let ticks = new Date().getTime();
+   /*     let ticks = new Date().getTime();
         let offset: number = 0;
         if (this.lastTick == 0)
             offset = 16;
         else offset = ticks - this.lastTick;
         this.lastTick = ticks;
-        this.mult = (offset / 16) | 0;
+        this.mult = (offset / 16) | 0;*/
     }
 
     public Multiply(v: number): number {

@@ -9,9 +9,8 @@ import {ChunkLayerState} from "../../../common/Enums";
 export class TilePiece {
     static DrawInfo: number[][] = [[0, 0], [1, 0], [0, 1], [1, 1]];
     public static DrawOrder: number[][] = [[3, 2, 1, 0], [1, 0, 3, 2], [2, 3, 0, 1], [0, 1, 2, 3]];
-    public  isOnlyBackground: boolean = false;
+    public isOnlyBackground: boolean = false;
     public isOnlyForeground: boolean = false;
-    private shouldAnimate: boolean = false;
 
     public Tiles: TileInfo[];
 
@@ -45,20 +44,6 @@ export class TilePiece {
         this.isOnlyForeground = true;
     }
 
-
-    public ShouldAnimate(): boolean {
-        if (this.shouldAnimate == null) {
-            for (let t of this.Tiles) {
-                let tile = t.GetTile();
-                if (tile) {
-                    if (tile.ShouldTileAnimate())
-                        return (this.shouldAnimate = true);
-                }
-            }
-            this.shouldAnimate = false;
-        }
-        return (this.shouldAnimate);
-    }
 
     public getLayer1Angle(): number {
         return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
