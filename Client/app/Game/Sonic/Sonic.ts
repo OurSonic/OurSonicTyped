@@ -7,6 +7,7 @@ import {Help} from "../../common/Help";
 import {Ring} from "../level/Ring";
 import {SonicConstants} from "./SonicConstants";
 import {Solidity} from "../../SLData";
+import {SonicEngine} from "../SonicEngine";
 
 export class Sonic {
     public myRec: Rectangle;
@@ -20,7 +21,6 @@ export class Sonic {
     private sonicLevel: SonicLevel;
 
     public watcher: Watcher;
-    public ticking: boolean = false;
     public x: number = 0;
     public y: number = 0;
     public rings: number = 0;
@@ -249,7 +249,7 @@ export class Sonic {
                 }
             }
             this.updateMode();
-            let cur = SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
+            let cur = SonicEngine.instance.spriteCache.SonicSprites[this.spriteState];
             let __h = cur.height / 2;
             this.sensorManager.check(this);
             let sensorC = this.sensorManager.getResult("c");
@@ -361,7 +361,7 @@ export class Sonic {
     private offsetFromImage: Point = new Point(0, 0);
 
     private getOffsetFromImage(): Point {
-        let cur = SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
+        let cur = SonicEngine.instance.spriteCache.SonicSprites[this.spriteState];
         let xOffset = 0;
         let yOffset = 0;
         if (cur.height !== 40) {
@@ -687,18 +687,18 @@ export class Sonic {
         this.y = ((this.sonicLevel.levelHeight * 128) + (this.y + this.ysp)) % (this.sonicLevel.levelHeight * 128);
     }
 
-    public draw(canvas: CanvasRenderingContext2D): void {
+    public draw(context: CanvasRenderingContext2D): void {
         let fx = (this.x) | 0;
         let fy = (this.y) | 0;
         if (this.invulnerable())
             return;
-        let cur = SonicManager.instance.spriteCache.SonicSprites[this.spriteState];
+        let cur = SonicEngine.instance.spriteCache.SonicSprites[this.spriteState];
         if (cur == null) {
         }
         if (Help.isLoaded(cur)) {
-            canvas.save();
+            context.save();
             let offset = this.getOffsetFromImage();
-            canvas.translate((fx - SonicManager.instance.windowLocation.x + offset.x),
+            context.translate((fx - SonicManager.instance.windowLocation.x + offset.x),
                 ((fy - SonicManager.instance.windowLocation.y + offset.y)));
             if (SonicManager.instance.showHeightMap) {
                 let mul = 10;
@@ -707,40 +707,40 @@ export class Sonic {
 
                 var distance = Math.sqrt((yj * yj) + (xj * xj));
 
-                canvas.save();
-                canvas.moveTo(xj, yj);
-                canvas.beginPath();
-                canvas.fillStyle = "rgba(163,241,255,1)";
-                canvas.strokeStyle = "rgba(163,241,255,1)";
-                canvas.arc(xj, yj, distance / 8, 0, 2 * Math.PI, true);
-                canvas.closePath();
-                canvas.fill();
-                canvas.stroke();
-                canvas.restore();
+                context.save();
+                context.moveTo(xj, yj);
+                context.beginPath();
+                context.fillStyle = "rgba(163,241,255,1)";
+                context.strokeStyle = "rgba(163,241,255,1)";
+                context.arc(xj, yj, distance / 8, 0, 2 * Math.PI, true);
+                context.closePath();
+                context.fill();
+                context.stroke();
+                context.restore();
             }
             if (!this.facing) {
-                canvas.scale(-1, 1);
+                context.scale(-1, 1);
                 if (!this.currentlyBall && !this.spinDash)
-                    canvas.rotate(-Help.fixAngle(this.angle));
+                    context.rotate(-Help.fixAngle(this.angle));
 
                 var offsetX = 0;
-                if (this.spriteState == 'duck0'  ) {
+                if (this.spriteState == 'duck0') {
                     offsetX = 6;
                 }
-                else if (this.spriteState == 'duck1'  ) {
+                else if (this.spriteState == 'duck1') {
                     offsetX = 7;
                 }
-                if ( this.spriteState == 'lookingup0') {
-                    offsetX =-1;
+                if (this.spriteState == 'lookingup0') {
+                    offsetX = -1;
                 }
                 else if (this.spriteState == 'lookingup1') {
                     offsetX = -2;
                 }
 
 
-                canvas.drawImage(cur, -cur.width / 2 + offsetX, -cur.height / 2);
+                context.drawImage(cur, -cur.width / 2 + offsetX, -cur.height / 2);
                 if (this.spinDash) {
-                    canvas.drawImage(SonicManager.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager.instance.drawTickCount % 14) / 2 | 0))],
+                    context.drawImage(SonicEngine.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager.instance.drawTickCount % 14) / 2 | 0))],
                         (-cur.width / 2) - 19,
                         -cur.height / 2 + (offset.y) - 6,
                         cur.width,
@@ -749,37 +749,37 @@ export class Sonic {
             }
             else {
                 if (!this.currentlyBall && !this.spinDash)
-                    canvas.rotate(Help.fixAngle(this.angle));
+                    context.rotate(Help.fixAngle(this.angle));
 
                 var offsetX = 0;
-                if (this.spriteState == 'duck0'  ) {
+                if (this.spriteState == 'duck0') {
                     offsetX = 6;
                 }
-                else if (this.spriteState == 'duck1'  ) {
+                else if (this.spriteState == 'duck1') {
                     offsetX = 6;
                 }
-                if ( this.spriteState == 'lookingup0') {
-                    offsetX =-1;
+                if (this.spriteState == 'lookingup0') {
+                    offsetX = -1;
                 }
                 else if (this.spriteState == 'lookingup1') {
                     offsetX = -3;
                 }
 
-                canvas.drawImage(cur, -cur.width / 2 + offsetX, -cur.height / 2);
+                context.drawImage(cur, -cur.width / 2 + offsetX, -cur.height / 2);
                 if (this.spinDash) {
-                    canvas.drawImage(SonicManager.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager.instance.drawTickCount % 14) / 2 | 0))],
+                    context.drawImage(SonicEngine.instance.spriteCache.SonicSprites[("spinsmoke" + ((SonicManager.instance.drawTickCount % 14) / 2 | 0))],
                         (-cur.width / 2) - 19,
                         -cur.height / 2 + (offset.y) - 6,
                         cur.width,
                         cur.height);
                 }
             }
-            canvas.restore();
+            context.restore();
             if (SonicManager.instance.showHeightMap)
-                this.sensorManager.draw(canvas, this);
+                this.sensorManager.draw(context, this);
             for (let i = 0; i < this.haltSmoke.length; i++) {
                 let lo = this.haltSmoke[i];
-                canvas.drawImage(SonicManager.instance.spriteCache.SonicSprites[("haltsmoke" + ((SonicManager.instance.drawTickCount % (4 * 6)) / 6 | 0))],
+                context.drawImage(SonicEngine.instance.spriteCache.SonicSprites[("haltsmoke" + ((SonicManager.instance.drawTickCount % (4 * 6)) / 6 | 0))],
                     ((lo.x - SonicManager.instance.windowLocation.x - 15)),
                     ((lo.y + 12 - SonicManager.instance.windowLocation.y + offset.y)));
                 if ((((SonicManager.instance.drawTickCount + 6) % (4 * 6)) / 6 | 0) == 0) {
@@ -941,22 +941,20 @@ export class Sonic {
         return null;
     }
 }
+
 export class Watcher {
     private lastTick: number = 0;
     public mult: number = 1;
 
     public Tick(): void {
-        if (true || SonicManager.instance.inHaltMode) {
-            this.mult = 1;
-            return
-        }
-   /*     let ticks = new Date().getTime();
-        let offset: number = 0;
-        if (this.lastTick == 0)
-            offset = 16;
-        else offset = ticks - this.lastTick;
-        this.lastTick = ticks;
-        this.mult = (offset / 16) | 0;*/
+        this.mult = 1;
+        /*     let ticks = new Date().getTime();
+             let offset: number = 0;
+             if (this.lastTick == 0)
+                 offset = 16;
+             else offset = ticks - this.lastTick;
+             this.lastTick = ticks;
+             this.mult = (offset / 16) | 0;*/
     }
 
     public Multiply(v: number): number {

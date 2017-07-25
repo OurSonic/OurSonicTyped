@@ -11,6 +11,9 @@ import {SLData} from "../SLData";
 import {Help} from "../common/Help";
 import {TileAnimationManager} from "./level/Tiles/TileAnimationManager";
 import {TilePaletteAnimationManager} from "./Level/Tiles/TilePaletteAnimationManager";
+import {SonicImage} from "./Level/SonicImage";
+import {SpriteCache} from "./Level/SpriteCache";
+import {SpriteLoader} from "../common/SpriteLoader";
 
 
 export class SonicEngine {
@@ -46,7 +49,67 @@ export class SonicEngine {
 
 
     }
+    private sonicSprites: { [key: string]: SonicImage } = {};
+    public spriteCache: SpriteCache;
+    spriteLoader: SpriteLoader;
+    public preloadSprites(completed: () => void, update: (_: string) => void): void {
+        if (this.spriteCache != null) {
+            completed();
+            return;
+        }
+        jQuery.getJSON("assets/content/sprites/sonic.json", (data: { [key: string]: SonicImage }) => {
+            this.sonicSprites = data;
+        });
+        this.spriteCache = this.spriteCache != null ? this.spriteCache : new SpriteCache();
+        let ci = this.spriteCache.Rings;
+        let spriteLocations: string[] = [];
+        for (let j: number = 0; j < 4; j++) {
+            spriteLocations.push(`assets/sprites/ring${j}.png`);
+        }
+        let ind_ = this.spriteCache.Indexes;
+        this.spriteLoader = new SpriteLoader(completed, update);
+        if (ci.length == 0) {
+            let spriteStep = this.spriteLoader.AddStep("Sprites",
+                (i, done) => {
+                    Help.loadSprite(spriteLocations[i],
+                        jd => {
+                            ci[i] = CanvasInformation.create(jd.width, jd.height, false);
+                            ci[i].context.drawImage(jd, 0, 0);
+                            done();
+                        });
+                },
+                () => {
+                    ind_.Sprites++;
+                    if (ind_.Sprites == 4)
+                        return true;
+                    return false;
+                },
+                false);
+            for (let i = 0; i < spriteLocations.length; i++) {
+                this.spriteLoader.addIterationToStep(spriteStep, i);
+            }
+        }
+        let cci = this.spriteCache.SonicSprites;
 
+        if (Object.keys(cci).length == 0) {
+            let sonicStep = this.spriteLoader.AddStep("Sonic Sprites",
+                (sp, done) => {
+                    for (let sonicSprite in this.sonicSprites) {
+                        cci[sonicSprite] = Help.scaleCsImage(this.sonicSprites[sonicSprite], new Point(1, 1), (ec) => {
+
+                        });
+                    }
+                    done();
+                },
+                () => true,
+                false);
+            this.spriteLoader.addIterationToStep(sonicStep, 0);
+        }
+    }
+
+    private loadAssets(){
+
+    }
     private tick(): void {
         window.requestAnimationFrame(this.tick.bind(this));
 
@@ -72,16 +135,8 @@ export class SonicEngine {
 
         // (<any>keyboardJS).watch(document.getElementById('canvasBox'));
         keyboardJS.bind("f", () => this.sonicManager.showHeightMap = !this.sonicManager.showHeightMap);
-        keyboardJS.bind("o", () => {
-            if (this.sonicManager.currentGameState == GameState.Playing) this.sonicManager.inHaltMode = !this.sonicManager.inHaltMode;
-        });
 
         keyboardJS.bind("q", () => this.runGame());
-        keyboardJS.bind("p", () => {
-            if (this.sonicManager.currentGameState == GameState.Playing)
-                if (this.sonicManager.inHaltMode)
-                    this.sonicManager.waitingForTickContinue = false;
-        });
 
 
         keyboardJS.bind("c", () => {
@@ -95,7 +150,7 @@ export class SonicEngine {
                     break;
                 case GameState.Editing:
                     this.sonicManager.windowLocation.y -= 128;
-                    this.sonicManager.bigWindowLocation.y -= 128;
+                    this.sonicManager.objectTickWindow.y -= 128;
                     break;
             }
         }, () => {
@@ -114,7 +169,7 @@ export class SonicEngine {
                     break;
                 case GameState.Editing:
                     this.sonicManager.windowLocation.y += 128;
-                    this.sonicManager.bigWindowLocation.y += 128;
+                    this.sonicManager.objectTickWindow.y += 128;
                     break;
             }
         }, () => {
@@ -133,7 +188,7 @@ export class SonicEngine {
                     break;
                 case GameState.Editing:
                     this.sonicManager.windowLocation.x -= 128;
-                    this.sonicManager.bigWindowLocation.x -= 128;
+                    this.sonicManager.objectTickWindow.x -= 128;
                     break;
             }
         }, () => {
@@ -152,7 +207,7 @@ export class SonicEngine {
                     break;
                 case GameState.Editing:
                     this.sonicManager.windowLocation.x += 128;
-                    this.sonicManager.bigWindowLocation.x += 128;
+                    this.sonicManager.objectTickWindow.x += 128;
                     break;
             }
         }, () => {
@@ -194,20 +249,22 @@ export class SonicEngine {
 
 
     public runSonic(level: SLData): void {
+        this.clearCache();
         this.sonicManager.clearCache();
         this.sonicManager.load(level);
         this.sonicManager.windowLocation.x = 0;
         this.sonicManager.windowLocation.y = 0;
-        this.sonicManager.bigWindowLocation.x = (this.sonicManager.windowLocation.x - this.sonicManager.windowLocation.width * 0.2) | 0;
-        this.sonicManager.bigWindowLocation.y = (this.sonicManager.windowLocation.y - this.sonicManager.windowLocation.height * 0.2) | 0;
-        this.sonicManager.bigWindowLocation.width = (this.sonicManager.windowLocation.width * 1.8) | 0;
-        this.sonicManager.bigWindowLocation.height = (this.sonicManager.windowLocation.height * 1.8) | 0;
+        this.sonicManager.objectTickWindow.x = (this.sonicManager.windowLocation.x - this.sonicManager.windowLocation.width * 0.2) | 0;
+        this.sonicManager.objectTickWindow.y = (this.sonicManager.windowLocation.y - this.sonicManager.windowLocation.height * 0.2) | 0;
+        this.sonicManager.objectTickWindow.width = (this.sonicManager.windowLocation.width * 1.8) | 0;
+        this.sonicManager.objectTickWindow.height = (this.sonicManager.windowLocation.height * 1.8) | 0;
         this.sonicManager.currentGameState = GameState.Editing;
-        this.sonicManager.tilePaletteAnimationManager = new TilePaletteAnimationManager(this.sonicManager);
-        this.sonicManager.tileAnimationManager = new TileAnimationManager(this.sonicManager);
 
         this.runGame();
-        debugger;
+    }
+    private clearCache(){
+        if (this.spriteCache != null)
+            this.spriteCache.ClearCache();
     }
 
     public runGame(): void {
@@ -215,14 +272,12 @@ export class SonicEngine {
         switch (sonicManager.currentGameState) {
             case GameState.Playing:
                 sonicManager.currentGameState = GameState.Editing;
-                sonicManager.scale = new Point(1, 1);
-                sonicManager.windowLocation = Help.defaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
+                sonicManager.windowLocation = Help.defaultWindowLocation(sonicManager.currentGameState);
                 sonicManager.sonicToon = null;
                 break;
             case GameState.Editing:
                 sonicManager.currentGameState = GameState.Playing;
-                sonicManager.scale = new Point(2, 2);
-                sonicManager.windowLocation = Help.defaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
+                sonicManager.windowLocation = Help.defaultWindowLocation(sonicManager.currentGameState);
                 sonicManager.sonicToon = new Sonic();
                 break;
         }
@@ -246,7 +301,7 @@ export class SonicEngine {
     }
 
     public resizeCanvas(): void {
-        this.sonicManager.windowLocation = Help.defaultWindowLocation(this.sonicManager.currentGameState, this.sonicManager.scale);
+        this.sonicManager.windowLocation = Help.defaultWindowLocation(this.sonicManager.currentGameState);
         this.sonicManager.resetCanvases();
     }
 

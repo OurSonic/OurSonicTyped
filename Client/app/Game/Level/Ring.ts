@@ -2,6 +2,7 @@
 import {SonicManager} from "../SonicManager";
 import {GameState} from "../../common/Enums";
 import {CanvasInformation} from "../../common/CanvasInformation";
+import {SonicEngine} from "../SonicEngine";
 
 export class Ring extends Point {
     public Active: boolean=false;
@@ -35,8 +36,8 @@ export class Ring extends Point {
             this.AnimationIndex = ((SonicManager.instance.drawTickCount % ((this.Active ? 4 : 8) * 4)) / (this.Active ? 4 : 8))|0;
         else this.AnimationIndex = 0;
         let sprites: CanvasInformation[] = null;
-        if (SonicManager.instance.spriteCache.Rings)
-            sprites = SonicManager.instance.spriteCache.Rings;
+        if (SonicEngine.instance.spriteCache.Rings)
+            sprites = SonicEngine.instance.spriteCache.Rings;
         else throw ("bad ring animation");
         let sps = sprites[this.AnimationIndex];
         canvas.drawImage(sps.canvas, (x - 8), (y - 8));

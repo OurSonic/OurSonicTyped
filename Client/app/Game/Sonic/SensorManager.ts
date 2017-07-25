@@ -115,36 +115,36 @@ export class Sensor {
 
                 let tilePiece = chunk.getTilePieceAt(tileX, tileY, false);
                 let tilePieceInfo = chunk.getTilePieceInfo(tileX, tileY, false);
-                var solidity = (SonicManager.instance.sonicLevel.curHeightMap ? tilePieceInfo.Solid1 : tilePieceInfo.Solid2 );
+                var solidity = (SonicManager.instance.sonicLevel.curHeightMap ? tilePieceInfo.solid1 : tilePieceInfo.solid2 );
 
 
                 var heightMap = SonicManager.instance.sonicLevel.curHeightMap ? tilePiece.getLayer1HeightMap() : tilePiece.getLayer2HeightMap();
                 var tileAngle = SonicManager.instance.sonicLevel.curHeightMap ? tilePiece.getLayer1Angle() : tilePiece.getLayer2Angle();
 
                 if (!(tileAngle == 0 || tileAngle == 255 || tileAngle == 1)) {
-                    if (tilePieceInfo.XFlip) {
-                        if (tilePieceInfo.YFlip) {
+                    if (tilePieceInfo.xFlip) {
+                        if (tilePieceInfo.yFlip) {
                             tileAngle = 192 - tileAngle + 192;
                             tileAngle = 128 - tileAngle + 128;
                         }
                         else tileAngle = 128 - tileAngle + 128;
                     }
                     else {
-                        if (tilePieceInfo.YFlip)
+                        if (tilePieceInfo.yFlip)
                             tileAngle = 192 - tileAngle + 192;
                         else tileAngle = (tileAngle);
                     }
                 }
 
                 var collisionMap: boolean[];
-                if (tilePieceInfo.XFlip) {
-                    if (tilePieceInfo.YFlip) {
+                if (tilePieceInfo.xFlip) {
+                    if (tilePieceInfo.yFlip) {
                         collisionMap = heightMap.collisionBlockXFlipYFlip;
                     } else {
                         collisionMap = heightMap.collisionBlockXFlip;
                     }
                 } else {
-                    if (tilePieceInfo.YFlip) {
+                    if (tilePieceInfo.yFlip) {
                         collisionMap = heightMap.collisionBlockYFlip;
                     } else {
                         collisionMap = heightMap.collisionBlock;

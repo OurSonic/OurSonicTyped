@@ -12,12 +12,12 @@ export class TilePiece {
     public isOnlyBackground: boolean = false;
     public isOnlyForeground: boolean = false;
 
-    public Tiles: TileInfo[];
+    public tiles: TileInfo[];
 
-    public Index: number = 0;
+    public index: number = 0;
 
-    public AnimatedPaletteIndexes: number[];
-    public AnimatedTileIndexes: number[];
+    public animatedPaletteIndexes: number[];
+    public animatedTileIndexes: number[];
 
     public Init(): void {
         this.checkOnlyForeground();
@@ -25,8 +25,8 @@ export class TilePiece {
     }
 
     public checkOnlyBackground(): void {
-        for (let mj of this.Tiles) {
-            if (mj && mj.Priority) {
+        for (let mj of this.tiles) {
+            if (mj && mj.priority) {
                 this.isOnlyBackground = false;
                 return;
             }
@@ -35,8 +35,8 @@ export class TilePiece {
     }
 
     public checkOnlyForeground(): void {
-        for (let mj of this.Tiles) {
-            if (mj && !mj.Priority) {
+        for (let mj of this.tiles) {
+            if (mj && !mj.priority) {
                 this.isOnlyForeground = false;
                 return;
             }
@@ -46,18 +46,18 @@ export class TilePiece {
 
 
     public getLayer1Angle(): number {
-        return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
+        return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes1[this.index]];
     }
 
     public getLayer2Angle(): number {
-        return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes2[this.Index]];
+        return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes2[this.index]];
     }
 
     public getLayer1HeightMap(): HeightMap {
-        return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes1[this.Index]];
+        return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes1[this.index]];
     }
 
     public getLayer2HeightMap(): HeightMap {
-        return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes2[this.Index]];
+        return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes2[this.index]];
     }
 }

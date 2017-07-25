@@ -3,11 +3,9 @@ import {Point} from "../../../common/Utils";
 import {SonicManager} from "../../SonicManager";
 
 export class Tile {
-    private canAnimate: boolean = true;
     protected curPaletteIndexes: number[];
     colors: number[][];
     public index: number = 0;
-    public isTileAnimated: boolean = false;
     public animatedTileIndex: number = null;
     public paletteIndexesToBeAnimated: { [key: number]: number[] };
 
@@ -17,11 +15,7 @@ export class Tile {
     }
 
 
-    public ShouldTileAnimate(): boolean {
-        return this.isTileAnimated && this.canAnimate;
-    }
-
-    public GetAllPaletteIndexes(): number[] {
+    public getAllPaletteIndexes(): number[] {
         let d: number[] = [];
         for (let _x: number = 0; _x < this.colors.length; _x++) {
             let color = this.colors[_x];

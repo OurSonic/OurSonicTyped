@@ -20,7 +20,6 @@ export class TileChunk {
     public isOnlyForeground: boolean;
     public isEmpty: boolean;
     public TilePieces: TilePieceInfo[][];
-    public TileAnimations: { [key: number]: TileAnimationData };
     public Index: number;
     public HeightBlocks1: Solidity[][];
     public HeightBlocks2: Solidity[][];
@@ -71,7 +70,7 @@ export class TileChunk {
 
     public checkEmpty(): void {
         for (let tilePiece of this.EachPiece()) {
-            if (tilePiece.Index != 0) {
+            if (tilePiece.index != 0) {
                 this.isEmpty = false;
                 return;
             }
@@ -104,9 +103,9 @@ export class TileChunk {
         if (this.paletteAnimationIndexes == null) {
             this.paletteAnimationIndexes = [];
             for (let tilePiece of this.EachPiece()) {
-                if (tilePiece.AnimatedPaletteIndexes == null)
+                if (tilePiece.animatedPaletteIndexes == null)
                     continue;
-                for (let animatedPaletteIndex of tilePiece.AnimatedPaletteIndexes) {
+                for (let animatedPaletteIndex of tilePiece.animatedPaletteIndexes) {
                     if (this.paletteAnimationIndexes.indexOf(animatedPaletteIndex) == -1) {
                         this.paletteAnimationIndexes.push(animatedPaletteIndex);
                     }
@@ -120,8 +119,8 @@ export class TileChunk {
         if (this.tileAnimationIndexes == null) {
             this.tileAnimationIndexes = [];
             for (let tilePiece of this.EachPiece()) {
-                for (let tileInfo of tilePiece.Tiles) {
-                    let tile = tileInfo.GetTile();
+                for (let tileInfo of tilePiece.tiles) {
+                    let tile = tileInfo.getTile();
                     if (tile == null)
                         continue;
                     if (tile.animatedTileIndex == null)

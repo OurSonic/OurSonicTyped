@@ -58,13 +58,13 @@ export class SonicLevel {
 }
 
 export class PaletteItem {
-    public Palette: number[];
-    public SkipIndex: number=0;
-    public TotalLength: number=0;
-    public Pieces: PaletteItemPieces[];
+    public palette: number[];
+    public skipIndex: number=0;
+    public totalLength: number=0;
+    public pieces: PaletteItemPieces[];
 }
 export class PaletteItemPieces {
-    public PaletteIndex: number=0;
-    public PaletteMultiply: number=0;
-    public PaletteOffset: number=0;
+    public paletteIndex: number=0;
+    public paletteMultiply: number=0;
+    public paletteOffset: number=0;
 }

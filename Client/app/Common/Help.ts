@@ -230,7 +230,7 @@ export class Help {
         return base;
     }
 
-    static defaultWindowLocation(gameState: GameState, scale: Point) {
+    static defaultWindowLocation(gameState: GameState) {
 
         switch (gameState) {
             case GameState.Playing:
@@ -239,8 +239,8 @@ export class Help {
                 let x = 0;
                 let y = 0;
                 if (SonicManager.instance.sonicLevel && SonicManager.instance.sonicLevel.startPositions && SonicManager.instance.sonicLevel.startPositions[0]) {
-                    x = SonicManager.instance.sonicLevel.startPositions[0].x - 128 * scale.x;
-                    y = SonicManager.instance.sonicLevel.startPositions[0].y - 128 * scale.y;
+                    x = SonicManager.instance.sonicLevel.startPositions[0].x - 128 ;
+                    y = SonicManager.instance.sonicLevel.startPositions[0].y - 128 ;
                 }
                 return new IntersectingRectangle(x, y, window.innerWidth, window.innerHeight);
         }

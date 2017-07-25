@@ -9,7 +9,7 @@
         this.myCompleted = completed;
         this.myUpdate = update;
     }
-    public Tick(): boolean {
+    public tick(): boolean {
         if (this.stepIndex == this.steps.length) {
             if (!this.done) {
                 this.done = true;
