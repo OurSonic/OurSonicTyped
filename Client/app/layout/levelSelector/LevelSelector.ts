@@ -1,7 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {LevelService, SonicLevelData} from "../services/LevelService";
 import {SonicEngine} from "../../game/SonicEngine";
-import {TileAnimationLayout} from "../tileAnimationLayout/TileAnimationLayout";
 import {Layout} from "../Layout";
 
 @Component({

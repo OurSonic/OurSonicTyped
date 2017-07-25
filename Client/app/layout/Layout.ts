@@ -6,7 +6,7 @@ import 'rxjs/Rx';
     templateUrl: 'app/layout/layout.html',
 })
 export class Layout {
-    tabItems: {label: string,image: string}[] = [];
+    tabItems: { label: string, image: string }[] = [];
     selectedTabIndex: number = 0;
     title: string;
     loading: boolean;
@@ -18,6 +18,26 @@ export class Layout {
             {
                 image: 'assets/images/tabs/sonic.png',
                 label: 'Level Select'
+            },
+            {
+                image: 'assets/images/tabs/sonic.png',
+                label: 'Object Select'
+            },
+            {
+                image: 'assets/images/tabs/sonic.png',
+                label: 'Tile Chunks'
+            },
+            {
+                image: 'assets/images/tabs/sonic.png',
+                label: 'Tile Pieces'
+            },
+            {
+                image: 'assets/images/tabs/sonic.png',
+                label: 'Tiles'
+            },
+            {
+                image: 'assets/images/tabs/sonic.png',
+                label: 'Animated Tiles'
             }
         ];
         this.tabClick(0);
@@ -28,7 +48,7 @@ export class Layout {
         this.title = this.tabItems[this.selectedTabIndex].label;
     }
 
-    collapse(value:boolean) {
+    collapse(value: boolean) {
         this.collapseSide = value;
     }
 }
