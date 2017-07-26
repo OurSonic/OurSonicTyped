@@ -59,7 +59,7 @@ export class TileAnimation {
             anni.lastAnimatedFrame = 0;
             anni.lastAnimatedIndex = 0;
         }
-        if (anni.dataFrames[anni.lastAnimatedIndex].ticks == 0 || (SonicManager.instance.drawTickCount - anni.lastAnimatedFrame) >= ((anni.automatedTiming > 0) ? anni.automatedTiming : anni.dataFrames[anni.lastAnimatedIndex].ticks)) {
+        if (anni.dataFrames[anni.lastAnimatedIndex].ticks == 0 || (SonicManager.instance.drawTickCount - anni.lastAnimatedFrame) >= anni.dataFrames[anni.lastAnimatedIndex].ticks) {
             anni.lastAnimatedFrame = SonicManager.instance.drawTickCount;
             anni.lastAnimatedIndex = (anni.lastAnimatedIndex + 1) % anni.dataFrames.length;
             this.currentFrame = anni.lastAnimatedIndex;

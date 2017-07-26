@@ -1,115 +1,104 @@
-export class SLData {
-    public PaletteItems:AnimatedPaletteItem[][];
-    public StartPositions:SLDataStartPositionEntry[];
-    public AnimatedFiles:number[][][];
-    public Animations:SLDataAnimation[];
-    public Tiles:number[][];
-    public Blocks:SLDataPatternIndex[][];
-    public Chunks:SLDataChunkBlock[][];
-    public Foreground:number[][];
-    public ForegroundWidth:number;
-    public ForegroundHeight:number;
-    public Background:number[][];
-    public BackgroundWidth:number;
-    public BackgroundHeight:number;
-    public Palette:string[][];
-    public Objects:SLDataObjectEntry[];
-    public ObjectFormat:string;
-    public Rings:SLDataRingEntry[];
-    public RingFormat:string;
-    public CNZBumpers:SLDataCNZBumperEntry[];
-    public CollisionIndexes1:number[];
-    public CollisionIndexes2:number[];
-    public HeightMaps:number[][];
-    public Angles:number[];
-    constructor() {
-    }
+export interface SLData {
+    paletteItems: AnimatedPaletteItem[][];
+    startPositions: SLDataStartPositionEntry[];
+    animatedFiles: number[][][];
+    animations: SLDataAnimation[];
+    tiles: number[][];
+    blocks: SLDataPatternIndex[][];
+    chunks: SLDataChunkBlock[][];
+    foreground: number[][];
+    foregroundWidth: number;
+    foregroundHeight: number;
+    background: number[][];
+    backgroundWidth: number;
+    backgroundHeight: number;
+    palette: string[][];
+    objects: SLDataObjectEntry[];
+    objectFormat: string;
+    rings: SLDataRingEntry[];
+    ringFormat: string;
+    cNZBumpers: SLDataCNZBumperEntry[];
+    collisionIndexes1: number[];
+    collisionIndexes2: number[];
+    heightMaps: number[][];
+    angles: number[];
 }
-export class AnimatedPaletteItem {
-    public SkipIndex:number;
-    public TotalLength:number;
-    public Palette:string;
-    public Pieces:AnimatedPalettePiece[];
-    constructor() {
-    }
+
+export interface AnimatedPaletteItem {
+    skipIndex: number;
+    totalLength: number;
+    palette: string;
+    pieces: AnimatedPalettePiece[];
 }
-export class AnimatedPalettePiece {
-    public PaletteMultiply:number;
-    public PaletteOffset:number;
-    public PaletteIndex:number;
-    constructor() {
-    }
+
+export interface AnimatedPalettePiece {
+    paletteMultiply: number;
+    paletteOffset: number;
+    paletteIndex: number;
 }
-export class SLDataRingEntry {
-    public X:number;
-    public Y:number;
-    constructor() {
-    }
+
+export interface SLDataRingEntry {
+    x: number;
+    y: number;
 }
-export class SLDataCNZBumperEntry {
-    public ID:number;
-    public X:number;
-    public Y:number;
-    constructor() {
-    }
+
+export interface SLDataCNZBumperEntry {
+    id: number;
+    x: number;
+    y: number;
 }
+
 export enum Solidity {
     NotSolid = 0,
     TopSolid = 1,
     LRBSolid = 2,
     AllSolid = 3
 }
-export class SLDataChunkBlock {
-    public Solid1:Solidity;
-    public Solid2:Solidity;
-    public XFlip:boolean;
-    public YFlip:boolean;
-    public Block:number;
-    constructor() {
-    }
+
+export interface SLDataChunkBlock {
+    solid1: Solidity;
+    solid2: Solidity;
+    xFlip: boolean;
+    yFlip: boolean;
+    block: number;
 }
-export class SLDataObjectEntry {
-    public X:number;
-    public Y:number;
-    public YFlip:boolean;
-    public XFlip:boolean;
-    public ID:number;
-    public SubType:number;
-    constructor() {
-    }
+
+export interface SLDataObjectEntry {
+    x: number;
+    y: number;
+    yFlip: boolean;
+    xFlip: boolean;
+    iD: number;
+    subType: number;
 }
-export class SLDataStartPositionEntry {
-    public X:number;
-    public Y:number;
-    public Type:string;
-    constructor() {
-    }
+
+export interface SLDataStartPositionEntry {
+    x: number;
+    y: number;
+    type: string;
 }
-export class SLDataAnimation {
-    public AutomatedTiming:number;
-    public AnimationFile:number;
-    public AnimationTileIndex:number;
-    public NumberOfTiles:number;
-    public Frames:SLDataAnimationFrame[];
-    constructor() {
-    }
+
+export interface SLDataAnimation {
+    animationFile: number;
+    animationTileIndex: number;
+    numberOfTiles: number;
+    frames: SLDataAnimationFrame[];
 }
-export class SLDataAnimationFrame {
-    public StartingTileIndex:number;
-    public Ticks:number;
-    constructor() {
-    }
+
+export interface SLDataAnimationFrame {
+    startingTileIndex: number;
+    ticks: number;
 }
-export class SLDataPatternIndex {
-    public Priority:boolean;
-    public Palette:number;
-    public XFlip:boolean;
-    public YFlip:boolean;
-    public Tile:number;
-    constructor() {
-    }
+
+export interface SLDataPatternIndex {
+    priority: boolean;
+    palette: number;
+    xFlip: boolean;
+    yFlip: boolean;
+    tile: number;
 }
-export class ObjectModelData {
-    public Name:string;
-    public Data:string;
+
+export interface ObjectModelData {
+    name: string;
+    data: string;
 }

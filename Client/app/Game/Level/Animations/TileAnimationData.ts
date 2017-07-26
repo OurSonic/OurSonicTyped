@@ -32,7 +32,6 @@ export class TileAnimationData {
     public lastAnimatedFrame: number=0;
     public animationTileIndex: number=0;
     public dataFrames: TileAnimationDataFrame[];
-    public automatedTiming: number=0;
     constructor() {
 
     }

@@ -53,9 +53,11 @@ export class SonicEngine {
 
 
     }
+
     private sonicSprites: { [key: string]: SonicImage } = {};
     public spriteCache: SpriteCache;
     spriteLoader: SpriteLoader;
+
     public preloadSprites(completed: () => void, update: (_: string) => void): void {
         if (this.spriteCache != null) {
             completed();
@@ -111,21 +113,26 @@ export class SonicEngine {
         }
     }
 
-    private loadAssets(){
+    private loadAssets() {
 
     }
+
     private tick(): void {
         window.requestAnimationFrame(this.tick.bind(this));
+        try {
+            let t0 = performance.now();
+            this.sonicManager.tick();
+            let t1 = performance.now();
+            this.sonicManager.mainDraw();
+            let t2 = performance.now();
+            if ((t1 - t0) + (t2 - t1) > 16) {
+                console.error('tick:', (t1 - t0).toFixed(1), 'draw:', (t2 - t1).toFixed(1));
+            }
+            this.fpsMeter.tick();
 
-        let t0 = performance.now();
-        this.sonicManager.tick();
-        let t1 = performance.now();
-        this.sonicManager.mainDraw();
-        let t2 = performance.now();
-        if ((t1 - t0) + (t2 - t1) > 16) {
-            console.error('tick:', (t1 - t0).toFixed(1), 'draw:', (t2 - t1).toFixed(1));
+        } catch (ex) {
+            console.error(ex);
         }
-        this.fpsMeter.tick();
     }
 
     private bindInput(): void {
@@ -266,7 +273,8 @@ export class SonicEngine {
 
         this.runGame();
     }
-    private clearCache(){
+
+    private clearCache() {
         if (this.spriteCache != null)
             this.spriteCache.ClearCache();
     }

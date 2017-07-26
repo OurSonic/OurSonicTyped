@@ -48,6 +48,7 @@ export class SensorManager {
         }
     }
 }
+
 export class Sensor {
     private cachedReturnSensor: SensorM = new SensorM(0, 0);
     public letter: string;
@@ -103,6 +104,7 @@ export class Sensor {
                 let tileChunkY = (Help.mod(testY, SonicManager.instance.sonicLevel.levelHeight * 128) / 128) | 0;
 
                 let chunk = SonicManager.instance.sonicLevel.getChunkAt(tileChunkX, tileChunkY);
+                if (chunk === undefined) continue;
 
                 let interChunkX = testX - tileChunkX * 128;
                 let interChunkY = testY - tileChunkY * 128;
@@ -114,6 +116,7 @@ export class Sensor {
                 let interTileY = interChunkY - tileY * 16;
 
                 let tilePiece = chunk.getTilePieceAt(tileX, tileY, false);
+                if (tilePiece === undefined) continue;
                 let tilePieceInfo = chunk.getTilePieceInfo(tileX, tileY, false);
                 let solidity = (SonicManager.instance.sonicLevel.curHeightMap ? tilePieceInfo.solid1 : tilePieceInfo.solid2 );
 

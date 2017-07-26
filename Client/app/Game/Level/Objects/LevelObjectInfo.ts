@@ -35,12 +35,12 @@ export class LevelObjectInfo {
     public consoleLog: (_: string[]) => void;
     constructor(o: SLDataObjectEntry) {
         this.o = o;
-        this.x = o.X;
-        this.y = o.Y;
-        this.xflip = o.XFlip;
-        this.yflip = o.YFlip;
-        this.subdata = o.SubType;
-        this.key = o.ID.toString();
+        this.x = o.x;
+        this.y = o.y;
+        this.xflip = o.xFlip;
+        this.yflip = o.yFlip;
+        this.subdata = o.subType;
+        this.key = o.iD.toString();
         this.upperNibble = this.subdata >> 4;
         this.lowerNibble = this.subdata & 0xf;
     }
@@ -119,16 +119,16 @@ export class LevelObjectInfo {
         }
     }
     public reset(): void {
-        this.x = this.o.X;
-        this.y = this.o.Y;
+        this.x = this.o.x;
+        this.y = this.o.y;
         this.xsp = 0;
         this.ysp = 0;
         this.state = null;
-        this.xflip = this.o.XFlip;
-        this.yflip = this.o.YFlip;
+        this.xflip = this.o.xFlip;
+        this.yflip = this.o.yFlip;
         this.dead = false;
         this.pieceLayoutIndex = 0;
-        this.subdata = this.o.SubType;
+        this.subdata = this.o.subType;
         this.upperNibble = this.subdata >> 4;
         this.lowerNibble = this.subdata & 0xf;
         if (this.objectData.pieceLayouts.length > this.pieceLayoutIndex && this.objectData.pieceLayouts[this.pieceLayoutIndex].pieces.length > 0)

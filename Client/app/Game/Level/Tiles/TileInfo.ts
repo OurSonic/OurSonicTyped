@@ -11,7 +11,7 @@ export class TileInfo {
 
     public getTile(): Tile {
         let tile = SonicManager.instance.sonicLevel.getTile(this.tileIndex);
-        if (!tile) return null;
+        if (!tile) return undefined;
 
         if (SonicManager.instance.tileAnimationManager === undefined)
             return tile;
