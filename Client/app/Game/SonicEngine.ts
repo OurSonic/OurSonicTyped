@@ -126,7 +126,7 @@ export class SonicEngine {
             this.sonicManager.mainDraw();
             let t2 = performance.now();
             if ((t1 - t0) + (t2 - t1) > 16) {
-                console.error('tick:', (t1 - t0).toFixed(1), 'draw:', (t2 - t1).toFixed(1));
+                // console.error('tick:', (t1 - t0).toFixed(1), 'draw:', (t2 - t1).toFixed(1));
             }
             this.fpsMeter.tick();
 

@@ -20,11 +20,11 @@
                     <span>{{title}} <span style="font-size: 1.6rem;">{{loading?'loading...':''}}</span></span>
                 </div>
                 <level-selector *ngIf="selectedTabIndex==0" [layout]="this" style="flex:13 0;width:100%;display:inline-flex;"></level-selector>
-                <object-selector *ngIf="selectedTabIndex==1"  style="flex:13 0;width:100%;display:inline-flex;"></object-selector>
-                <tile-chunk *ngIf="selectedTabIndex==2"  style="flex:13 0;width:100%;display:inline-flex;"></tile-chunk>
-                <tile-piece *ngIf="selectedTabIndex==3"  style="flex:13 0;width:100%;display:inline-flex;"></tile-piece>
-                <tiles *ngIf="selectedTabIndex==4"  style="flex:13 0;width:100%;display:inline-flex;"></tiles>
-                <animated-tiles *ngIf="selectedTabIndex==5"  style="flex:13 0;width:100%;display:inline-flex;"></animated-tiles>
+                <!--<object-selector *ngIf="selectedTabIndex==1"  style="flex:13 0;width:100%;display:inline-flex;"></object-selector>-->
+                <tiles *ngIf="selectedTabIndex==1"  style="flex:13 0;width:100%;display:inline-flex;"></tiles>
+                <tile-piece *ngIf="selectedTabIndex==2"  style="flex:13 0;width:100%;display:inline-flex;"></tile-piece>
+                <tile-chunk *ngIf="selectedTabIndex==3"  style="flex:13 0;width:100%;display:inline-flex;"></tile-chunk>
+                <animated-tiles *ngIf="selectedTabIndex==4"  style="flex:13 0;width:100%;display:inline-flex;"></animated-tiles>
             </div>
 
 

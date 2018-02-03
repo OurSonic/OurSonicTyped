@@ -172,7 +172,7 @@ export class SonicManager {
         this.tilePaletteAnimationManager.tickAnimatedPalettes();
         this.tileAnimationManager.tickAnimatedTiles();
         this.resetCanvases();
-        this.drawBackChunksPixel(this.windowLocation.x, this.windowLocation.y);
+        // this.drawBackChunksPixel(this.windowLocation.x, this.windowLocation.y);
         this.drawChunksPixel(this.windowLocation.x, this.windowLocation.y);
 
         this.drawObjects(this.engine.spriteCanvas.context);
@@ -202,7 +202,7 @@ export class SonicManager {
                 let x = (_xPreal * 128) - this.windowLocation.x | 0;
                 let y = (_yPreal * 128) - this.windowLocation.y | 0;
                 if (this.showHeightMap) {
-                    let fd = this.engine.spriteCache.HeightMapChunks[(this.sonicLevel.curHeightMap ? 1 : 2) + " " + chunk.Index];
+                    let fd = this.engine.spriteCache.HeightMapChunks[(this.sonicLevel.curHeightMap ? 1 : 2) + " " + chunk.index];
                     if (fd == null) {
                         fd = this.cacheHeightMapForChunk(chunk);
                     }
@@ -273,8 +273,8 @@ export class SonicManager {
         let lowBuffer = this.lowCacheBuffer;
         let highBuffer = this.highCacheBuffer;
 
-        lowBuffer.fill(0)
-        highBuffer.fill(0)
+        lowBuffer.fill(0);
+        highBuffer.fill(0);
 
         let endX = windowX + 320 + 16 * 2;
         let endY = windowY + 224 + 16 * 2;
@@ -301,7 +301,7 @@ export class SonicManager {
                 let tilePieceX = ((repositionedX / 16) | 0) - chunkX * 8;
                 let tilePieceY = ((repositionedY / 16) | 0) - chunkY * 8;
 
-                let tpX = chunk.TilePieces[tilePieceX];
+                let tpX = chunk.tilePieces[tilePieceX];
                 if (tpX === undefined) {
                     continue;
                 }
@@ -317,7 +317,7 @@ export class SonicManager {
 
                 let tileX = ((repositionedX / 8) | 0) - chunkX * 16 - tilePieceX * 2;
                 let tileY = ((repositionedY / 8) | 0) - chunkY * 16 - tilePieceY * 2;
-                let drawOrder = TilePiece.DrawOrder[drawOrderIndex];
+                let drawOrder = TilePiece.drawOrder[drawOrderIndex];
                 let tileIndex = tileY * 2 + tileX;
                 let tileNumber = drawOrder[tileIndex];
                 let tileItem = piece.tiles[tileNumber];
@@ -349,9 +349,9 @@ export class SonicManager {
                 } else {
                     iY = drawY;
                 }
-                let index = ((iY) * (320 + 16 * 2) + (iX));
+                let index = ((iY) * (320 + 16 * 2) + (iX)) | 0;
 
-                let value = palette_[colorPaletteIndex][colorIndex];
+                let value = palette_[colorPaletteIndex][colorIndex] | 0;
 
                 if (tileItem.priority === false) {
                     lowBuffer[index] = value;
@@ -403,7 +403,7 @@ export class SonicManager {
                 let tilePieceX = ((repositionedX / 16) | 0) - chunkX * 8;
                 let tilePieceY = ((repositionedY / 16) | 0) - chunkY * 8;
 
-                let tpX = chunk.TilePieces[tilePieceX];
+                let tpX = chunk.tilePieces[tilePieceX];
                 if (tpX === undefined) {
                     continue;
                 }
@@ -419,7 +419,7 @@ export class SonicManager {
 
                 let tileX = ((repositionedX / 8) | 0) - chunkX * 16 - tilePieceX * 2;
                 let tileY = ((repositionedY / 8) | 0) - chunkY * 16 - tilePieceY * 2;
-                let drawOrder = TilePiece.DrawOrder[drawOrderIndex];
+                let drawOrder = TilePiece.drawOrder[drawOrderIndex];
                 let tileIndex = tileY * 2 + tileX;
                 let tileNumber = drawOrder[tileIndex];
                 let tileItem = piece.tiles[tileNumber];
@@ -473,7 +473,7 @@ export class SonicManager {
         let ctx = canv.context;
         for (let _y = 0; _y < 8; _y++) {
             for (let _x = 0; _x < 8; _x++) {
-                let tp = md.TilePieces[_x][_y];
+                let tp = md.tilePieces[_x][_y];
                 let solid = <number>(this.sonicLevel.curHeightMap ? tp.solid1 : tp.solid2);
                 let hd = this.sonicLevel.curHeightMap ? tp.getLayer1HeightMaps() : tp.getLayer2HeightMaps();
                 let __x = _x;
@@ -485,7 +485,7 @@ export class SonicManager {
                 hd.draw(ctx, posj1.x + (__x * 16), posj1.y + (__y * 16), tp.xFlip, tp.yFlip, solid, vangle);
             }
         }
-        return this.engine.spriteCache.HeightMapChunks[(this.sonicLevel.curHeightMap ? 1 : 2) + " " + md.Index] = canv;
+        return this.engine.spriteCache.HeightMapChunks[(this.sonicLevel.curHeightMap ? 1 : 2) + " " + md.index] = canv;
     }
 
 
@@ -496,12 +496,12 @@ export class SonicManager {
                 case GameState.Playing:
                     if (!this.sonicToon.obtainedRing[index]) {
                         if (this.objectTickWindow.intersects(r.x, r.y))
-                            this.ringCache.Draw(context, (r.x - this.windowLocation.x) | 0, (r.y - this.windowLocation.y ) | 0);
+                            this.ringCache.Draw(context, (r.x - this.windowLocation.x) | 0, (r.y - this.windowLocation.y) | 0);
                     }
                     break;
                 case GameState.Editing:
                     if (this.objectTickWindow.intersects(r.x, r.y))
-                        this.ringCache.Draw(context, (r.x - this.windowLocation.x) | 0, (r.y - this.windowLocation.y ) | 0);
+                        this.ringCache.Draw(context, (r.x - this.windowLocation.x) | 0, (r.y - this.windowLocation.y) | 0);
                     break;
             }
         }
@@ -561,7 +561,7 @@ export class SonicManager {
                         let toChunkX = (to.x + x) / 8;
                         let toChunkY = (to.y + curY) / 8;
                         let toChunk = this.sonicLevel.getChunkAt(toChunkX, toChunkY);
-                        let toTilePiece = toChunk.TilePieces[(to.x + x) - toChunkX * 8][(to.y + curY) - toChunkY * 8];
+                        let toTilePiece = toChunk.tilePieces[(to.x + x) - toChunkX * 8][(to.y + curY) - toChunkY * 8];
                         toChunk.checkOnlyForeground();
                         toChunk.checkOnlyBackground();
                         let fromChunkX = (from.x + x) / 8 | 0;
@@ -569,9 +569,9 @@ export class SonicManager {
                         let fromChunk = this.sonicLevel.getChunkAt(fromChunkX, fromChunkY);
                         fromChunk.checkOnlyForeground();
                         fromChunk.checkOnlyBackground();
-                        let fromTilePiece = fromChunk.TilePieces[(from.x + x) - fromChunkX * 8][(from.y + curY) - fromChunkY * 8];
-                        toChunk.TilePieces[(to.x + x) - toChunkX * 8][(to.y + curY) - toChunkY * 8] = fromTilePiece;
-                        fromChunk.TilePieces[(from.x + x) - fromChunkX * 8][(from.y + curY) - fromChunkY * 8] = toTilePiece;
+                        let fromTilePiece = fromChunk.tilePieces[(from.x + x) - fromChunkX * 8][(from.y + curY) - fromChunkY * 8];
+                        toChunk.tilePieces[(to.x + x) - toChunkX * 8][(to.y + curY) - toChunkY * 8] = fromTilePiece;
+                        fromChunk.tilePieces[(from.x + x) - fromChunkX * 8][(from.y + curY) - fromChunkY * 8] = toTilePiece;
                     }
                 },
                 (from.height - y) * 50);
@@ -701,7 +701,7 @@ export class SonicManager {
                 tileInfo.yFlip = tiles[tileIndex].yFlip;
                 tilePiece.tiles.push(tileInfo);
             }
-            tilePiece.Init();
+            tilePiece.init();
             this.sonicLevel.tilePieces[blockIndex] = tilePiece;
         }
         this.sonicLevel.angles = slData.angles;
@@ -727,10 +727,10 @@ export class SonicManager {
         for (let j: number = 0; j < slData.chunks.length; j++) {
             let fc = slData.chunks[j];
             let mj = new TileChunk();
-            mj.Index = j;
-            mj.TilePieces = new Array(8);
+            mj.index = j;
+            mj.tilePieces = new Array(8);
             for (let i: number = 0; i < 8; i++) {
-                mj.TilePieces[i] = new Array(8);
+                mj.tilePieces[i] = new Array(8);
             }
             for (let p: number = 0; p < fc.length; p++) {
                 let tilePieceInfo = new TilePieceInfo();
@@ -741,7 +741,7 @@ export class SonicManager {
                 tilePieceInfo.xFlip = fc[p].xFlip;
                 tilePieceInfo.yFlip = fc[p].yFlip;
 
-                mj.TilePieces[p % 8][(p / 8) | 0] = tilePieceInfo;
+                mj.tilePieces[p % 8][(p / 8) | 0] = tilePieceInfo;
             }
             this.sonicLevel.tileChunks[j] = mj;
 

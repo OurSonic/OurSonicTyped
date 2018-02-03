@@ -4,8 +4,8 @@ import {HeightMap} from "../HeightMap";
 import {CanvasInformation} from "../../../common/CanvasInformation";
 
 export class TilePiece {
-    static DrawInfo: number[][] = [[0, 0], [1, 0], [0, 1], [1, 1]];
-    public static DrawOrder: number[][] = [[3, 2, 1, 0], [1, 0, 3, 2], [2, 3, 0, 1], [0, 1, 2, 3]];
+    static drawInfo: number[][] = [[0, 0], [1, 0], [0, 1], [1, 1]];
+    public static drawOrder: number[][] = [[3, 2, 1, 0], [1, 0, 3, 2], [2, 3, 0, 1], [0, 1, 2, 3]];
     public isOnlyBackground: boolean = false;
     public isOnlyForeground: boolean = false;
 
@@ -14,7 +14,7 @@ export class TilePiece {
     public index: number = 0;
 
 
-    public Init(): void {
+    public init(): void {
         this.checkOnlyForeground();
         this.checkOnlyBackground();
     }
@@ -68,7 +68,7 @@ export class TilePiece {
                 continue;
             let tileXFlip = xFlip !== tileItem.xFlip;
             let tileYFlip = yFlip !== tileItem.yFlip;
-            let df = TilePiece.DrawInfo[TilePiece.DrawOrder[drawOrderIndex][i]];
+            let df = TilePiece.drawInfo[TilePiece.drawOrder[drawOrderIndex][i]];
             let image = tile.getImage(tileXFlip, tileYFlip, tileItem.palette).canvas;
             info.context.drawImage(image, df[0] * 8, df[1] * 8);
         }

@@ -61,7 +61,7 @@ export class SonicLevel {
     }
 
     public setChunkAt(x: number, y: number, tileChunk: TileChunk): void {
-        this.chunkMap[x][y] = tileChunk.Index;
+        this.chunkMap[x][y] = tileChunk.index;
     }
 }
 

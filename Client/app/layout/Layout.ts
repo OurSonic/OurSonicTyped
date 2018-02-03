@@ -18,27 +18,26 @@ export class Layout {
             {
                 image: 'assets/images/tabs/sonic.png',
                 label: 'Level Select'
-            },
-            {
-                image: 'assets/images/tabs/sonic.png',
-                label: 'Object Select'
-            },
-            {
-                image: 'assets/images/tabs/sonic.png',
-                label: 'Tile Chunks'
-            },
-            {
-                image: 'assets/images/tabs/sonic.png',
-                label: 'Tile Pieces'
-            },
-            {
-                image: 'assets/images/tabs/sonic.png',
+            },    {
+                image: 'assets/images/tabs/tile.png',
                 label: 'Tiles'
             },
             {
+                image: 'assets/images/tabs/tilepiece.png',
+                label: 'Tile Pieces'
+            },
+   /*         {
+                image: 'assets/images/tabs/sonic.png',
+                label: 'Object Select'
+            },*/
+            {
+                image: 'assets/images/tabs/tilechunk.png',
+                label: 'Tile Chunks'
+            }/*,
+            {
                 image: 'assets/images/tabs/sonic.png',
                 label: 'Animated Tiles'
-            }
+            }*/
         ];
         this.tabClick(0);
     }

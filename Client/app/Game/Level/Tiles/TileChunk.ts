@@ -13,8 +13,8 @@ export class TileChunk {
     public isOnlyBackground: boolean;
     public isOnlyForeground: boolean;
     public isEmpty: boolean;
-    public TilePieces: TilePieceInfo[][];
-    public Index: number;
+    public tilePieces: TilePieceInfo[][];
+    public index: number;
 
     constructor() {
     }
@@ -29,15 +29,15 @@ export class TileChunk {
 
     public getTilePieceInfo(x: number, y: number, large: boolean): TilePieceInfo {
         if (large) {
-            return this.TilePieces[(x / 16) | 0][(y / 16) | 0];
+            return this.tilePieces[(x / 16) | 0][(y / 16) | 0];
         }
         else {
-            return this.TilePieces[x][y];
+            return this.tilePieces[x][y];
         }
     }
 
     public checkOnlyBackground(): void {
-        for (let tilePiece of this.EachPiece()) {
+        for (let tilePiece of this.eachPiece()) {
             if (!tilePiece.isOnlyBackground) {
                 this.isOnlyBackground = false;
                 return;
@@ -47,7 +47,7 @@ export class TileChunk {
     }
 
     public checkOnlyForeground(): void {
-        for (let tilePiece of this.EachPiece()) {
+        for (let tilePiece of this.eachPiece()) {
             if (!tilePiece.isOnlyForeground) {
                 this.isOnlyForeground = false;
                 return;
@@ -57,7 +57,7 @@ export class TileChunk {
     }
 
     public checkEmpty(): void {
-        for (let tilePiece of this.EachPiece()) {
+        for (let tilePiece of this.eachPiece()) {
             if (tilePiece.index != 0) {
                 this.isEmpty = false;
                 return;
@@ -66,11 +66,11 @@ export class TileChunk {
         this.isEmpty = true;
     }
 
-    private EachPiece(): TilePiece[] {
+    private eachPiece(): TilePiece[] {
         let __result = [];
         for (let pieceY: number = 0; pieceY < 8; pieceY++) {
             for (let pieceX: number = 0; pieceX < 8; pieceX++) {
-                let tilePiece: TilePiece = this.TilePieces[pieceX][pieceY].getTilePiece();
+                let tilePiece: TilePiece = this.tilePieces[pieceX][pieceY].getTilePiece();
                 if (tilePiece != null) {
                     __result.push(tilePiece);
                 }
@@ -83,7 +83,7 @@ export class TileChunk {
         let info = CanvasInformation.create(128, 128, true);
         for (let pieceY: number = 0; pieceY < 8; pieceY++) {
             for (let pieceX: number = 0; pieceX < 8; pieceX++) {
-                let pieceInfo = this.TilePieces[pieceX][pieceY];
+                let pieceInfo = this.tilePieces[pieceX][pieceY];
                 let piece = pieceInfo.getTilePiece();
                 if (piece == null)
                     continue;
