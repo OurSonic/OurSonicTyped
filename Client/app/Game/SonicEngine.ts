@@ -65,52 +65,53 @@ export class SonicEngine {
         }
         jQuery.getJSON("assets/content/sprites/sonic.json", (data: { [key: string]: SonicImage }) => {
             this.sonicSprites = data;
-        });
-        this.spriteCache = this.spriteCache != null ? this.spriteCache : new SpriteCache();
-        let ci = this.spriteCache.Rings;
-        let spriteLocations: string[] = [];
-        for (let j: number = 0; j < 4; j++) {
-            spriteLocations.push(`assets/sprites/ring${j}.png`);
-        }
-        let ind_ = this.spriteCache.Indexes;
-        this.spriteLoader = new SpriteLoader(completed, update);
-        if (ci.length == 0) {
-            let spriteStep = this.spriteLoader.AddStep("Sprites",
-                (i, done) => {
-                    Help.loadSprite(spriteLocations[i],
-                        jd => {
-                            ci[i] = CanvasInformation.create(jd.width, jd.height, false);
-                            ci[i].context.drawImage(jd, 0, 0);
-                            done();
-                        });
-                },
-                () => {
-                    ind_.Sprites++;
-                    if (ind_.Sprites == 4)
-                        return true;
-                    return false;
-                },
-                false);
-            for (let i = 0; i < spriteLocations.length; i++) {
-                this.spriteLoader.addIterationToStep(spriteStep, i);
+
+            this.spriteCache = this.spriteCache != null ? this.spriteCache : new SpriteCache();
+            let ci = this.spriteCache.Rings;
+            let spriteLocations: string[] = [];
+            for (let j: number = 0; j < 4; j++) {
+                spriteLocations.push(`assets/sprites/ring${j}.png`);
             }
-        }
-        let cci = this.spriteCache.SonicSprites;
+            let ind_ = this.spriteCache.Indexes;
+            this.spriteLoader = new SpriteLoader(completed, update);
+            if (ci.length == 0) {
+                let spriteStep = this.spriteLoader.addStep("Sprites",
+                    (i, done) => {
+                        Help.loadSprite(spriteLocations[i],
+                            jd => {
+                                ci[i] = CanvasInformation.create(jd.width, jd.height, false);
+                                ci[i].context.drawImage(jd, 0, 0);
+                                done();
+                            });
+                    },
+                    () => {
+                        ind_.Sprites++;
+                        if (ind_.Sprites == 4)
+                            return true;
+                        return false;
+                    },
+                    false);
+                for (let i = 0; i < spriteLocations.length; i++) {
+                    this.spriteLoader.addIterationToStep(spriteStep, i);
+                }
+            }
+            let cci = this.spriteCache.SonicSprites;
 
-        if (Object.keys(cci).length == 0) {
-            let sonicStep = this.spriteLoader.AddStep("Sonic Sprites",
-                (sp, done) => {
-                    for (let sonicSprite in this.sonicSprites) {
-                        cci[sonicSprite] = Help.scaleCsImage(this.sonicSprites[sonicSprite], new Point(1, 1), (ec) => {
+            if (Object.keys(cci).length == 0) {
+                let sonicStep = this.spriteLoader.addStep("Sonic Sprites",
+                    (sp, done) => {
+                        for (let sonicSprite in this.sonicSprites) {
+                            cci[sonicSprite] = Help.scaleCsImage(this.sonicSprites[sonicSprite], new Point(1, 1), (ec) => {
+                            });
+                        }
+                        done();
+                    },
+                    () => true,
+                    false);
+                this.spriteLoader.addIterationToStep(sonicStep, 0);
+            }
+        });
 
-                        });
-                    }
-                    done();
-                },
-                () => true,
-                false);
-            this.spriteLoader.addIterationToStep(sonicStep, 0);
-        }
     }
 
     private loadAssets() {

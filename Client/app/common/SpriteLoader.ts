@@ -33,7 +33,7 @@
         }
         return false;
     }
-    public AddStep(title: string, method: (_: number, __: () => void) => void, onFinish: () => boolean, disable: boolean): number {
+    public addStep(title: string, method: (_: number, __: () => void) => void, onFinish: () => boolean, disable: boolean): number {
         if (disable)
             return -1;
         this.steps.push(new SpriteLoaderStep(title, method, onFinish));
