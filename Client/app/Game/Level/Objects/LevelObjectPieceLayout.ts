@@ -65,8 +65,8 @@ export class LevelObjectPieceLayout {
                 }
             }
             else {
-                let drawRadial: CanvasGradient;
-                drawRadial = SonicManager.instance.lowTileCanvas.context.createRadialGradient(0, 0, 0, 10, 10, 50);
+                let drawRadial: CanvasGradient=null;
+                // drawRadial = SonicManager.instance.lowTileCanvas.context.createRadialGradient(0, 0, 0, 10, 10, 50);
                 drawRadial.addColorStop(0, "white");
                 if (selectedPieceIndex == levelObjectPieceLayoutPiece.pieceIndex)
                     drawRadial.addColorStop(1, "yellow");

@@ -241,7 +241,7 @@ var ts;
         SyntaxKind[SyntaxKind["TemplateSpan"] = 196] = "TemplateSpan";
         SyntaxKind[SyntaxKind["SemicolonClassElement"] = 197] = "SemicolonClassElement";
         // Element
-        SyntaxKind[SyntaxKind["Block"] = 198] = "Block";
+        SyntaxKind[SyntaxKind["block"] = 198] = "Block";
         SyntaxKind[SyntaxKind["VariableStatement"] = 199] = "VariableStatement";
         SyntaxKind[SyntaxKind["EmptyStatement"] = 200] = "EmptyStatement";
         SyntaxKind[SyntaxKind["ExpressionStatement"] = 201] = "ExpressionStatement";
@@ -48578,7 +48578,7 @@ var ts;
                 // indentation is first non-whitespace character in a previous line
                 // for block indentation, we should look for a line which contains something that's not
                 // whitespace.
-                if (options.IndentStyle === ts.IndentStyle.Block) {
+                if (options.IndentStyle === ts.IndentStyle.block) {
                     // move backwards until we find a line with a non-whitespace character,
                     // then find the first non-whitespace character for that line.
                     var current_1 = position;
@@ -49733,7 +49733,7 @@ var ts;
     })(HighlightSpanKind = ts.HighlightSpanKind || (ts.HighlightSpanKind = {}));
     (function (IndentStyle) {
         IndentStyle[IndentStyle["None"] = 0] = "None";
-        IndentStyle[IndentStyle["Block"] = 1] = "Block";
+        IndentStyle[IndentStyle["block"] = 1] = "Block";
         IndentStyle[IndentStyle["Smart"] = 2] = "Smart";
     })(ts.IndentStyle || (ts.IndentStyle = {}));
     var IndentStyle = ts.IndentStyle;

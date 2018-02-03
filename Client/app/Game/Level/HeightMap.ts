@@ -3,6 +3,7 @@ import {SonicManager} from "../SonicManager";
 import {CanvasInformation} from "../../common/CanvasInformation";
 import {Help} from "../../common/Help";
 import {RotationMode} from "../../common/Enums";
+import {SonicEngine} from "../SonicEngine";
 
 export class HeightMap {
 
@@ -48,22 +49,22 @@ export class HeightMap {
         this.Items[jx] = 16 - jy;
     }
 
-    public draw(canvas: CanvasRenderingContext2D, pos: Point, xflip: boolean, yflip: boolean, solid: number, angle: number): void {
+    public draw(canvas: CanvasRenderingContext2D, x: number, y: number, xflip: boolean, yflip: boolean, solid: number, angle: number): void {
         if (this.Items == null)
             return;
         canvas.save();
-        let oPos = Point.Create(pos);
+
         if (xflip) {
-            pos.x = -pos.x - 16;
+            x = -x - 16;
             canvas.scale(-1, 1);
         }
         if (yflip) {
-            pos.y = -pos.y - 16;
+            y = -y - 16;
             canvas.scale(1, -1);
         }
-        let fd = SonicManager.instance.spriteCache.HeightMaps[this.Index + (solid << 20)];
+        let fd = SonicEngine.instance.spriteCache.HeightMaps[this.Index + (solid << 20)];
         if (this.Index != -1 && fd)
-            canvas.drawImage(fd.canvas, pos.x, pos.y);
+            canvas.drawImage(fd.canvas, x, y);
         else {
             let ntcanvas = CanvasInformation.create(16, 16, false);
             let ncanvas = ntcanvas.context;
@@ -92,27 +93,21 @@ export class HeightMap {
                     }
                 }
             }
-            SonicManager.instance.spriteCache.HeightMaps[this.Index + (solid << 20)] = ntcanvas;
-            canvas.drawImage(ntcanvas.canvas, pos.x, pos.y);
+            SonicEngine.instance.spriteCache.HeightMaps[this.Index + (solid << 20)] = ntcanvas;
+            canvas.drawImage(ntcanvas.canvas, x, y);
         }
         canvas.restore();
-        pos.x = oPos.x;
-        pos.y = oPos.y;
     }
 
-    public static itemsGood(items: number[], x: number, y: number): boolean {
-        if (items[x] < 0)
-            return Math.abs(items[x]) >= y;
-        return items[x] >= 16 - y;
-    }
+
 
     private buildCollisionBlocks() {
         this.collisionBlock = new Array(64);
         this.collisionBlockXFlip = new Array(64);
         this.collisionBlockYFlip = new Array(64);
         this.collisionBlockXFlipYFlip = new Array(64);
-        for (var y = 0; y < 16; y++) {
-            for (var x = 0; x < 16; x++) {
+        for (let y = 0; y < 16; y++) {
+            for (let x = 0; x < 16; x++) {
                 this.collisionBlock[(x) + (y) * 16] = HeightMap.itemsGood(this.Items, x, y);
                 this.collisionBlockXFlip[(15 - x) + (y) * 16] = HeightMap.itemsGood(this.Items, x, y);
                 this.collisionBlockYFlip[(x) + (15 - y) * 16] = HeightMap.itemsGood(this.Items, x, y);
@@ -120,6 +115,11 @@ export class HeightMap {
             }
         }
 
+    }
+    private static itemsGood(items: number[], x: number, y: number): boolean {
+        if (items[x] < 0)
+            return Math.abs(items[x]) >= y;
+        return items[x] >= 16 - y;
     }
 
     static fullCollision = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];

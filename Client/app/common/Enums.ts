@@ -2,12 +2,6 @@ export enum GameState {
     Playing,Editing
 }
 
-export enum ClickState {
-    Dragging,
-    PlaceChunk,
-    PlaceRing,
-    PlaceObject
-}
 export enum ChunkLayerState {
     Low = 0,
     High = 1

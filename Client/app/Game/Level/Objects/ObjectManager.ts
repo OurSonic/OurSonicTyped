@@ -1,44 +1,47 @@
-﻿import {Help } from "../../../common/Help";
-import {SonicManager } from "../../SonicManager"; 
-import {LevelObjectAsset } from "./LevelObjectAsset";
-import {LevelObjectAssetFrame } from "./LevelObjectAssetFrame";
-import {LevelObjectProjectile } from "./LevelObjectProjectile";
+﻿import {Help} from "../../../common/Help";
+import {SonicManager} from "../../SonicManager";
+import {LevelObjectAsset} from "./LevelObjectAsset";
+import {LevelObjectAssetFrame} from "./LevelObjectAssetFrame";
+import {LevelObjectProjectile} from "./LevelObjectProjectile";
 import {LevelObjectData} from "./LevelObjectData";
-import {LevelObject } from "./LevelObject";
-import {LevelObjectPiece} from "./LevelObjectPiece";
-import {LevelObjectPieceLayout } from "./LevelObjectPieceLayout";
-import {LevelObjectPieceLayoutPiece} from "./LevelObjectPieceLayoutPiece";
+import {LevelObject} from "./LevelObject";
+import {LevelObjectPieceLayout} from "./LevelObjectPieceLayout";
 
 export class ObjectManager {
     public static broken = Help.loadSprite("assets/sprites/broken.png", (e) => {
 
     });
     private sonicManager: SonicManager;
+
     constructor(sonicManager: SonicManager) {
         this.sonicManager = sonicManager;
     }
+
     public Init(): void {
 
     }
+
     public static ExtendObject(d: LevelObjectData): LevelObject {
-        let obj: LevelObject = Help.merge(new LevelObject(d.key), {
-            collideScript: d.collideScript,
-            hurtScript: d.hurtScript,
-            initScript: d.initScript,
-            tickScript: d.tickScript
-        });
+
+        let obj = new LevelObject(d.key);
+        obj.collideScript = d.collideScript;
+        obj.hurtScript = d.hurtScript;
+        obj.initScript = d.initScript;
+        obj.tickScript = d.tickScript;
+
+
         obj.description = d.description;
         obj.assets = [];
         for (let i: number = 0; i < d.assets.length; i++) {
             let asset = d.assets[i];
-            let levelObjectAsset = Help.merge(new LevelObjectAsset(asset.name), { name: asset.name });
+            let levelObjectAsset = Help.merge(new LevelObjectAsset(asset.name), {name: asset.name});
             levelObjectAsset.frames = [];
             for (let index: number = 0; index < asset.frames.length; index++) {
                 let fr = asset.frames[index];
                 levelObjectAsset.frames[index] = Help.merge(new LevelObjectAssetFrame(fr.name), {
                     offsetX: fr.offsetX,
                     width: fr.width,
-                    transparentColor: fr.transparentColor||"000000",
+                    transparentColor: fr.transparentColor || "000000",
                     height: fr.height,
                     offsetY: fr.offsetY,
                     hurtSonicMap: fr.hurtSonicMap,

@@ -5,29 +5,23 @@
 import {CanvasInformation} from "../common/CanvasInformation";
 import {SonicManager} from "./SonicManager";
 import {GameState} from "../common/Enums";
-import {Point, DoublePoint} from "../common/Utils";
+import {Point} from "../common/Utils";
 import {Sonic} from "./sonic/Sonic";
 import {SLData} from "../SLData";
 import {Help} from "../common/Help";
+import {TileAnimationManager} from "./level/tiles/TileAnimationManager";
+import {TilePaletteAnimationManager} from "./level/tiles/TilePaletteAnimationManager";
+import {SonicImage} from "./level/SonicImage";
+import {SpriteCache} from "./level/SpriteCache";
+import {SpriteLoader} from "../common/SpriteLoader";
 
-/*class _Point {
- constructor(public x:number, public y:number) {
- }
- }
- class _Line {
- constructor(public p1:_Point, public p2:_Point) {
- }
- }*/
 
 export class SonicEngine {
-    private wideScreen: boolean = true;
-    private fullscreenMode: boolean = false;
-    private lowTileCanvas: CanvasInformation;
-    private spriteCanvas: CanvasInformation;
-    private highTileCanvas: CanvasInformation;
-    private gameGoodWidth: number = 0;
-    public canvasWidth: number = 0;
-    public canvasHeight: number = 0;
+    public bgLowTileCanvas: CanvasInformation;
+    public bgHighTileCanvas: CanvasInformation;
+    public lowTileCanvas: CanvasInformation;
+    public spriteCanvas: CanvasInformation;
+    public highTileCanvas: CanvasInformation;
     public sonicManager: SonicManager;
     public static instance: SonicEngine;
     private fpsMeter;
@@ -40,195 +34,107 @@ export class SonicEngine {
             left: 'auto',
             heat: 1
         });
+        this.bgLowTileCanvas = CanvasInformation.createFromElement(<HTMLCanvasElement>document.getElementById('bgLowTileLayer'), 320, 224, true);
+        this.bgHighTileCanvas = CanvasInformation.createFromElement(<HTMLCanvasElement>document.getElementById('bgHighTileLayer'), 320, 224, true);
+        this.lowTileCanvas = CanvasInformation.createFromElement(<HTMLCanvasElement>document.getElementById('lowTileLayer'), 320, 224, true);
+        this.spriteCanvas = CanvasInformation.createFromElement(<HTMLCanvasElement>document.getElementById('spriteLayer'), 320, 224, true);
+        this.highTileCanvas = CanvasInformation.createFromElement(<HTMLCanvasElement>document.getElementById('highTileLayer'), 320, 224, true);
 
-        this.lowTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('lowTileLayer'), 320, 224, true);
-        this.spriteCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('spriteLayer'), 320, 224, true);
-        this.highTileCanvas = CanvasInformation.CreateFromElement(<HTMLCanvasElement>document.getElementById('highTileLayer'), 320, 224, true);
 
-
-        this.canvasWidth = 0;
-        this.canvasHeight = 0;
         this.bindInput();
-        this.fullscreenMode = true;
-        window.addEventListener("resize", e => this.resizeCanvas(true));
-        jQuery(document).resize(e => this.resizeCanvas(true));
-        this.sonicManager = new SonicManager(this, this.lowTileCanvas, this.spriteCanvas, this.highTileCanvas, () => this.resizeCanvas(true));
-        this.sonicManager.indexedPalette = 0;
-        window.setInterval(() => {
-            // var t0 = performance.now();
-            this.sonicManager.tick();
-            // var t1 = performance.now();
-            this.GameDraw();
-            // var t2 = performance.now();
-            // console.log('tick:', (t1 - t0), 'draw:', (t2 - t1));
-            this.fpsMeter.tick();
-        }, 1000 / 60);
-        this.resizeCanvas(true);
-        /*
-         (<any>window).GameController.init({
-         canvas:gameCanvasName,
-         left: {
-         type: 'joystick',
-         position: {
-         bottom: '15%',
-         left: '15%'
-         }
-         },
-         right: {
-         position: {
-         right: '15%',
-         bottom: '15%'
-         },
-         type: 'buttons',
-         buttons: [
-         {
-         label: 'jump',radius:'10%', fontSize: 13, touchStart:  ()=> {
-         // do something
-         }
-         },
-         false, false, false
-         ]
-         }
-         });
-         */
+        window.addEventListener("resize", e => this.resizeCanvas());
+        this.sonicManager = new SonicManager(this, () => this.resizeCanvas());
 
 
-//        this.startThing();
+        window.requestAnimationFrame(this.tick.bind(this));
+
+
+        this.resizeCanvas();
+
 
     }
 
-    /*
-     private startThing() {
+    private sonicSprites: { [key: string]: SonicImage } = {};
+    public spriteCache: SpriteCache;
+    spriteLoader: SpriteLoader;
 
-     let points:_Point[] = [];
-     let lines:{p1:_Point,p2:_Point}[] = [];
+    public preloadSprites(completed: () => void, update: (_: string) => void): void {
+        if (this.spriteCache != null) {
+            completed();
+            return;
+        }
+        jQuery.getJSON("assets/content/sprites/sonic.json", (data: { [key: string]: SonicImage }) => {
+            this.sonicSprites = data;
 
-     for (var i = 0; i < 5000; i++) {
-     points.push(new _Point(Math.random() * 1000 | 0, Math.random() * 1000 | 0));
-     }
+            this.spriteCache = this.spriteCache != null ? this.spriteCache : new SpriteCache();
+            let ci = this.spriteCache.Rings;
+            let spriteLocations: string[] = [];
+            for (let j: number = 0; j < 4; j++) {
+                spriteLocations.push(`assets/sprites/ring${j}.png`);
+            }
+            let ind_ = this.spriteCache.Indexes;
+            this.spriteLoader = new SpriteLoader(completed, update);
+            if (ci.length == 0) {
+                let spriteStep = this.spriteLoader.addStep("Sprites",
+                    (i, done) => {
+                        Help.loadSprite(spriteLocations[i],
+                            jd => {
+                                ci[i] = CanvasInformation.create(jd.width, jd.height, false);
+                                ci[i].context.drawImage(jd, 0, 0);
+                                done();
+                            });
+                    },
+                    () => {
+                        ind_.Sprites++;
+                        if (ind_.Sprites == 4)
+                            return true;
+                        return false;
+                    },
+                    false);
+                for (let i = 0; i < spriteLocations.length; i++) {
+                    this.spriteLoader.addIterationToStep(spriteStep, i);
+                }
+            }
+            let cci = this.spriteCache.SonicSprites;
 
-     let allPoints:_Point[] = points.slice();
+            if (Object.keys(cci).length == 0) {
+                let sonicStep = this.spriteLoader.addStep("Sonic Sprites",
+                    (sp, done) => {
+                        for (let sonicSprite in this.sonicSprites) {
+                            cci[sonicSprite] = Help.scaleCsImage(this.sonicSprites[sonicSprite], new Point(1, 1), (ec) => {
+                            });
+                        }
+                        done();
+                    },
+                    () => true,
+                    false);
+                this.spriteLoader.addIterationToStep(sonicStep, 0);
+            }
+        });
 
-     let nextPoint = allPoints[0];
-     allPoints.splice(0, 1);
+    }
 
-     while (allPoints.length > 0) {
-     let closest = this.closests(nextPoint, allPoints);
-     lines.push(new _Line(nextPoint, closest));
-     allPoints.splice(allPoints.indexOf(closest), 1);
-     nextPoint = closest;
-     }
+    private loadAssets() {
 
+    }
 
-     /*      while (allPoints.length > 0) {
-     let closest = allPoints[0];
-     lines.push(new _Line(nextPoint, closest));
-     allPoints.splice(allPoints.indexOf(closest), 1);
-     nextPoint = closest;
-     }#1#
+    private tick(): void {
+        window.requestAnimationFrame(this.tick.bind(this));
+        try {
+            let t0 = performance.now();
+            this.sonicManager.tick();
+            let t1 = performance.now();
+            this.sonicManager.mainDraw();
+            let t2 = performance.now();
+            if ((t1 - t0) + (t2 - t1) > 16) {
+                // console.error('tick:', (t1 - t0).toFixed(1), 'draw:', (t2 - t1).toFixed(1));
+            }
+            this.fpsMeter.tick();
 
-
-     lines.push(new _Line(nextPoint, lines[0].p1));
-     let dist = this.distance(lines);
-     this.draw(points, lines, dist);
-
-     let count = 0;
-     let md = setInterval(()=> {
-     count++;
-     if (count > 1000000) {
-     clearInterval(md);
-     console.log('done');
-
-     return;
-     }
-     for (let j = 0; j < 100; j++) {
-     var p1 = (Math.random() * points.length | 0);
-     var p2 = (Math.random() * points.length | 0);
-     if (p1 == p2)return;
-
-     var nLines = this.swap(lines, points[p1], points[p2]);
-     var nDist = this.distance(nLines);
-     if (nDist < dist) {
-     dist=nDist;
-     lines = nLines;
-     console.log('swap');
-     this.draw(points, lines, dist);
-     }
-     }
-     }, 1);
-
-
-     }
-
-     private swap(lines:_Line[], p1:_Point, p2:_Point):_Line[] {
-     var nLines = lines.slice();
-     for (var i = 0; i < nLines.length; i++) {
-     var line = nLines[i];
-     if (line.p1 == p1) {
-     line.p1 = p2;
-     } else if (line.p1 == p2) {
-     line.p1 = p1;
-     }
-
-     if (line.p2 == p1) {
-     line.p2 = p2;
-     } else if (line.p2 == p2) {
-     line.p2 = p1;
-     }
-     }
-     return nLines;
-     }
-
-
-     private closests(me:_Point, points:_Point[]):_Point {
-     var distance = 1000000000;
-     let good:_Point;
-     for (var j = 0; j < points.length; j++) {
-     var point = points[j];
-     var dis = this.pointDistance(me, point);
-     if (dis < distance) {
-     distance = dis;
-     good = points[j];
-     }
-     }
-     return good;
-     }
-
-     private pointDistance(p1:_Point, p2:_Point):number {
-     return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-     }
-
-     private distance(lines:_Line[]):number {
-     let dist = 0;
-     for (var i = 0; i < lines.length; i++) {
-     var line = lines[i];
-     dist += this.pointDistance(line.p1, line.p2);
-     }
-     return dist;
-     }
-
-     private draw(points:_Point[], lines:_Line[], dist:number) {
-     this.gameCanvas.canvas.width = this.gameCanvas.canvas.width;
-     this.gameCanvas.Context.save();
-     this.gameCanvas.Context.scale(1.5,1.5);
-     this.gameCanvas.Context.fillStyle = 'white';
-     for (var i = 0; i < points.length; i++) {
-     var point = points[i];
-     this.gameCanvas.Context.fillRect(point.x - 5, point.y - 5, 10, 10);
-     }
-
-     this.gameCanvas.Context.strokeStyle = 'red';
-     this.gameCanvas.Context.lineWidth = 3;
-     for (var i = 0; i < lines.length; i++) {
-     var line = lines[i];
-     this.gameCanvas.Context.moveTo(line.p1.x, line.p1.y);
-     this.gameCanvas.Context.lineTo(line.p2.x, line.p2.y);
-     this.gameCanvas.Context.stroke();
-     }
-     this.gameCanvas.Context.fillText(dist.toString(), 0, 30);
-     this.gameCanvas.Context.restore();
-
-     }*/
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
 
     private bindInput(): void {
         this.highTileCanvas.domCanvas.mousedown((e: JQueryEventObject) => this.canvasOnClick(e));
@@ -240,213 +146,138 @@ export class SonicEngine {
         this.highTileCanvas.domCanvas.bind("contextmenu", (e) => e.preventDefault());
 
         // (<any>keyboardJS).watch(document.getElementById('canvasBox'));
-        keyboardJS.bind("f",
-            () => {
-                this.sonicManager.showHeightMap = !this.sonicManager.showHeightMap;
-            },
-            () => {
+        keyboardJS.bind("f", () => this.sonicManager.showHeightMap = !this.sonicManager.showHeightMap);
 
-            });
-        keyboardJS.bind("o",
-            () => {
-                if (this.sonicManager.currentGameState == GameState.Playing)
-                    this.sonicManager.inHaltMode = !this.sonicManager.inHaltMode;
-            },
-            () => {
+        keyboardJS.bind("q", () => this.runGame());
 
-            });
 
-        keyboardJS.bind("1",
-            () => {
-                this.sonicManager.indexedPalette++;
-                this.sonicManager.clearCache();
-            },
-            () => {
-
-            });
-        keyboardJS.bind("2",
-            () => {
-                this.sonicManager.pixelScale += 1;
-                if (this.sonicManager.pixelScale == 5)this.sonicManager.pixelScale = 1;
-            },
-            () => {
-
-            });
-        keyboardJS.bind("q",
-            () => {
-                this.runGame();
-            },
-            () => {
-
-            });
-        keyboardJS.bind("p",
-            () => {
-                if (this.sonicManager.currentGameState == GameState.Playing)
-                    if (this.sonicManager.inHaltMode)
-                        this.sonicManager.waitingForTickContinue = false;
-            },
-            () => {
-
-            });
-        keyboardJS.bind("h",
-            () => {
-                if (this.sonicManager.currentGameState == GameState.Playing)
-                    this.sonicManager.sonicToon.hit(this.sonicManager.sonicToon.x, this.sonicManager.sonicToon.y);
-            },
-            () => {
-
-            });
-        keyboardJS.bind("u",
-            () => {
-                this.wideScreen = !this.wideScreen;
-                this.resizeCanvas(true);
-            },
-            () => {
-
-            });
-        keyboardJS.bind("c",
-            () => {
-                if (this.sonicManager.currentGameState == GameState.Playing)
-                    this.sonicManager.sonicToon.debug();
-            },
-            () => {
-
-            });
-        keyboardJS.bind("up",
-            () => {
-                switch (this.sonicManager.currentGameState) {
-                    case GameState.Playing:
-                        this.sonicManager.sonicToon.pressUp();
-                        break;
-                    case GameState.Editing:
-                        this.sonicManager.windowLocation.y -= 128;
-                        this.sonicManager.bigWindowLocation.y -= 128;
-                        break;
-                }
-            },
-            () => {
-                switch (this.sonicManager.currentGameState) {
-                    case GameState.Playing:
-                        this.sonicManager.sonicToon.releaseUp();
-                        break;
-                    case GameState.Editing:
-                        break;
-                }
-            });
-        keyboardJS.bind("down",
-            () => {
-                switch (this.sonicManager.currentGameState) {
-                    case GameState.Playing:
-                        this.sonicManager.sonicToon.pressCrouch();
-                        break;
-                    case GameState.Editing:
-                        this.sonicManager.windowLocation.y += 128;
-                        this.sonicManager.bigWindowLocation.y += 128;
-                        break;
-                }
-            },
-            () => {
-                switch (this.sonicManager.currentGameState) {
-                    case GameState.Playing:
-                        this.sonicManager.sonicToon.releaseCrouch();
-                        break;
-                    case GameState.Editing:
-                        break;
-                }
-            });
-        keyboardJS.bind("left",
-            () => {
-                switch (this.sonicManager.currentGameState) {
-                    case GameState.Playing:
-                        this.sonicManager.sonicToon.pressLeft();
-                        break;
-                    case GameState.Editing:
-                        this.sonicManager.windowLocation.x -= 128;
-                        this.sonicManager.bigWindowLocation.x -= 128;
-                        break;
-                }
-            },
-            () => {
-                switch (this.sonicManager.currentGameState) {
-                    case GameState.Playing:
-                        this.sonicManager.sonicToon.releaseLeft();
-                        break;
-                    case GameState.Editing:
-                        break;
-                }
-            });
-        keyboardJS.bind("right",
-            () => {
-                switch (this.sonicManager.currentGameState) {
-                    case GameState.Playing:
-                        this.sonicManager.sonicToon.pressRight();
-                        break;
-                    case GameState.Editing:
-                        this.sonicManager.windowLocation.x += 128;
-                        this.sonicManager.bigWindowLocation.x += 128;
-                        break;
-                }
-            },
-            () => {
-                switch (this.sonicManager.currentGameState) {
-                    case GameState.Playing:
-                        this.sonicManager.sonicToon.releaseRight();
-                        break;
-                    case GameState.Editing:
-                        break;
-                }
-            });
-        keyboardJS.bind("space",
-            () => {
-                switch (this.sonicManager.currentGameState) {
-                    case GameState.Playing:
-                        this.sonicManager.sonicToon.pressJump();
-                        break;
-                    case GameState.Editing:
-                        break;
-                }
-            },
-            () => {
-                switch (this.sonicManager.currentGameState) {
-                    case GameState.Playing:
-                        this.sonicManager.sonicToon.releaseJump();
-                        break;
-                    case GameState.Editing:
-                        break;
-                }
-            });
-        keyboardJS.bind("e",
-            () => {
-                this.sonicManager.sonicLevel.curHeightMap = !this.sonicManager.sonicLevel.curHeightMap;
-            },
-            () => {
-
-            });
+        keyboardJS.bind("c", () => {
+            if (this.sonicManager.currentGameState == GameState.Playing)
+                this.sonicManager.sonicToon.debug();
+        });
+        keyboardJS.bind("up", () => {
+            switch (this.sonicManager.currentGameState) {
+                case GameState.Playing:
+                    this.sonicManager.sonicToon.pressUp();
+                    break;
+                case GameState.Editing:
+                    this.sonicManager.windowLocation.y -= 128;
+                    this.sonicManager.objectTickWindow.y -= 128;
+                    break;
+            }
+        }, () => {
+            switch (this.sonicManager.currentGameState) {
+                case GameState.Playing:
+                    this.sonicManager.sonicToon.releaseUp();
+                    break;
+                case GameState.Editing:
+                    break;
+            }
+        });
+        keyboardJS.bind("down", () => {
+            switch (this.sonicManager.currentGameState) {
+                case GameState.Playing:
+                    this.sonicManager.sonicToon.pressCrouch();
+                    break;
+                case GameState.Editing:
+                    this.sonicManager.windowLocation.y += 128;
+                    this.sonicManager.objectTickWindow.y += 128;
+                    break;
+            }
+        }, () => {
+            switch (this.sonicManager.currentGameState) {
+                case GameState.Playing:
+                    this.sonicManager.sonicToon.releaseCrouch();
+                    break;
+                case GameState.Editing:
+                    break;
+            }
+        });
+        keyboardJS.bind("left", () => {
+            switch (this.sonicManager.currentGameState) {
+                case GameState.Playing:
+                    this.sonicManager.sonicToon.pressLeft();
+                    break;
+                case GameState.Editing:
+                    this.sonicManager.windowLocation.x -= 128;
+                    this.sonicManager.objectTickWindow.x -= 128;
+                    break;
+            }
+        }, () => {
+            switch (this.sonicManager.currentGameState) {
+                case GameState.Playing:
+                    this.sonicManager.sonicToon.releaseLeft();
+                    break;
+                case GameState.Editing:
+                    break;
+            }
+        });
+        keyboardJS.bind("right", () => {
+            switch (this.sonicManager.currentGameState) {
+                case GameState.Playing:
+                    this.sonicManager.sonicToon.pressRight();
+                    break;
+                case GameState.Editing:
+                    this.sonicManager.windowLocation.x += 128;
+                    this.sonicManager.objectTickWindow.x += 128;
+                    break;
+            }
+        }, () => {
+            switch (this.sonicManager.currentGameState) {
+                case GameState.Playing:
+                    this.sonicManager.sonicToon.releaseRight();
+                    break;
+                case GameState.Editing:
+                    break;
+            }
+        });
+        keyboardJS.bind("space", () => {
+            switch (this.sonicManager.currentGameState) {
+                case GameState.Playing:
+                    this.sonicManager.sonicToon.pressJump();
+                    break;
+                case GameState.Editing:
+                    break;
+            }
+        }, () => {
+            switch (this.sonicManager.currentGameState) {
+                case GameState.Playing:
+                    this.sonicManager.sonicToon.releaseJump();
+                    break;
+                case GameState.Editing:
+                    break;
+            }
+        });
+        keyboardJS.bind("e", () => {
+            this.sonicManager.sonicLevel.curHeightMap = !this.sonicManager.sonicLevel.curHeightMap;
+        });
 
     }
 
     loadLevel(data: string): void {
         let l = JSON.parse(Help.decodeString(data));
-        SonicEngine.instance.RunSonic(l);
+        this.runSonic(l);
     }
 
 
-    public RunSonic(level: SLData): void {
+    public runSonic(level: SLData): void {
+        this.clearCache();
         this.sonicManager.clearCache();
-        this.sonicManager.Load(level);
+        this.sonicManager.load(level);
         this.sonicManager.windowLocation.x = 0;
         this.sonicManager.windowLocation.y = 0;
-        this.sonicManager.bigWindowLocation.x = (this.sonicManager.windowLocation.x - this.sonicManager.windowLocation.width * 0.2) | 0;
-        this.sonicManager.bigWindowLocation.y = (this.sonicManager.windowLocation.y - this.sonicManager.windowLocation.height * 0.2) | 0;
-        this.sonicManager.bigWindowLocation.width = (this.sonicManager.windowLocation.width * 1.8) | 0;
-        this.sonicManager.bigWindowLocation.height = (this.sonicManager.windowLocation.height * 1.8) | 0;
-        let dl = Help.getQueryString();
+        this.sonicManager.objectTickWindow.x = (this.sonicManager.windowLocation.x - this.sonicManager.windowLocation.width * 0.2) | 0;
+        this.sonicManager.objectTickWindow.y = (this.sonicManager.windowLocation.y - this.sonicManager.windowLocation.height * 0.2) | 0;
+        this.sonicManager.objectTickWindow.width = (this.sonicManager.windowLocation.width * 1.8) | 0;
+        this.sonicManager.objectTickWindow.height = (this.sonicManager.windowLocation.height * 1.8) | 0;
         this.sonicManager.currentGameState = GameState.Editing;
-        if (dl["run"]) {
-            this.runGame();
-        }
-        this.sonicManager.cacheTiles();
+
         this.runGame();
+    }
+
+    private clearCache() {
+        if (this.spriteCache != null)
+            this.spriteCache.ClearCache();
     }
 
     public runGame(): void {
@@ -454,19 +285,17 @@ export class SonicEngine {
         switch (sonicManager.currentGameState) {
             case GameState.Playing:
                 sonicManager.currentGameState = GameState.Editing;
-                sonicManager.scale = new Point(1, 1);
-                sonicManager.windowLocation = Help.defaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
+                sonicManager.windowLocation = Help.defaultWindowLocation(sonicManager.currentGameState);
                 sonicManager.sonicToon = null;
                 break;
             case GameState.Editing:
                 sonicManager.currentGameState = GameState.Playing;
-                sonicManager.scale = new Point(2, 2);
-                sonicManager.windowLocation = Help.defaultWindowLocation(sonicManager.currentGameState, sonicManager.scale);
+                sonicManager.windowLocation = Help.defaultWindowLocation(sonicManager.currentGameState);
                 sonicManager.sonicToon = new Sonic();
                 break;
         }
         // sonicManager.DestroyCanvases();
-        sonicManager.ResetCanvases();
+        sonicManager.resetCanvases();
     }
 
     private canvasMouseMove(queryEvent: JQueryEventObject): void {
@@ -484,31 +313,10 @@ export class SonicEngine {
         this.sonicManager.mouseUp(queryEvent);
     }
 
-    public resizeCanvas(resetOverride: boolean): void {
-        this.canvasWidth = $(window).width();
-        this.canvasHeight = $(window).height();
-        this.sonicManager.windowLocation = Help.defaultWindowLocation(this.sonicManager.currentGameState, this.sonicManager.scale);
-        let wide = new DoublePoint((this.canvasWidth / 320 / this.sonicManager.scale.x), (this.canvasHeight / 224 / this.sonicManager.scale.y));
-        let even = new DoublePoint(Math.min((this.canvasWidth / 320 / this.sonicManager.scale.x), (this.canvasHeight / 224 / this.sonicManager.scale.y)), Math.min((this.canvasWidth / 320 / this.sonicManager.scale.x), (this.canvasHeight / 224 / this.sonicManager.scale.y)));
-        this.sonicManager.realScale = !this.fullscreenMode ? new DoublePoint(1, 1) : (this.wideScreen ? wide : even);
-        if (resetOverride || this.sonicManager.overrideRealScale == null)
-            this.sonicManager.overrideRealScale = DoublePoint.create(this.sonicManager.realScale);
-        else this.sonicManager.realScale = DoublePoint.create(this.sonicManager.overrideRealScale);
-        this.gameGoodWidth = <number>(this.sonicManager.windowLocation.width * (this.sonicManager.currentGameState == GameState.Playing ? this.sonicManager.scale.x * this.sonicManager.realScale.x : 1));
-        // this.sonicManager.DestroyCanvases();
-        this.sonicManager.ResetCanvases();
+    public resizeCanvas(): void {
+        this.sonicManager.windowLocation = Help.defaultWindowLocation(this.sonicManager.currentGameState);
+        this.sonicManager.resetCanvases();
     }
 
-    public clear(): void {
-        this.lowTileCanvas.context.clearRect(0, 0, 320, 224);
-        this.spriteCanvas.context.clearRect(0, 0, 320, 224);
-        this.highTileCanvas.context.clearRect(0, 0, 320, 224);
-
-
-    }
-
-    public GameDraw(): void {
-        this.sonicManager.MainDraw();
-    }
 
 }

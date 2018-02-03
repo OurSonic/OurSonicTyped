@@ -2,26 +2,19 @@
 
 export class SpriteCache {
     public Rings: CanvasInformation[];
-    public TileChunks: CanvasInformation[];
-    public Tilepieces: {[key:string]:CanvasInformation};
     public HeightMaps: CanvasInformation[];
-    public Tiles: HTMLImageElement[];
     public SonicSprites: {[key:string]:HTMLImageElement};
     public HeightMapChunks: {[key:string]:CanvasInformation};
     public Indexes: SpriteCacheIndexes;
-    public AnimationSprites: {[key:string]:CanvasInformation};
     constructor() {
-        this.Rings = new Array<CanvasInformation>();
-        this.TileChunks = new Array<CanvasInformation>();
-        this.Tilepieces = {};
-        this.Tiles = new Array<HTMLImageElement>();
+        this.Rings = [];
         this.SonicSprites = {};
-        this.HeightMaps = new Array<CanvasInformation>();
+        this.HeightMaps = [];
         this.HeightMapChunks = {};
         this.Indexes = new SpriteCacheIndexes();
     }
     public ClearCache(): void {
-        this.HeightMaps = new Array<CanvasInformation>();
+        this.HeightMaps = [];
         this.HeightMapChunks = {};
     }
 }

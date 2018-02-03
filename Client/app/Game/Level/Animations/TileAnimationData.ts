@@ -1,4 +1,4 @@
-import {Tile} from "../Tiles/Tile";
+import {Tile} from "../tiles/Tile";
 import {SonicManager} from "../../SonicManager";
 
 export class TileAnimationData {
@@ -26,21 +26,20 @@ export class TileAnimationData {
 }*/
 
 
-    public AnimationTileFile: number=0;
-    public NumberOfTiles: number=0;
-    public LastAnimatedIndex: number=0;
-    public LastAnimatedFrame: number=0;
-    public AnimationTileIndex: number=0;
-    public DataFrames: TileAnimationDataFrame[];
-    public AutomatedTiming: number=0;
+    public animationTileFile: number=0;
+    public numberOfTiles: number=0;
+    public lastAnimatedIndex: number=0;
+    public lastAnimatedFrame: number=0;
+    public animationTileIndex: number=0;
+    public dataFrames: TileAnimationDataFrame[];
     constructor() {
 
     }
     public GetAnimationFile(): Tile[] {
-        return SonicManager.instance.sonicLevel.animatedTileFiles[this.AnimationTileFile];
+        return SonicManager.instance.sonicLevel.animatedTileFiles[this.animationTileFile];
     }
 }
 export class TileAnimationDataFrame {
-    public Ticks: number=0;
-    public StartingTileIndex: number=0;
+    public ticks: number=0;
+    public startingTileIndex: number=0;
 }

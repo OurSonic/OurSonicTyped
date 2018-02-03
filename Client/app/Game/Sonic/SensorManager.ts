@@ -48,6 +48,7 @@ export class SensorManager {
         }
     }
 }
+
 export class Sensor {
     private cachedReturnSensor: SensorM = new SensorM(0, 0);
     public letter: string;
@@ -69,18 +70,18 @@ export class Sensor {
     }
 
     private checkCollisionLineWrap(startX: number, endX: number, startY: number, endY: number, allowTopSolid: boolean): SensorM {
-        var xIncrease = startX == endX ? (0) : (startX > endX ? -1 : 1);
-        var yIncrease = startY == endY ? (0) : (startY > endY ? -1 : 1);
+        let xIncrease = startX == endX ? (0) : (startX > endX ? -1 : 1);
+        let yIncrease = startY == endY ? (0) : (startY > endY ? -1 : 1);
 
-        var minSolidity = 0;
+        let minSolidity = 0;
         if (!allowTopSolid) {
             minSolidity = 1;
         }
 
-        var oneTryX = startX === endX;
-        var levelWidth = SonicManager.instance.sonicLevel.levelWidth * 128;
+        let oneTryX = startX === endX;
+        let levelWidth = SonicManager.instance.sonicLevel.levelWidth * 128;
 
-        for (var testX = startX; oneTryX || Math.abs(testX - endX) !== 0; testX += xIncrease) {
+        for (let testX = startX; oneTryX || Math.abs(testX - endX) !== 0; testX += xIncrease) {
             oneTryX = false;
             if (testX == 0) {
                 this.cachedReturnSensor.value = 0;
@@ -95,14 +96,15 @@ export class Sensor {
                 return this.cachedReturnSensor;
             }
 
-            var oneTryY = startY === endY;
-            for (var testY = startY; oneTryY || Math.abs(testY - endY) !== 0; testY += yIncrease) {
+            let oneTryY = startY === endY;
+            for (let testY = startY; oneTryY || Math.abs(testY - endY) !== 0; testY += yIncrease) {
                 oneTryY = false;
 
                 let tileChunkX = (testX / 128) | 0;
                 let tileChunkY = (Help.mod(testY, SonicManager.instance.sonicLevel.levelHeight * 128) / 128) | 0;
 
                 let chunk = SonicManager.instance.sonicLevel.getChunkAt(tileChunkX, tileChunkY);
+                if (chunk === undefined) continue;
 
                 let interChunkX = testX - tileChunkX * 128;
                 let interChunkY = testY - tileChunkY * 128;
@@ -114,37 +116,38 @@ export class Sensor {
                 let interTileY = interChunkY - tileY * 16;
 
                 let tilePiece = chunk.getTilePieceAt(tileX, tileY, false);
+                if (tilePiece === undefined) continue;
                 let tilePieceInfo = chunk.getTilePieceInfo(tileX, tileY, false);
-                var solidity = (SonicManager.instance.sonicLevel.curHeightMap ? tilePieceInfo.Solid1 : tilePieceInfo.Solid2 );
+                let solidity = (SonicManager.instance.sonicLevel.curHeightMap ? tilePieceInfo.solid1 : tilePieceInfo.solid2 );
 
 
-                var heightMap = SonicManager.instance.sonicLevel.curHeightMap ? tilePiece.getLayer1HeightMap() : tilePiece.getLayer2HeightMap();
-                var tileAngle = SonicManager.instance.sonicLevel.curHeightMap ? tilePiece.getLayer1Angle() : tilePiece.getLayer2Angle();
+                let heightMap = SonicManager.instance.sonicLevel.curHeightMap ? tilePiece.getLayer1HeightMap() : tilePiece.getLayer2HeightMap();
+                let tileAngle = SonicManager.instance.sonicLevel.curHeightMap ? tilePiece.getLayer1Angle() : tilePiece.getLayer2Angle();
 
                 if (!(tileAngle == 0 || tileAngle == 255 || tileAngle == 1)) {
-                    if (tilePieceInfo.XFlip) {
-                        if (tilePieceInfo.YFlip) {
+                    if (tilePieceInfo.xFlip) {
+                        if (tilePieceInfo.yFlip) {
                             tileAngle = 192 - tileAngle + 192;
                             tileAngle = 128 - tileAngle + 128;
                         }
                         else tileAngle = 128 - tileAngle + 128;
                     }
                     else {
-                        if (tilePieceInfo.YFlip)
+                        if (tilePieceInfo.yFlip)
                             tileAngle = 192 - tileAngle + 192;
                         else tileAngle = (tileAngle);
                     }
                 }
 
-                var collisionMap: boolean[];
-                if (tilePieceInfo.XFlip) {
-                    if (tilePieceInfo.YFlip) {
+                let collisionMap: boolean[];
+                if (tilePieceInfo.xFlip) {
+                    if (tilePieceInfo.yFlip) {
                         collisionMap = heightMap.collisionBlockXFlipYFlip;
                     } else {
                         collisionMap = heightMap.collisionBlockXFlip;
                     }
                 } else {
-                    if (tilePieceInfo.YFlip) {
+                    if (tilePieceInfo.yFlip) {
                         collisionMap = heightMap.collisionBlockYFlip;
                     } else {
                         collisionMap = heightMap.collisionBlock;

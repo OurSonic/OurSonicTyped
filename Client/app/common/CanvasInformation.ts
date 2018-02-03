@@ -14,10 +14,10 @@ export class CanvasInformation {
 
     public static create(w: number, h: number, pixelated: boolean): CanvasInformation {
         let canvas = document.createElement("canvas");
-        return CanvasInformation.CreateFromElement(canvas, w, h, pixelated);
+        return CanvasInformation.createFromElement(canvas, w, h, pixelated);
     }
 
-    public static CreateFromElement(canvas: HTMLCanvasElement, w: number, h: number, pixelated: boolean): CanvasInformation {
+    public static createFromElement(canvas: HTMLCanvasElement, w: number, h: number, pixelated: boolean): CanvasInformation {
         if (w == 0)
             w = 1;
         if (h == 0)

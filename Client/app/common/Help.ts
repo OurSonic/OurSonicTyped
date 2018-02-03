@@ -1,6 +1,4 @@
 ﻿///<reference path="../../typings/Compress.d.ts"/>
-
-
 import {Point, IntersectingRectangle } from "./Utils";
 import {CanvasInformation  } from "./CanvasInformation";
 import {Color} from "./Color";
@@ -9,7 +7,7 @@ import {GameState} from "./Enums";
 import {SonicManager} from "../game/SonicManager";
 
 export class Help {
-    private static cos_table: number[] = new Array(1.00000, 0.99970, 0.99880, 0.99729, 0.99518, 0.99248, 0.98918, 0.98528,
+    private static cos_table: number[] = [1.00000, 0.99970, 0.99880, 0.99729, 0.99518, 0.99248, 0.98918, 0.98528,
         0.98079, 0.97570, 0.97003, 0.96378, 0.95694, 0.94953, 0.94154, 0.93299,
         0.92388, 0.91421, 0.90399, 0.89322, 0.88192, 0.87009, 0.85773, 0.84485,
         0.83147, 0.81758, 0.80321, 0.78835, 0.77301, 0.75721, 0.74095, 0.72425,
@@ -40,7 +38,7 @@ export class Help {
         0.70711, 0.72425, 0.74095, 0.75721, 0.77301, 0.78835, 0.80321, 0.81758,
         0.83147, 0.84485, 0.85773, 0.87009, 0.88192, 0.89322, 0.90399, 0.91421,
         0.92388, 0.93299, 0.94154, 0.94953, 0.95694, 0.96378, 0.97003, 0.97570,
-        0.98079, 0.98528, 0.98918, 0.99248, 0.99518, 0.99729, 0.99880, 0.99970);
+        0.98079, 0.98528, 0.98918, 0.99248, 0.99518, 0.99729, 0.99880, 0.99970];
 
     public static sin(f: number): number {
         return Help.cos_table[(f + 0x40) & 0xFF];
@@ -230,7 +228,7 @@ export class Help {
         return base;
     }
 
-    static defaultWindowLocation(gameState: GameState, scale: Point) {
+    static defaultWindowLocation(gameState: GameState) {
 
         switch (gameState) {
             case GameState.Playing:
@@ -239,8 +237,8 @@ export class Help {
                 let x = 0;
                 let y = 0;
                 if (SonicManager.instance.sonicLevel && SonicManager.instance.sonicLevel.startPositions && SonicManager.instance.sonicLevel.startPositions[0]) {
-                    x = SonicManager.instance.sonicLevel.startPositions[0].x - 128 * scale.x;
-                    y = SonicManager.instance.sonicLevel.startPositions[0].y - 128 * scale.y;
+                    x = SonicManager.instance.sonicLevel.startPositions[0].x - 128 ;
+                    y = SonicManager.instance.sonicLevel.startPositions[0].y - 128 ;
                 }
                 return new IntersectingRectangle(x, y, window.innerWidth, window.innerHeight);
         }

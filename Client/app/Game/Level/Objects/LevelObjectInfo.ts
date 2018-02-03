@@ -35,12 +35,12 @@ export class LevelObjectInfo {
     public consoleLog: (_: string[]) => void;
     constructor(o: SLDataObjectEntry) {
         this.o = o;
-        this.x = o.X;
-        this.y = o.Y;
-        this.xflip = o.XFlip;
-        this.yflip = o.YFlip;
-        this.subdata = o.SubType;
-        this.key = o.ID.toString();
+        this.x = o.x;
+        this.y = o.y;
+        this.xflip = o.xFlip;
+        this.yflip = o.yFlip;
+        this.subdata = o.subType;
+        this.key = o.iD.toString();
         this.upperNibble = this.subdata >> 4;
         this.lowerNibble = this.subdata & 0xf;
     }
@@ -86,8 +86,8 @@ export class LevelObjectInfo {
         if (this.objectData.pieceLayouts.length == 0) {
             this._rect.x = this.x;
             this._rect.y = this.y;
-            this._rect.Width = ObjectManager.broken.width;
-            this._rect.Height = ObjectManager.broken.height;
+            this._rect.width = ObjectManager.broken.width;
+            this._rect.height = ObjectManager.broken.height;
             return this._rect;
         }
         return this.objectData.pieceLayouts[this.pieceLayoutIndex].getRectangle(this.objectData);
@@ -111,24 +111,24 @@ export class LevelObjectInfo {
             canvas.save();
             canvas.fillStyle = "rgba(228,228,12,0.4)";
             let wd = 1;
-            canvas.fillRect(gr.x - this.x + x - (gr.Width / 2) - wd,
-                gr.y - this.y + y - (gr.Height / 2) - wd,
-                gr.Width - (gr.x - this.x) + wd * 2,
-                gr.Height - (gr.y - this.y) + wd * 2);
+            canvas.fillRect(gr.x - this.x + x - (gr.width / 2) - wd,
+                gr.y - this.y + y - (gr.height / 2) - wd,
+                gr.width - (gr.x - this.x) + wd * 2,
+                gr.height - (gr.y - this.y) + wd * 2);
             canvas.restore();
         }
     }
     public reset(): void {
-        this.x = this.o.X;
-        this.y = this.o.Y;
+        this.x = this.o.x;
+        this.y = this.o.y;
         this.xsp = 0;
         this.ysp = 0;
         this.state = null;
-        this.xflip = this.o.XFlip;
-        this.yflip = this.o.YFlip;
+        this.xflip = this.o.xFlip;
+        this.yflip = this.o.yFlip;
         this.dead = false;
         this.pieceLayoutIndex = 0;
-        this.subdata = this.o.SubType;
+        this.subdata = this.o.subType;
         this.upperNibble = this.subdata >> 4;
         this.lowerNibble = this.subdata & 0xf;
         if (this.objectData.pieceLayouts.length > this.pieceLayoutIndex && this.objectData.pieceLayouts[this.pieceLayoutIndex].pieces.length > 0)
@@ -149,9 +149,9 @@ export class LevelObjectInfo {
         let pieces = this.pieces;
         let mX: number = ((sonic.x) - this.x) | 0;
         let mY: number = ((sonic.y) - this.y)|0;
-        var piecesLength = pieces.length;
-        for (var i = 0; i < piecesLength; i++) {
-            var j = pieces[i];
+        let piecesLength = pieces.length;
+        for (let i = 0; i < piecesLength; i++) {
+            let j = pieces[i];
             let piece = this.objectData.pieces[j.pieceIndex];
             let asset = this.objectData.assets[piece.assetIndex];
             if (asset.frames.length > 0) {

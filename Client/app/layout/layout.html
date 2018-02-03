@@ -1,6 +1,8 @@
 
 <div class="col" style="padding :0; margin:0;position:relative;height:100vh;border:10px solid black;" [class.s8]="!collapseSide" [class.s12]="collapseSide" id="canvasBox">
     <button style="width:1px;height:1px; left:-200px;top:-200px;position:absolute;" id="hiddenBox">a</button>
+    <canvas id="bgLowTileLayer" width="320" height="224" class="game-canvas"></canvas>
+    <canvas id="bgHighTileLayer" width="320" height="224" class="game-canvas"></canvas>
     <canvas id="lowTileLayer" width="320" height="224" class="game-canvas"></canvas>
     <canvas id="spriteLayer" width="320" height="224" class="game-canvas"></canvas>
     <canvas id="highTileLayer" width="320" height="224" class="game-canvas"></canvas>
@@ -18,6 +20,11 @@
                     <span>{{title}} <span style="font-size: 1.6rem;">{{loading?'loading...':''}}</span></span>
                 </div>
                 <level-selector *ngIf="selectedTabIndex==0" [layout]="this" style="flex:13 0;width:100%;display:inline-flex;"></level-selector>
+                <!--<object-selector *ngIf="selectedTabIndex==1"  style="flex:13 0;width:100%;display:inline-flex;"></object-selector>-->
+                <tiles *ngIf="selectedTabIndex==1"  style="flex:13 0;width:100%;display:inline-flex;"></tiles>
+                <tile-piece *ngIf="selectedTabIndex==2"  style="flex:13 0;width:100%;display:inline-flex;"></tile-piece>
+                <tile-chunk *ngIf="selectedTabIndex==3"  style="flex:13 0;width:100%;display:inline-flex;"></tile-chunk>
+                <animated-tiles *ngIf="selectedTabIndex==4"  style="flex:13 0;width:100%;display:inline-flex;"></animated-tiles>
             </div>
 
 
