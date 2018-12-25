@@ -5,8 +5,8 @@
     <meta charset="utf-8"/>
     <title>Our Sonic</title>
     <link rel="stylesheet" href="css/app.css" type="text/css"/>
-    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32"/>
+    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16"/>
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -17,13 +17,7 @@
     <script src="libs/gamecontroller.js"></script>
     <script src="libs/fpsmeter.min.js"></script>
     <script src="libs/RawDeflate.js"></script>
-    <script src="node_modules/zone.js/dist/zone.js"></script>
-    <script src="node_modules/reflect-metadata/Reflect.js"></script>
-    <script src="node_modules/systemjs/dist/system.src.js"></script>
-    <script src="libs/rx.min.js"></script>
 
-    <!-- 2. Configure SystemJS -->
-    <script src="dist/systemjs.config.js"></script>
     <style>
         .game-canvas {
             left: 0px;
@@ -31,44 +25,47 @@
             position: absolute;
             top: 0px;
             z-index: 0;
-            width:100%;
-            height:100%;
+            width: 100%;
+            height: 100%;
             image-rendering: auto;
             image-rendering: crisp-edges;
-            image-rendering: -moz-crisp-edges;         /* Firefox */
-            image-rendering:   -o-crisp-edges;         /* Opera */
-            -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+            image-rendering: -moz-crisp-edges; /* Firefox */
+            image-rendering: -o-crisp-edges; /* Opera */
+            -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
             image-rendering: pixelated;
         }
-        img{
+
+        img {
             image-rendering: auto;
             image-rendering: crisp-edges;
-            image-rendering: -moz-crisp-edges;         /* Firefox */
-            image-rendering:   -o-crisp-edges;         /* Opera */
-            -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+            image-rendering: -moz-crisp-edges; /* Firefox */
+            image-rendering: -o-crisp-edges; /* Opera */
+            -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
             image-rendering: pixelated;
         }
     </style>
 </head>
 <body style="background-color: #000080;">
 
-<div class="row" style="padding:0;margin:0;">
-    <layout>
-        <h1 style="color:white;">Loading...</h1>
-    </layout>
+<div id="main" class="row" style="padding:0;margin:0;">
+    <h1 style="color:white;">Loading...</h1>
 </div>
 
-<script>
-    System.import('app').catch(function (err) {
-        console.error(err);
-    });
-</script>
+
+<script src="dist/bundle.js"></script>
 
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
   ga('create', 'UA-38844507-1', 'auto');
   ga('send', 'pageview');
