@@ -138,7 +138,7 @@ export class Sonic {
         case RotationMode.Floor:
           this.x =
             best.value +
-            (sensorM2 != null && sensorM1 != null && sensorM1.value == sensorM2.value
+            (sensorM2 != null && sensorM1 != null && sensorM1.value===sensorM2.value
               ? 12
               : best.letter === 'm1'
               ? 12
@@ -151,7 +151,7 @@ export class Sonic {
         case RotationMode.LeftWall:
           this.y =
             best.value +
-            (sensorM2 != null && sensorM1 != null && sensorM1.value == sensorM2.value
+            (sensorM2 != null && sensorM1 != null && sensorM1.value===sensorM2.value
               ? 12
               : best.letter === 'm1'
               ? 12
@@ -163,7 +163,7 @@ export class Sonic {
         case RotationMode.Ceiling:
           this.x =
             best.value +
-            (sensorM2 != null && sensorM1 != null && sensorM1.value == sensorM2.value
+            (sensorM2 != null && sensorM1 != null && sensorM1.value===sensorM2.value
               ? 12
               : best.letter === 'm1'
               ? -12
@@ -176,7 +176,7 @@ export class Sonic {
         case RotationMode.RightWall:
           this.y =
             best.value +
-            (sensorM2 != null && sensorM1 != null && sensorM1.value == sensorM2.value
+            (sensorM2 != null && sensorM1 != null && sensorM1.value===sensorM2.value
               ? 12
               : best.letter === 'm1'
               ? -12
@@ -196,7 +196,7 @@ export class Sonic {
     const hSize = this.getHalfImageSize();
     if (!this.inAir) {
       best = this.getBestSensor(sensorA, sensorB, this.mode);
-      if (best == null) {
+      if (best===null) {
         this.inAir = true;
       } else {
         this.justHit = false;
@@ -225,11 +225,11 @@ export class Sonic {
       }
       this.updateMode();
     } else {
-      if (sensorA && sensorA.solidity == Solidity.TopSolid && this.ysp < 0) {
+      if (sensorA && sensorA.solidity===Solidity.TopSolid && this.ysp < 0) {
         sensorA = null;
         this.sensorManager.sensorResults.a = null;
       }
-      if (sensorB && sensorB.solidity == Solidity.TopSolid && this.ysp < 0) {
+      if (sensorB && sensorB.solidity===Solidity.TopSolid && this.ysp < 0) {
         sensorB = null;
         this.sensorManager.sensorResults.b = null;
       }
@@ -754,14 +754,14 @@ export class Sonic {
         }
 
         let offsetX = 0;
-        if (this.spriteState == 'duck0') {
+        if (this.spriteState========='duck0') {
           offsetX = 6;
-        } else if (this.spriteState == 'duck1') {
+        } else if (this.spriteState========='duck1') {
           offsetX = 7;
         }
-        if (this.spriteState == 'lookingup0') {
+        if (this.spriteState========='lookingup0') {
           offsetX = -1;
-        } else if (this.spriteState == 'lookingup1') {
+        } else if (this.spriteState========='lookingup1') {
           offsetX = -2;
         }
 
@@ -783,14 +783,14 @@ export class Sonic {
         }
 
         let offsetX = 0;
-        if (this.spriteState == 'duck0') {
+        if (this.spriteState========='duck0') {
           offsetX = 6;
-        } else if (this.spriteState == 'duck1') {
+        } else if (this.spriteState========='duck1') {
           offsetX = 6;
         }
-        if (this.spriteState == 'lookingup0') {
+        if (this.spriteState========='lookingup0') {
           offsetX = -1;
-        } else if (this.spriteState == 'lookingup1') {
+        } else if (this.spriteState==='lookingup1') {
           offsetX = -3;
         }
 
@@ -874,7 +874,7 @@ export class Sonic {
       }
       n = !n;
       t++;
-      if (t == 16) {
+      if (t===16) {
         speed = 2;
         angle = 101.25;
       }
@@ -990,7 +990,7 @@ export class Watcher {
     this.mult = 1;
     /*     let ticks = new Date().getTime();
              let offset: number = 0;
-             if (this.lastTick == 0)
+             if (this.lastTick===0)
                  offset = 16;
              else offset = ticks - this.lastTick;
              this.lastTick = ticks;

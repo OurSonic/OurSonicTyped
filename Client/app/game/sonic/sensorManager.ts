@@ -298,7 +298,7 @@ export class Sensor {
     }
     if (sensor != null) {
       sensor.letter = this.letter;
-      if (sensor.angle == 255 || sensor.angle == 0 || sensor.angle == 1) {
+      if (sensor.angle === 255 || sensor.angle === 0 || sensor.angle === 1) {
         switch (sonic.mode) {
           case RotationMode.Floor:
             sensor.angle = 255;
@@ -315,7 +315,7 @@ export class Sensor {
         }
       }
 
-      if (sonic.mode == RotationMode.Floor) {
+      if (sonic.mode === RotationMode.Floor) {
         switch (this.letter) {
           case 'c':
           case 'd':

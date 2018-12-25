@@ -15,7 +15,7 @@ export class TilePieceInfo {
     return SonicManager.instance.sonicLevel.getTilePiece(this.block);
   }
   setTilePiece(tp: TilePiece): boolean {
-    if (this.block == tp.index) {
+    if (this.block === tp.index) {
       return false;
     }
     this.block = tp.index;

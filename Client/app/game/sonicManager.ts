@@ -339,7 +339,7 @@ export class SonicManager {
           continue;
         }
 
-        let iX, iY;
+        let iX: number, iY: number;
         if (pieceInfo.xFlip !== tileItem.xFlip) {
           iX = drawX - pixelX + (7 - pixelX);
         } else {
@@ -641,7 +641,7 @@ export class SonicManager {
     const objectKeys: string[] = [];
     for (const obj of this.sonicLevel.objects) {
       const o = obj.key;
-      if (objectKeys.filter(p => p != o).length === objectKeys.length) {
+      if (objectKeys.filter(p => p !== o).length === objectKeys.length) {
         objectKeys.push(o);
       }
     }

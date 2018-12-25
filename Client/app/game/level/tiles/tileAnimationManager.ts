@@ -70,7 +70,7 @@ export class TileAnimation {
       anni.lastAnimatedIndex = 0;
     }
     if (
-      anni.dataFrames[anni.lastAnimatedIndex].ticks == 0 ||
+      anni.dataFrames[anni.lastAnimatedIndex].ticks === 0 ||
       SonicManager.instance.drawTickCount - anni.lastAnimatedFrame >= anni.dataFrames[anni.lastAnimatedIndex].ticks
     ) {
       anni.lastAnimatedFrame = SonicManager.instance.drawTickCount;

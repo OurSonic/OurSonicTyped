@@ -70,10 +70,10 @@ export class TilePaletteAnimation {
 
   Tick(): void {
     const pal = this.AnimatedPaletteData;
-    if (pal.skipIndex == 0) {
+    if (pal.skipIndex === 0) {
       return;
     }
-    if (pal.totalLength == 0) {
+    if (pal.totalLength === 0) {
       return;
     }
     for (let j: number = 0; j <= pal.totalLength; j += pal.skipIndex) {
@@ -85,10 +85,10 @@ export class TilePaletteAnimation {
 
   Init(): void {
     const pal = this.AnimatedPaletteData;
-    if (pal.skipIndex == 0) {
+    if (pal.skipIndex === 0) {
       return;
     }
-    if (pal.totalLength == 0) {
+    if (pal.totalLength === 0) {
       return;
     }
     for (let j: number = 0; j <= pal.totalLength; j += pal.skipIndex) {

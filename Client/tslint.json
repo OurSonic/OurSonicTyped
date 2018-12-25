@@ -27,6 +27,7 @@
     "no-console": false,
     "interface-over-type-literal": false,
     "no-bitwise": false,
+    "variable-name": false,
     "array-type": false,
     "no-empty": false,
     "object-literal-sort-keys": false,
@@ -37,6 +38,7 @@
     "max-classes-per-file": false,
     "no-unused-expression": false,
     "arrow-parens": false,
+    "no-eval": false,
     "interface-name": false,
     "member-access": [
       true,

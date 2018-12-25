@@ -71,25 +71,25 @@ export class HeightMap {
       canvas.scale(1, -1);
     }
     const fd = SonicEngine.instance.spriteCache.HeightMaps[this.Index + (solid << 20)];
-    if (this.Index != -1 && fd) {
+    if (this.Index !== -1 && fd) {
       canvas.drawImage(fd.canvas, x, y);
     } else {
       const ntcanvas = CanvasInformation.create(16, 16, false);
       const ncanvas = ntcanvas.context;
       if (solid > 0) {
         ncanvas.fillStyle = HeightMap.colors[solid];
-        for (let x: number = 0; x < 16; x++) {
-          for (let y: number = 0; y < 16; y++) {
+        for (let xi = 0; xi < 16; xi++) {
+          for (let yi = 0; yi < 16; yi++) {
             let jx = 0;
             let jy = 0;
-            if (HeightMap.itemsGood(this.Items, x, y)) {
-              jx = x;
-              jy = y;
+            if (HeightMap.itemsGood(this.Items, xi, yi)) {
+              jx = xi;
+              jy = yi;
               const _x = jx;
               const _y = jy;
               ncanvas.lineWidth = 1;
               ncanvas.fillRect(_x, _y, 1, 1);
-              if (angle != 255) {
+              if (angle !== 255) {
                 ncanvas.beginPath();
                 ncanvas.lineWidth = 1;
                 ncanvas.strokeStyle = 'rgba(163,241,255,0.8)';

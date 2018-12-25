@@ -10,7 +10,7 @@ export class SpriteLoader {
     this.myUpdate = update;
   }
   tick(): boolean {
-    if (this.stepIndex == this.steps.length) {
+    if (this.stepIndex === this.steps.length) {
       if (!this.done) {
         this.done = true;
         this.myCompleted();
@@ -21,7 +21,7 @@ export class SpriteLoader {
     if (!stp) {
       return true;
     }
-    if ((((this.tickIndex % stp.Iterations.length) / 12) | 0) == 0) {
+    if ((((this.tickIndex % stp.Iterations.length) / 12) | 0) === 0) {
       this.myUpdate('Caching: ' + stp.Title + ' ' + (this.tickIndex / stp.Iterations.length) * 100 + '%');
     }
     if (stp.Iterations.length > this.tickIndex) {
@@ -47,7 +47,7 @@ export class SpriteLoader {
     return this.steps.length - 1;
   }
   addIterationToStep(spriteStep: number, i: number): void {
-    if (spriteStep == -1) {
+    if (spriteStep === -1) {
       return;
     }
     this.steps[spriteStep].Iterations.push(i);

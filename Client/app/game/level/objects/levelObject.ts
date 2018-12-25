@@ -58,7 +58,7 @@ export class LevelObject {
     return this.evalMe('hurtScript').apply($object, [$object, level, sonic, sensor, piece]) as boolean;
   }
   tick($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): boolean {
-    if ($object.lastDrawTick != SonicManager.instance.tickCount - 1) {
+    if ($object.lastDrawTick !== SonicManager.instance.tickCount - 1) {
       this.init($object, level, sonic);
     }
     $object.lastDrawTick = SonicManager.instance.tickCount;
@@ -79,7 +79,7 @@ export class LevelObject {
     if (this.cacheLast[js] == null) {
       this.cacheLast[js] = null;
     }
-    if (this.cacheLast[js] != this[js]) {
+    if (this.cacheLast[js] !== this[js]) {
       this.cacheCompiled[js] = null;
     }
     this.cacheLast[js] = this[js];

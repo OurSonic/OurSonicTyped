@@ -17,10 +17,10 @@ export class CanvasInformation {
   }
 
   static createFromElement(canvas: HTMLCanvasElement, w: number, h: number, pixelated: boolean): CanvasInformation {
-    if (w == 0) {
+    if (w === 0) {
       w = 1;
     }
-    if (h == 0) {
+    if (h === 0) {
       h = 1;
     }
     canvas.width = w;

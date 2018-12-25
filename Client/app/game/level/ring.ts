@@ -37,7 +37,7 @@ export class Ring extends Point {
       }
       this.TickCount++;
     }
-    if (SonicManager.instance.currentGameState == GameState.Playing) {
+    if (SonicManager.instance.currentGameState === GameState.Playing) {
       this.AnimationIndex =
         ((SonicManager.instance.drawTickCount % ((this.Active ? 4 : 8) * 4)) / (this.Active ? 4 : 8)) | 0;
     } else {

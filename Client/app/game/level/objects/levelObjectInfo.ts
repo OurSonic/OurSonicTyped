@@ -45,7 +45,7 @@ export class LevelObjectInfo {
     if (!this.debug) {
       this.debug = [];
     }
-    if (level == 0) {
+    if (level === 0) {
       this.debug.push(' -- ' + txt + ' -- ');
     } else {
       this.debug.push(txt);
@@ -87,7 +87,7 @@ export class LevelObjectInfo {
     return this.objectData.pieceLayouts[this.pieceLayoutIndex];
   }
   getRect(): Rectangle {
-    if (this.objectData.pieceLayouts.length == 0) {
+    if (this.objectData.pieceLayouts.length === 0) {
       this._rect.x = this.x;
       this._rect.y = this.y;
       this._rect.width = ObjectManager.broken.width;
@@ -100,7 +100,7 @@ export class LevelObjectInfo {
     if (this.dead || !this.objectData) {
       return;
     }
-    if (this.objectData.pieceLayouts.length == 0) {
+    if (this.objectData.pieceLayouts.length === 0) {
       canvas.drawImage(
         ObjectManager.broken,
         x - ObjectManager.broken.width / 2,

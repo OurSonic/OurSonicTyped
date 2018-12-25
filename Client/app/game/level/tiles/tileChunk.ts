@@ -56,7 +56,7 @@ export class TileChunk {
 
   checkEmpty(): void {
     for (const tilePiece of this.eachPiece()) {
-      if (tilePiece.index != 0) {
+      if (tilePiece.index !== 0) {
         this.isEmpty = false;
         return;
       }

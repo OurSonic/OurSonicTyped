@@ -33,7 +33,7 @@ export class Tile {
         }
 
         const col = color[drawY];
-        if (col == 0) {
+        if (col === 0) {
           continue;
         }
 

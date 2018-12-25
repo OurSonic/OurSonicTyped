@@ -71,7 +71,7 @@ export class LevelObjectAssetFrame {
           const ey = y;
           const d = this.colorMap[ex][ey];
           const color = this.palette[d];
-          if (color == this.transparentColor) {
+          if (color === this.transparentColor) {
             canvas.fillStyle = 'rgba(0,0,0,0)';
           } else {
             canvas.fillStyle = '#' + color;
