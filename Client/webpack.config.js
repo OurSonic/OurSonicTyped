@@ -7,12 +7,13 @@ module.exports = env => {
     entry: './app/main.tsx',
     // devtool: 'inline-source-map',
     output: {
-      filename: './bundle.js'
+      webassemblyModuleFilename: "[modulehash].wasm",
+      publicPath: "dist/"
     },
     mode: 'development',
     ...(process.env.WEBPACK_SERVE ? {mode: 'development'} : {}),
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.css'],
+      extensions: ['.ts', '.tsx', '.js', '.css', '.wasm'],
       alias: {}
     },
     externals: [{}],
@@ -25,6 +26,11 @@ module.exports = env => {
           options: {
             compilerOptions: {noEmit: false}
           }
+        },
+        {
+          type: "javascript/auto",
+          test: /\.wasm/,
+          loaders: ['wasm-loader']
         },
         {
           test: /\.less$/,

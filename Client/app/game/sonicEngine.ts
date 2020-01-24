@@ -1,5 +1,6 @@
 /// <reference path="../../typings/keyboardjs.d.ts" />
 
+import {ASUtil, instantiateStreaming} from 'assemblyscript/lib/loader';
 import {CanvasInformation} from '../common/canvasInformation';
 import {GameState} from '../common/enums';
 import {Help} from '../common/help';
@@ -20,6 +21,7 @@ export class SonicEngine {
   sonicManager: SonicManager;
   static instance: SonicEngine;
   private fpsMeter;
+  wasm: ASUtil & any; // {add: (a: number, b: number) => number};
 
   constructor() {
     SonicEngine.instance = this;
@@ -89,7 +91,7 @@ export class SonicEngine {
       }
       const ind_ = this.spriteCache.Indexes;
       this.spriteLoader = new SpriteLoader(completed, update);
-      if (ci.length == 0) {
+      if (ci.length === 0) {
         const spriteStep = this.spriteLoader.addStep(
           'Sprites',
           (i, done) => {
@@ -101,7 +103,7 @@ export class SonicEngine {
           },
           () => {
             ind_.Sprites++;
-            if (ind_.Sprites == 4) {
+            if (ind_.Sprites === 4) {
               return true;
             }
             return false;
@@ -114,7 +116,7 @@ export class SonicEngine {
       }
       const cci = this.spriteCache.SonicSprites;
 
-      if (Object.keys(cci).length == 0) {
+      if (Object.keys(cci).length === 0) {
         const sonicStep = this.spriteLoader.addStep(
           'Sonic Sprites',
           (sp, done) => {
@@ -165,7 +167,7 @@ export class SonicEngine {
     keyboardJS.bind('q', () => this.runGame());
 
     keyboardJS.bind('c', () => {
-      if (this.sonicManager.currentGameState == GameState.Playing) {
+      if (this.sonicManager.currentGameState === GameState.Playing) {
         this.sonicManager.sonicToon.debug();
       }
     });
@@ -292,9 +294,23 @@ export class SonicEngine {
     this.runSonic(l);
   }
 
-  runSonic(level: SlData): void {
+  async runSonic(level: SlData) {
     this.clearCache();
     this.sonicManager.clearCache();
+
+    this.wasm = await instantiateStreaming<{add: (a: number, b: number) => number}>(
+      fetch('./dist/wasm/untouched.wasm'),
+      {
+        env: {
+          memory: new WebAssembly.Memory({initial: 151}),
+          abort(_msg: any, _file: any, line: any, column: any) {
+            console.error('abort called at index.ts:' + line + ':' + column, _msg, _file);
+          }
+        }
+      }
+    );
+
+    this.wasm.doit();
     this.sonicManager.load(level);
     this.sonicManager.windowLocation.x = 0;
     this.sonicManager.windowLocation.y = 0;

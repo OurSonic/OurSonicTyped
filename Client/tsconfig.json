@@ -1,6 +1,7 @@
 ﻿{
   "compilerOptions": {
     "target": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -21,7 +22,8 @@
     }
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "app/assembly/**"
   ]
 }
 

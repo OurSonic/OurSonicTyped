@@ -31,6 +31,9 @@ export class SonicLevel {
   bgLevelWidth: number;
   bgLevelHeight: number;
 
+  bufferLow: number;
+  bufferHigh: number;
+
   constructor() {
     this.tiles = [];
     this.tilePieces = [];

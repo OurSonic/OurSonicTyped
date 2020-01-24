@@ -34,3 +34,5 @@ export class TilePieceInfo {
     return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes2[this.block]];
   }
 }
+
+

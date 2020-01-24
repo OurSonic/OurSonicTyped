@@ -258,12 +258,12 @@ export class SonicManager {
   height: number = 224;
 
   lowCacheImageData = new ImageData(320 + 16 * 2, 224 + 16 * 2);
-  lowCacheBuffer = new Uint32Array(this.lowCacheImageData.data.buffer);
+  lowCacheBuffer = new Int32Array(this.lowCacheImageData.data.buffer);
   highCacheImageData = new ImageData(320 + 16 * 2, 224 + 16 * 2);
-  highCacheBuffer = new Uint32Array(this.highCacheImageData.data.buffer);
+  highCacheBuffer = new Int32Array(this.highCacheImageData.data.buffer);
 
   private drawChunksPixel(windowX: number, windowY: number): void {
-    const levelWidthPixels = this.sonicLevel.levelWidth * 128;
+    /*    const levelWidthPixels = this.sonicLevel.levelWidth * 128;
     const levelHeightPixels = this.sonicLevel.levelHeight * 128;
 
     windowX = Help.mod(windowX - 16, levelWidthPixels);
@@ -353,16 +353,34 @@ export class SonicManager {
         const index = (iY * (320 + 16 * 2) + iX) | 0;
 
         const value = palette_[colorPaletteIndex][colorIndex] | 0;
-
         if (tileItem.priority === false) {
           lowBuffer[index] = value;
         } else {
           highBuffer[index] = value;
         }
       }
-    }
+    }*/
+    SonicEngine.instance.wasm.drawChunksPixel(windowX, windowY);
+    // const lowBuffer = SonicEngine.instance.wasm.__getUint8ClampedArray(this.sonicLevel.bufferLow);
+    // const highBuffer = SonicEngine.instance.wasm.__getUint8ClampedArray(this.sonicLevel.bufferHigh);
+    const wasm = SonicEngine.instance.wasm;
+    const mem = new Uint8Array(wasm.memory.buffer);
+    const lowBuff = mem.slice(
+      wasm.MemoryBuffer.foregroundOffset.value,
+      wasm.MemoryBuffer.foregroundOffset.value + (320 + 16 * 2) * (224 + 16 * 2) * 4
+    );
+    const int32Array = new Int32Array(lowBuff.buffer);
+    this.lowCacheBuffer.set(int32Array);
+    /*
+    this.highCacheImageData.data.set(
+      wasm.subarray(
+        wasm.MemoryBuffer.foregroundOffset.value + (320 + 16 * 2 + (224 + 16 * 2) * 4),
+        ((320 + 16 * 2 )* (224 + 16 * 2)) * 4
+      )
+    );
+*/
     this.engine.lowTileCanvas.context.putImageData(this.lowCacheImageData, -17, -17);
-    this.engine.highTileCanvas.context.putImageData(this.highCacheImageData, -17, -17);
+    // this.engine.highTileCanvas.context.putImageData(this.highCacheImageData, -17, -17);
   }
 
   private drawBackChunksPixel(windowX: number, windowY: number): void {
@@ -634,6 +652,16 @@ export class SonicManager {
     this.sonicLevel.bgLevelWidth = slData.backgroundWidth;
     this.sonicLevel.bgLevelHeight = slData.backgroundHeight;
 
+    SonicEngine.instance.wasm.setNumbers(
+      slData.foregroundWidth,
+      slData.foregroundHeight,
+      SonicManager.make2du8(slData.foreground),
+      slData.tiles.length,
+      slData.blocks.length,
+      slData.chunks.length
+    );
+    console.log(slData.tiles.length);
+
     for (let l = 0; l < slData.objects.length; l++) {
       this.sonicLevel.objects[l] = new LevelObjectInfo(slData.objects[l]);
       this.sonicLevel.objects[l].index = l;
@@ -662,6 +690,8 @@ export class SonicManager {
       for (let n: number = 0; n < colorCollection.length; n++) {
         colors[n % 8][(n / 8) | 0] = colorCollection[n];
       }
+      SonicEngine.instance.wasm.addTile(tileIndex, SonicManager.make2du8(colors));
+
       this.sonicLevel.tiles[tileIndex] = new Tile(colors);
       this.sonicLevel.tiles[tileIndex].index = tileIndex;
     }
@@ -697,7 +727,7 @@ export class SonicManager {
       const tilePiece = new TilePiece();
       tilePiece.index = blockIndex;
       tilePiece.tiles = [];
-      for (let tileIndex: number = 0; tileIndex < tiles.length; tileIndex++) {
+      for (let tileIndex = 0; tileIndex < tiles.length; tileIndex++) {
         const tileInfo = new TileInfo();
         tileInfo.tileIndex = tiles[tileIndex].tile;
         tileInfo.palette = tiles[tileIndex].palette;
@@ -707,6 +737,18 @@ export class SonicManager {
         tilePiece.tiles.push(tileInfo);
       }
       tilePiece.init();
+
+      SonicEngine.instance.wasm.addTilePiece(blockIndex);
+      for (const tile of tilePiece.tiles) {
+        SonicEngine.instance.wasm.addTileToPiece(
+          blockIndex,
+          tile.tileIndex,
+          tile.priority,
+          tile.xFlip,
+          tile.yFlip,
+          tile.palette
+        );
+      }
       this.sonicLevel.tilePieces[blockIndex] = tilePiece;
     }
     this.sonicLevel.angles = slData.angles;
@@ -729,7 +771,7 @@ export class SonicManager {
 
     this.sonicLevel.heightMaps = slData.heightMaps.map((h, index) => new HeightMap(h, index));
 
-    for (let j: number = 0; j < slData.chunks.length; j++) {
+    for (let j = 0; j < slData.chunks.length; j++) {
       const fc = slData.chunks[j];
       const mj = new TileChunk();
       mj.index = j;
@@ -737,6 +779,9 @@ export class SonicManager {
       for (let i: number = 0; i < 8; i++) {
         mj.tilePieces[i] = new Array(8);
       }
+
+      SonicEngine.instance.wasm.addTileChunk(j);
+
       for (let p: number = 0; p < fc.length; p++) {
         const tilePieceInfo = new TilePieceInfo();
         tilePieceInfo.index = p;
@@ -747,9 +792,21 @@ export class SonicManager {
         tilePieceInfo.yFlip = fc[p].yFlip;
 
         mj.tilePieces[p % 8][(p / 8) | 0] = tilePieceInfo;
+        SonicEngine.instance.wasm.addTileChunkTilePieceInfo(
+          j,
+          p % 8,
+          (p / 8) | 0,
+          p,
+          fc[p].block,
+          fc[p].solid1,
+          fc[p].solid2,
+          fc[p].xFlip,
+          fc[p].yFlip
+        );
       }
       this.sonicLevel.tileChunks[j] = mj;
     }
+
     this.sonicLevel.palette = slData.palette.map(a =>
       a.map(col => {
         const r = parseInt(col.slice(0, 2), 16);
@@ -759,12 +816,13 @@ export class SonicManager {
         return (255 << 24) | (b << 16) | (g << 8) | r;
       })
     );
+    SonicEngine.instance.wasm.setPalette(SonicManager.make2d(this.sonicLevel.palette));
 
     this.sonicLevel.startPositions = slData.startPositions.map(a => new Point(a.x, a.y));
     this.sonicLevel.animatedPalettes = [];
 
     if (slData.paletteItems.length > 0) {
-      for (let k: number = 0; k < slData.paletteItems[0].length; k++) {
+      for (let k = 0; k < slData.paletteItems[0].length; k++) {
         const pal: AnimatedPaletteItem = slData.paletteItems[0][k];
 
         const animatedPalette = new PaletteItem();
@@ -817,6 +875,17 @@ export class SonicManager {
     this.tilePaletteAnimationManager = new TilePaletteAnimationManager(this);
     this.tileAnimationManager = new TileAnimationManager(this);
 
+    this.sonicLevel.bufferLow = SonicEngine.instance.wasm.__allocArray(
+      SonicEngine.instance.wasm.UINT32ARRAY_ID,
+      this.lowCacheBuffer
+    );
+    this.sonicLevel.bufferHigh = SonicEngine.instance.wasm.__allocArray(
+      SonicEngine.instance.wasm.UINT32ARRAY_ID,
+      this.highCacheBuffer
+    );
+
+    SonicEngine.instance.wasm.setBuffers(this.sonicLevel.bufferLow, this.sonicLevel.bufferHigh);
+
     this.engine.preloadSprites(
       () => {
         this.loading = false;
@@ -825,5 +894,29 @@ export class SonicManager {
       s => {}
     );
     this.resize();
+  }
+
+  static flat<T, T2>(items: T[], callback: (a: T) => T2[]) {
+    const t2s: T2[] = [];
+    for (const item of items) {
+      t2s.push(...callback(item));
+    }
+    return t2s;
+  }
+  static make2d<T>(item: T[][]) {
+    let arr = SonicEngine.instance.wasm.__allocArray(
+      SonicEngine.instance.wasm.INT32ARRAY_ID,
+      SonicManager.flat(item, a => a)
+    );
+    arr = SonicEngine.instance.wasm.__retain(arr);
+    return SonicEngine.instance.wasm.make2d(item.length, item[0].length, arr);
+  }
+  static make2du8<T>(item: T[][]) {
+    let arr = SonicEngine.instance.wasm.__allocArray(
+      SonicEngine.instance.wasm.Uint8Array_ID,
+      SonicManager.flat(item, a => a)
+    );
+    arr = SonicEngine.instance.wasm.__retain(arr);
+    return SonicEngine.instance.wasm.make2du8(item.length, item[0].length, arr);
   }
 }
