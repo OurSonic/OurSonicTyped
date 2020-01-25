@@ -1,6 +1,6 @@
 /// <reference path="../../typings/keyboardjs.d.ts" />
 
-import {CanvasInformation} from '../common/canvasInformation';
+import {CanvasInformation, CanvasInformationGL} from '../common/canvasInformation';
 import {GameState} from '../common/enums';
 import {Help} from '../common/help';
 import {SpriteLoader} from '../common/spriteLoader';
@@ -14,7 +14,7 @@ import {SonicManager} from './sonicManager';
 export class SonicEngine {
   bgLowTileCanvas: CanvasInformation;
   bgHighTileCanvas: CanvasInformation;
-  lowTileCanvas: CanvasInformation;
+  lowTileCanvas: CanvasInformationGL;
   spriteCanvas: CanvasInformation;
   highTileCanvas: CanvasInformation;
   sonicManager: SonicManager;
@@ -41,11 +41,10 @@ export class SonicEngine {
       224,
       true
     );
-    this.lowTileCanvas = CanvasInformation.createFromElement(
+    this.lowTileCanvas = CanvasInformationGL.createFromElement(
       document.getElementById('lowTileLayer') as HTMLCanvasElement,
       320,
-      224,
-      true
+      224
     );
     this.spriteCanvas = CanvasInformation.createFromElement(
       document.getElementById('spriteLayer') as HTMLCanvasElement,
@@ -67,6 +66,8 @@ export class SonicEngine {
     window.requestAnimationFrame(this.tick.bind(this));
 
     this.resizeCanvas();
+
+    this.setupGL(this.lowTileCanvas);
   }
 
   private sonicSprites: {[key: string]: SonicImage} = {};
@@ -89,7 +90,7 @@ export class SonicEngine {
       }
       const ind_ = this.spriteCache.Indexes;
       this.spriteLoader = new SpriteLoader(completed, update);
-      if (ci.length == 0) {
+      if (ci.length === 0) {
         const spriteStep = this.spriteLoader.addStep(
           'Sprites',
           (i, done) => {
@@ -101,7 +102,7 @@ export class SonicEngine {
           },
           () => {
             ind_.Sprites++;
-            if (ind_.Sprites == 4) {
+            if (ind_.Sprites === 4) {
               return true;
             }
             return false;
@@ -114,7 +115,7 @@ export class SonicEngine {
       }
       const cci = this.spriteCache.SonicSprites;
 
-      if (Object.keys(cci).length == 0) {
+      if (Object.keys(cci).length === 0) {
         const sonicStep = this.spriteLoader.addStep(
           'Sonic Sprites',
           (sp, done) => {
@@ -165,7 +166,7 @@ export class SonicEngine {
     keyboardJS.bind('q', () => this.runGame());
 
     keyboardJS.bind('c', () => {
-      if (this.sonicManager.currentGameState == GameState.Playing) {
+      if (this.sonicManager.currentGameState === GameState.Playing) {
         this.sonicManager.sonicToon.debug();
       }
     });
@@ -371,5 +372,131 @@ export class SonicEngine {
         return new IntersectingRectangle(x, y, window.innerWidth, window.innerHeight);
     }
     return null;
+  }
+
+  private static buildShaderProgram(gl: WebGLRenderingContext) {
+    const program = gl.createProgram();
+
+    function addShader(type: number, code: string) {
+      const shader = gl.createShader(type);
+
+      gl.shaderSource(shader, code);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.log(`Error compiling shader:`);
+        console.log(gl.getShaderInfoLog(shader));
+        return;
+      }
+      gl.attachShader(program, shader);
+    }
+
+    addShader(
+      gl.VERTEX_SHADER,
+      ` attribute vec4 a_position;
+    varying vec2 v_texcoord;
+    void main() {
+      gl_Position = a_position;
+      v_texcoord = a_position.xy * vec2(0.5, -0.5) + 0.5;
+    }`
+    );
+    addShader(
+      gl.FRAGMENT_SHADER,
+      `
+precision mediump float;
+varying vec2 v_texcoord;
+uniform sampler2D u_image;
+uniform sampler2D u_palette;
+    
+void main() {
+    float index = texture2D(u_image, v_texcoord).a * 255.0;
+    gl_FragColor = texture2D(u_palette, vec2((index + 0.5) / 256.0, 0.5));
+}`
+    );
+
+    gl.linkProgram(program);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.log('Error linking shader program:');
+      console.log(gl.getProgramInfoLog(program));
+    }
+
+    return program;
+  }
+
+  private setupGL(lowTileCanvas: CanvasInformationGL) {
+    const gl = lowTileCanvas.context;
+    // Note: createProgramFromScripts will call bindAttribLocation
+    // based on the index of the attibute names we pass to it.
+    const program = SonicEngine.buildShaderProgram(gl);
+    gl.useProgram(program);
+    const imageLoc = gl.getUniformLocation(program, 'u_image');
+    const paletteLoc = gl.getUniformLocation(program, 'u_palette');
+    // tell it to use texture units 0 and 1 for the image and palette
+    gl.uniform1i(imageLoc, 0);
+    gl.uniform1i(paletteLoc, 1);
+
+    // Setup a unit quad
+    // prettier-ignore
+    const positions = [
+      1,  1,
+      -1,  1,
+      -1, -1,
+      1,  1,
+      -1, -1,
+      1, -1,
+    ];
+    const vertBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+    // Setup a palette.
+    const palette = new Uint8Array(256 * 4);
+
+    // I'm lazy so just setting 4 colors in palette
+    function setPalette(index, r, g, b, a) {
+      palette[index * 4 + 0] = r;
+      palette[index * 4 + 1] = g;
+      palette[index * 4 + 2] = b;
+      palette[index * 4 + 3] = a;
+    }
+    setPalette(1, 255, 0, 0, 255); // red
+    setPalette(2, 0, 255, 0, 255); // green
+    setPalette(3, 0, 0, 255, 255); // blue
+
+    // make palette texture and upload palette
+    gl.activeTexture(gl.TEXTURE1);
+    const paletteTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, paletteTex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 256, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, palette);
+
+    // prettier-ignore
+    const image = new Uint8Array([
+      0,0,1,1,1,1,0,0,
+      0,1,0,0,0,0,1,0,
+      1,0,0,0,0,0,0,1,
+      1,0,2,0,0,2,0,1,
+      1,0,0,0,0,0,0,1,
+      1,0,3,3,3,3,0,1,
+      0,1,0,0,0,0,1,0,
+      0,0,1,1,1,1,0,0,
+    ]);
+
+    // make image textures and upload image
+    gl.activeTexture(gl.TEXTURE0);
+    const imageTex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, imageTex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, 8, 8, 0, gl.ALPHA, gl.UNSIGNED_BYTE, image);
+
+    gl.drawArrays(gl.TRIANGLES, 0, positions.length / 2);
   }
 }

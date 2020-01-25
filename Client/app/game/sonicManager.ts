@@ -362,7 +362,7 @@ export class SonicManager {
         }
       }
     }
-    this.engine.lowTileCanvas.context.putImageData(this.lowCacheImageData, -17, -17);
+    // this.engine.lowTileCanvas.context.putImageData(this.lowCacheImageData, -17, -17);
     this.engine.highTileCanvas.context.putImageData(this.highCacheImageData, -17, -17);
   }
 

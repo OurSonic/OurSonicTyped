@@ -25,12 +25,36 @@ export class CanvasInformation {
     }
     canvas.width = w;
     canvas.height = h;
-    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    const ctx = canvas.getContext('2d');
     if (pixelated) {
       (ctx as any).mozImageSmoothingEnabled = false; /// future
       (ctx as any).msImageSmoothingEnabled = false; /// future
       (ctx as any).imageSmoothingEnabled = false; /// future
     }
     return new CanvasInformation(ctx, $(canvas));
+  }
+}
+export class CanvasInformationGL {
+  context: WebGLRenderingContext;
+  domCanvas: JQuery;
+  canvas: HTMLCanvasElement;
+
+  constructor(context: WebGLRenderingContext, domCanvas: JQuery) {
+    this.context = context;
+    this.domCanvas = domCanvas;
+    this.canvas = domCanvas[0] as HTMLCanvasElement;
+  }
+
+  static createFromElement(canvas: HTMLCanvasElement, w: number, h: number) {
+    if (w === 0) {
+      w = 1;
+    }
+    if (h === 0) {
+      h = 1;
+    }
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('webgl');
+    return new CanvasInformationGL(ctx, $(canvas));
   }
 }
