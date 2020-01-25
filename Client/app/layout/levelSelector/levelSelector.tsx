@@ -22,7 +22,7 @@ export class LevelSelector extends React.Component<Props, State> {
 
   async componentDidMount() {
     const levels = await LevelService.getLevels();
-    this.loadLevel(levels[0]);
+    // this.loadLevel(levels[0]);
     this.setState({levels});
   }
 

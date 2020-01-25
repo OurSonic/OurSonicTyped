@@ -7,6 +7,7 @@ export class LevelService {
   private static getLevelUrl = 'https://api.oursonic.org/level';
 
   static async getLevels(): Promise<SonicLevelData[]> {
+    return [];
     if (LevelService.storedLevels) {
       return LevelService.storedLevels;
     } else {
@@ -17,6 +18,7 @@ export class LevelService {
   }
 
   static async getLevel(level: string): Promise<string> {
+    return null;
     const result = await fetch(this.getLevelUrl + '?level=' + level);
     return await result.json();
   }
