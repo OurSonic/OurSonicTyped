@@ -1,6 +1,7 @@
 import {CanvasInformation} from '../../../common/canvasInformation';
 import {Point} from '../../../common/utils';
 import {SonicManager} from '../../sonicManager';
+import {TilePaletteAnimation} from './tilePaletteAnimationManager';
 
 export class Tile {
   protected curPaletteIndexes: number[];

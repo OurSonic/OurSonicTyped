@@ -38,7 +38,7 @@ export class SonicManager {
   activeRings: Ring[];
   showHeightMap: boolean;
   inFocusObjects: LevelObjectInfo[];
-  private tilePaletteAnimationManager: TilePaletteAnimationManager;
+  tilePaletteAnimationManager: TilePaletteAnimationManager;
   tileAnimationManager: TileAnimationManager;
   protected loading: boolean;
 
@@ -339,7 +339,8 @@ export class SonicManager {
           continue;
         }
 
-        let iX: number, iY: number;
+        let iX: number;
+        let iY: number;
         if (pieceInfo.xFlip !== tileItem.xFlip) {
           iX = drawX - pixelX + (7 - pixelX);
         } else {
@@ -442,7 +443,8 @@ export class SonicManager {
           continue;
         }
 
-        let iX, iY;
+        let iX;
+        let iY;
         if (pieceInfo.xFlip !== tileItem.xFlip) {
           iX = drawX - pixelX + (7 - pixelX);
         } else {
@@ -535,7 +537,7 @@ export class SonicManager {
 
   clearCache(): void {
     if (this.tilePaletteAnimationManager != null) {
-      this.tilePaletteAnimationManager.ClearCache();
+      this.tilePaletteAnimationManager.clearCache();
     }
     if (this.tileAnimationManager != null) {
       this.tileAnimationManager.clearCache();
@@ -697,7 +699,7 @@ export class SonicManager {
       const tilePiece = new TilePiece();
       tilePiece.index = blockIndex;
       tilePiece.tiles = [];
-      for (let tileIndex: number = 0; tileIndex < tiles.length; tileIndex++) {
+      for (let tileIndex = 0; tileIndex < tiles.length; tileIndex++) {
         const tileInfo = new TileInfo();
         tileInfo.tileIndex = tiles[tileIndex].tile;
         tileInfo.palette = tiles[tileIndex].palette;
@@ -764,8 +766,9 @@ export class SonicManager {
     this.sonicLevel.animatedPalettes = [];
 
     if (slData.paletteItems.length > 0) {
-      for (let k: number = 0; k < slData.paletteItems[0].length; k++) {
-        const pal: AnimatedPaletteItem = slData.paletteItems[0][k];
+      const length = slData.paletteItems[0].length;
+      for (let k = 0; k < length; k++) {
+        const pal = slData.paletteItems[0][k];
 
         const animatedPalette = new PaletteItem();
         animatedPalette.palette = (eval(pal.palette) as string[]).map(col => {

@@ -4,8 +4,18 @@ import {HeightMap} from '../heightMap';
 import {TileInfo} from './tileInfo';
 
 export class TilePiece {
-  static drawInfo: number[][] = [[0, 0], [1, 0], [0, 1], [1, 1]];
-  static drawOrder: number[][] = [[3, 2, 1, 0], [1, 0, 3, 2], [2, 3, 0, 1], [0, 1, 2, 3]];
+  static drawInfo: number[][] = [
+    [0, 0],
+    [1, 0],
+    [0, 1],
+    [1, 1]
+  ];
+  static drawOrder: number[][] = [
+    [3, 2, 1, 0],
+    [1, 0, 3, 2],
+    [2, 3, 0, 1],
+    [0, 1, 2, 3]
+  ];
   isOnlyBackground: boolean = false;
   isOnlyForeground: boolean = false;
 

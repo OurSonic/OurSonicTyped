@@ -12,6 +12,7 @@
     "radix": false,
     "member-ordering": false,
     "no-namespace": false,
+    "forin": false,
     "no-reference": false,
     "trailing-comma": [
       false,
@@ -37,6 +38,7 @@
     "no-conditional-assignment": false,
     "max-classes-per-file": false,
     "no-unused-expression": false,
+    "prefer-for-of": false,
     "arrow-parens": false,
     "no-eval": false,
     "interface-name": false,
