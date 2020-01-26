@@ -3,6 +3,7 @@
 import {CanvasInformation, CanvasInformationGL} from '../common/canvasInformation';
 import {GameState} from '../common/enums';
 import {Help} from '../common/help';
+import mainTileShader from '../shaders/mainTileShader.glsl';
 import {SpriteLoader} from '../common/spriteLoader';
 import {IntersectingRectangle, Point} from '../common/utils';
 import {SlData} from '../slData';
@@ -399,34 +400,7 @@ export class SonicEngine {
       v_texcoord = a_position.xy * vec2(0.5, -0.5) + 0.5;
     }`
     );
-    addShader(
-      gl.FRAGMENT_SHADER,
-      `
-precision mediump float;
-varying vec2 v_texcoord;
-
-uniform sampler2D u_image;
-uniform sampler2D u_palette;
-
-uniform ivec2 u_boardSize;
-uniform ivec2 u_windowPosition;
-
-uniform sampler2D u_chunkMap;
-    
-void main() {
-    const vec2 screenSize=vec2(8,8);
-    
-    float positionX = float(u_windowPosition.x)/float(u_boardSize.x);
-    float positionY = float(u_windowPosition.y)/float(u_boardSize.y);
-    
-    positionX=positionX+v_texcoord.x*(screenSize.x/float(u_boardSize.x));
-    positionY=positionY+v_texcoord.y*(screenSize.y/float(u_boardSize.y));
-    
-    float chunkIndex = texture2D(u_chunkMap, vec2(mod(positionX,1.0),mod(positionY,1.0))).a * 255.0;
-    
-    gl_FragColor = texture2D(u_palette, vec2(chunkIndex/256.0, 0.5));
-}`
-    );
+    addShader(gl.FRAGMENT_SHADER, mainTileShader);
 
     gl.linkProgram(program);
 
@@ -444,22 +418,17 @@ void main() {
     // based on the index of the attibute names we pass to it.
     const program = SonicEngine.buildShaderProgram(gl);
     gl.useProgram(program);
-    const imageLoc = gl.getUniformLocation(program, 'u_image');
     const paletteLoc = gl.getUniformLocation(program, 'u_palette');
     const u_boardSizeLoc = gl.getUniformLocation(program, 'u_boardSize');
     const u_windowPositionLoc = gl.getUniformLocation(program, 'u_windowPosition');
     const chunkMapLoc = gl.getUniformLocation(program, 'u_chunkMap');
     const chunksLoc = gl.getUniformLocation(program, 'u_chunks');
 
-    // tell it to use texture units 0 and 1 for the image and palette
-    gl.uniform1i(imageLoc, 0);
     gl.uniform1i(paletteLoc, 1);
     gl.uniform1i(u_boardSizeLoc, 2);
     gl.uniform1i(u_windowPositionLoc, 3);
     gl.uniform1i(chunkMapLoc, 4);
     gl.uniform1i(chunksLoc, 5);
-
-    // Setup a unit quad
     // prettier-ignore
     const positions = [
       1,  1,
@@ -500,35 +469,6 @@ void main() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 256, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, palette);
 
-    // prettier-ignore
-    const image = new Uint8Array([
-      0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,
-      0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,
-      1,0,0,0,0,4,0,1,1,0,0,0,0,4,0,1,
-      1,0,2,0,0,2,0,1,1,0,2,0,0,2,0,1,
-      1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,
-      1,0,3,3,3,3,0,1,1,0,3,3,3,3,0,1,
-      0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,
-      0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,
-      0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,
-      0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,
-      1,0,0,0,0,4,0,1,1,0,0,0,0,4,0,1,
-      1,0,2,0,0,2,0,1,1,0,2,0,0,2,0,1,
-      1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,
-      1,0,3,3,3,3,0,1,1,0,3,3,3,3,0,1,
-      0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,
-      0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,
-    ]);
-    // make image textures and upload image
-    gl.activeTexture(gl.TEXTURE0);
-    const imageTex = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, imageTex);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, 16, 16, 0, gl.ALPHA, gl.UNSIGNED_BYTE, image);
-
     gl.uniform2i(u_windowPositionLoc, 0, 0);
     gl.uniform2i(u_boardSizeLoc, 16, 16);
 
@@ -539,7 +479,38 @@ void main() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, 16, 16, 0, gl.ALPHA, gl.UNSIGNED_BYTE, image);
+    // prettier-ignore
+    const image = new Uint8Array([
+      1,2,0,0,0,0,0,0,
+      3,1,2,0,0,0,0,0,
+      0,3,1,2,0,0,0,0,
+      0,0,3,1,0,0,0,0,
+      0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,
+    ]);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, 8, 8, 0, gl.ALPHA, gl.UNSIGNED_BYTE, image);
+
+    gl.activeTexture(gl.TEXTURE5);
+    const chunks = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, chunks);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    // prettier-ignore
+    const chunksData = new Uint8Array([
+      1,2,0,0,0,0,0,0,
+      3,1,2,0,0,0,0,0,
+      0,3,1,2,0,0,0,0,
+      0,0,3,1,0,0,0,0,
+      0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,
+    ]);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, 8, 8, 0, gl.ALPHA, gl.UNSIGNED_BYTE, chunksData);
 
     let i = 0;
     i = 0;

@@ -12,7 +12,7 @@ module.exports = env => {
     mode: 'development',
     ...(process.env.WEBPACK_SERVE ? {mode: 'development'} : {}),
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.css'],
+      extensions: ['.ts', '.tsx', '.js', '.css', '.glsl'],
       alias: {}
     },
     externals: [{}],
@@ -37,7 +37,12 @@ module.exports = env => {
         {
           test: /\.(gif|svg|jpg|png)$/,
           loader: 'file-loader'
-        }]
+        },
+        {
+          test: /\.(glsl)$/,
+          loader: 'raw-loader'
+        }
+      ]
     }
   };
 };
