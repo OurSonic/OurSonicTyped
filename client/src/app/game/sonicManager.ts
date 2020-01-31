@@ -54,7 +54,7 @@ export class SonicManager {
     this.objectTickWindow.width = (this.objectTickWindow.width * 1.8) | 0;
     this.objectTickWindow.height = (this.objectTickWindow.height * 1.8) | 0;
     this.showHeightMap = false;
-    this.ringCache = new Ring(false);
+    this.ringCache = new Ring(this, false);
     this.activeRings = [];
     this.currentGameState = GameState.editing;
     this.tickCount = 0;
@@ -274,6 +274,8 @@ export class SonicManager {
 
     lowBuffer.fill(0);
     highBuffer.fill(0);
+    const drawOrders = TilePiece.drawOrder;
+    const palette_ = this.sonicLevel.palette;
 
     const endX = windowX + 320 + 16 * 2;
     const endY = windowY + 224 + 16 * 2;
@@ -318,7 +320,7 @@ export class SonicManager {
 
         const tileX = ((repositionedX / 8) | 0) - chunkX * 16 - tilePieceX * 2;
         const tileY = ((repositionedY / 8) | 0) - chunkY * 16 - tilePieceY * 2;
-        const drawOrder = TilePiece.drawOrder[drawOrderIndex];
+        const drawOrder = drawOrders[drawOrderIndex];
         const tileIndex = tileY * 2 + tileX;
         const tileNumber = drawOrder[tileIndex];
         const tileItem = piece.tiles[tileNumber];
@@ -328,8 +330,7 @@ export class SonicManager {
           continue;
         }
 
-        const palette_ = SonicManager.instance.sonicLevel.palette;
-        const colorPaletteIndex: number = tileItem.palette;
+        const colorPaletteIndex = tileItem.palette;
 
         const pixelX = repositionedX - (chunkX * 128 + tilePieceX * 16 + tileX * 8);
         const pixelY = repositionedY - (chunkY * 128 + tilePieceY * 16 + tileY * 8);
@@ -432,7 +433,7 @@ export class SonicManager {
           continue;
         }
 
-        const palette_ = SonicManager.instance.sonicLevel.palette;
+        const palette_ = this.sonicLevel.palette;
         const colorPaletteIndex: number = tileItem.palette;
 
         const pixelX = repositionedX - (chunkX * 128 + tilePieceX * 16 + tileX * 8);
@@ -625,7 +626,7 @@ export class SonicManager {
     this.loading = true;
     this.sonicLevel = new SonicLevel();
     for (let n = 0; n < slData.rings.length; n++) {
-      this.sonicLevel.rings[n] = new Ring(true);
+      this.sonicLevel.rings[n] = new Ring(this, true);
       this.sonicLevel.rings[n].x = slData.rings[n].x;
       this.sonicLevel.rings[n].y = slData.rings[n].y;
     }
@@ -664,7 +665,7 @@ export class SonicManager {
       for (let n: number = 0; n < colorCollection.length; n++) {
         colors[n % 8][(n / 8) | 0] = colorCollection[n];
       }
-      this.sonicLevel.tiles[tileIndex] = new Tile(colors);
+      this.sonicLevel.tiles[tileIndex] = new Tile(this, colors);
       this.sonicLevel.tiles[tileIndex].index = tileIndex;
     }
     if (slData.animatedFiles) {
@@ -687,7 +688,7 @@ export class SonicManager {
           for (let col = 0; col < colorCollection.length; col++) {
             colors[col % 8][(col / 8) | 0] = colorCollection[col];
           }
-          const tile = new Tile(colors);
+          const tile = new Tile(this, colors);
           tile.index = animationIndex * 10000 + animatedFileIndex;
           this.sonicLevel.animatedTileFiles[animatedFileIndex][animationIndex] = tile;
         }
@@ -696,11 +697,11 @@ export class SonicManager {
 
     for (let blockIndex = 0; blockIndex < slData.blocks.length; blockIndex++) {
       const tiles = slData.blocks[blockIndex];
-      const tilePiece = new TilePiece();
+      const tilePiece = new TilePiece(this);
       tilePiece.index = blockIndex;
       tilePiece.tiles = [];
       for (let tileIndex = 0; tileIndex < tiles.length; tileIndex++) {
-        const tileInfo = new TileInfo();
+        const tileInfo = new TileInfo(this);
         tileInfo.tileIndex = tiles[tileIndex].tile;
         tileInfo.palette = tiles[tileIndex].palette;
         tileInfo.priority = tiles[tileIndex].priority;
@@ -713,7 +714,7 @@ export class SonicManager {
     }
     this.sonicLevel.angles = slData.angles;
     this.sonicLevel.tileAnimations = slData.animations.map(tileData => {
-      const tileAnimation = new TileAnimationData();
+      const tileAnimation = new TileAnimationData(this);
       tileAnimation.animationTileFile = tileData.animationFile;
       tileAnimation.animationTileIndex = tileData.animationTileIndex;
       tileAnimation.numberOfTiles = tileData.numberOfTiles;
@@ -740,7 +741,7 @@ export class SonicManager {
         mj.tilePieces[i] = new Array(8);
       }
       for (let p: number = 0; p < fc.length; p++) {
-        const tilePieceInfo = new TilePieceInfo();
+        const tilePieceInfo = new TilePieceInfo(this);
         tilePieceInfo.index = p;
         tilePieceInfo.block = fc[p].block;
         tilePieceInfo.solid1 = fc[p].solid1;

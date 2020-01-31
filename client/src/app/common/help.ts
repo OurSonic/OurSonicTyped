@@ -198,6 +198,6 @@ export class Help {
   }
 
   static isMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+    return (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent));
   }
 }

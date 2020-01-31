@@ -4,6 +4,8 @@ import {HeightMap} from '../heightMap';
 import {TileInfo} from './tileInfo';
 
 export class TilePiece {
+  constructor(private sonicManager: SonicManager) {}
+
   static drawInfo: number[][] = [
     [0, 0],
     [1, 0],
@@ -49,19 +51,19 @@ export class TilePiece {
   }
 
   getLayer1Angle(): number {
-    return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes1[this.index]];
+    return this.sonicManager.sonicLevel.angles[this.sonicManager.sonicLevel.collisionIndexes1[this.index]];
   }
 
   getLayer2Angle(): number {
-    return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes2[this.index]];
+    return this.sonicManager.sonicLevel.angles[this.sonicManager.sonicLevel.collisionIndexes2[this.index]];
   }
 
   getLayer1HeightMap(): HeightMap {
-    return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes1[this.index]];
+    return this.sonicManager.sonicLevel.heightMaps[this.sonicManager.sonicLevel.collisionIndexes1[this.index]];
   }
 
   getLayer2HeightMap(): HeightMap {
-    return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes2[this.index]];
+    return this.sonicManager.sonicLevel.heightMaps[this.sonicManager.sonicLevel.collisionIndexes2[this.index]];
   }
 
   getImage(xFlip: boolean = false, yFlip: boolean = false): CanvasInformation {

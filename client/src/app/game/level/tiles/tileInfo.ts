@@ -1,7 +1,10 @@
 import {SonicManager} from '../../sonicManager';
 import {Tile} from './tile';
+import {SonicLevel} from '../../sonicLevel';
 
 export class TileInfo {
+  constructor(private sonicManager: SonicManager) {}
+
   tileIndex: number = 0;
   priority: boolean = false;
   xFlip: boolean = false;
@@ -9,12 +12,12 @@ export class TileInfo {
   palette: number = 0;
 
   getTile(): Tile {
-    const tile = SonicManager.instance.sonicLevel.getTile(this.tileIndex);
+    const tile = this.sonicManager.sonicLevel.getTile(this.tileIndex);
     if (!tile) {
       return undefined;
     }
 
-    if (SonicManager.instance.tileAnimationManager === undefined) {
+    if (this.sonicManager.tileAnimationManager === undefined) {
       return tile;
     }
 
@@ -22,7 +25,7 @@ export class TileInfo {
       return tile;
     }
 
-    const tileAnimationFrame = SonicManager.instance.tileAnimationManager.getCurrentFrame(tile.animatedTileIndex);
+    const tileAnimationFrame = this.sonicManager.tileAnimationManager.getCurrentFrame(tile.animatedTileIndex);
     if (!tileAnimationFrame) {
       return tile;
     }
@@ -33,7 +36,7 @@ export class TileInfo {
     if (!frame) {
       frame = tileAnimation.animatedTileData.dataFrames[0];
     }
-    const file = tileAnimationData.GetAnimationFile();
+    const file = tileAnimationData.getAnimationFile();
     const va = file[frame.startingTileIndex + (tile.index - animationIndex)];
     if (va != null) {
       return va;

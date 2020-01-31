@@ -16,6 +16,7 @@ export class TileAnimationManager {
       animatedTileIndex++
     ) {
       this.animations[animatedTileIndex] = new TileAnimation(
+        this.sonicManager,
         this,
         this.sonicManager.sonicLevel.tileAnimations[animatedTileIndex]
       );
@@ -47,14 +48,14 @@ export class TileAnimationManager {
 }
 
 export class TileAnimation {
-  manager: TileAnimationManager;
-  animatedTileData: TileAnimationData;
   currentFrame: number = 0;
   frames: TileAnimationFrame[];
 
-  constructor(manager: TileAnimationManager, animatedTileData: TileAnimationData) {
-    this.manager = manager;
-    this.animatedTileData = animatedTileData;
+  constructor(
+    private sonicManager: SonicManager,
+    private manager: TileAnimationManager,
+    public animatedTileData: TileAnimationData
+  ) {
     this.frames = [];
     this.currentFrame = 0;
   }
@@ -71,9 +72,9 @@ export class TileAnimation {
     }
     if (
       anni.dataFrames[anni.lastAnimatedIndex].ticks === 0 ||
-      SonicManager.instance.drawTickCount - anni.lastAnimatedFrame >= anni.dataFrames[anni.lastAnimatedIndex].ticks
+      this.sonicManager.drawTickCount - anni.lastAnimatedFrame >= anni.dataFrames[anni.lastAnimatedIndex].ticks
     ) {
-      anni.lastAnimatedFrame = SonicManager.instance.drawTickCount;
+      anni.lastAnimatedFrame = this.sonicManager.drawTickCount;
       anni.lastAnimatedIndex = (anni.lastAnimatedIndex + 1) % anni.dataFrames.length;
       this.currentFrame = anni.lastAnimatedIndex;
     }

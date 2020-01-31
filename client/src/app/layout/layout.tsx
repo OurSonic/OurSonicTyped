@@ -17,16 +17,19 @@ interface State {
   title: string;
   loading: boolean;
   collapseSide: boolean;
+  showFullscreen: boolean;
 }
 
 export class Layout extends React.Component<Props, State> {
   constructor(props: Readonly<Props>) {
     super(props);
+
     this.state = {
       title: 'Level Select',
       selectedTabIndex: 0,
       loading: false,
       collapseSide: false,
+      showFullscreen: false,
       tabItems: [
         {
           image: sonic,
@@ -87,7 +90,6 @@ export class Layout extends React.Component<Props, State> {
           SonicEngine.instance.sonicManager.sonicToon.pressRight();
           break;
       }
-      console.log('I moved!', stick.direction);
     });
     manager.on('end', () => {
       SonicEngine.instance.sonicManager.sonicToon.releaseCrouch();
@@ -106,12 +108,20 @@ export class Layout extends React.Component<Props, State> {
     });
   };
 
+  componentDidMount(): void {
+    setTimeout(() => {
+      if (Help.isMobile()) {
+        this.setState({showFullscreen: true});
+      }
+    }, 100);
+  }
+
   render() {
     return (
       <>
         <div
-          className={`col ${!this.state.collapseSide ? 's8' : 's12'}`}
-          style={{padding: 0, margin: 0, position: 'relative', height: '100vh', border: '10px solid black'}}
+          className={`col ${!this.state.collapseSide ? (Help.isMobile() ? '' : 's8') : 's12'}`}
+          style={{padding: 0, margin: 0, position: 'relative', height: '100vh'}}
           id="canvasBox"
         >
           <button
@@ -126,13 +136,34 @@ export class Layout extends React.Component<Props, State> {
           <canvas id="spriteLayer" width={320} height={224} className="game-canvas" />
           <canvas id="highTileLayer" width={320} height={224} className="game-canvas" />
 
+          {this.state.showFullscreen && (
+            <button
+              style={{position: 'absolute'}}
+              onClick={() => {
+                const video = document.documentElement as any;
+                const rfs =
+                  video.requestFullscreen ||
+                  video.webkitRequestFullScreen ||
+                  video.mozRequestFullScreen ||
+                  video.msRequestFullscreen;
+                rfs.call(video);
+
+                // eslint-disable-next-line no-restricted-globals
+                screen.orientation.lock('landscape-primary');
+                this.setState({showFullscreen: false});
+              }}
+            >
+              Go Fullscreen And Rotate
+            </button>
+          )}
           {Help.isMobile() && (
             <>
               <Joystick
                 options={{
                   mode: 'semi',
                   catchDistance: 150,
-                  color: 'white'
+                  color: 'white',
+                  dataOnly: true
                 }}
                 containerStyle={{
                   position: 'absolute',
@@ -165,65 +196,87 @@ export class Layout extends React.Component<Props, State> {
           )}
         </div>
         {this.state.collapseSide && (
-          <span
-            style={{position: 'absolute', fontSize: '2rem', color: 'white', right: '5px', bottom: '5px'}}
-            onChange={() => this.collapse(false)}
+          <button
+            style={{
+              position: 'absolute',
+              zIndex: 1000,
+              fontSize: '2rem',
+              color: 'white',
+              background: 'black',
+              border: 'none',
+              right: '0',
+              bottom: '0'
+            }}
+            onClick={() => this.collapse(false)}
           >
-            &lt;&lt;&lt;
-          </span>
+            Open Menu
+          </button>
         )}
-        {!this.state.collapseSide && (
-          <div className="col s4" style={{padding: 0, margin: 0, height: '100vh', position: 'relative'}}>
-            <div style={{width: '100%', backgroundColor: 'white', height: '100%'}}>
-              <div className="row" style={{padding: 0, margin: 0, height: '100%', backgroundColor: '#81D4FA'}}>
+        <div
+          className={'col ' + (Help.isMobile() ? 's12' : 's4')}
+          style={{
+            padding: 0,
+            margin: 0,
+            height: '100vh',
+            position: 'relative',
+            display: this.state.collapseSide ? 'none' : 'block'
+          }}
+        >
+          <div style={{width: '100%', backgroundColor: 'white', height: '100%'}}>
+            <div className="row" style={{padding: 0, margin: 0, height: '100%', backgroundColor: '#81D4FA'}}>
+              <div
+                className="col s9"
+                style={{
+                  padding: 0,
+                  margin: 0,
+                  position: 'relative',
+                  height: '100%',
+                  display: 'flex',
+                  flexFlow: 'column nowrap'
+                }}
+              >
                 <div
-                  className="col s9"
                   style={{
-                    padding: 0,
-                    margin: 0,
+                    flex: '1 0',
+                    width: '100%',
+                    display: 'inline-flex',
                     position: 'relative',
-                    height: '100%',
-                    display: 'flex',
-                    flexFlow: 'column nowrap'
+                    fontSize: '3.2rem',
+                    backgroundColor: '#29B6F6',
+                    color: 'white',
+                    padding: '10px 10px 10px 30px'
                   }}
                 >
-                  <div
-                    style={{
-                      flex: '1 0',
-                      width: '100%',
-                      display: 'inline-flex',
-                      position: 'relative',
-                      fontSize: '3.2rem',
-                      backgroundColor: '#29B6F6',
-                      color: 'white',
-                      padding: '10px 10px 10px 30px'
-                    }}
+                  <span
+                    style={{position: 'absolute', fontSize: '1rem', left: '5px', top: '5px'}}
+                    onClick={() => this.collapse(true)}
                   >
-                    <span
-                      style={{position: 'absolute', fontSize: '1rem', left: '5px', top: '5px'}}
-                      onClick={() => this.collapse(true)}
-                    >
-                      &gt;&gt;&gt;
-                    </span>
-                    <span>
-                      {this.state.title}{' '}
-                      <span style={{fontSize: '1.6rem'}}>{this.state.loading ? 'loading...' : ''}</span>
-                    </span>
-                  </div>
-                  {this.state.selectedTabIndex === 0 && (
-                    <div style={{flex: '13 0', width: '100%', display: 'inline-flex'}}>
-                      <LevelSelector
-                        setLoading={loading =>
-                          this.setState({
-                            loading
-                          })
+                    &gt;&gt;&gt;
+                  </span>
+                  <span>
+                    {this.state.title}{' '}
+                    <span style={{fontSize: '1.6rem'}}>{this.state.loading ? 'loading...' : ''}</span>
+                  </span>
+                </div>
+                {this.state.selectedTabIndex === 0 && (
+                  <div style={{flex: '13 0', width: '100%', height: '100%', display: 'inline-flex'}}>
+                    <LevelSelector
+                      setLoading={loading => {
+                        if (!loading) {
+                          if (Help.isMobile()) {
+                            this.setState({collapseSide: true});
+                          }
                         }
-                      />
-                    </div>
-                  )}
+                        this.setState({
+                          loading
+                        });
+                      }}
+                    />
+                  </div>
+                )}
 
-                  {/*<object-selector ngif=""  style="flex:13 0;width:100%;display:inline-flex;"></object-selector>*/}
-                  {/*   {this.state.selectedTabIndex === 1 && (
+                {/*<object-selector ngif=""  style="flex:13 0;width:100%;display:inline-flex;"></object-selector>*/}
+                {/*   {this.state.selectedTabIndex === 1 && (
                                         <Tiles style={{flex: '13 0', width: '100%', display: 'inline-flex'}} />
                                     )}
                                     {this.state.selectedTabIndex === 1 && (
@@ -235,37 +288,36 @@ export class Layout extends React.Component<Props, State> {
                                     {this.state.selectedTabIndex === 3 && (
                                         <AnimatedTiles style={{flex: '13 0', width: '100%', display: 'inline-flex'}} />
                                     )}*/}
-                </div>
-                <div className="col s3" style={{padding: 0, margin: 0, position: 'relative'}}>
-                  {this.state.tabItems.map((item, ind) => (
-                    <div
-                      key={item.label}
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: '15px',
-                        color: 'white',
-                        backgroundColor: ind === this.state.selectedTabIndex ? '#29B6F6' : '#81D4FA'
-                      }}
-                      onClick={() => this.tabClick(ind)}
-                    >
-                      <div>
-                        <img
-                          style={{display: 'block', imageRendering: 'pixelated'}}
-                          width={94}
-                          height={94}
-                          src={item.image}
-                        />
-                        <span style={{textAlign: 'center'}}>{item.label}</span>
-                      </div>
+              </div>
+              <div className="col s3" style={{padding: 0, margin: 0, position: 'relative'}}>
+                {this.state.tabItems.map((item, ind) => (
+                  <div
+                    key={item.label}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '15px',
+                      color: 'white',
+                      backgroundColor: ind === this.state.selectedTabIndex ? '#29B6F6' : '#81D4FA'
+                    }}
+                    onClick={() => this.tabClick(ind)}
+                  >
+                    <div>
+                      <img
+                        style={{display: 'block', imageRendering: 'pixelated'}}
+                        width={94}
+                        height={94}
+                        src={item.image}
+                      />
+                      <span style={{textAlign: 'center'}}>{item.label}</span>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-        )}
+        </div>
       </>
     );
   }

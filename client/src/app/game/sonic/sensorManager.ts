@@ -9,7 +9,7 @@ export class SensorManager {
 
   sensorResults: {[sensorKey: string]: SensorM};
 
-  constructor() {
+  constructor(private sonicManager: SonicManager) {
     this.sensors = {};
     this.sensorResults = {};
   }
@@ -21,11 +21,11 @@ export class SensorManager {
   }
 
   createVerticalSensor(letter: string, x: number, y1: number, y2: number, color: string): Sensor {
-    return this.addSensor(letter, new Sensor(x, x, y1, y2, this, color, letter));
+    return this.addSensor(letter, new Sensor(this.sonicManager, x, x, y1, y2, this, color, letter));
   }
 
   createHorizontalSensor(letter: string, y: number, x1: number, x2: number, color: string): Sensor {
-    return this.addSensor(letter, new Sensor(x1, x2, y, y, this, color, letter));
+    return this.addSensor(letter, new Sensor(this.sonicManager, x1, x2, y, y, this, color, letter));
   }
 
   check(character: Sonic): boolean {
@@ -58,7 +58,16 @@ export class Sensor {
   protected y1: number = 0;
   protected y2: number = 0;
 
-  constructor(x1: number, x2: number, y1: number, y2: number, manager: SensorManager, color: string, letter: string) {
+  constructor(
+    private sonicManager: SonicManager,
+    x1: number,
+    x2: number,
+    y1: number,
+    y2: number,
+    manager: SensorManager,
+    color: string,
+    letter: string
+  ) {
     this.x1 = x1;
     this.x2 = x2;
     this.y1 = y1;
@@ -84,7 +93,7 @@ export class Sensor {
     }
 
     let oneTryX = startX === endX;
-    const levelWidth = SonicManager.instance.sonicLevel.levelWidth * 128;
+    const levelWidth = this.sonicManager.sonicLevel.levelWidth * 128;
 
     for (let testX = startX; oneTryX || Math.abs(testX - endX) !== 0; testX += xIncrease) {
       oneTryX = false;
@@ -106,9 +115,9 @@ export class Sensor {
         oneTryY = false;
 
         const tileChunkX = (testX / 128) | 0;
-        const tileChunkY = (Help.mod(testY, SonicManager.instance.sonicLevel.levelHeight * 128) / 128) | 0;
+        const tileChunkY = (Help.mod(testY, this.sonicManager.sonicLevel.levelHeight * 128) / 128) | 0;
 
-        const chunk = SonicManager.instance.sonicLevel.getChunkAt(tileChunkX, tileChunkY);
+        const chunk = this.sonicManager.sonicLevel.getChunkAt(tileChunkX, tileChunkY);
         if (chunk === undefined) {
           continue;
         }
@@ -127,12 +136,12 @@ export class Sensor {
           continue;
         }
         const tilePieceInfo = chunk.getTilePieceInfo(tileX, tileY, false);
-        const solidity = SonicManager.instance.sonicLevel.curHeightMap ? tilePieceInfo.solid1 : tilePieceInfo.solid2;
+        const solidity = this.sonicManager.sonicLevel.curHeightMap ? tilePieceInfo.solid1 : tilePieceInfo.solid2;
 
-        const heightMap = SonicManager.instance.sonicLevel.curHeightMap
+        const heightMap = this.sonicManager.sonicLevel.curHeightMap
           ? tilePiece.getLayer1HeightMap()
           : tilePiece.getLayer2HeightMap();
-        let tileAngle = SonicManager.instance.sonicLevel.curHeightMap
+        let tileAngle = this.sonicManager.sonicLevel.curHeightMap
           ? tilePiece.getLayer1Angle()
           : tilePiece.getLayer2Angle();
 
@@ -170,7 +179,7 @@ export class Sensor {
 
         if (
           (solidity > minSolidity && collisionMap[interTileX + interTileY * 16]) ||
-          SonicManager.instance.sonicToon.checkCollisionWithObjects(testX, testY, this.letter)
+          this.sonicManager.sonicToon.checkCollisionWithObjects(testX, testY, this.letter)
         ) {
           this.cachedReturnSensor.value = startY === endY ? testX : testY;
           this.cachedReturnSensor.angle = tileAngle;
@@ -184,8 +193,8 @@ export class Sensor {
   }
 
   draw(canvas: CanvasRenderingContext2D, character: Sonic, sensorResult: SensorM): void {
-    const x = Help.floor(character.x) - SonicManager.instance.windowLocation.x;
-    const y = Help.floor(character.y) - SonicManager.instance.windowLocation.y;
+    const x = Help.floor(character.x) - this.sonicManager.windowLocation.x;
+    const y = Help.floor(character.y) - this.sonicManager.windowLocation.y;
     canvas.beginPath();
     if (sensorResult && sensorResult.chosen) {
       canvas.strokeStyle = '#FFF76D';

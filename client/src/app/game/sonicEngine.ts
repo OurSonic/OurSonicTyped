@@ -134,7 +134,7 @@ export class SonicEngine {
       this.sonicManager.mainDraw();
       const t2 = performance.now();
       if (t1 - t0 + (t2 - t1) > 16) {
-        // console.error('tick:', (t1 - t0).toFixed(1), 'draw:', (t2 - t1).toFixed(1));
+        console.error('tick:', (t1 - t0).toFixed(1), 'draw:', (t2 - t1).toFixed(1));
       }
     } catch (ex) {
       console.error(ex);
@@ -314,7 +314,7 @@ export class SonicEngine {
       case GameState.editing:
         sonicManager.currentGameState = GameState.playing;
         sonicManager.windowLocation = SonicEngine.defaultWindowLocation(sonicManager.currentGameState);
-        sonicManager.sonicToon = new Sonic();
+        sonicManager.sonicToon = new Sonic(this.sonicManager);
         break;
     }
     // sonicManager.DestroyCanvases();

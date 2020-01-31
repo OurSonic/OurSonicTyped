@@ -52,14 +52,13 @@ export class Sonic {
 
   wasJumping: boolean;
 
-  constructor() {
+  constructor(private sonicManager: SonicManager) {
     this.watcher = new Watcher();
     this.physicsVariables = SonicConstants.Sonic();
-    const sonicManager = SonicManager.instance;
     this.sonicLevel = sonicManager.sonicLevel;
     this.x = this.sonicLevel.startPositions[0].x;
     this.y = this.sonicLevel.startPositions[0].y;
-    this.sensorManager = new SensorManager();
+    this.sensorManager = new SensorManager(sonicManager);
     this.haltSmoke = [];
     this.rings = 7;
     this.sensorManager.createVerticalSensor('a', -9, 0, 36, '#F202F2');
@@ -368,7 +367,7 @@ export class Sonic {
   }
 
   invulnerable(): boolean {
-    const mc = SonicManager.instance.drawTickCount - this.sonicLastHitTick;
+    const mc = this.sonicManager.drawTickCount - this.sonicLastHitTick;
     if (mc < 120) {
       if (mc % 8 < 4) {
         return true;
@@ -726,10 +725,10 @@ export class Sonic {
       context.save();
       const offset = this.getOffsetFromImage();
       context.translate(
-        fx - SonicManager.instance.windowLocation.x + offset.x,
-        fy - SonicManager.instance.windowLocation.y + offset.y
+        fx - this.sonicManager.windowLocation.x + offset.x,
+        fy - this.sonicManager.windowLocation.y + offset.y
       );
-      if (SonicManager.instance.showHeightMap) {
+      if (this.sonicManager.showHeightMap) {
         const mul = 10;
         const xj = this.xsp * mul;
         const yj = this.ysp * mul;
@@ -769,7 +768,7 @@ export class Sonic {
         if (this.spinDash) {
           context.drawImage(
             SonicEngine.instance.spriteCache.SonicSprites[
-              'spinsmoke' + (((SonicManager.instance.drawTickCount % 14) / 2) | 0)
+              'spinsmoke' + (((this.sonicManager.drawTickCount % 14) / 2) | 0)
             ],
             -cur.width / 2 - 19,
             -cur.height / 2 + offset.y - 6,
@@ -798,7 +797,7 @@ export class Sonic {
         if (this.spinDash) {
           context.drawImage(
             SonicEngine.instance.spriteCache.SonicSprites[
-              'spinsmoke' + (((SonicManager.instance.drawTickCount % 14) / 2) | 0)
+              'spinsmoke' + (((this.sonicManager.drawTickCount % 14) / 2) | 0)
             ],
             -cur.width / 2 - 19,
             -cur.height / 2 + offset.y - 6,
@@ -808,19 +807,19 @@ export class Sonic {
         }
       }
       context.restore();
-      if (SonicManager.instance.showHeightMap) {
+      if (this.sonicManager.showHeightMap) {
         this.sensorManager.draw(context, this);
       }
       for (let i = 0; i < this.haltSmoke.length; i++) {
         const lo = this.haltSmoke[i];
         context.drawImage(
           SonicEngine.instance.spriteCache.SonicSprites[
-            'haltsmoke' + (((SonicManager.instance.drawTickCount % (4 * 6)) / 6) | 0)
+            'haltsmoke' + (((this.sonicManager.drawTickCount % (4 * 6)) / 6) | 0)
           ],
-          lo.x - SonicManager.instance.windowLocation.x - 15,
-          lo.y + 12 - SonicManager.instance.windowLocation.y + offset.y
+          lo.x - this.sonicManager.windowLocation.x - 15,
+          lo.y + 12 - this.sonicManager.windowLocation.y + offset.y
         );
-        if (((((SonicManager.instance.drawTickCount + 6) % (4 * 6)) / 6) | 0) === 0) {
+        if (((((this.sonicManager.drawTickCount + 6) % (4 * 6)) / 6) | 0) === 0) {
           this.haltSmoke.splice(i, 1);
         }
       }
@@ -850,20 +849,20 @@ export class Sonic {
   }
 
   hit(x: number, y: number): void {
-    if (SonicManager.instance.drawTickCount - this.sonicLastHitTick < 120) {
+    if (this.sonicManager.drawTickCount - this.sonicLastHitTick < 120) {
       return;
     }
     this.justHit = true;
     this.ysp = -4;
     this.xsp = 2 * (this.x - x < 0 ? -1 : 1);
-    this.sonicLastHitTick = SonicManager.instance.drawTickCount;
+    this.sonicLastHitTick = this.sonicManager.drawTickCount;
     let t = 0;
     let angle = 101.25;
     let n = false;
     let speed = 4;
     while (t < this.rings) {
-      const ring = new Ring(true);
-      SonicManager.instance.activeRings.push(ring);
+      const ring = new Ring(this.sonicManager, true);
+      this.sonicManager.activeRings.push(ring);
       ring.x = this.x | 0;
       ring.y = (this.y - 10) | 0;
       ring.ysp = -Math.sin(angle) * speed;
@@ -939,7 +938,7 @@ export class Sonic {
     this.objectCollision.x = x;
     this.objectCollision.y = y;
     const me = this.objectCollision;
-    const levelObjectInfos = SonicManager.instance.inFocusObjects;
+    const levelObjectInfos = this.sonicManager.inFocusObjects;
     for (const ob of levelObjectInfos) {
       const dj = ob.collides(me);
       const dj2 = ob.hurtsSonic(me);
@@ -961,7 +960,7 @@ export class Sonic {
     this.ringCollisionRect.y = 0;
     this.ringCollisionRect.width = 8 * 2;
     this.ringCollisionRect.height = 8 * 2;
-    const rings: Ring[] = SonicManager.instance.sonicLevel.rings;
+    const rings: Ring[] = this.sonicManager.sonicLevel.rings;
     for (let index: number = 0; index < rings.length; index++) {
       const ring = rings[index];
       const pos = ring;

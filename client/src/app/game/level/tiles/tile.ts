@@ -7,7 +7,7 @@ export class Tile {
   index: number = 0;
   animatedTileIndex: number = null;
 
-  constructor(colors: number[][]) {
+  constructor(private sonicManager: SonicManager, colors: number[][]) {
     this.colors = colors;
     this.curPaletteIndexes = null;
   }
@@ -16,7 +16,7 @@ export class Tile {
     const info = CanvasInformation.create(8, 8, true);
     const image = info.context.getImageData(0, 0, 8, 8);
     const buffer = new Uint32Array(image.data.buffer);
-    const palette = SonicManager.instance.sonicLevel.palette;
+    const palette = this.sonicManager.sonicLevel.palette;
 
     for (let x = 0; x < 8; x++) {
       let drawX = x;

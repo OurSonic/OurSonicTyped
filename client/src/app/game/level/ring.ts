@@ -11,7 +11,7 @@ export class Ring extends Point {
   ysp: number = 0;
   xsp: number = 0;
 
-  constructor(active: boolean) {
+  constructor(private sonicManager: SonicManager, active: boolean) {
     super(0, 0);
     this.active = active;
   }
@@ -21,27 +21,27 @@ export class Ring extends Point {
       this.ysp += 0.09375;
       this.x += this.xsp as number;
       this.y += this.ysp as number;
-      const wl = SonicManager.instance.windowLocation;
+      const wl = this.sonicManager.windowLocation;
       if (this.x < wl.x || this.y < wl.y || this.x > wl.x + wl.width || this.y > wl.y + wl.height) {
         this.tickCount = 0xfffffff;
         return;
       }
       if (
-        SonicManager.instance.drawTickCount > SonicManager.instance.sonicToon.sonicLastHitTick + 64 &&
+        this.sonicManager.drawTickCount > this.sonicManager.sonicToon.sonicLastHitTick + 64 &&
         IntersectingRectangle.intersectsRect(
-          SonicManager.instance.sonicToon.myRec,
+          this.sonicManager.sonicToon.myRec,
           new Rectangle(this.x - 8, this.y - 8, 8 * 2, 2 * 8)
         )
       ) {
         this.tickCount = 0xfffffff;
-        SonicManager.instance.sonicToon.rings++;
+        this.sonicManager.sonicToon.rings++;
         return;
       }
       this.tickCount++;
     }
-    if (SonicManager.instance.currentGameState === GameState.playing) {
+    if (this.sonicManager.currentGameState === GameState.playing) {
       this.animationIndex =
-        ((SonicManager.instance.drawTickCount % ((this.active ? 4 : 8) * 4)) / (this.active ? 4 : 8)) | 0;
+        ((this.sonicManager.drawTickCount % ((this.active ? 4 : 8) * 4)) / (this.active ? 4 : 8)) | 0;
     } else {
       this.animationIndex = 0;
     }

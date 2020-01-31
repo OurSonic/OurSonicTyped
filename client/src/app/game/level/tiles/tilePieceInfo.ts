@@ -4,6 +4,8 @@ import {HeightMap} from '../heightMap';
 import {TilePiece} from './tilePiece';
 
 export class TilePieceInfo {
+  constructor(private sonicManager: SonicManager) {}
+
   block: number = 0;
   xFlip: boolean = false;
   yFlip: boolean = false;
@@ -12,7 +14,7 @@ export class TilePieceInfo {
 
   index: number = 0;
   getTilePiece(): TilePiece {
-    return SonicManager.instance.sonicLevel.getTilePiece(this.block);
+    return this.sonicManager.sonicLevel.getTilePiece(this.block);
   }
   setTilePiece(tp: TilePiece): boolean {
     if (this.block === tp.index) {
@@ -22,15 +24,15 @@ export class TilePieceInfo {
     return true;
   }
   getLayer1Angles(): number {
-    return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes1[this.block]];
+    return this.sonicManager.sonicLevel.angles[this.sonicManager.sonicLevel.collisionIndexes1[this.block]];
   }
   getLayer2Angles(): number {
-    return SonicManager.instance.sonicLevel.angles[SonicManager.instance.sonicLevel.collisionIndexes2[this.block]];
+    return this.sonicManager.sonicLevel.angles[this.sonicManager.sonicLevel.collisionIndexes2[this.block]];
   }
   getLayer1HeightMaps(): HeightMap {
-    return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes1[this.block]];
+    return this.sonicManager.sonicLevel.heightMaps[this.sonicManager.sonicLevel.collisionIndexes1[this.block]];
   }
   getLayer2HeightMaps(): HeightMap {
-    return SonicManager.instance.sonicLevel.heightMaps[SonicManager.instance.sonicLevel.collisionIndexes2[this.block]];
+    return this.sonicManager.sonicLevel.heightMaps[this.sonicManager.sonicLevel.collisionIndexes2[this.block]];
   }
 }

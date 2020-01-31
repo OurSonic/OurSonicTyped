@@ -30,9 +30,10 @@ export class TileAnimationData {
   lastAnimatedFrame: number = 0;
   animationTileIndex: number = 0;
   dataFrames: TileAnimationDataFrame[];
-  constructor() {}
-  GetAnimationFile(): Tile[] {
-    return SonicManager.instance.sonicLevel.animatedTileFiles[this.animationTileFile];
+  constructor(private sonicManager: SonicManager) {}
+
+  getAnimationFile(): Tile[] {
+    return this.sonicManager.sonicLevel.animatedTileFiles[this.animationTileFile];
   }
 }
 export class TileAnimationDataFrame {
