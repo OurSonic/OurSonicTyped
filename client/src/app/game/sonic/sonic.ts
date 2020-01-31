@@ -138,7 +138,7 @@ export class Sonic {
           if (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value) {
             this.x = best.value;
           } else {
-            this.x = best.value + (best.letter === 'm1' ? 12 : -12);
+            this.x = best.value + (best.letter === 'm1' ? 12 : -13);
           }
           this.gsp = 0;
           if (this.inAir) {
@@ -151,6 +151,7 @@ export class Sonic {
           } else {
             this.y = best.value + (best.letter === 'm1' ? 12 : -12);
           }
+          this.gsp = 0;
           if (this.inAir) {
             this.xsp = 0;
           }

@@ -6,6 +6,7 @@ import {Ring} from './level/ring';
 import {Tile} from './level/tiles/tile';
 import {TileChunk} from './level/tiles/tileChunk';
 import {TilePiece} from './level/tiles/tilePiece';
+import {Help} from '../common/help';
 
 export class SonicLevel {
   tileAnimations: TileAnimationData[];
@@ -62,6 +63,79 @@ export class SonicLevel {
 
   setChunkAt(x: number, y: number, tileChunk: TileChunk): void {
     this.chunkMap[x][y] = tileChunk.index;
+  }
+
+  getTilePieceAt(x: number, y: number) {
+    const tileChunkX = (x / 128) | 0;
+    const tileChunkY = (Help.mod(y, this.levelHeight * 128) / 128) | 0;
+
+    const chunk = this.getChunkAt(tileChunkX, tileChunkY);
+    if (!chunk) {
+      return undefined;
+    }
+
+    const interChunkX = x - tileChunkX * 128;
+    const interChunkY = y - tileChunkY * 128;
+
+    const tileX = (interChunkX / 16) | 0;
+    const tileY = (interChunkY / 16) | 0;
+
+    const interTileX = interChunkX - tileX * 16;
+    const interTileY = interChunkY - tileY * 16;
+
+    const tilePiece = chunk.getTilePieceAt(tileX, tileY, false);
+    if (tilePiece === undefined) {
+      return undefined;
+    }
+    const tilePieceInfo = chunk.getTilePieceInfo(tileX, tileY, false);
+    const solidity = this.curHeightMap ? tilePieceInfo.solid1 : tilePieceInfo.solid2;
+
+    const heightMap = this.curHeightMap ? tilePiece.getLayer1HeightMap() : tilePiece.getLayer2HeightMap();
+    let tileAngle = this.curHeightMap ? tilePiece.getLayer1Angle() : tilePiece.getLayer2Angle();
+
+    if (!(tileAngle === 0 || tileAngle === 255 || tileAngle === 1)) {
+      if (tilePieceInfo.xFlip) {
+        if (tilePieceInfo.yFlip) {
+          tileAngle = 192 - tileAngle + 192;
+          tileAngle = 128 - tileAngle + 128;
+        } else {
+          tileAngle = 128 - tileAngle + 128;
+        }
+      } else {
+        if (tilePieceInfo.yFlip) {
+          tileAngle = 192 - tileAngle + 192;
+        } else {
+          tileAngle = tileAngle;
+        }
+      }
+    }
+
+    let collisionMap: boolean[];
+    if (tilePieceInfo.xFlip) {
+      if (tilePieceInfo.yFlip) {
+        collisionMap = heightMap.collisionBlockXFlipYFlip;
+      } else {
+        collisionMap = heightMap.collisionBlockXFlip;
+      }
+    } else {
+      if (tilePieceInfo.yFlip) {
+        collisionMap = heightMap.collisionBlockYFlip;
+      } else {
+        collisionMap = heightMap.collisionBlock;
+      }
+    }
+    return {
+      collisionMap,
+      tileAngle,
+      solidity,
+      interTileX,
+      interTileY,
+      tilePiece,
+      tileLeftEdge: x - interTileX,
+      tileRightEdge: x - interTileX + 16,
+      tileTopEdge: y - interTileY,
+      tileBottomEdge: y - interTileY + 16
+    };
   }
 }
 

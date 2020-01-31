@@ -29,7 +29,7 @@ export class SensorManager {
   }
 
   check(character: Sonic): boolean {
-    let none: boolean = false;
+    let none = false;
     for (const sensorKey in this.sensors) {
       this.sensorResults[sensorKey] = this.sensors[sensorKey].check(character);
       none = none || this.sensorResults[sensorKey] != null;
@@ -105,7 +105,7 @@ export class Sensor {
         const tileChunkY = (Help.mod(testY, this.sonicManager.sonicLevel.levelHeight * 128) / 128) | 0;
 
         const chunk = this.sonicManager.sonicLevel.getChunkAt(tileChunkX, tileChunkY);
-        if (chunk === undefined) {
+        if (!chunk) {
           continue;
         }
 
@@ -119,7 +119,7 @@ export class Sensor {
         const interTileY = interChunkY - tileY * 16;
 
         const tilePiece = chunk.getTilePieceAt(tileX, tileY, false);
-        if (tilePiece === undefined) {
+        if (!tilePiece) {
           continue;
         }
         const tilePieceInfo = chunk.getTilePieceInfo(tileX, tileY, false);
@@ -178,6 +178,48 @@ export class Sensor {
     }
     return null;
   }
+  private checkMSensors(x: number, y: number, allowTopSolid: boolean, regression: boolean = false): SensorResult {
+    let minSolidity = 0;
+    if (!allowTopSolid) {
+      minSolidity = 1;
+    }
+
+    const levelWidth = this.sonicManager.sonicLevel.levelWidth * 128;
+
+    if (x <= 0) {
+      this.cachedSensorResult.value = 0;
+      this.cachedSensorResult.angle = 0;
+      this.cachedSensorResult.solidity = Solidity.AllSolid;
+      return this.cachedSensorResult;
+    }
+    if (x >= levelWidth) {
+      this.cachedSensorResult.value = 0;
+      this.cachedSensorResult.angle = 0;
+      this.cachedSensorResult.solidity = Solidity.AllSolid;
+      return this.cachedSensorResult;
+    }
+
+    if (this.sonicManager.sonicToon.checkCollisionWithObjects(x, y, this.letter)) {
+      this.cachedSensorResult.value = x;
+
+      return this.cachedSensorResult;
+    }
+
+    const tilePieceResult = this.sonicManager.sonicLevel.getTilePieceAt(x, y);
+    if (!tilePieceResult) return null;
+
+    const {solidity, collisionMap, interTileX, interTileY, tileAngle, tileLeftEdge, tileRightEdge} = tilePieceResult;
+
+    if (solidity > minSolidity && collisionMap[interTileX + interTileY * 16]) {
+      this.cachedSensorResult.value = this.letter === 'm1' ? tileRightEdge : tileLeftEdge;
+      this.cachedSensorResult.angle = tileAngle;
+      this.cachedSensorResult.solidity = solidity;
+
+      return this.cachedSensorResult;
+    }
+
+    return null;
+  }
 
   draw(canvas: CanvasRenderingContext2D, character: Sonic, sensorResult: SensorResult): void {
     const x = Help.floor(character.x) - this.sonicManager.windowLocation.x;
@@ -233,20 +275,22 @@ export class Sensor {
             if (sonic.inAir && sonic.ysp < 0) {
               allowTopSolid = false;
             }
+            sensor = this.checkCollisionLineWrap(x + this.x1, x + this.x2, y + this.y1, y + _y2, allowTopSolid);
             break;
           case 'c':
           case 'd':
             allowTopSolid = false;
+            sensor = this.checkCollisionLineWrap(x + this.x1, x + this.x2, y + this.y1, y + _y2, allowTopSolid);
             break;
           case 'm1':
           case 'm2':
             if (sonic.inAir) {
               allowTopSolid = false;
             }
+            sensor = this.checkMSensors(x + this.x2, y, !sonic.inAir);
             break;
         }
 
-        sensor = this.checkCollisionLineWrap(x + this.x1, x + this.x2, y + this.y1, y + _y2, allowTopSolid);
         break;
       case RotationMode.leftWall:
         switch (this.letter) {

@@ -153,9 +153,9 @@ export class SonicEngine {
 
     // (<any>keyboardJS).watch(document.getElementById('canvasBox'));
     keyboardJS.bind('f', () => (this.sonicManager.showHeightMap = !this.sonicManager.showHeightMap));
-    keyboardJS.bind('e', () => {
+    keyboardJS.bind('r', () => {
       if (this.sonicManager.currentGameState === GameState.playing) {
-        this.sonicManager.sonicToon.gsp = 20;
+        this.sonicManager.sonicToon.gsp = 16;
       }
     });
 
