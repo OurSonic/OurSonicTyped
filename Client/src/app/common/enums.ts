@@ -1,16 +1,16 @@
 export enum GameState {
-  Playing,
-  Editing
+  playing,
+  editing
 }
 
 export enum ChunkLayerState {
-  Low = 0,
-  High = 1
+  low = 0,
+  high = 1
 }
 
 export enum RotationMode {
-  Floor = 134,
-  RightWall = 224,
-  Ceiling = 314,
-  LeftWall = 44
+  floor = 134,
+  rightWall = 224,
+  ceiling = 314,
+  leftWall = 44
 }

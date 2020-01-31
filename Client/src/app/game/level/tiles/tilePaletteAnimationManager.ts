@@ -77,7 +77,7 @@ export class TilePaletteAnimation {
       return;
     }
     for (let j = 0; j <= pal.totalLength; j += pal.skipIndex) {
-      if (this.manager.sonicManager.drawTickCount % (pal.totalLength + pal.skipIndex) == j) {
+      if (this.manager.sonicManager.drawTickCount % (pal.totalLength + pal.skipIndex) === j) {
         this.currentFrame = j / pal.skipIndex;
       }
     }

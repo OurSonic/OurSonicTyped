@@ -195,19 +195,19 @@ export class Sensor {
       canvas.lineWidth = 2;
     }
     switch (character.mode) {
-      case RotationMode.Floor:
+      case RotationMode.floor:
         canvas.moveTo(x + this.x1, y + this.y1);
         canvas.lineTo(x + this.x2, y + this.y2);
         break;
-      case RotationMode.LeftWall:
+      case RotationMode.leftWall:
         canvas.moveTo(x - this.y1, y + this.x1);
         canvas.lineTo(x - this.y2, y + this.x2);
         break;
-      case RotationMode.Ceiling:
+      case RotationMode.ceiling:
         canvas.moveTo(x - this.x1, y - this.y1);
         canvas.lineTo(x - this.x2, y - this.y2);
         break;
-      case RotationMode.RightWall:
+      case RotationMode.rightWall:
         canvas.moveTo(x + this.y1, y - this.x1);
         canvas.lineTo(x + this.y2, y - this.x2);
         break;
@@ -224,7 +224,7 @@ export class Sensor {
     let allowTopSolid = true;
 
     switch (sonic.mode) {
-      case RotationMode.Floor:
+      case RotationMode.floor:
         switch (this.letter) {
           case 'a':
           case 'b':
@@ -246,7 +246,7 @@ export class Sensor {
 
         sensor = this.checkCollisionLineWrap(x + this.x1, x + this.x2, y + this.y1, y + _y2, allowTopSolid);
         break;
-      case RotationMode.LeftWall:
+      case RotationMode.leftWall:
         switch (this.letter) {
           case 'a':
           case 'b':
@@ -269,10 +269,10 @@ export class Sensor {
         }
         sensor = this.checkCollisionLineWrap(x - this.y1, x - _y2, y + this.x1, y + this.x2, allowTopSolid);
         break;
-      case RotationMode.Ceiling:
+      case RotationMode.ceiling:
         sensor = this.checkCollisionLineWrap(x - this.x1, x - this.x2, y - this.y1, y - _y2, allowTopSolid);
         break;
-      case RotationMode.RightWall:
+      case RotationMode.rightWall:
         switch (this.letter) {
           case 'a':
           case 'b':
@@ -300,22 +300,22 @@ export class Sensor {
       sensor.letter = this.letter;
       if (sensor.angle === 255 || sensor.angle === 0 || sensor.angle === 1) {
         switch (sonic.mode) {
-          case RotationMode.Floor:
+          case RotationMode.floor:
             sensor.angle = 255;
             break;
-          case RotationMode.LeftWall:
+          case RotationMode.leftWall:
             sensor.angle = 64;
             break;
-          case RotationMode.Ceiling:
+          case RotationMode.ceiling:
             sensor.angle = 128;
             break;
-          case RotationMode.RightWall:
+          case RotationMode.rightWall:
             sensor.angle = 192;
             break;
         }
       }
 
-      if (sonic.mode === RotationMode.Floor) {
+      if (sonic.mode === RotationMode.floor) {
         switch (this.letter) {
           case 'c':
           case 'd':

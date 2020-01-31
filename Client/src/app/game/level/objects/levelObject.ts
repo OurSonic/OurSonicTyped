@@ -1,5 +1,3 @@
-import {Point, Rectangle} from '../../../common/utils';
-import {SLDataObjectEntry} from '../../../slData';
 import {SensorM} from '../../sonic/sensorManager';
 import {Sonic} from '../../sonic/sonic';
 import {SonicLevel} from '../../sonicLevel';
@@ -9,7 +7,6 @@ import {LevelObjectInfo} from './levelObjectInfo';
 import {LevelObjectPiece} from './levelObjectPiece';
 import {LevelObjectPieceLayout} from './levelObjectPieceLayout';
 import {LevelObjectProjectile} from './levelObjectProjectile';
-import {ObjectManager} from './objectManager';
 
 export class LevelObject {
   private cacheCompiled: {
@@ -46,7 +43,13 @@ export class LevelObject {
     sensor: string,
     piece: LevelObjectPiece
   ): boolean {
-    return this.evalMe('collideScript').apply($object, [$object, level, sonic, sensor as any /*todo bad*/, piece]) as boolean;
+    return this.evalMe('collideScript').apply($object, [
+      $object,
+      level,
+      sonic,
+      sensor as any /*todo bad*/,
+      piece
+    ]) as boolean;
   }
   onHurtSonic(
     $object: LevelObjectInfo,

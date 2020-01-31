@@ -39,7 +39,7 @@ export class Sonic {
   holdingJump: boolean = false;
   justHit: boolean = false;
   hLock: number = 0;
-  mode: RotationMode = RotationMode.Floor;
+  mode: RotationMode = RotationMode.floor;
   facing: boolean = false;
   breaking: number = 0;
   ducking: boolean = false;
@@ -75,20 +75,20 @@ export class Sonic {
 
   updateMode(): void {
     if (this.angle <= 0x22 || this.angle >= 0xde) {
-      this.mode = RotationMode.Floor;
+      this.mode = RotationMode.floor;
     } else if (this.angle > 0x22 && this.angle < 0x59) {
-      this.mode = RotationMode.LeftWall;
+      this.mode = RotationMode.leftWall;
     } else if (this.angle >= 0x59 && this.angle < 0xa1) {
-      this.mode = RotationMode.Ceiling;
+      this.mode = RotationMode.ceiling;
     } else if (this.angle > 0xa1 && this.angle < 0xde) {
-      this.mode = RotationMode.RightWall;
+      this.mode = RotationMode.rightWall;
     }
     this.myRec.x = (this.x - 10) | 0;
     this.myRec.y = (this.y - 20) | 0;
     this.myRec.width = 10 * 2;
     this.myRec.height = 20 * 2;
     if (this.inAir) {
-      this.mode = RotationMode.Floor;
+      this.mode = RotationMode.floor;
     }
   }
 
@@ -135,7 +135,7 @@ export class Sonic {
     let best = this.getBestSensor(sensorM1, sensorM2, this.mode);
     if (best != null) {
       switch (this.mode) {
-        case RotationMode.Floor:
+        case RotationMode.floor:
           this.x =
             best.value +
             (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value
@@ -148,7 +148,7 @@ export class Sonic {
             this.xsp = 0;
           }
           break;
-        case RotationMode.LeftWall:
+        case RotationMode.leftWall:
           this.y =
             best.value +
             (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value
@@ -160,7 +160,7 @@ export class Sonic {
             this.xsp = 0;
           }
           break;
-        case RotationMode.Ceiling:
+        case RotationMode.ceiling:
           this.x =
             best.value +
             (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value
@@ -173,7 +173,7 @@ export class Sonic {
             this.xsp = 0;
           }
           break;
-        case RotationMode.RightWall:
+        case RotationMode.rightWall:
           this.y =
             best.value +
             (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value
@@ -201,22 +201,22 @@ export class Sonic {
       } else {
         this.justHit = false;
         switch (this.mode) {
-          case RotationMode.Floor:
+          case RotationMode.floor:
             best.chosen = true;
             this.angle = best.angle;
             this.y = fy = best.value - hSize.y;
             break;
-          case RotationMode.LeftWall:
+          case RotationMode.leftWall:
             best.chosen = true;
             this.angle = best.angle;
             this.x = fx = best.value + hSize.x;
             break;
-          case RotationMode.Ceiling:
+          case RotationMode.ceiling:
             best.chosen = true;
             this.angle = best.angle;
             this.y = fy = best.value + hSize.y;
             break;
-          case RotationMode.RightWall:
+          case RotationMode.rightWall:
             best.chosen = true;
             this.angle = best.angle;
             this.x = fx = best.value - hSize.x;
@@ -355,13 +355,13 @@ export class Sonic {
       return sensor1;
     }
     switch (mode) {
-      case RotationMode.Floor:
+      case RotationMode.floor:
         return sensor1.value < sensor2.value ? sensor1 : sensor2;
-      case RotationMode.LeftWall:
+      case RotationMode.leftWall:
         return sensor1.value > sensor2.value ? sensor1 : sensor2;
-      case RotationMode.Ceiling:
+      case RotationMode.ceiling:
         return sensor1.value > sensor2.value ? sensor1 : sensor2;
-      case RotationMode.RightWall:
+      case RotationMode.rightWall:
         return sensor1.value < sensor2.value ? sensor1 : sensor2;
     }
     return null;
@@ -392,19 +392,19 @@ export class Sonic {
     if (cur.height !== 40) {
       let n: number;
       switch (this.mode) {
-        case RotationMode.Floor:
+        case RotationMode.floor:
           n = 0;
           yOffset = (40 - (cur.height + n)) / 2;
           break;
-        case RotationMode.LeftWall:
+        case RotationMode.leftWall:
           n = 15;
           xOffset = -(40 - (cur.height + n)) / 2;
           break;
-        case RotationMode.Ceiling:
+        case RotationMode.ceiling:
           n = 8;
           yOffset = -(40 - (cur.height + n)) / 2;
           break;
-        case RotationMode.RightWall:
+        case RotationMode.rightWall:
           n = 9;
           xOffset = (40 - (cur.height + n)) / 2;
           break;
@@ -614,7 +614,7 @@ export class Sonic {
       if (this.gsp < -max * 2.5) {
         this.gsp = -max * 2.5;
       }
-      if (this.oldSign !== Help.sign(this.gsp) && this.oldSign != 0) {
+      if (this.oldSign !== Help.sign(this.gsp) && this.oldSign !== 0) {
         this.hLock = 30;
       }
       if (Math.abs(this.gsp) < 0.53125) {
@@ -686,17 +686,17 @@ export class Sonic {
       }
       this.xsp = this.gsp * Help.cos(this.angle);
       this.ysp = this.gsp * -Help.sin(this.angle);
-      if (Math.abs(this.gsp) < 2.5 && this.mode !== RotationMode.Floor) {
-        if (this.mode === RotationMode.RightWall) {
+      if (Math.abs(this.gsp) < 2.5 && this.mode !== RotationMode.floor) {
+        if (this.mode === RotationMode.rightWall) {
           this.x += 0;
-        } else if (this.mode === RotationMode.LeftWall) {
+        } else if (this.mode === RotationMode.leftWall) {
           this.x += 0;
-        } else if (this.mode === RotationMode.Ceiling) {
+        } else if (this.mode === RotationMode.ceiling) {
           this.y += 0;
         }
         const oldMode = this.mode;
         this.updateMode();
-        this.mode = RotationMode.Floor;
+        this.mode = RotationMode.floor;
         this.hLock = 30;
         this.inAir = true;
       }
@@ -820,7 +820,7 @@ export class Sonic {
           lo.x - SonicManager.instance.windowLocation.x - 15,
           lo.y + 12 - SonicManager.instance.windowLocation.y + offset.y
         );
-        if (((((SonicManager.instance.drawTickCount + 6) % (4 * 6)) / 6) | 0) == 0) {
+        if (((((SonicManager.instance.drawTickCount + 6) % (4 * 6)) / 6) | 0) === 0) {
           this.haltSmoke.splice(i, 1);
         }
       }
@@ -866,10 +866,10 @@ export class Sonic {
       SonicManager.instance.activeRings.push(ring);
       ring.x = this.x | 0;
       ring.y = (this.y - 10) | 0;
-      ring.Ysp = -Math.sin(angle) * speed;
-      ring.Xsp = Math.cos(angle) * speed;
+      ring.ysp = -Math.sin(angle) * speed;
+      ring.xsp = Math.cos(angle) * speed;
       if (n) {
-        ring.Ysp *= -1;
+        ring.ysp *= -1;
         angle += 22.5;
       }
       n = !n;

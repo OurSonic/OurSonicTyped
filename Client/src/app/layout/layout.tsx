@@ -1,10 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import {Fragment} from 'react';
 import {LevelSelector} from './levelSelector/levelSelector';
 import sonic from './assets/tabs/sonic.png';
 import tile from './assets/tabs/tile.png';
 import tileChunk from './assets/tabs/tilechunk.png';
 import tilePiece from './assets/tabs/tilepiece.png';
+import {Help} from '../common/help';
+import Joystick from 'react-joystick';
+import {SonicEngine} from '../game/sonicEngine';
 
 interface Props {}
 
@@ -64,9 +67,48 @@ export class Layout extends React.Component<Props, State> {
     this.setState({collapseSide});
   }
 
+  managerListenerMove = manager => {
+    manager.on('move', (e, stick) => {
+      SonicEngine.instance.sonicManager.sonicToon.releaseCrouch();
+      SonicEngine.instance.sonicManager.sonicToon.releaseUp();
+      SonicEngine.instance.sonicManager.sonicToon.releaseLeft();
+      SonicEngine.instance.sonicManager.sonicToon.releaseRight();
+      switch (stick.direction?.angle) {
+        case 'up':
+          SonicEngine.instance.sonicManager.sonicToon.pressUp();
+          break;
+        case 'down':
+          SonicEngine.instance.sonicManager.sonicToon.pressCrouch();
+          break;
+        case 'left':
+          SonicEngine.instance.sonicManager.sonicToon.pressLeft();
+          break;
+        case 'right':
+          SonicEngine.instance.sonicManager.sonicToon.pressRight();
+          break;
+      }
+      console.log('I moved!', stick.direction);
+    });
+    manager.on('end', () => {
+      SonicEngine.instance.sonicManager.sonicToon.releaseCrouch();
+      SonicEngine.instance.sonicManager.sonicToon.releaseUp();
+      SonicEngine.instance.sonicManager.sonicToon.releaseLeft();
+      SonicEngine.instance.sonicManager.sonicToon.releaseRight();
+    });
+  };
+
+  managerListenerJump = manager => {
+    manager.on('move', (e, stick) => {
+      SonicEngine.instance.sonicManager.sonicToon.pressJump();
+    });
+    manager.on('end', () => {
+      SonicEngine.instance.sonicManager.sonicToon.releaseJump();
+    });
+  };
+
   render() {
     return (
-      <Fragment>
+      <>
         <div
           className={`col ${!this.state.collapseSide ? 's8' : 's12'}`}
           style={{padding: 0, margin: 0, position: 'relative', height: '100vh', border: '10px solid black'}}
@@ -83,6 +125,44 @@ export class Layout extends React.Component<Props, State> {
           <canvas id="lowTileLayer" width={320} height={224} className="game-canvas" />
           <canvas id="spriteLayer" width={320} height={224} className="game-canvas" />
           <canvas id="highTileLayer" width={320} height={224} className="game-canvas" />
+
+          {Help.isMobile() && (
+            <>
+              <Joystick
+                options={{
+                  mode: 'semi',
+                  catchDistance: 150,
+                  color: 'white'
+                }}
+                containerStyle={{
+                  position: 'absolute',
+                  height: '350px',
+                  width: '60%',
+                  bottom: 0,
+                  left: 0,
+                  background: 'transparent'
+                }}
+                managerListener={this.managerListenerMove}
+              />
+              <Joystick
+                options={{
+                  mode: 'semi',
+                  catchDistance: 150,
+                  color: 'white',
+                  dataOnly: true
+                }}
+                containerStyle={{
+                  position: 'absolute',
+                  height: '350px',
+                  width: '40%',
+                  bottom: 0,
+                  right: 0,
+                  background: 'transparent'
+                }}
+                managerListener={this.managerListenerJump}
+              />
+            </>
+          )}
         </div>
         {this.state.collapseSide && (
           <span
@@ -186,7 +266,7 @@ export class Layout extends React.Component<Props, State> {
             </div>
           </div>
         )}
-      </Fragment>
+      </>
     );
   }
 }

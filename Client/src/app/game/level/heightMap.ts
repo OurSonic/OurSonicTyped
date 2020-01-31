@@ -1,26 +1,24 @@
 import {CanvasInformation} from '../../common/canvasInformation';
 import {RotationMode} from '../../common/enums';
 import {Help} from '../../common/help';
-import {Point} from '../../common/utils';
 import {SonicEngine} from '../sonicEngine';
-import {SonicManager} from '../sonicManager';
 
 export class HeightMap {
-  static colors: string[] = new Array('', 'rgba(255,98,235,0.6)', 'rgba(24,218,235,0.6)', 'rgba(24,98,235,0.6)');
-  protected Width: number = 0;
-  protected Height: number = 0;
-  Items: number[];
-  Index: number = 0;
+  static colors = ['', 'rgba(255,98,235,0.6)', 'rgba(24,218,235,0.6)', 'rgba(24,98,235,0.6)'];
+  width: number = 0;
+  height: number = 0;
+  items: number[];
+  index: number = 0;
   collisionBlock: boolean[];
   collisionBlockXFlip: boolean[];
   collisionBlockYFlip: boolean[];
   collisionBlockXFlipYFlip: boolean[];
 
   constructor(heightMap: number[], i: number) {
-    this.Items = heightMap;
-    this.Width = 16;
-    this.Height = 16;
-    this.Index = i;
+    this.items = heightMap;
+    this.width = 16;
+    this.height = 16;
+    this.index = i;
     this.buildCollisionBlocks();
   }
 
@@ -28,24 +26,24 @@ export class HeightMap {
     let jx = 0;
     let jy = 0;
     switch (rotationMode) {
-      case RotationMode.Floor:
+      case RotationMode.floor:
         jx = x;
         jy = y;
         break;
-      case RotationMode.LeftWall:
+      case RotationMode.leftWall:
         jx = y;
         jy = 15 - x;
         break;
-      case RotationMode.Ceiling:
+      case RotationMode.ceiling:
         jx = x;
         jy = 15 - y;
         break;
-      case RotationMode.RightWall:
+      case RotationMode.rightWall:
         jx = y;
         jy = x;
         break;
     }
-    this.Items[jx] = 16 - jy;
+    this.items[jx] = 16 - jy;
   }
 
   draw(
@@ -57,7 +55,7 @@ export class HeightMap {
     solid: number,
     angle: number
   ): void {
-    if (this.Items == null) {
+    if (this.items == null) {
       return;
     }
     canvas.save();
@@ -70,8 +68,8 @@ export class HeightMap {
       y = -y - 16;
       canvas.scale(1, -1);
     }
-    const fd = SonicEngine.instance.spriteCache.HeightMaps[this.Index + (solid << 20)];
-    if (this.Index !== -1 && fd) {
+    const fd = SonicEngine.instance.spriteCache.HeightMaps[this.index + (solid << 20)];
+    if (this.index !== -1 && fd) {
       canvas.drawImage(fd.canvas, x, y);
     } else {
       const ntcanvas = CanvasInformation.create(16, 16, false);
@@ -82,7 +80,7 @@ export class HeightMap {
           for (let yi = 0; yi < 16; yi++) {
             let jx = 0;
             let jy = 0;
-            if (HeightMap.itemsGood(this.Items, xi, yi)) {
+            if (HeightMap.itemsGood(this.items, xi, yi)) {
               jx = xi;
               jy = yi;
               const _x = jx;
@@ -101,7 +99,7 @@ export class HeightMap {
           }
         }
       }
-      SonicEngine.instance.spriteCache.HeightMaps[this.Index + (solid << 20)] = ntcanvas;
+      SonicEngine.instance.spriteCache.HeightMaps[this.index + (solid << 20)] = ntcanvas;
       canvas.drawImage(ntcanvas.canvas, x, y);
     }
     canvas.restore();
@@ -114,10 +112,10 @@ export class HeightMap {
     this.collisionBlockXFlipYFlip = new Array(64);
     for (let y = 0; y < 16; y++) {
       for (let x = 0; x < 16; x++) {
-        this.collisionBlock[x + y * 16] = HeightMap.itemsGood(this.Items, x, y);
-        this.collisionBlockXFlip[15 - x + y * 16] = HeightMap.itemsGood(this.Items, x, y);
-        this.collisionBlockYFlip[x + (15 - y) * 16] = HeightMap.itemsGood(this.Items, x, y);
-        this.collisionBlockXFlipYFlip[15 - x + (15 - y) * 16] = HeightMap.itemsGood(this.Items, x, y);
+        this.collisionBlock[x + y * 16] = HeightMap.itemsGood(this.items, x, y);
+        this.collisionBlockXFlip[15 - x + y * 16] = HeightMap.itemsGood(this.items, x, y);
+        this.collisionBlockYFlip[x + (15 - y) * 16] = HeightMap.itemsGood(this.items, x, y);
+        this.collisionBlockXFlipYFlip[15 - x + (15 - y) * 16] = HeightMap.itemsGood(this.items, x, y);
       }
     }
   }

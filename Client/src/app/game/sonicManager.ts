@@ -2,7 +2,7 @@ import {CanvasInformation} from '../common/canvasInformation';
 import {GameState} from '../common/enums';
 import {Help} from '../common/help';
 import {IntersectingRectangle, Point, Rectangle} from '../common/utils';
-import {AnimatedPaletteItem, SlData} from '../slData';
+import {SlData} from '../slData';
 import {TileAnimationData, TileAnimationDataFrame} from './level/animations/tileAnimationData';
 import {HeightMap} from './level/heightMap';
 import {LevelObject} from './level/objects/levelObject';
@@ -49,14 +49,14 @@ export class SonicManager {
 
     this.objectManager = new ObjectManager(this);
     this.objectManager.Init();
-    this.windowLocation = SonicEngine.defaultWindowLocation(GameState.Editing);
-    this.objectTickWindow = SonicEngine.defaultWindowLocation(GameState.Editing);
+    this.windowLocation = SonicEngine.defaultWindowLocation(GameState.editing);
+    this.objectTickWindow = SonicEngine.defaultWindowLocation(GameState.editing);
     this.objectTickWindow.width = (this.objectTickWindow.width * 1.8) | 0;
     this.objectTickWindow.height = (this.objectTickWindow.height * 1.8) | 0;
     this.showHeightMap = false;
     this.ringCache = new Ring(false);
     this.activeRings = [];
-    this.currentGameState = GameState.Editing;
+    this.currentGameState = GameState.editing;
     this.tickCount = 0;
     this.drawTickCount = 0;
   }
@@ -150,7 +150,7 @@ export class SonicManager {
     if (this.loading) {
       return;
     }
-    if (this.currentGameState === GameState.Playing) {
+    if (this.currentGameState === GameState.playing) {
       this.tickCount++;
       this.tickObjects();
       this.sonicToon.tick(this.sonicLevel);
@@ -175,11 +175,11 @@ export class SonicManager {
 
     this.drawObjects(this.engine.spriteCanvas.context);
     this.drawRings(this.engine.spriteCanvas.context);
-    if (this.currentGameState === GameState.Playing) {
+    if (this.currentGameState === GameState.playing) {
       this.sonicToon.draw(this.engine.spriteCanvas.context);
     }
 
-    if (this.showHeightMap || this.currentGameState === GameState.Editing) {
+    if (this.showHeightMap || this.currentGameState === GameState.editing) {
       const w1: number = ((this.windowLocation.width / 128) | 0) + 2;
       const h1: number = ((this.windowLocation.height / 128) | 0) + 2;
       const offs = SonicManager.getOffs(w1, h1);
@@ -206,7 +206,7 @@ export class SonicManager {
           }
           this.engine.highTileCanvas.context.drawImage(fd.canvas, x, y);
         }
-        if (this.currentGameState === GameState.Editing) {
+        if (this.currentGameState === GameState.editing) {
           this.engine.highTileCanvas.context.strokeStyle = '#DD0033';
           this.engine.highTileCanvas.context.lineWidth = 1;
           this.engine.highTileCanvas.context.strokeRect(x, y, 128, 128);
@@ -235,7 +235,7 @@ export class SonicManager {
   }
 
   private updatePositions(): void {
-    if (this.currentGameState === GameState.Playing) {
+    if (this.currentGameState === GameState.playing) {
       this.updatePositionsForPlaying();
     }
   }
@@ -497,31 +497,31 @@ export class SonicManager {
     for (let index: number = 0; index < this.sonicLevel.rings.length; index++) {
       const r = this.sonicLevel.rings[index];
       switch (this.currentGameState) {
-        case GameState.Playing:
+        case GameState.playing:
           if (!this.sonicToon.obtainedRing[index]) {
             if (this.objectTickWindow.intersects(r.x, r.y)) {
-              this.ringCache.Draw(context, (r.x - this.windowLocation.x) | 0, (r.y - this.windowLocation.y) | 0);
+              this.ringCache.draw(context, (r.x - this.windowLocation.x) | 0, (r.y - this.windowLocation.y) | 0);
             }
           }
           break;
-        case GameState.Editing:
+        case GameState.editing:
           if (this.objectTickWindow.intersects(r.x, r.y)) {
-            this.ringCache.Draw(context, (r.x - this.windowLocation.x) | 0, (r.y - this.windowLocation.y) | 0);
+            this.ringCache.draw(context, (r.x - this.windowLocation.x) | 0, (r.y - this.windowLocation.y) | 0);
           }
           break;
       }
     }
     switch (this.currentGameState) {
-      case GameState.Playing:
+      case GameState.playing:
         for (let i: number = this.activeRings.length - 1; i >= 0; i--) {
           const ac: Ring = this.activeRings[i];
-          ac.Draw(context, (ac.x - this.windowLocation.x) | 0, (ac.y - this.windowLocation.y) | 0);
-          if (ac.TickCount > 256) {
+          ac.draw(context, (ac.x - this.windowLocation.x) | 0, (ac.y - this.windowLocation.y) | 0);
+          if (ac.tickCount > 256) {
             this.activeRings.splice(i, 1);
           }
         }
         break;
-      case GameState.Editing:
+      case GameState.editing:
         break;
     }
   }

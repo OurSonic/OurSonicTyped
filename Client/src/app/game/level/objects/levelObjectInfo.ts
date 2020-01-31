@@ -157,7 +157,7 @@ export class LevelObjectInfo {
     this.dead = true;
   }
   collision(sonic: Point, isHurtMap: boolean): LevelObjectPiece {
-    if (this.dead || !this.objectData || this.objectData.pieceLayouts.length == 0) {
+    if (this.dead || !this.objectData || this.objectData.pieceLayouts.length === 0) {
       return null;
     }
     const pieces = this.pieces;
@@ -178,7 +178,7 @@ export class LevelObjectInfo {
             mY + frm.offsetY,
             this.xflip !== !!piece.xflip,
             this.yflip !== !!piece.xflip
-          ) == true
+          )
         ) {
           return j;
         }

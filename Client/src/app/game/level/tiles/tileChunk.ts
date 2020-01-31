@@ -1,10 +1,4 @@
 import {CanvasInformation} from '../../../common/canvasInformation';
-import {ChunkLayerState} from '../../../common/enums';
-import {Point, Rectangle} from '../../../common/utils';
-import {Solidity} from '../../../slData';
-import {SonicManager} from '../../sonicManager';
-import {TileAnimationData} from '../animations/tileAnimationData';
-import {TileAnimation} from './tileAnimationManager';
 import {TileInfo} from './tileInfo';
 import {TilePiece} from './tilePiece';
 import {TilePieceInfo} from './tilePieceInfo';

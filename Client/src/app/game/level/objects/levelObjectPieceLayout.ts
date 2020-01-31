@@ -7,12 +7,10 @@ import {LevelObjectPieceLayoutPiece} from './levelObjectPieceLayoutPiece';
 
 export class LevelObjectPieceLayout {
   width: number;
-
   height: number;
-
   pieces: LevelObjectPieceLayoutPiece[];
-
   name: string;
+
   constructor(name: string) {
     this.name = name;
     this.width = 350;
@@ -73,7 +71,7 @@ export class LevelObjectPieceLayout {
         const drawRadial: CanvasGradient = null;
         // drawRadial = SonicManager.instance.lowTileCanvas.context.createRadialGradient(0, 0, 0, 10, 10, 50);
         drawRadial.addColorStop(0, 'white');
-        if (selectedPieceIndex == levelObjectPieceLayoutPiece.pieceIndex) {
+        if (selectedPieceIndex === levelObjectPieceLayoutPiece.pieceIndex) {
           drawRadial.addColorStop(1, 'yellow');
         } else {
           drawRadial.addColorStop(1, 'red');
