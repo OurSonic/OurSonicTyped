@@ -66,6 +66,8 @@ export class SonicLevel {
   }
 
   getTilePieceAt(x: number, y: number) {
+    x = x | 0;
+    y = y | 0;
     const tileChunkX = (x / 128) | 0;
     const tileChunkY = (Help.mod(y, this.levelHeight * 128) / 128) | 0;
 

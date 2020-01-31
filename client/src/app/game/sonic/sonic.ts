@@ -6,7 +6,7 @@ import {Ring} from '../level/ring';
 import {SonicEngine} from '../sonicEngine';
 import {SonicLevel} from '../sonicLevel';
 import {SonicManager} from '../sonicManager';
-import {SensorResult, SensorManager} from './sensorManager';
+import {SensorResult, SensorManager, OldSensorManager} from './sensorManager';
 import {SonicConstants} from './sonicConstants';
 
 export class Sonic {
@@ -16,7 +16,6 @@ export class Sonic {
   private physicsVariables: SonicConstants;
   private runningTick: number;
 
-  sensorManager: SensorManager;
   sonicLastHitTick: number;
   private sonicLevel: SonicLevel;
 
@@ -51,6 +50,8 @@ export class Sonic {
   protected haltSmoke: Point[];
 
   wasJumping: boolean;
+  private sensorManager: SensorManager;
+  private oldSensorManager: OldSensorManager;
 
   constructor(private sonicManager: SonicManager) {
     this.watcher = new Watcher();
@@ -59,14 +60,16 @@ export class Sonic {
     this.x = 7925; // this.sonicLevel.startPositions[0].x;
     this.y = 640; // this.sonicLevel.startPositions[0].y;
     this.sensorManager = new SensorManager(sonicManager);
+    this.oldSensorManager = new OldSensorManager(sonicManager);
+
+    this.oldSensorManager.createVerticalSensor('a', -9, 0, 36, '#F202F2');
+    this.oldSensorManager.createVerticalSensor('b', 9, 0, 36, '#02C2F2');
+    this.oldSensorManager.createVerticalSensor('c', -9, 0, -20, '#2D2C21');
+    this.oldSensorManager.createVerticalSensor('d', 9, 0, -20, '#C24222');
+    this.oldSensorManager.createHorizontalSensor('m1', 4, 0, -12, '#212C2E');
+    this.oldSensorManager.createHorizontalSensor('m2', 4, 0, 13, '#22Ffc1');
     this.haltSmoke = [];
     this.rings = 7;
-    this.sensorManager.createVerticalSensor('a', -9, 0, 36, '#F202F2');
-    this.sensorManager.createVerticalSensor('b', 9, 0, 36, '#02C2F2');
-    this.sensorManager.createVerticalSensor('c', -9, 0, -20, '#2D2C21');
-    this.sensorManager.createVerticalSensor('d', 9, 0, -20, '#C24222');
-    this.sensorManager.createHorizontalSensor('m1', 4, 0, -12, '#212C2E');
-    this.sensorManager.createHorizontalSensor('m2', 4, 0, 13, '#22Ffc1');
     this.spriteState = 'normal';
     this.myRec = new Rectangle(0, 0, 0, 0);
     this.sonicLastHitTick = -100000;
@@ -128,51 +131,34 @@ export class Sonic {
     this.effectPhysics();
     this.checkCollisionWithRings();
     this.updateSprite();
-    this.sensorManager.check(this);
-    const sensorM1 = this.sensorManager.getResult('m1');
-    const sensorM2 = this.sensorManager.getResult('m2');
-    let best = this.getBestSensor(sensorM1, sensorM2, this.mode);
-    if (best != null) {
+    const left = this.sensorManager.getHorizontal('left', this.x, this.y, this.mode);
+    const right = this.sensorManager.getHorizontal('right', this.x, this.y, this.mode);
+    const bestHorizontal = left ?? right;
+    if (bestHorizontal !== null) {
       switch (this.mode) {
         case RotationMode.floor:
-          if (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value) {
-            this.x = best.value;
-          } else {
-            this.x = best.value + (best.letter === 'm1' ? 12 : -13);
-          }
+          this.x = bestHorizontal;
           this.gsp = 0;
           if (this.inAir) {
             this.xsp = 0;
           }
           break;
         case RotationMode.leftWall:
-          if (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value) {
-            this.y = best.value + 12;
-          } else {
-            this.y = best.value + (best.letter === 'm1' ? 12 : -12);
-          }
+          this.y = bestHorizontal;
           this.gsp = 0;
           if (this.inAir) {
             this.xsp = 0;
           }
           break;
         case RotationMode.ceiling:
-          if (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value) {
-            this.x = best.value + 12;
-          } else {
-            this.x = best.value + (best.letter === 'm1' ? -12 : 12);
-          }
+          this.x = bestHorizontal;
           this.gsp = 0;
           if (this.inAir) {
             this.xsp = 0;
           }
           break;
         case RotationMode.rightWall:
-          if (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value) {
-            this.y = best.value + 12;
-          } else {
-            this.y = best.value + (best.letter === 'm1' ? -12 : 12);
-          }
+          this.y = bestHorizontal;
           this.gsp = 0;
           if (this.inAir) {
             this.xsp = 0;
@@ -180,14 +166,14 @@ export class Sonic {
           break;
       }
     }
-    this.sensorManager.check(this);
-    let sensorA = this.sensorManager.getResult('a');
-    let sensorB = this.sensorManager.getResult('b');
+    this.oldSensorManager.check(this);
+    let sensorA = this.oldSensorManager.getResult('a');
+    let sensorB = this.oldSensorManager.getResult('b');
     let fy: number;
     let fx: number;
     const hSize = this.getHalfImageSize();
     if (!this.inAir) {
-      best = this.getBestSensor(sensorA, sensorB, this.mode);
+      const best = this.getBestSensor(sensorA, sensorB, this.mode);
       if (best === null) {
         this.inAir = true;
       } else {
@@ -219,11 +205,11 @@ export class Sonic {
     } else {
       if (sensorA && sensorA.solidity === Solidity.TopSolid && this.ysp < 0) {
         sensorA = null;
-        this.sensorManager.sensorResults.a = null;
+        this.oldSensorManager.sensorResults.a = null;
       }
       if (sensorB && sensorB.solidity === Solidity.TopSolid && this.ysp < 0) {
         sensorB = null;
-        this.sensorManager.sensorResults.b = null;
+        this.oldSensorManager.sensorResults.b = null;
       }
 
       if (sensorA == null && sensorB == null) {
@@ -266,9 +252,9 @@ export class Sonic {
       this.updateMode();
       const currentSonicSprite = SonicEngine.instance.spriteCache.sonicSprites[this.spriteState];
       const halfHeight = currentSonicSprite.height / 2;
-      this.sensorManager.check(this);
-      const sensorC = this.sensorManager.getResult('c');
-      const sensorD = this.sensorManager.getResult('d');
+      this.oldSensorManager.check(this);
+      const sensorC = this.oldSensorManager.getResult('c');
+      const sensorD = this.oldSensorManager.getResult('d');
 
       if (sensorC == null && sensorD == null) {
       } else {
@@ -801,7 +787,7 @@ export class Sonic {
       }
       context.restore();
       if (this.sonicManager.showHeightMap) {
-        this.sensorManager.draw(context, this);
+        this.oldSensorManager.draw(context, this);
       }
       for (let i = 0; i < this.haltSmoke.length; i++) {
         const lo = this.haltSmoke[i];

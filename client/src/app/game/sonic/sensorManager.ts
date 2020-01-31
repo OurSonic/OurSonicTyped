@@ -5,46 +5,72 @@ import {SonicManager} from '../sonicManager';
 import {Sonic} from './sonic';
 
 export class SensorManager {
-  protected sensors: {[sensorKey: string]: Sensor};
+  constructor(private sonicManager: SonicManager) {}
 
-  sensorResults: {[sensorKey: string]: SensorResult};
+  getHorizontal(side: 'left' | 'right', x: number, y: number, mode: RotationMode) {
+    const allowTopSolid = false; /*todo*/
 
-  constructor(private sonicManager: SonicManager) {
-    this.sensors = {};
-    this.sensorResults = {};
-  }
-
-  addSensor(letter: string, sensor: Sensor): Sensor {
-    this.sensors[letter] = sensor;
-    this.sensorResults[letter] = null;
-    return sensor;
-  }
-
-  createVerticalSensor(letter: SensorLetters, x: number, y1: number, y2: number, color: string): Sensor {
-    return this.addSensor(letter, new Sensor(this.sonicManager, x, x, y1, y2, this, color, letter));
-  }
-
-  createHorizontalSensor(letter: SensorLetters, y: number, x1: number, x2: number, color: string): Sensor {
-    return this.addSensor(letter, new Sensor(this.sonicManager, x1, x2, y, y, this, color, letter));
-  }
-
-  check(character: Sonic): boolean {
-    let none = false;
-    for (const sensorKey in this.sensors) {
-      this.sensorResults[sensorKey] = this.sensors[sensorKey].check(character);
-      none = none || this.sensorResults[sensorKey] != null;
+    let minSolidity = 0;
+    if (!allowTopSolid) {
+      minSolidity = 1;
     }
-    return none;
-  }
 
-  getResult(mn: string): SensorResult {
-    return this.sensorResults[mn];
-  }
-
-  draw(canvas: CanvasRenderingContext2D, sonic: Sonic): void {
-    for (const sensor in this.sensors) {
-      this.sensors[sensor].draw(canvas, sonic, this.sensorResults[sensor]);
+    const levelWidth = this.sonicManager.sonicLevel.levelWidth * 128;
+    switch (mode) {
+      case RotationMode.floor:
+        x += side === 'left' ? -12 : 13;
+        break;
+      case RotationMode.rightWall:
+        y += side === 'left' ? -12 : 13;
+        break;
+      case RotationMode.ceiling:
+        x -= side === 'left' ? -12 : 13;
+        break;
+      case RotationMode.leftWall:
+        y -= side === 'left' ? -12 : 13;
+        break;
     }
+
+    if (x <= 0) {
+      return 0;
+    }
+    if (x >= levelWidth) {
+      return 0;
+    }
+
+    if (this.sonicManager.sonicToon.checkCollisionWithObjects(x, y, 'm1')) {
+      return x;
+    }
+
+    const tilePieceResult = this.sonicManager.sonicLevel.getTilePieceAt(x, y);
+    if (!tilePieceResult) return null;
+
+    const {
+      solidity,
+      collisionMap,
+      interTileX,
+      interTileY,
+      tileAngle,
+      tileLeftEdge,
+      tileRightEdge,
+      tileTopEdge,
+      tileBottomEdge
+    } = tilePieceResult;
+
+    if (solidity > minSolidity && collisionMap[interTileX + interTileY * 16]) {
+      switch (mode) {
+        case RotationMode.floor:
+          return side === 'left' ? tileRightEdge + 12 : tileLeftEdge - 13;
+        case RotationMode.rightWall:
+          return side === 'left' ? tileTopEdge - 13 : tileBottomEdge + 12;
+        case RotationMode.ceiling:
+          return side === 'left' ? tileLeftEdge - 13 : tileRightEdge + 12;
+        case RotationMode.leftWall:
+          return side === 'left' ? tileTopEdge + 12 : tileBottomEdge - 13;
+      }
+    }
+
+    return null;
   }
 }
 
@@ -59,7 +85,6 @@ export class Sensor {
     public x2: number,
     public y1: number,
     public y2: number,
-    public sensorManager: SensorManager,
     public color: string,
     public letter: SensorLetters
   ) {}
@@ -392,5 +417,49 @@ export class SensorResult {
   constructor(value: number, angle: number) {
     this.value = value;
     this.angle = angle;
+  }
+}
+
+export class OldSensorManager {
+  protected sensors: {[sensorKey: string]: Sensor};
+
+  sensorResults: {[sensorKey: string]: SensorResult};
+
+  constructor(private sonicManager: SonicManager) {
+    this.sensors = {};
+    this.sensorResults = {};
+  }
+
+  addSensor(letter: string, sensor: Sensor): Sensor {
+    this.sensors[letter] = sensor;
+    this.sensorResults[letter] = null;
+    return sensor;
+  }
+
+  createVerticalSensor(letter: SensorLetters, x: number, y1: number, y2: number, color: string): Sensor {
+    return this.addSensor(letter, new Sensor(this.sonicManager, x, x, y1, y2, color, letter));
+  }
+
+  createHorizontalSensor(letter: SensorLetters, y: number, x1: number, x2: number, color: string): Sensor {
+    return this.addSensor(letter, new Sensor(this.sonicManager, x1, x2, y, y, color, letter));
+  }
+
+  check(character: Sonic): boolean {
+    let none = false;
+    for (const sensorKey in this.sensors) {
+      this.sensorResults[sensorKey] = this.sensors[sensorKey].check(character);
+      none = none || this.sensorResults[sensorKey] != null;
+    }
+    return none;
+  }
+
+  getResult(mn: string): SensorResult {
+    return this.sensorResults[mn];
+  }
+
+  draw(canvas: CanvasRenderingContext2D, sonic: Sonic): void {
+    for (const sensor in this.sensors) {
+      this.sensors[sensor].draw(canvas, sonic, this.sensorResults[sensor]);
+    }
   }
 }
