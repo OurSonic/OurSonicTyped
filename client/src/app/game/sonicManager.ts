@@ -34,13 +34,16 @@ export class SonicManager {
   objectTickWindow: IntersectingRectangle;
   windowLocation: IntersectingRectangle;
   sonicToon: Sonic;
-  private ringCache: Ring;
+  ringCache: Ring;
   activeRings: Ring[];
   showHeightMap: boolean;
   inFocusObjects: LevelObjectInfo[];
   tilePaletteAnimationManager: TilePaletteAnimationManager;
   tileAnimationManager: TileAnimationManager;
-  protected loading: boolean;
+  loading: boolean;
+  inHaltMode = false;
+  waitingForTickContinue = false;
+  waitingForDrawContinue = false;
 
   constructor(private engine: SonicEngine, private resize: () => void) {
     SonicManager.instance = this;
@@ -151,16 +154,47 @@ export class SonicManager {
       return;
     }
     if (this.currentGameState === GameState.playing) {
+      if (this.inHaltMode) {
+        if (this.waitingForTickContinue) {
+          return;
+        }
+      }
+
       this.tickCount++;
       this.tickObjects();
       this.sonicToon.tick(this.sonicLevel);
+
+      if (this.inHaltMode) {
+        if (this.waitingForTickContinue) {
+          return;
+        } else {
+          this.waitingForTickContinue = true;
+          this.waitingForDrawContinue = false;
+        }
+      }
     }
   }
 
   mainDraw(): void {
-    if (this.sonicLevel === undefined) {
+    if (!this.sonicLevel) {
       return;
     }
+
+    if (this.currentGameState === GameState.playing) {
+      if (this.inHaltMode) {
+        this.engine.spriteCanvas.context.fillStyle = 'white';
+        this.engine.spriteCanvas.context.font = '11pt arial bold';
+        this.engine.spriteCanvas.context.textBaseline = 'top';
+        this.engine.spriteCanvas.context.fillText('HALT MODE- Press: P to step, O to resume', 5, 5);
+
+        if (this.waitingForDrawContinue) {
+          return;
+        } else {
+          this.waitingForDrawContinue = true;
+        }
+      }
+    }
+
     this.drawTickCount++;
     if ((this.engine.spriteLoader && !this.engine.spriteLoader.tick()) || this.loading) {
       SonicManager.drawLoading(this.engine.spriteCanvas.context);
@@ -194,17 +228,19 @@ export class SonicManager {
         _xP = Help.mod(_xP, this.sonicLevel.levelWidth);
         _yP = Help.mod(_yP, this.sonicLevel.levelHeight);
         const chunk = this.sonicLevel.getChunkAt(_xP, _yP);
-        if (chunk === null) {
+        if (!chunk) {
           continue;
         }
         const x = (_xPreal * 128 - this.windowLocation.x) | 0;
         const y = (_yPreal * 128 - this.windowLocation.y) | 0;
         if (this.showHeightMap) {
-          let fd = this.engine.spriteCache.HeightMapChunks[(this.sonicLevel.curHeightMap ? 1 : 2) + ' ' + chunk.index];
-          if (fd === null) {
-            fd = this.cacheHeightMapForChunk(chunk);
+          let heightMapChunk = this.engine.spriteCache.heightMapChunks[
+            (this.sonicLevel.curHeightMap ? 1 : 2) + ' ' + chunk.index
+          ];
+          if (!heightMapChunk) {
+            heightMapChunk = this.cacheHeightMapForChunk(chunk);
           }
-          this.engine.highTileCanvas.context.drawImage(fd.canvas, x, y);
+          this.engine.highTileCanvas.context.drawImage(heightMapChunk.canvas, x, y);
         }
         if (this.currentGameState === GameState.editing) {
           this.engine.highTileCanvas.context.strokeStyle = '#DD0033';
@@ -216,7 +252,8 @@ export class SonicManager {
   }
 
   resetCanvases(): void {
-    this.engine.spriteCanvas.context.clearRect(0, 0, 320, 224);
+    const spriteCanvas = this.engine.spriteCanvas;
+    spriteCanvas.context.clearRect(0, 0, spriteCanvas.canvas.width, spriteCanvas.canvas.height);
   }
 
   private static getOffs(w1: number, h1: number): Point[] {
@@ -275,7 +312,7 @@ export class SonicManager {
     lowBuffer.fill(0);
     highBuffer.fill(0);
     const drawOrders = TilePiece.drawOrder;
-    const palette_ = this.sonicLevel.palette;
+    const palette = this.sonicLevel.palette;
 
     const endX = windowX + 320 + 16 * 2;
     const endY = windowY + 224 + 16 * 2;
@@ -354,7 +391,7 @@ export class SonicManager {
         }
         const index = (iY * (320 + 16 * 2) + iX) | 0;
 
-        const value = palette_[colorPaletteIndex][colorIndex] | 0;
+        const value = palette[colorPaletteIndex][colorIndex] | 0;
 
         if (tileItem.priority === false) {
           lowBuffer[index] = value;
@@ -376,6 +413,7 @@ export class SonicManager {
 
     const lowBuffer = this.lowCacheBuffer;
     const highBuffer = this.highCacheBuffer;
+    const palette = this.sonicLevel.palette;
 
     lowBuffer.fill(0);
     highBuffer.fill(0);
@@ -433,7 +471,6 @@ export class SonicManager {
           continue;
         }
 
-        const palette_ = this.sonicLevel.palette;
         const colorPaletteIndex: number = tileItem.palette;
 
         const pixelX = repositionedX - (chunkX * 128 + tilePieceX * 16 + tileX * 8);
@@ -458,7 +495,7 @@ export class SonicManager {
         }
         const index = iY * (320 + 16 * 2) + iX;
 
-        const value = palette_[colorPaletteIndex][colorIndex];
+        const value = palette[colorPaletteIndex][colorIndex];
 
         if (tileItem.priority === false) {
           lowBuffer[index] = value;
@@ -476,22 +513,20 @@ export class SonicManager {
     const posj1 = new Point(0, 0);
     const canv = CanvasInformation.create(128, 128, false);
     const ctx = canv.context;
-    for (let _y = 0; _y < 8; _y++) {
-      for (let _x = 0; _x < 8; _x++) {
-        const tp = md.tilePieces[_x][_y];
+    for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < 8; x++) {
+        const tp = md.tilePieces[x][y];
         const solid = (this.sonicLevel.curHeightMap ? tp.solid1 : tp.solid2) as number;
         const hd = this.sonicLevel.curHeightMap ? tp.getLayer1HeightMaps() : tp.getLayer2HeightMaps();
-        const __x = _x;
-        const __y = _y;
         let vangle = 0;
         if (!hd) {
           continue;
         }
         vangle = this.sonicLevel.curHeightMap ? tp.getLayer1Angles() : tp.getLayer2Angles();
-        hd.draw(ctx, posj1.x + __x * 16, posj1.y + __y * 16, tp.xFlip, tp.yFlip, solid, vangle);
+        hd.draw(ctx, posj1.x + x * 16, posj1.y + y * 16, tp.xFlip, tp.yFlip, solid, vangle);
       }
     }
-    return (this.engine.spriteCache.HeightMapChunks[(this.sonicLevel.curHeightMap ? 1 : 2) + ' ' + md.index] = canv);
+    return (this.engine.spriteCache.heightMapChunks[(this.sonicLevel.curHeightMap ? 1 : 2) + ' ' + md.index] = canv);
   }
 
   private drawRings(context: CanvasRenderingContext2D): void {
@@ -734,7 +769,7 @@ export class SonicManager {
 
     for (let j: number = 0; j < slData.chunks.length; j++) {
       const fc = slData.chunks[j];
-      const mj = new TileChunk();
+      const mj = new TileChunk(this);
       mj.index = j;
       mj.tilePieces = new Array(8);
       for (let i: number = 0; i < 8; i++) {

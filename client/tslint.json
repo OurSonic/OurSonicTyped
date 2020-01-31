@@ -28,7 +28,6 @@
     "no-console": false,
     "interface-over-type-literal": false,
     "no-bitwise": false,
-    "variable-name": false,
     "array-type": false,
     "no-empty": false,
     "object-literal-sort-keys": false,

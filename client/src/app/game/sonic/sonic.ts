@@ -6,7 +6,7 @@ import {Ring} from '../level/ring';
 import {SonicEngine} from '../sonicEngine';
 import {SonicLevel} from '../sonicLevel';
 import {SonicManager} from '../sonicManager';
-import {SensorM, SensorManager} from './sensorManager';
+import {SensorResult, SensorManager} from './sensorManager';
 import {SonicConstants} from './sonicConstants';
 
 export class Sonic {
@@ -54,10 +54,10 @@ export class Sonic {
 
   constructor(private sonicManager: SonicManager) {
     this.watcher = new Watcher();
-    this.physicsVariables = SonicConstants.Sonic();
+    this.physicsVariables = SonicConstants.sonic();
     this.sonicLevel = sonicManager.sonicLevel;
-    this.x = this.sonicLevel.startPositions[0].x;
-    this.y = this.sonicLevel.startPositions[0].y;
+    this.x = 7925; // this.sonicLevel.startPositions[0].x;
+    this.y = 640; // this.sonicLevel.startPositions[0].y;
     this.sensorManager = new SensorManager(sonicManager);
     this.haltSmoke = [];
     this.rings = 7;
@@ -135,51 +135,43 @@ export class Sonic {
     if (best != null) {
       switch (this.mode) {
         case RotationMode.floor:
-          this.x =
-            best.value +
-            (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value
-              ? 12
-              : best.letter === 'm1'
-              ? 12
-              : -12);
+          if (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value) {
+            this.x = best.value;
+          } else {
+            this.x = best.value + (best.letter === 'm1' ? 12 : -12);
+          }
           this.gsp = 0;
           if (this.inAir) {
             this.xsp = 0;
           }
           break;
         case RotationMode.leftWall:
-          this.y =
-            best.value +
-            (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value
-              ? 12
-              : best.letter === 'm1'
-              ? 12
-              : -12);
+          if (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value) {
+            this.y = best.value + 12;
+          } else {
+            this.y = best.value + (best.letter === 'm1' ? 12 : -12);
+          }
           if (this.inAir) {
             this.xsp = 0;
           }
           break;
         case RotationMode.ceiling:
-          this.x =
-            best.value +
-            (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value
-              ? 12
-              : best.letter === 'm1'
-              ? -12
-              : 12);
+          if (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value) {
+            this.x = best.value + 12;
+          } else {
+            this.x = best.value + (best.letter === 'm1' ? -12 : 12);
+          }
           this.gsp = 0;
           if (this.inAir) {
             this.xsp = 0;
           }
           break;
         case RotationMode.rightWall:
-          this.y =
-            best.value +
-            (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value
-              ? 12
-              : best.letter === 'm1'
-              ? -12
-              : 12);
+          if (sensorM2 != null && sensorM1 != null && sensorM1.value === sensorM2.value) {
+            this.y = best.value + 12;
+          } else {
+            this.y = best.value + (best.letter === 'm1' ? -12 : 12);
+          }
           this.gsp = 0;
           if (this.inAir) {
             this.xsp = 0;
@@ -271,8 +263,8 @@ export class Sonic {
         }
       }
       this.updateMode();
-      const cur = SonicEngine.instance.spriteCache.SonicSprites[this.spriteState];
-      const __h = cur.height / 2;
+      const currentSonicSprite = SonicEngine.instance.spriteCache.sonicSprites[this.spriteState];
+      const halfHeight = currentSonicSprite.height / 2;
       this.sensorManager.check(this);
       const sensorC = this.sensorManager.getResult('c');
       const sensorD = this.sensorManager.getResult('d');
@@ -281,7 +273,7 @@ export class Sonic {
       } else {
         if (sensorD != null && sensorC != null && sensorC.value >= 0 && sensorD.value >= 0) {
           if (sensorC.value < sensorD.value) {
-            if (this.y + __h >= sensorC.value) {
+            if (this.y + halfHeight >= sensorC.value) {
               if (this.ysp < 0) {
                 if (sensorC.angle > 0x40 && sensorC.angle < 0xc0) {
                   this.angle = sensorC.angle;
@@ -291,11 +283,11 @@ export class Sonic {
                 } else {
                   this.ysp = 0;
                 }
-                this.y = fy = sensorC.value + __h;
+                this.y = fy = sensorC.value + halfHeight;
               }
             }
           } else {
-            if (this.y + __h >= sensorD.value) {
+            if (this.y + halfHeight >= sensorD.value) {
               if (this.ysp < 0) {
                 if (sensorD.angle > 0x40 && sensorD.angle < 0xc0) {
                   this.angle = sensorD.angle;
@@ -305,12 +297,12 @@ export class Sonic {
                 } else {
                   this.ysp = 0;
                 }
-                this.y = fy = sensorD.value + __h;
+                this.y = fy = sensorD.value + halfHeight;
               }
             }
           }
         } else if (sensorC != null && sensorC.value > -1) {
-          if (this.y + __h >= sensorC.value) {
+          if (this.y + halfHeight >= sensorC.value) {
             if (this.ysp < 0) {
               if (sensorC.angle > 0x40 && sensorC.angle < 0xc0) {
                 this.angle = sensorC.angle;
@@ -320,11 +312,11 @@ export class Sonic {
               } else {
                 this.ysp = 0;
               }
-              this.y = fy = sensorC.value + __h;
+              this.y = fy = sensorC.value + halfHeight;
             }
           }
         } else if (sensorD != null && sensorD.value > -1) {
-          if (this.y + __h >= sensorD.value) {
+          if (this.y + halfHeight >= sensorD.value) {
             if (this.ysp < 0) {
               if (sensorD.angle > 0x40 && sensorD.angle < 0xc0) {
                 this.angle = sensorD.angle;
@@ -334,7 +326,7 @@ export class Sonic {
               } else {
                 this.ysp = 0;
               }
-              this.y = fy = sensorD.value + __h;
+              this.y = fy = sensorD.value + halfHeight;
             }
           }
         }
@@ -343,7 +335,7 @@ export class Sonic {
     }
   }
 
-  private getBestSensor(sensor1: SensorM, sensor2: SensorM, mode: RotationMode): SensorM {
+  private getBestSensor(sensor1: SensorResult, sensor2: SensorResult, mode: RotationMode): SensorResult {
     if (sensor1 == null && sensor2 == null) {
       return null;
     }
@@ -385,7 +377,7 @@ export class Sonic {
   private offsetFromImage: Point = new Point(0, 0);
 
   private getOffsetFromImage(): Point {
-    const cur = SonicEngine.instance.spriteCache.SonicSprites[this.spriteState];
+    const cur = SonicEngine.instance.spriteCache.sonicSprites[this.spriteState];
     let xOffset = 0;
     let yOffset = 0;
     if (cur.height !== 40) {
@@ -718,7 +710,7 @@ export class Sonic {
     if (this.invulnerable()) {
       return;
     }
-    const cur = SonicEngine.instance.spriteCache.SonicSprites[this.spriteState];
+    const cur = SonicEngine.instance.spriteCache.sonicSprites[this.spriteState];
     if (cur == null) {
     }
     if (Help.isLoaded(cur)) {
@@ -767,7 +759,7 @@ export class Sonic {
         context.drawImage(cur, -cur.width / 2 + offsetX, -cur.height / 2);
         if (this.spinDash) {
           context.drawImage(
-            SonicEngine.instance.spriteCache.SonicSprites[
+            SonicEngine.instance.spriteCache.sonicSprites[
               'spinsmoke' + (((this.sonicManager.drawTickCount % 14) / 2) | 0)
             ],
             -cur.width / 2 - 19,
@@ -796,7 +788,7 @@ export class Sonic {
         context.drawImage(cur, -cur.width / 2 + offsetX, -cur.height / 2);
         if (this.spinDash) {
           context.drawImage(
-            SonicEngine.instance.spriteCache.SonicSprites[
+            SonicEngine.instance.spriteCache.sonicSprites[
               'spinsmoke' + (((this.sonicManager.drawTickCount % 14) / 2) | 0)
             ],
             -cur.width / 2 - 19,
@@ -813,7 +805,7 @@ export class Sonic {
       for (let i = 0; i < this.haltSmoke.length; i++) {
         const lo = this.haltSmoke[i];
         context.drawImage(
-          SonicEngine.instance.spriteCache.SonicSprites[
+          SonicEngine.instance.spriteCache.sonicSprites[
             'haltsmoke' + (((this.sonicManager.drawTickCount % (4 * 6)) / 6) | 0)
           ],
           lo.x - this.sonicManager.windowLocation.x - 15,
@@ -976,7 +968,7 @@ export class Sonic {
     }
   }
 
-  checkCollisionLine(p0: number, p1: number, p2: number, p3: number): SensorM {
+  checkCollisionLine(p0: number, p1: number, p2: number, p3: number): SensorResult {
     return null;
   }
 }

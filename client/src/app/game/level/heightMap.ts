@@ -68,7 +68,7 @@ export class HeightMap {
       y = -y - 16;
       canvas.scale(1, -1);
     }
-    const fd = SonicEngine.instance.spriteCache.HeightMaps[this.index + (solid << 20)];
+    const fd = SonicEngine.instance.spriteCache.heightMaps[this.index + (solid << 20)];
     if (this.index !== -1 && fd) {
       canvas.drawImage(fd.canvas, x, y);
     } else {
@@ -99,7 +99,7 @@ export class HeightMap {
           }
         }
       }
-      SonicEngine.instance.spriteCache.HeightMaps[this.index + (solid << 20)] = ntcanvas;
+      SonicEngine.instance.spriteCache.heightMaps[this.index + (solid << 20)] = ntcanvas;
       canvas.drawImage(ntcanvas.canvas, x, y);
     }
     canvas.restore();

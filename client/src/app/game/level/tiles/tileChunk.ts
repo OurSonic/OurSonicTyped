@@ -2,6 +2,7 @@ import {CanvasInformation} from '../../../common/canvasInformation';
 import {TileInfo} from './tileInfo';
 import {TilePiece} from './tilePiece';
 import {TilePieceInfo} from './tilePieceInfo';
+import {SonicManager} from '../../sonicManager';
 
 export class TileChunk {
   isOnlyBackground: boolean;
@@ -10,7 +11,7 @@ export class TileChunk {
   tilePieces: TilePieceInfo[][];
   index: number;
 
-  constructor() {}
+  constructor(private sonicManager: SonicManager) {}
 
   getTilePieceAt(x: number, y: number, large: boolean): TilePiece {
     return this.getTilePieceInfo(x, y, large).getTilePiece();
@@ -58,17 +59,15 @@ export class TileChunk {
     this.isEmpty = true;
   }
 
-  private eachPiece(): TilePiece[] {
-    const __result = [];
+  private *eachPiece() {
     for (let pieceY: number = 0; pieceY < 8; pieceY++) {
       for (let pieceX: number = 0; pieceX < 8; pieceX++) {
         const tilePiece: TilePiece = this.tilePieces[pieceX][pieceY].getTilePiece();
         if (tilePiece != null) {
-          __result.push(tilePiece);
+          yield tilePiece;
         }
       }
     }
-    return __result;
   }
 
   getImage(): CanvasInformation {

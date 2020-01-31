@@ -46,8 +46,8 @@ export class Ring extends Point {
       this.animationIndex = 0;
     }
     let sprites: CanvasInformation[] = null;
-    if (SonicEngine.instance.spriteCache.Rings) {
-      sprites = SonicEngine.instance.spriteCache.Rings;
+    if (SonicEngine.instance.spriteCache.rings) {
+      sprites = SonicEngine.instance.spriteCache.rings;
     } else {
       throw new Error('bad ring animation');
     }

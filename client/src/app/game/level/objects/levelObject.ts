@@ -1,4 +1,4 @@
-import {SensorM} from '../../sonic/sensorManager';
+import {SensorResult} from '../../sonic/sensorManager';
 import {Sonic} from '../../sonic/sonic';
 import {SonicLevel} from '../../sonicLevel';
 import {SonicManager} from '../../sonicManager';
@@ -10,7 +10,7 @@ import {LevelObjectProjectile} from './levelObjectProjectile';
 
 export class LevelObject {
   private cacheCompiled: {
-    [key: string]: (_: LevelObjectInfo, __: SonicLevel, ___: Sonic, ____: SensorM, _____: LevelObjectPiece) => boolean;
+    [key: string]: (_: LevelObjectInfo, __: SonicLevel, ___: Sonic, ____: SensorResult, _____: LevelObjectPiece) => boolean;
   } = {};
   private cacheLast: {[key: string]: string} = {};
   oldKey: string;
@@ -84,7 +84,7 @@ export class LevelObject {
 
   private evalMe(
     js: string
-  ): (_: LevelObjectInfo, __: SonicLevel, ___: Sonic, ____: SensorM, _____: LevelObjectPiece) => boolean {
+  ): (_: LevelObjectInfo, __: SonicLevel, ___: Sonic, ____: SensorResult, _____: LevelObjectPiece) => boolean {
     if (this.cacheLast[js] == null) {
       this.cacheLast[js] = null;
     }
@@ -97,7 +97,7 @@ export class LevelObject {
         _: LevelObjectInfo,
         __: SonicLevel,
         ___: Sonic,
-        ____: SensorM,
+        ____: SensorResult,
         _____: LevelObjectPiece
       ) => boolean;
     }

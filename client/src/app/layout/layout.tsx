@@ -130,11 +130,11 @@ export class Layout extends React.Component<Props, State> {
           >
             a
           </button>
-          <canvas id="bgLowTileLayer" width={320} height={224} className="game-canvas" />
-          <canvas id="bgHighTileLayer" width={320} height={224} className="game-canvas" />
-          <canvas id="lowTileLayer" width={320} height={224} className="game-canvas" />
-          <canvas id="spriteLayer" width={320} height={224} className="game-canvas" />
-          <canvas id="highTileLayer" width={320} height={224} className="game-canvas" />
+          <canvas id="bgLowTileLayer" className="game-canvas" />
+          <canvas id="bgHighTileLayer" className="game-canvas" />
+          <canvas id="lowTileLayer" className="game-canvas" />
+          <canvas id="spriteLayer" className="game-canvas" />
+          <canvas id="highTileLayer" className="game-canvas" />
 
           {this.state.showFullscreen && (
             <button

@@ -7,7 +7,7 @@ import {Sonic} from './sonic';
 export class SensorManager {
   protected sensors: {[sensorKey: string]: Sensor};
 
-  sensorResults: {[sensorKey: string]: SensorM};
+  sensorResults: {[sensorKey: string]: SensorResult};
 
   constructor(private sonicManager: SonicManager) {
     this.sensors = {};
@@ -20,24 +20,24 @@ export class SensorManager {
     return sensor;
   }
 
-  createVerticalSensor(letter: string, x: number, y1: number, y2: number, color: string): Sensor {
+  createVerticalSensor(letter: SensorLetters, x: number, y1: number, y2: number, color: string): Sensor {
     return this.addSensor(letter, new Sensor(this.sonicManager, x, x, y1, y2, this, color, letter));
   }
 
-  createHorizontalSensor(letter: string, y: number, x1: number, x2: number, color: string): Sensor {
+  createHorizontalSensor(letter: SensorLetters, y: number, x1: number, x2: number, color: string): Sensor {
     return this.addSensor(letter, new Sensor(this.sonicManager, x1, x2, y, y, this, color, letter));
   }
 
   check(character: Sonic): boolean {
     let none: boolean = false;
-    for (const i in this.sensors) {
-      this.sensorResults[i] = this.sensors[i].check(character);
-      none = none || this.sensorResults[i] != null;
+    for (const sensorKey in this.sensors) {
+      this.sensorResults[sensorKey] = this.sensors[sensorKey].check(character);
+      none = none || this.sensorResults[sensorKey] != null;
     }
     return none;
   }
 
-  getResult(mn: string): SensorM {
+  getResult(mn: string): SensorResult {
     return this.sensorResults[mn];
   }
 
@@ -48,34 +48,21 @@ export class SensorManager {
   }
 }
 
+type SensorLetters = 'a' | 'b' | 'c' | 'd' | 'm1' | 'm2';
+
 export class Sensor {
-  private cachedReturnSensor: SensorM = new SensorM(0, 0);
-  letter: string;
-  protected color: string;
-  protected manager: SensorManager;
-  protected x1: number = 0;
-  protected x2: number = 0;
-  protected y1: number = 0;
-  protected y2: number = 0;
+  private cachedSensorResult: SensorResult = new SensorResult(0, 0);
 
   constructor(
     private sonicManager: SonicManager,
-    x1: number,
-    x2: number,
-    y1: number,
-    y2: number,
-    manager: SensorManager,
-    color: string,
-    letter: string
-  ) {
-    this.x1 = x1;
-    this.x2 = x2;
-    this.y1 = y1;
-    this.y2 = y2;
-    this.manager = manager;
-    this.color = color;
-    this.letter = letter;
-  }
+    public x1: number,
+    public x2: number,
+    public y1: number,
+    public y2: number,
+    public sensorManager: SensorManager,
+    public color: string,
+    public letter: SensorLetters
+  ) {}
 
   private checkCollisionLineWrap(
     startX: number,
@@ -83,7 +70,7 @@ export class Sensor {
     startY: number,
     endY: number,
     allowTopSolid: boolean
-  ): SensorM {
+  ): SensorResult {
     const xIncrease = startX === endX ? 0 : startX > endX ? -1 : 1;
     const yIncrease = startY === endY ? 0 : startY > endY ? -1 : 1;
 
@@ -98,16 +85,16 @@ export class Sensor {
     for (let testX = startX; oneTryX || Math.abs(testX - endX) !== 0; testX += xIncrease) {
       oneTryX = false;
       if (testX === 0) {
-        this.cachedReturnSensor.value = 0;
-        this.cachedReturnSensor.angle = 0;
-        this.cachedReturnSensor.solidity = Solidity.AllSolid;
-        return this.cachedReturnSensor;
+        this.cachedSensorResult.value = 0;
+        this.cachedSensorResult.angle = 0;
+        this.cachedSensorResult.solidity = Solidity.AllSolid;
+        return this.cachedSensorResult;
       }
       if (testX === levelWidth) {
-        this.cachedReturnSensor.value = 0;
-        this.cachedReturnSensor.angle = 0;
-        this.cachedReturnSensor.solidity = Solidity.AllSolid;
-        return this.cachedReturnSensor;
+        this.cachedSensorResult.value = 0;
+        this.cachedSensorResult.angle = 0;
+        this.cachedSensorResult.solidity = Solidity.AllSolid;
+        return this.cachedSensorResult;
       }
 
       let oneTryY = startY === endY;
@@ -181,18 +168,18 @@ export class Sensor {
           (solidity > minSolidity && collisionMap[interTileX + interTileY * 16]) ||
           this.sonicManager.sonicToon.checkCollisionWithObjects(testX, testY, this.letter)
         ) {
-          this.cachedReturnSensor.value = startY === endY ? testX : testY;
-          this.cachedReturnSensor.angle = tileAngle;
-          this.cachedReturnSensor.solidity = solidity;
+          this.cachedSensorResult.value = startY === endY ? testX : testY;
+          this.cachedSensorResult.angle = tileAngle;
+          this.cachedSensorResult.solidity = solidity;
 
-          return this.cachedReturnSensor;
+          return this.cachedSensorResult;
         }
       }
     }
     return null;
   }
 
-  draw(canvas: CanvasRenderingContext2D, character: Sonic, sensorResult: SensorM): void {
+  draw(canvas: CanvasRenderingContext2D, character: Sonic, sensorResult: SensorResult): void {
     const x = Help.floor(character.x) - this.sonicManager.windowLocation.x;
     const y = Help.floor(character.y) - this.sonicManager.windowLocation.y;
     canvas.beginPath();
@@ -225,12 +212,18 @@ export class Sensor {
     canvas.stroke();
   }
 
-  check(sonic: Sonic): SensorM {
+  check(sonic: Sonic): SensorResult {
     const _y2 = sonic.inAir ? this.y2 : this.y2;
-    let sensor: SensorM = null;
+    let sensor: SensorResult = null;
     const x = Help.floor(sonic.x);
     const y = Help.floor(sonic.y);
     let allowTopSolid = true;
+
+    if (this.letter === 'm2') {
+      if (SonicManager.instance.inHaltMode) {
+        debugger;
+      }
+    }
 
     switch (sonic.mode) {
       case RotationMode.floor:
@@ -345,7 +338,7 @@ export class Sensor {
   }
 }
 
-export class SensorM {
+export class SensorResult {
   value: number = 0;
   angle: number = 0;
   letter: string;

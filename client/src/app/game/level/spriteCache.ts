@@ -1,31 +1,31 @@
 import {CanvasInformation} from '../../common/canvasInformation';
 
 export class SpriteCache {
-  Rings: CanvasInformation[];
-  HeightMaps: CanvasInformation[];
-  SonicSprites: {[key: string]: HTMLImageElement};
-  HeightMapChunks: {[key: string]: CanvasInformation};
-  Indexes: SpriteCacheIndexes;
+  rings: CanvasInformation[];
+  heightMaps: CanvasInformation[];
+  sonicSprites: {[key: string]: HTMLImageElement};
+  heightMapChunks: {[key: string]: CanvasInformation};
+  indexes: SpriteCacheIndexes;
   constructor() {
-    this.Rings = [];
-    this.SonicSprites = {};
-    this.HeightMaps = [];
-    this.HeightMapChunks = {};
-    this.Indexes = new SpriteCacheIndexes();
+    this.rings = [];
+    this.sonicSprites = {};
+    this.heightMaps = [];
+    this.heightMapChunks = {};
+    this.indexes = new SpriteCacheIndexes();
   }
-  ClearCache(): void {
-    this.HeightMaps = [];
-    this.HeightMapChunks = {};
+  clearCache(): void {
+    this.heightMaps = [];
+    this.heightMapChunks = {};
   }
 }
 export class SpriteCacheIndexes {
-  Sprites: number = 0;
-  Tps: number = 0;
-  Tcs: number = 0;
-  Ss: number = 0;
-  Hms: number = 0;
-  Hmc: number = 0;
-  Tls: number = 0;
-  Px: number = 0;
-  Aes: number = 0;
+  sprites: number = 0;
+  tps: number = 0;
+  tcs: number = 0;
+  ss: number = 0;
+  hms: number = 0;
+  hmc: number = 0;
+  tls: number = 0;
+  px: number = 0;
+  aes: number = 0;
 }

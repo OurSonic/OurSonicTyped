@@ -22,34 +22,36 @@ export class SonicEngine {
   constructor() {
     SonicEngine.instance = this;
 
+    const canvasWidth = 320;
+    const canvasHeight = 224;
     this.bgLowTileCanvas = CanvasInformation.createFromElement(
       document.getElementById('bgLowTileLayer') as HTMLCanvasElement,
-      320,
-      224,
+      canvasWidth,
+      canvasHeight,
       true
     );
     this.bgHighTileCanvas = CanvasInformation.createFromElement(
       document.getElementById('bgHighTileLayer') as HTMLCanvasElement,
-      320,
-      224,
+      canvasWidth,
+      canvasHeight,
       true
     );
     this.lowTileCanvas = CanvasInformation.createFromElement(
       document.getElementById('lowTileLayer') as HTMLCanvasElement,
-      320,
-      224,
+      canvasWidth,
+      canvasHeight,
       true
     );
     this.spriteCanvas = CanvasInformation.createFromElement(
       document.getElementById('spriteLayer') as HTMLCanvasElement,
-      320,
-      224,
+      canvasWidth,
+      canvasHeight,
       true
     );
     this.highTileCanvas = CanvasInformation.createFromElement(
       document.getElementById('highTileLayer') as HTMLCanvasElement,
-      320,
-      224,
+      canvasWidth,
+      canvasHeight,
       true
     );
 
@@ -57,7 +59,7 @@ export class SonicEngine {
     window.addEventListener('resize', e => this.resizeCanvas());
     this.sonicManager = new SonicManager(this, () => this.resizeCanvas());
 
-    window.requestAnimationFrame(this.tick.bind(this));
+    window.requestAnimationFrame(this.tick);
 
     this.resizeCanvas();
   }
@@ -67,34 +69,33 @@ export class SonicEngine {
   spriteLoader: SpriteLoader;
 
   preloadSprites(completed: () => void, update: (_: string) => void): void {
-    if (this.spriteCache != null) {
+    if (this.spriteCache) {
       completed();
       return;
     }
 
     this.sonicSprites = sonicJson;
 
-    this.spriteCache = this.spriteCache != null ? this.spriteCache : new SpriteCache();
-    const ci = this.spriteCache.Rings;
+    this.spriteCache = new SpriteCache();
     const spriteLocations: string[] = [];
     for (let j: number = 0; j < 4; j++) {
       spriteLocations.push(`assets/sprites/ring${j}.png`);
     }
-    const ind_ = this.spriteCache.Indexes;
+    const spriteCacheIndexes = this.spriteCache.indexes;
     this.spriteLoader = new SpriteLoader(completed, update);
-    if (ci.length === 0) {
+    if (this.spriteCache.rings.length === 0) {
       const spriteStep = this.spriteLoader.addStep(
         'Sprites',
         (i, done) => {
           Help.loadSprite(spriteLocations[i], jd => {
-            ci[i] = CanvasInformation.create(jd.width, jd.height, false);
-            ci[i].context.drawImage(jd, 0, 0);
+            this.spriteCache.rings[i] = CanvasInformation.create(jd.width, jd.height, false);
+            this.spriteCache.rings[i].context.drawImage(jd, 0, 0);
             done();
           });
         },
         () => {
-          ind_.Sprites++;
-          if (ind_.Sprites === 4) {
+          spriteCacheIndexes.sprites++;
+          if (spriteCacheIndexes.sprites === 4) {
             return true;
           }
           return false;
@@ -105,14 +106,17 @@ export class SonicEngine {
         this.spriteLoader.addIterationToStep(spriteStep, i);
       }
     }
-    const sonicSprites = this.spriteCache.SonicSprites;
 
-    if (Object.keys(sonicSprites).length === 0) {
+    if (Object.keys(this.spriteCache.sonicSprites).length === 0) {
       const sonicStep = this.spriteLoader.addStep(
         'Sonic Sprites',
         (sp, done) => {
           for (const sonicSprite in this.sonicSprites) {
-            sonicSprites[sonicSprite] = Help.scaleCsImage(this.sonicSprites[sonicSprite], new Point(1, 1), ec => {});
+            this.spriteCache.sonicSprites[sonicSprite] = Help.scaleCsImage(
+              this.sonicSprites[sonicSprite],
+              new Point(1, 1),
+              ec => {}
+            );
           }
           done();
         },
@@ -125,8 +129,8 @@ export class SonicEngine {
 
   private loadAssets() {}
 
-  private tick(): void {
-    window.requestAnimationFrame(this.tick.bind(this));
+  private tick = (): void => {
+    window.requestAnimationFrame(this.tick);
     try {
       const t0 = performance.now();
       this.sonicManager.tick();
@@ -134,12 +138,12 @@ export class SonicEngine {
       this.sonicManager.mainDraw();
       const t2 = performance.now();
       if (t1 - t0 + (t2 - t1) > 16) {
-        console.error('tick:', (t1 - t0).toFixed(1), 'draw:', (t2 - t1).toFixed(1));
+        // console.error('tick:', (t1 - t0).toFixed(1), 'draw:', (t2 - t1).toFixed(1));
       }
     } catch (ex) {
       console.error(ex);
     }
-  }
+  };
 
   private bindInput(): void {
     this.highTileCanvas.canvas.onmousedown = e => this.canvasOnClick(e);
@@ -149,6 +153,29 @@ export class SonicEngine {
 
     // (<any>keyboardJS).watch(document.getElementById('canvasBox'));
     keyboardJS.bind('f', () => (this.sonicManager.showHeightMap = !this.sonicManager.showHeightMap));
+    keyboardJS.bind('e', () => {
+      if (this.sonicManager.currentGameState === GameState.playing) {
+        this.sonicManager.sonicToon.gsp = 20;
+      }
+    });
+
+    keyboardJS.bind(
+      'o',
+      () => {
+        if (this.sonicManager.sonicToon) this.sonicManager.inHaltMode = !this.sonicManager.inHaltMode;
+      },
+      () => {}
+    );
+    keyboardJS.bind(
+      'p',
+      () => {
+        if (this.sonicManager.sonicToon)
+          if (this.sonicManager.inHaltMode) {
+            this.sonicManager.waitingForTickContinue = false;
+          }
+      },
+      () => {}
+    );
 
     keyboardJS.bind('q', () => this.runGame());
 
@@ -299,7 +326,7 @@ export class SonicEngine {
 
   private clearCache() {
     if (this.spriteCache != null) {
-      this.spriteCache.ClearCache();
+      this.spriteCache.clearCache();
     }
   }
 
