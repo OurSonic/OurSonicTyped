@@ -15,6 +15,10 @@ export class SensorManager {
       minSolidity = 1;
     }
 
+    if ((mode as any) !== RotationMode.floor) {
+      return null;
+    }
+
     const levelWidth = this.sonicManager.sonicLevel.levelWidth * 128;
     switch (mode) {
       case RotationMode.floor:
@@ -36,10 +40,6 @@ export class SensorManager {
     }
     if (x >= levelWidth) {
       return 0;
-    }
-
-    if (this.sonicManager.sonicToon.checkCollisionWithObjects(x, y, 'm1')) {
-      return x;
     }
 
     const tilePieceResult = this.sonicManager.sonicLevel.getTilePieceAt(x, y);
@@ -67,6 +67,121 @@ export class SensorManager {
           return side === 'left' ? tileLeftEdge - 13 : tileRightEdge + 12;
         case RotationMode.leftWall:
           return side === 'left' ? tileTopEdge + 12 : tileBottomEdge - 13;
+      }
+    }
+
+    return null;
+  }
+
+  getFloor(side: 'left' | 'right', x: number, y: number, mode: RotationMode, doubleCheck = false): SensorResult {
+    const allowTopSolid = true; /*todo*/
+
+    let minSolidity = 0;
+    if (!allowTopSolid) {
+      minSolidity = 1;
+    }
+
+    const bodyWidthRadius = 9;
+    const bodyWidthRadiusRight = 10;
+    const bodyHeightRadius = 19;
+
+    let testX = x;
+    let testY = y;
+
+    let extensionX = 0;
+    let extensionY = 0;
+
+    switch (mode) {
+      case RotationMode.floor:
+        testX += side === 'left' ? -bodyWidthRadius : bodyWidthRadiusRight;
+        testY += bodyHeightRadius;
+        extensionX = 0;
+        extensionY = 16;
+        break;
+      case RotationMode.rightWall:
+        testX += bodyHeightRadius;
+        testY += side === 'left' ? bodyWidthRadiusRight : -bodyWidthRadius;
+        extensionX = 16;
+        extensionY = 0;
+        break;
+      case RotationMode.ceiling:
+        testX += side === 'left' ? bodyWidthRadiusRight : -bodyWidthRadius;
+        testY -= bodyHeightRadius;
+        extensionX = 0;
+        extensionY = -16;
+        break;
+      case RotationMode.leftWall:
+        testX -= bodyHeightRadius;
+        testY += side === 'left' ? -bodyWidthRadius : bodyWidthRadiusRight;
+        extensionX = -16;
+        extensionY = 0;
+        break;
+    }
+
+    const tilePieceResult = this.sonicManager.sonicLevel.getTilePieceAt(testX, testY);
+    if (!tilePieceResult) return null;
+
+    const {
+      solidity,
+      collisionMap,
+      interTileX,
+      interTileY,
+      tileAngle,
+      tileLeftEdge,
+      tileRightEdge,
+      tileTopEdge,
+      tileBottomEdge,
+      heightMapValues
+    } = tilePieceResult;
+
+    if (solidity === Solidity.NotSolid && !doubleCheck) {
+      console.log('extend', side);
+      const floor = this.getFloor(side, x + extensionX, y + extensionY, mode, true);
+      if (floor) return floor;
+    }
+
+    if (solidity === Solidity.AllSolid && !doubleCheck) {
+      console.log('regress', side);
+      const floor = this.getFloor(side, x - extensionX, y - extensionY, mode, true);
+      if (floor) return floor;
+    }
+
+    console.log(side, heightMapValues[interTileX], solidity, minSolidity);
+    if (solidity > minSolidity) {
+      switch (mode) {
+        case RotationMode.floor:
+          return {
+            solidity,
+            letter: side === 'left' ? 'a' : 'b',
+            chosen: false,
+            angle: tileAngle,
+            value: tileBottomEdge - heightMapValues[interTileX] - bodyHeightRadius
+          };
+        case RotationMode.rightWall:
+          debugger;
+          return {
+            solidity,
+            letter: side === 'left' ? 'a' : 'b',
+            chosen: false,
+            angle: tileAngle,
+            value: tileRightEdge - heightMapValues[interTileX] - bodyHeightRadius
+          };
+        case RotationMode.ceiling:
+          return {
+            solidity,
+            letter: side === 'left' ? 'a' : 'b',
+            chosen: false,
+            angle: tileAngle,
+            value: tileTopEdge + heightMapValues[interTileX] + bodyHeightRadius
+          };
+        case RotationMode.leftWall:
+          return {
+            solidity,
+            letter: side === 'left' ? 'a' : 'b',
+            chosen: false,
+            angle: tileAngle,
+            value: tileLeftEdge + heightMapValues[interTileX] + bodyHeightRadius
+          };
       }
     }
 
@@ -157,20 +272,18 @@ export class Sensor {
           ? tilePiece.getLayer1Angle()
           : tilePiece.getLayer2Angle();
 
-        if (!(tileAngle === 0 || tileAngle === 255 || tileAngle === 1)) {
-          if (tilePieceInfo.xFlip) {
-            if (tilePieceInfo.yFlip) {
-              tileAngle = 192 - tileAngle + 192;
-              tileAngle = 128 - tileAngle + 128;
-            } else {
-              tileAngle = 128 - tileAngle + 128;
-            }
+        if (tilePieceInfo.xFlip) {
+          if (tilePieceInfo.yFlip) {
+            tileAngle = 192 - tileAngle + 192;
+            tileAngle = 128 - tileAngle + 128;
           } else {
-            if (tilePieceInfo.yFlip) {
-              tileAngle = 192 - tileAngle + 192;
-            } else {
-              tileAngle = tileAngle;
-            }
+            tileAngle = 128 - tileAngle + 128;
+          }
+        } else {
+          if (tilePieceInfo.yFlip) {
+            tileAngle = 192 - tileAngle + 192;
+          } else {
+            tileAngle = tileAngle;
           }
         }
 
@@ -189,10 +302,7 @@ export class Sensor {
           }
         }
 
-        if (
-          (solidity > minSolidity && collisionMap[interTileX + interTileY * 16]) ||
-          this.sonicManager.sonicToon.checkCollisionWithObjects(testX, testY, this.letter)
-        ) {
+        if (solidity > minSolidity && collisionMap[interTileX + interTileY * 16]) {
           this.cachedSensorResult.value = startY === endY ? testX : testY;
           this.cachedSensorResult.angle = tileAngle;
           this.cachedSensorResult.solidity = solidity;
@@ -221,12 +331,6 @@ export class Sensor {
       this.cachedSensorResult.value = 0;
       this.cachedSensorResult.angle = 0;
       this.cachedSensorResult.solidity = Solidity.AllSolid;
-      return this.cachedSensorResult;
-    }
-
-    if (this.sonicManager.sonicToon.checkCollisionWithObjects(x, y, this.letter)) {
-      this.cachedSensorResult.value = x;
-
       return this.cachedSensorResult;
     }
 
@@ -285,12 +389,6 @@ export class Sensor {
     const x = Help.floor(sonic.x);
     const y = Help.floor(sonic.y);
     let allowTopSolid = true;
-
-    if (this.letter === 'm2') {
-      if (SonicManager.instance.inHaltMode) {
-        debugger;
-      }
-    }
 
     switch (sonic.mode) {
       case RotationMode.floor:
@@ -369,6 +467,7 @@ export class Sensor {
     }
     if (sensor != null) {
       sensor.letter = this.letter;
+      /*
       if (sensor.angle === 255 || sensor.angle === 0 || sensor.angle === 1) {
         switch (sonic.mode) {
           case RotationMode.floor:
@@ -385,6 +484,7 @@ export class Sensor {
             break;
         }
       }
+*/
 
       if (sonic.mode === RotationMode.floor) {
         switch (this.letter) {

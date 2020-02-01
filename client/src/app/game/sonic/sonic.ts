@@ -76,13 +76,13 @@ export class Sonic {
   }
 
   updateMode(): void {
-    if (this.angle <= 0x22 || this.angle >= 0xde) {
+    if (this.angle <= 0x22 || this.angle >= 0xe0) {
       this.mode = RotationMode.floor;
     } else if (this.angle > 0x22 && this.angle < 0x59) {
       this.mode = RotationMode.leftWall;
     } else if (this.angle >= 0x59 && this.angle < 0xa1) {
       this.mode = RotationMode.ceiling;
-    } else if (this.angle > 0xa1 && this.angle < 0xde) {
+    } else if (this.angle > 0xa1 && this.angle < 0xe0) {
       this.mode = RotationMode.rightWall;
     }
     this.myRec.x = (this.x - 10) | 0;
@@ -115,6 +115,9 @@ export class Sonic {
       return;
     }
     this.updateMode();
+    if (this.inAir) {
+      console.log('air');
+    }
     if (this.hLock > 0) {
       this.hLock--;
       this.holdingRight = false;
@@ -166,38 +169,38 @@ export class Sonic {
           break;
       }
     }
-    this.oldSensorManager.check(this);
-    let sensorA = this.oldSensorManager.getResult('a');
-    let sensorB = this.oldSensorManager.getResult('b');
-    let fy: number;
-    let fx: number;
-    const hSize = this.getHalfImageSize();
+
+    let sensorA = this.sensorManager.getFloor('left', this.x, this.y, this.mode, this.inAir);
+    let sensorB = this.sensorManager.getFloor('right', this.x, this.y, this.mode, this.inAir);
     if (!this.inAir) {
       const best = this.getBestSensor(sensorA, sensorB, this.mode);
       if (best === null) {
+        console.log('air');
         this.inAir = true;
       } else {
+        console.log(best.letter);
+
         this.justHit = false;
         switch (this.mode) {
           case RotationMode.floor:
             best.chosen = true;
             this.angle = best.angle;
-            this.y = fy = best.value - hSize.y;
+            this.y = best.value;
             break;
           case RotationMode.leftWall:
             best.chosen = true;
             this.angle = best.angle;
-            this.x = fx = best.value + hSize.x;
+            this.x = best.value;
             break;
           case RotationMode.ceiling:
             best.chosen = true;
             this.angle = best.angle;
-            this.y = fy = best.value + hSize.y;
+            this.y = best.value;
             break;
           case RotationMode.rightWall:
             best.chosen = true;
             this.angle = best.angle;
-            this.x = fx = best.value - hSize.x;
+            this.x = best.value;
             break;
         }
       }
@@ -219,7 +222,7 @@ export class Sonic {
           if (sensorA.value < sensorB.value) {
             if (this.y + 20 >= sensorA.value) {
               this.angle = sensorA.angle;
-              this.y = fy = sensorA.value - hSize.y;
+              this.y = sensorA.value;
               this.rolling = this.currentlyBall = false;
               this.inAir = false;
             }
@@ -227,7 +230,7 @@ export class Sonic {
             if (sensorB.value > -1) {
               if (this.y + 20 >= sensorB.value) {
                 this.angle = sensorB.angle;
-                this.y = fy = sensorB.value - hSize.y;
+                this.y = sensorB.value;
                 this.rolling = this.currentlyBall = false;
                 this.inAir = false;
               }
@@ -236,14 +239,14 @@ export class Sonic {
         } else if (sensorA != null && sensorA.value > -1) {
           if (this.y + 20 >= sensorA.value) {
             this.angle = sensorA.angle;
-            this.y = fy = sensorA.value - hSize.y;
+            this.y = sensorA.value;
             this.rolling = this.currentlyBall = false;
             this.inAir = false;
           }
         } else if (sensorB != null && sensorB.value > -1) {
           if (this.y + 20 >= sensorB.value) {
             this.angle = sensorB.angle;
-            this.y = fy = sensorB.value - hSize.y;
+            this.y = sensorB.value;
             this.rolling = this.currentlyBall = false;
             this.inAir = false;
           }
@@ -270,7 +273,7 @@ export class Sonic {
                 } else {
                   this.ysp = 0;
                 }
-                this.y = fy = sensorC.value + halfHeight;
+                this.y = sensorC.value + halfHeight;
               }
             }
           } else {
@@ -284,7 +287,7 @@ export class Sonic {
                 } else {
                   this.ysp = 0;
                 }
-                this.y = fy = sensorD.value + halfHeight;
+                this.y = sensorD.value + halfHeight;
               }
             }
           }
@@ -299,7 +302,7 @@ export class Sonic {
               } else {
                 this.ysp = 0;
               }
-              this.y = fy = sensorC.value + halfHeight;
+              this.y = sensorC.value + halfHeight;
             }
           }
         } else if (sensorD != null && sensorD.value > -1) {
@@ -313,7 +316,7 @@ export class Sonic {
               } else {
                 this.ysp = 0;
               }
-              this.y = fy = sensorD.value + halfHeight;
+              this.y = sensorD.value + halfHeight;
             }
           }
         }
@@ -323,13 +326,13 @@ export class Sonic {
   }
 
   private getBestSensor(sensor1: SensorResult, sensor2: SensorResult, mode: RotationMode): SensorResult {
-    if (sensor1 == null && sensor2 == null) {
+    if (sensor1 === null && sensor2 === null) {
       return null;
     }
-    if (sensor1 == null) {
+    if (sensor1 === null) {
       return sensor2;
     }
-    if (sensor2 == null) {
+    if (sensor2 === null) {
       return sensor1;
     }
     switch (mode) {

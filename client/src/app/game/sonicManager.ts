@@ -2,7 +2,7 @@ import {CanvasInformation} from '../common/canvasInformation';
 import {GameState} from '../common/enums';
 import {Help} from '../common/help';
 import {IntersectingRectangle, Point, Rectangle} from '../common/utils';
-import {SlData} from '../slData';
+import {SlData, Solidity} from '../slData';
 import {TileAnimationData, TileAnimationDataFrame} from './level/animations/tileAnimationData';
 import {HeightMap} from './level/heightMap';
 import {LevelObject} from './level/objects/levelObject';
@@ -20,6 +20,7 @@ import {TilePieceInfo} from './level/tiles/tilePieceInfo';
 import {Sonic} from './sonic/sonic';
 import {SonicEngine} from './sonicEngine';
 import {PaletteItem, PaletteItemPieces, SonicLevel} from './sonicLevel';
+import {PositionTestSonic} from './sonic/positionTestSonic';
 
 export class SonicManager {
   static instance: SonicManager;
@@ -209,9 +210,24 @@ export class SonicManager {
 
     this.drawObjects(this.engine.spriteCanvas.context);
     this.drawRings(this.engine.spriteCanvas.context);
+    this.foreachTopOfVisibleTilePiece(
+      this.windowLocation.x,
+      this.windowLocation.y,
+      (x, y, tpx, tpy, piece, pieceInfo) => {
+        const positionTestSonic = new PositionTestSonic(this);
+        positionTestSonic.x = x;
+        positionTestSonic.y = y;
+        positionTestSonic.tick();
+        this.engine.spriteCanvas.context.save();
+        this.engine.spriteCanvas.context.globalAlpha = 0.55;
+        positionTestSonic.draw(this.engine.spriteCanvas.context);
+        this.engine.spriteCanvas.context.restore();
+      }
+    );
     if (this.currentGameState === GameState.playing) {
       this.sonicToon.draw(this.engine.spriteCanvas.context);
     }
+    const fakeSonics: PositionTestSonic[] = [];
 
     if (this.showHeightMap || this.currentGameState === GameState.editing) {
       const w1: number = ((this.windowLocation.width / 128) | 0) + 2;
@@ -402,6 +418,99 @@ export class SonicManager {
     }
     this.engine.lowTileCanvas.context.putImageData(this.lowCacheImageData, -17, -17);
     this.engine.highTileCanvas.context.putImageData(this.highCacheImageData, -17, -17);
+  }
+
+  private foreachTopOfVisibleTilePiece(
+    windowX: number,
+    windowY: number,
+    callback: (x: number, y: number, tpx: number, tpy: number, piece: TilePiece, pieceInfo: TilePieceInfo) => void
+  ): void {
+    const levelWidthPixels = this.sonicLevel.levelWidth * 128;
+    const levelHeightPixels = this.sonicLevel.levelHeight * 128;
+
+    windowX = Help.mod(windowX - 16, levelWidthPixels);
+    windowY = Help.mod(windowY - 16, levelHeightPixels);
+
+    const endX = windowX + 320 + 16 * 2;
+    const endY = windowY + 224 + 16 * 2;
+
+    for (let x = windowX; x < endX; x++) {
+      const repositionedX = Help.mod(x, levelWidthPixels);
+      for (let y = windowY; y < endY; y++) {
+        const repositionedY = Help.mod(y, levelHeightPixels);
+
+        const chunkX = (repositionedX / 128) | 0;
+        const chunkY = (repositionedY / 128) | 0;
+
+        const chunk = this.sonicLevel.getChunkAt(chunkX, chunkY);
+        if (chunk === undefined) {
+          continue;
+        }
+        if (chunk.isEmpty === true) {
+          continue;
+        }
+
+        const tilePieceX = ((repositionedX / 16) | 0) - chunkX * 8;
+        const tilePieceY = ((repositionedY / 16) | 0) - chunkY * 8;
+
+        const pieceInfoX = chunk.tilePieces[tilePieceX];
+        if (pieceInfoX === undefined) {
+          continue;
+        }
+        const pieceInfo = pieceInfoX[tilePieceY];
+        if (pieceInfo === undefined) {
+          continue;
+        }
+        const piece = pieceInfo.getTilePiece();
+        if (piece === undefined) {
+          continue;
+        }
+        const tileX = ((repositionedX / 8) | 0) - chunkX * 16 - tilePieceX * 2;
+        const tileY = ((repositionedY / 8) | 0) - chunkY * 16 - tilePieceY * 2;
+
+        const pixelX = repositionedX - (chunkX * 128 + tilePieceX * 16 + tileX * 8);
+        const pixelY = repositionedY - (chunkY * 128 + tilePieceY * 16 + tileY * 8);
+
+        const tpX = tileX * 8 + pixelX;
+        const tpY = tileY * 8 + pixelY;
+
+        const angle = this.sonicLevel.curHeightMap ? piece.getLayer1Angle() : piece.getLayer2Angle();
+
+        if (this.sonicLevel.curHeightMap) {
+          if (pieceInfo.solid1 === Solidity.NotSolid) {
+            continue;
+          }
+        } else {
+          if (pieceInfo.solid2 === Solidity.NotSolid) {
+            continue;
+          }
+        }
+        if (angle === 0 || angle === 255 || angle === 1) continue;
+        const direction = Math.round(angle / 63) % 4;
+        switch (direction) {
+          case 0:
+            if (tpY === 0 && tpX % 4 === 0) {
+              callback(repositionedX, repositionedY, tpX, tpY, piece, pieceInfo);
+            }
+            break;
+          case 1:
+            if (tpX === 15 && tpY % 4 === 0) {
+              callback(repositionedX, repositionedY, tpX, tpY, piece, pieceInfo);
+            }
+            break;
+          case 2:
+            if (tpY === 15 && tpX % 4 === 0) {
+              callback(repositionedX, repositionedY, tpX, tpY, piece, pieceInfo);
+            }
+            break;
+          case 3:
+            if (tpX === 0 && tpY % 4 === 0) {
+              callback(repositionedX, repositionedY, tpX, tpY, piece, pieceInfo);
+            }
+            break;
+        }
+      }
+    }
   }
 
   private drawBackChunksPixel(windowX: number, windowY: number): void {

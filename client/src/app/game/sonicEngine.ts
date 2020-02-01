@@ -179,6 +179,10 @@ export class SonicEngine {
 
     keyboardJS.bind('q', () => this.runGame());
 
+    keyboardJS.bind('e', () => {
+      this.sonicManager.sonicLevel.curHeightMap = !this.sonicManager.sonicLevel.curHeightMap;
+    });
+
     keyboardJS.bind('c', () => {
       if (this.sonicManager.currentGameState === GameState.playing) {
         this.sonicManager.sonicToon.debug();
@@ -297,9 +301,6 @@ export class SonicEngine {
         }
       }
     );
-    keyboardJS.bind('e', () => {
-      this.sonicManager.sonicLevel.curHeightMap = !this.sonicManager.sonicLevel.curHeightMap;
-    });
   }
 
   loadLevel(data: string): void {
