@@ -57,8 +57,8 @@ export class Sonic {
     this.watcher = new Watcher();
     this.physicsVariables = SonicConstants.sonic();
     this.sonicLevel = sonicManager.sonicLevel;
-    this.x = 7925; // this.sonicLevel.startPositions[0].x;
-    this.y = 640; // this.sonicLevel.startPositions[0].y;
+    this.x = 8793; // this.sonicLevel.startPositions[0].x;
+    this.y = 1149; // this.sonicLevel.startPositions[0].y;
     this.sensorManager = new SensorManager(sonicManager);
     this.oldSensorManager = new OldSensorManager(sonicManager);
 

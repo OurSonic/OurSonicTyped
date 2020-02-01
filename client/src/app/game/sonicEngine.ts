@@ -182,6 +182,12 @@ export class SonicEngine {
     keyboardJS.bind('e', () => {
       this.sonicManager.sonicLevel.curHeightMap = !this.sonicManager.sonicLevel.curHeightMap;
     });
+    keyboardJS.bind('1', () => {
+      this.sonicManager.currentTestSonic--;
+    });
+    keyboardJS.bind('2', () => {
+      this.sonicManager.currentTestSonic++;
+    });
 
     keyboardJS.bind('c', () => {
       if (this.sonicManager.currentGameState === GameState.playing) {

@@ -65,7 +65,7 @@ export class PositionTestSonic {
     if (best === null) {
       this.inAir = true;
     } else {
-      console.log(best.letter);
+      // console.log(best.letter);
       switch (this.mode) {
         case RotationMode.floor:
           best.chosen = true;

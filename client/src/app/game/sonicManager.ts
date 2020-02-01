@@ -45,6 +45,7 @@ export class SonicManager {
   inHaltMode = false;
   waitingForTickContinue = false;
   waitingForDrawContinue = false;
+  currentTestSonic: number = 88;
 
   constructor(private engine: SonicEngine, private resize: () => void) {
     SonicManager.instance = this;
@@ -210,16 +211,25 @@ export class SonicManager {
 
     this.drawObjects(this.engine.spriteCanvas.context);
     this.drawRings(this.engine.spriteCanvas.context);
+    let index = 0;
     this.foreachTopOfVisibleTilePiece(
       this.windowLocation.x,
       this.windowLocation.y,
       (x, y, tpx, tpy, piece, pieceInfo) => {
+        index++;
+        if (index !== this.currentTestSonic) {
+          return;
+        }
+        console.log(index, x, y, tpx, tpy, pieceInfo.xFlip, pieceInfo.yFlip);
+        this.engine.highTileCanvas.context.fillStyle = 'white';
+        this.engine.highTileCanvas.context.fillRect(tpx - this.windowLocation.x, tpy - this.windowLocation.y, 16, 16);
         const positionTestSonic = new PositionTestSonic(this);
         positionTestSonic.x = x;
         positionTestSonic.y = y;
+        debugger;
         positionTestSonic.tick();
         this.engine.spriteCanvas.context.save();
-        this.engine.spriteCanvas.context.globalAlpha = 0.55;
+        this.engine.spriteCanvas.context.globalAlpha = 0.96;
         positionTestSonic.draw(this.engine.spriteCanvas.context);
         this.engine.spriteCanvas.context.restore();
       }
@@ -485,27 +495,29 @@ export class SonicManager {
             continue;
           }
         }
+
         if (angle === 0 || angle === 255 || angle === 1) continue;
+
         const direction = Math.round(angle / 63) % 4;
         switch (direction) {
           case 0:
-            if (tpY === 0 && tpX % 4 === 0) {
-              callback(repositionedX, repositionedY, tpX, tpY, piece, pieceInfo);
+            if (tpY === 0) {
+              callback(repositionedX, repositionedY - 18, repositionedX - tpX, repositionedY - tpY, piece, pieceInfo);
             }
             break;
           case 1:
-            if (tpX === 15 && tpY % 4 === 0) {
-              callback(repositionedX, repositionedY, tpX, tpY, piece, pieceInfo);
+            if (tpX === 15) {
+              callback(repositionedX + 18, repositionedY, repositionedX - tpX, repositionedY - tpY, piece, pieceInfo);
             }
             break;
           case 2:
-            if (tpY === 15 && tpX % 4 === 0) {
-              callback(repositionedX, repositionedY, tpX, tpY, piece, pieceInfo);
+            if (tpY === 15) {
+              callback(repositionedX, repositionedY + 18, repositionedX - tpX, repositionedY - tpY, piece, pieceInfo);
             }
             break;
           case 3:
-            if (tpX === 0 && tpY % 4 === 0) {
-              callback(repositionedX, repositionedY, tpX, tpY, piece, pieceInfo);
+            if (tpX === 0) {
+              callback(repositionedX - 18, repositionedY, repositionedX - tpX, repositionedY - tpY, piece, pieceInfo);
             }
             break;
         }

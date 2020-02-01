@@ -135,18 +135,18 @@ export class SensorManager {
     } = tilePieceResult;
 
     if (solidity === Solidity.NotSolid && !doubleCheck) {
-      console.log('extend', side);
+      // console.log('extend', side);
       const floor = this.getFloor(side, x + extensionX, y + extensionY, mode, true);
       if (floor) return floor;
     }
 
     if (solidity === Solidity.AllSolid && !doubleCheck) {
-      console.log('regress', side);
+      // console.log('regress', side);
       const floor = this.getFloor(side, x - extensionX, y - extensionY, mode, true);
       if (floor) return floor;
     }
 
-    console.log(side, heightMapValues[interTileX], solidity, minSolidity);
+    // console.log(side, heightMapValues[interTileX], solidity, minSolidity);
     if (solidity > minSolidity) {
       switch (mode) {
         case RotationMode.floor:
