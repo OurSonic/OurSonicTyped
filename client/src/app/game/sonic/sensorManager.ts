@@ -78,7 +78,9 @@ export class SensorManager {
     x: number,
     y: number,
     mode: RotationMode,
-    checking: 'up' | 'down' | 'start' = 'start'
+    checking: 'up' | 'down' | 'start' = 'start',
+    isBall: boolean,
+    inAir: boolean
   ): NewSensorResult {
     const allowTopSolid = true; /*todo*/
 
@@ -87,9 +89,9 @@ export class SensorManager {
       minSolidity = 1;
     }
 
-    const bodyWidthRadius = 9;
-    const bodyWidthRadiusRight = 10;
-    const bodyHeightRadius = 19;
+    const bodyWidthRadius = isBall ? 7 : 9;
+    const bodyWidthRadiusRight = isBall ? 8 : 10;
+    const bodyHeightRadius = isBall ? 14 : 19;
 
     let testX = x;
     let testY = y;
@@ -135,67 +137,118 @@ export class SensorManager {
       tileLeftEdge,
       tileRightEdge,
       tileTopEdge,
-      tileBottomEdge,
-      heightMapValues,
-      tilePiece,
-      tilePieceInfo
+      tileBottomEdge
     } = tilePieceResult;
 
-    if (solidity === Solidity.NotSolid && checking === 'start') {
+    if (!inAir && solidity === Solidity.NotSolid && checking === 'start') {
       // console.log('extend', side);
-      const floor = this.getFloor(side, x + extensionX, y + extensionY, mode, 'down');
-      if (floor) return floor;
-    }
-
-    if (solidity > minSolidity && checking === 'start') {
-      // console.log('regress', side);
-      const floor = this.getFloor(side, x - extensionX, y - extensionY, mode, 'up');
+      const floor = this.getFloor(side, x + extensionX, y + extensionY, mode, 'down', isBall, inAir);
       if (floor) return floor;
     }
 
     // console.log(side, heightMapValues[interTileX], solidity, minSolidity);
     if (solidity > minSolidity) {
       switch (mode) {
-        case RotationMode.floor:
+        case RotationMode.floor: {
+          const heightMap = this.findFromCollisionMap('y', collisionMap, interTileX, interTileY);
+          if (heightMap === 16) {
+            // console.log('regress', side);
+            const floor = this.getFloor(side, x - extensionX, y - extensionY, mode, 'up', isBall, inAir);
+            if (floor) return floor;
+          }
           return {
             solidity,
             letter: side === 'left' ? 'a' : 'b',
             chosen: false,
             angle: tileAngle,
             valueX: x,
-            valueY: tileBottomEdge - heightMapValues[interTileX] - bodyHeightRadius
+            valueY: tileBottomEdge - heightMap - bodyHeightRadius
           };
-        case RotationMode.rightWall:
+        }
+        case RotationMode.rightWall: {
+          const heightMap = this.findFromCollisionMap('x', collisionMap, interTileX, interTileY);
+          if (heightMap === 16) {
+            // console.log('regress', side);
+            const floor = this.getFloor(side, x - extensionX, y - extensionY, mode, 'up', isBall, inAir);
+            if (floor) return floor;
+          }
           return {
             solidity,
             letter: side === 'left' ? 'a' : 'b',
             chosen: false,
             angle: tileAngle,
-            valueX: tileRightEdge - heightMapValues[interTileY] - bodyHeightRadius,
+            valueX: tileRightEdge - heightMap - bodyHeightRadius,
             valueY: y
           };
-        case RotationMode.ceiling:
+        }
+        case RotationMode.ceiling: {
+          const heightMap = this.findFromCollisionMap('-y', collisionMap, interTileX, interTileY);
+          if (heightMap === 16) {
+            // console.log('regress', side);
+            const floor = this.getFloor(side, x - extensionX, y - extensionY, mode, 'up', isBall, inAir);
+            if (floor) return floor;
+          }
           return {
             solidity,
             letter: side === 'left' ? 'a' : 'b',
             chosen: false,
             angle: tileAngle,
             valueX: x,
-            valueY: tileTopEdge + heightMapValues[interTileX] + bodyHeightRadius
+            valueY: tileTopEdge + heightMap + bodyHeightRadius
           };
-        case RotationMode.leftWall:
+        }
+        case RotationMode.leftWall: {
+          const heightMap = this.findFromCollisionMap('-x', collisionMap, interTileX, interTileY);
+          if (heightMap === 16) {
+            // console.log('regress', side);
+            const floor = this.getFloor(side, x - extensionX, y - extensionY, mode, 'up', isBall, inAir);
+            if (floor) return floor;
+          }
           return {
             solidity,
             letter: side === 'left' ? 'a' : 'b',
             chosen: false,
             angle: tileAngle,
-            valueX: tileLeftEdge + heightMapValues[interTileY] + bodyHeightRadius,
+            valueX: tileLeftEdge + heightMap + bodyHeightRadius,
             valueY: y
           };
+        }
       }
     }
 
     return null;
+  }
+
+  private findFromCollisionMap(xory: 'x' | 'y' | '-x' | '-y', collisionMap: boolean[], x: number, y: number) {
+    if (xory === 'y') {
+      for (let _y = 0; _y < 16; _y++) {
+        if (collisionMap[x + _y * 16]) {
+          return 16 - _y;
+        }
+      }
+      return 0;
+    } else if (xory === 'x') {
+      for (let _x = 0; _x < 16; _x++) {
+        if (collisionMap[y * 16 + _x]) {
+          return 16 - _x;
+        }
+      }
+      return 0;
+    } else if (xory === '-y') {
+      for (let _y = 15; _y >= 0; _y--) {
+        if (collisionMap[x + _y * 16]) {
+          return _y + 1;
+        }
+      }
+      return 0;
+    } else if (xory === '-x') {
+      for (let _x = 15; _x >= 0; _x--) {
+        if (collisionMap[y * 16 + _x]) {
+          return _x + 1;
+        }
+      }
+      return 0;
+    }
   }
 }
 

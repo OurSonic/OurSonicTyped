@@ -57,8 +57,8 @@ export class Sonic {
     this.watcher = new Watcher();
     this.physicsVariables = SonicConstants.sonic();
     this.sonicLevel = sonicManager.sonicLevel;
-    this.x = 8793; // this.sonicLevel.startPositions[0].x;
-    this.y = 1149; // this.sonicLevel.startPositions[0].y;
+    this.x = this.sonicLevel.startPositions[0].x;
+    this.y = this.sonicLevel.startPositions[0].y;
     this.sensorManager = new SensorManager(sonicManager);
     this.oldSensorManager = new OldSensorManager(sonicManager);
 
@@ -76,15 +76,16 @@ export class Sonic {
   }
 
   updateMode(): void {
-    if (this.angle <= 0x22 || this.angle >= 0xe0) {
+    if (this.angle < 0x20 || this.angle >= 0xe0) {
       this.mode = RotationMode.floor;
-    } else if (this.angle > 0x22 && this.angle < 0x59) {
+    } else if (this.angle < 0x60 && this.angle >= 0x20) {
       this.mode = RotationMode.leftWall;
-    } else if (this.angle >= 0x59 && this.angle < 0xa1) {
+    } else if (this.angle < 0xa0 && this.angle >= 0x60) {
       this.mode = RotationMode.ceiling;
-    } else if (this.angle > 0xa1 && this.angle < 0xe0) {
+    } else if (this.angle < 0xe0 && this.angle >= 0xa0) {
       this.mode = RotationMode.rightWall;
     }
+
     this.myRec.x = (this.x - 10) | 0;
     this.myRec.y = (this.y - 20) | 0;
     this.myRec.width = 10 * 2;
@@ -135,6 +136,7 @@ export class Sonic {
     this.effectPhysics();
     this.checkCollisionWithRings();
     this.updateSprite();
+    this.checkCollisionWithObjects(this.x, this.y, 'a');
     const left = this.sensorManager.getHorizontal('left', this.x, this.y, this.mode);
     const right = this.sensorManager.getHorizontal('right', this.x, this.y, this.mode);
     const bestHorizontal = left ?? right;
@@ -171,101 +173,67 @@ export class Sonic {
       }
     }
 
-    let sensorA = this.sensorManager.getFloor('left', this.x, this.y, this.mode);
-    let sensorB = this.sensorManager.getFloor('right', this.x, this.y, this.mode);
-    if (!this.inAir) {
+    if (!this.inAir || (this.inAir && (this.ysp > 0 || Math.abs(this.xsp) > Math.abs(this.ysp)))) {
+      const sensorA = this.sensorManager.getFloor('left', this.x, this.y, this.mode, 'start', this.rolling, this.inAir);
+      const sensorB = this.sensorManager.getFloor(
+        'right',
+        this.x,
+        this.y,
+        this.mode,
+        'start',
+        this.rolling,
+        this.inAir
+      );
       const best = this.getBestNewSensor(sensorA, sensorB, this.mode);
       if (best === null) {
         console.log('got air');
         this.inAir = true;
       } else {
-        console.log('-----');
-        sensorA && console.log(sensorA.letter, this.fixAngle(sensorA.angle), sensorA.valueX, sensorA.valueY);
-        sensorB && console.log(sensorB.letter, this.fixAngle(sensorB.angle), sensorB.valueX, sensorB.valueY);
+        // console.log('-----');
+        // sensorA && console.log(sensorA.letter, this.fixAngle(sensorA.angle), sensorA.valueX, sensorA.valueY);
+        // sensorB && console.log(sensorB.letter, this.fixAngle(sensorB.angle), sensorB.valueX, sensorB.valueY);
         this.justHit = false;
 
         this.angle = this.fixAngle(best.angle);
 
-        switch (this.mode) {
-          case RotationMode.floor:
-            // this.x = best.valueX;
-            console.log(best.letter, best.angle, best.valueY, this.y | 0, this.mode);
-            this.y = best.valueY;
-            break;
-          case RotationMode.rightWall:
-            console.log(best.letter, best.angle, best.valueX, this.x | 0, this.mode);
-            this.x = best.valueX;
-            // this.y = best.valueY;
-            break;
-          case RotationMode.ceiling:
-            console.log(best.letter, best.angle, best.valueY, this.y | 0, this.mode);
-            // this.x = best.valueX;
-            this.y = best.valueY;
-            break;
-          case RotationMode.leftWall:
-            console.log(best.letter, best.angle, best.valueX, this.x | 0, this.mode);
-            this.x = best.valueX;
-            // this.y = best.valueY;
-            break;
+        if (!this.inAir) {
+          switch (this.mode) {
+            case RotationMode.floor:
+              // this.x = best.valueX;
+              // console.log(best.letter, best.angle, best.valueY, this.y | 0, this.mode);
+              this.y = best.valueY;
+              break;
+            case RotationMode.rightWall:
+              // console.log(best.letter, best.angle, best.valueX, this.x | 0, this.mode);
+              this.x = best.valueX;
+              // this.y = best.valueY;
+              break;
+            case RotationMode.ceiling:
+              // console.log(best.letter, best.angle, best.valueY, this.y | 0, this.mode);
+              // this.x = best.valueX;
+              this.y = best.valueY;
+              break;
+            case RotationMode.leftWall:
+              // console.log(best.letter, best.angle, best.valueX, this.x | 0, this.mode);
+              this.x = best.valueX;
+              // this.y = best.valueY;
+              break;
+          }
+        } else {
+          console.log('landed');
+
+          this.y = best.valueY;
+          this.rolling = this.currentlyBall = false;
+          this.inAir = false;
         }
       }
-      console.log('-----');
+      // console.log('-----');
       this.updateMode();
     } else {
-      console.log('air');
-      if (sensorA && sensorA.solidity === Solidity.TopSolid && this.ysp < 0) {
-        sensorA = null;
-        this.oldSensorManager.sensorResults.a = null;
-      }
-      if (sensorB && sensorB.solidity === Solidity.TopSolid && this.ysp < 0) {
-        sensorB = null;
-        this.oldSensorManager.sensorResults.b = null;
-      }
-
-      if (sensorA == null && sensorB == null) {
-        this.inAir = true;
-      } else {
-        if (sensorA != null && sensorA.valueY >= 0 && sensorB != null && sensorB.valueY >= 0) {
-          if (sensorA.valueY < sensorB.valueY) {
-            if (this.y + 20 >= sensorA.valueY) {
-              this.angle = sensorA.angle;
-              this.y = sensorA.valueY;
-              this.rolling = this.currentlyBall = false;
-              this.inAir = false;
-            }
-          } else {
-            if (sensorB.valueY > -1) {
-              if (this.y + 20 >= sensorB.valueY) {
-                this.angle = sensorB.angle;
-                this.y = sensorB.valueY;
-                this.rolling = this.currentlyBall = false;
-                this.inAir = false;
-              }
-            }
-          }
-        } else if (sensorA != null && sensorA.valueY > -1) {
-          if (this.y + 20 >= sensorA.valueY) {
-            this.angle = sensorA.angle;
-            this.y = sensorA.valueY;
-            this.rolling = this.currentlyBall = false;
-            this.inAir = false;
-          }
-        } else if (sensorB != null && sensorB.valueY > -1) {
-          if (this.y + 20 >= sensorB.valueY) {
-            this.angle = sensorB.angle;
-            this.y = sensorB.valueY;
-            this.rolling = this.currentlyBall = false;
-            this.inAir = false;
-          }
-        }
-      }
-      this.updateMode();
-      const currentSonicSprite = SonicEngine.instance.spriteCache.sonicSprites[this.spriteState];
-      const halfHeight = currentSonicSprite.height / 2;
       this.oldSensorManager.check(this);
       const sensorC = this.oldSensorManager.getResult('c');
       const sensorD = this.oldSensorManager.getResult('d');
-
+      const halfHeight = 20;
       if (sensorC == null && sensorD == null) {
       } else {
         if (sensorD != null && sensorC != null && sensorC.value >= 0 && sensorD.value >= 0) {
@@ -389,44 +357,6 @@ export class Sonic {
     return false;
   }
 
-  private halfSize: Point = new Point(20, 20);
-
-  private getHalfImageSize(): Point {
-    return this.halfSize;
-  }
-
-  private offsetFromImage: Point = new Point(0, 0);
-
-  private getOffsetFromImage(): Point {
-    const cur = SonicEngine.instance.spriteCache.sonicSprites[this.spriteState];
-    let xOffset = 0;
-    let yOffset = 0;
-    if (cur.height !== 40) {
-      let n: number;
-      switch (this.mode) {
-        case RotationMode.floor:
-          n = 0;
-          yOffset = (40 - (cur.height + n)) / 2;
-          break;
-        case RotationMode.leftWall:
-          n = 15;
-          xOffset = -(40 - (cur.height + n)) / 2;
-          break;
-        case RotationMode.ceiling:
-          n = 8;
-          yOffset = -(40 - (cur.height + n)) / 2;
-          break;
-        case RotationMode.rightWall:
-          n = 9;
-          xOffset = (40 - (cur.height + n)) / 2;
-          break;
-      }
-    }
-    this.offsetFromImage.x = xOffset;
-    this.offsetFromImage.y = yOffset;
-    return this.offsetFromImage;
-  }
-
   private updateSprite(): void {
     const absgsp = Math.abs(this.gsp);
     const word = this.spriteState.substring(0, this.spriteState.length - 1);
@@ -523,7 +453,6 @@ export class Sonic {
     }
     if (this.inAir && !this.wasInAir) {
       this.wasInAir = true;
-      const offset = this.getOffsetFromImage();
     }
     if (!this.inAir && this.wasInAir) {
       this.wasInAir = false;
@@ -736,11 +665,7 @@ export class Sonic {
     }
     if (Help.isLoaded(cur)) {
       context.save();
-      const offset = this.getOffsetFromImage();
-      context.translate(
-        fx - this.sonicManager.windowLocation.x + offset.x,
-        fy - this.sonicManager.windowLocation.y + offset.y
-      );
+      context.translate(fx - this.sonicManager.windowLocation.x, fy - this.sonicManager.windowLocation.y);
       if (this.sonicManager.showHeightMap) {
         const mul = 10;
         const xj = this.xsp * mul;
@@ -783,8 +708,8 @@ export class Sonic {
             SonicEngine.instance.spriteCache.sonicSprites[
               'spinsmoke' + (((this.sonicManager.drawTickCount % 14) / 2) | 0)
             ],
-            -cur.width / 2 - 19,
-            -cur.height / 2 + offset.y - 6,
+            -cur.width / 2 - 20,
+            -cur.height / 2,
             cur.width,
             cur.height
           );
@@ -812,8 +737,8 @@ export class Sonic {
             SonicEngine.instance.spriteCache.sonicSprites[
               'spinsmoke' + (((this.sonicManager.drawTickCount % 14) / 2) | 0)
             ],
-            -cur.width / 2 - 19,
-            -cur.height / 2 + offset.y - 6,
+            -cur.width / 2 - 20,
+            -cur.height / 2,
             cur.width,
             cur.height
           );
@@ -830,7 +755,7 @@ export class Sonic {
             'haltsmoke' + (((this.sonicManager.drawTickCount % (4 * 6)) / 6) | 0)
           ],
           lo.x - this.sonicManager.windowLocation.x - 15,
-          lo.y + 12 - this.sonicManager.windowLocation.y + offset.y
+          lo.y + 12 - this.sonicManager.windowLocation.y
         );
         if (((((this.sonicManager.drawTickCount + 6) % (4 * 6)) / 6) | 0) === 0) {
           this.haltSmoke.splice(i, 1);

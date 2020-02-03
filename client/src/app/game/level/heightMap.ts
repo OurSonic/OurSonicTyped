@@ -107,7 +107,8 @@ export class HeightMap {
 
     this.itemsXFlip = this.items.map(a => a);
     this.itemsXFlip.reverse();
-    this.itemsYFlip = this.items.map(a => (a === 16 ? 16 : 16 - a));
+    this.itemsYFlip = this.items.map(a => a);
+    this.itemsYFlip.reverse();
     this.itemsXFlipYFlip = this.items.map(a => (a === 16 ? 16 : 16 - a));
     this.itemsXFlipYFlip.reverse();
 
@@ -126,9 +127,10 @@ export class HeightMap {
     }
 
     this.items90deg = items90deg;
-    this.items90degXFlip = items90deg.map(a => a);
+    this.items90degXFlip = items90deg.map(a => (a === 16 ? 16 : 16 - a));
     this.items90degXFlip.reverse();
-    this.items90degYFlip = items90deg.map(a => (a === 16 ? 16 : 16 - a));
+    this.items90degYFlip = items90deg.map(a => a);
+    this.items90degYFlip.reverse();
     this.items90degXFlipYFlip = items90deg.map(a => (a === 16 ? 16 : 16 - a));
     this.items90degXFlipYFlip.reverse();
   }

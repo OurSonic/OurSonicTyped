@@ -86,11 +86,12 @@ export class SonicManager {
     if (event.ctrlKey) {
       ex = (e.x / 128) | 0;
       ey = (e.y / 128) | 0;
-      console.log(ex, ey);
+      // console.log(ex, ey);
       const ch = this.sonicLevel.getChunkAt(ex, ey);
       const tp = ch.getTilePieceAt(e.x - ex * 128, e.y - ey * 128, true);
-      console.log(tp.index);
-      (console as any).image(tp.getImage().canvas.toDataURL());
+      console.log(e.x, e.y);
+      // console.log(tp.index);
+      // (console as any).image(tp.getImage().canvas.toDataURL());
 
       //            if (this.UIManager.UIManagerAreas.TilePieceArea != null)
       //                ch.SetTilePieceAt(e.X - ex * 128, e.Y - ey * 128, this.UIManager.UIManagerAreas.TilePieceArea.Data, true);

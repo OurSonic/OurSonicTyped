@@ -23,13 +23,13 @@ export class PositionTestSonic {
   }
 
   updateMode(): void {
-    if (this.angle <= 0x22 || this.angle >= 0xe0) {
+    if (this.angle < 0x20 || this.angle >= 0xe0) {
       this.mode = RotationMode.floor;
-    } else if (this.angle > 0x22 && this.angle < 0x59) {
+    } else if (this.angle < 0x60 && this.angle >= 0x20) {
       this.mode = RotationMode.leftWall;
-    } else if (this.angle >= 0x59 && this.angle < 0xa1) {
+    } else if (this.angle < 0xa0 && this.angle >= 0x60) {
       this.mode = RotationMode.ceiling;
-    } else if (this.angle > 0xa1 && this.angle < 0xe0) {
+    } else if (this.angle < 0xe0 && this.angle >= 0xa0) {
       this.mode = RotationMode.rightWall;
     }
   }
@@ -57,8 +57,8 @@ export class PositionTestSonic {
       }
     }
 
-    const sensorA = this.sensorManager.getFloor('left', this.x, this.y, this.mode);
-    const sensorB = this.sensorManager.getFloor('right', this.x, this.y, this.mode);
+    const sensorA = this.sensorManager.getFloor('left', this.x, this.y, this.mode, 'start', false, false);
+    const sensorB = this.sensorManager.getFloor('right', this.x, this.y, this.mode, 'start', false, false);
     const best = this.getBestNewSensor(sensorA, sensorB, this.mode);
     this.inAir = false;
     if (best === null) {

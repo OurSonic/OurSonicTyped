@@ -1,4 +1,3 @@
-console.log('bunko');
 export class Bunko {}
 /*
 import {Component} from '@angular/core';

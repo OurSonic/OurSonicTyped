@@ -230,7 +230,7 @@ export class Layout extends React.Component<Props, State> {
                   padding: 0,
                   margin: 0,
                   position: 'relative',
-                  height: '100%',
+                  height: '91%',
                   display: 'flex',
                   flexFlow: 'column nowrap'
                 }}

@@ -114,21 +114,26 @@ export class SonicLevel {
 
     let collisionMap: boolean[];
     let heightMapValues: number[];
+    let heightMap90Values: number[];
     if (tilePieceInfo.xFlip) {
       if (tilePieceInfo.yFlip) {
         collisionMap = heightMap.collisionBlockXFlipYFlip;
         heightMapValues = heightMap.itemsXFlipYFlip;
+        heightMap90Values = heightMap.items90degXFlipYFlip;
       } else {
         collisionMap = heightMap.collisionBlockXFlip;
         heightMapValues = heightMap.itemsXFlip;
+        heightMap90Values = heightMap.items90degXFlip;
       }
     } else {
       if (tilePieceInfo.yFlip) {
         collisionMap = heightMap.collisionBlockYFlip;
         heightMapValues = heightMap.itemsYFlip;
+        heightMap90Values = heightMap.items90degYFlip;
       } else {
         collisionMap = heightMap.collisionBlock;
         heightMapValues = heightMap.items;
+        heightMap90Values = heightMap.items90deg;
       }
     }
 
@@ -144,7 +149,9 @@ export class SonicLevel {
       tileRightEdge: x - interTileX + 16,
       tileTopEdge: y - interTileY,
       tileBottomEdge: y - interTileY + 16,
-      heightMapValues
+      heightMapValues,
+      heightMap90Values,
+      yFlip: tilePieceInfo.yFlip
     };
   }
 }
