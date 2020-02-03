@@ -1,7 +1,6 @@
 import {RotationMode} from '../../common/enums';
 import {Help} from '../../common/help';
 import {IntersectingRectangle, Point, Rectangle} from '../../common/utils';
-import {Solidity} from '../../slData';
 import {Ring} from '../level/ring';
 import {SonicEngine} from '../sonicEngine';
 import {SonicLevel} from '../sonicLevel';
@@ -544,6 +543,7 @@ export class Sonic {
       this.gsp -= Math.min(Math.abs(this.gsp), this.watcher.Multiply(physics.rfrc)) * (this.gsp > 0 ? 1 : -1);
       this.oldSign = Help.sign(this.gsp);
       const ang = Help.sin(this.angle);
+      // eslint-disable-next-line no-mixed-operators
       if (ang > 0 === this.gsp > 0) {
         this.gsp += this.watcher.Multiply(-physics.slpRollingUp) * ang;
       } else {
@@ -635,7 +635,6 @@ export class Sonic {
         } else if (this.mode === RotationMode.ceiling) {
           this.y += 0;
         }
-        const oldMode = this.mode;
         this.updateMode();
         this.mode = RotationMode.floor;
         this.hLock = 30;

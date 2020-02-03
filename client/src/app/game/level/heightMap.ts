@@ -1,5 +1,4 @@
 import {CanvasInformation} from '../../common/canvasInformation';
-import {RotationMode} from '../../common/enums';
 import {Help} from '../../common/help';
 import {SonicEngine} from '../sonicEngine';
 

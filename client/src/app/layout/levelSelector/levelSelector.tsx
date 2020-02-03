@@ -42,7 +42,7 @@ export class LevelSelector extends React.Component<Props, State> {
         {this.state.levels &&
           this.state.levels.map(level => (
             <li key={level.name}>
-              <a
+              <button
                 style={{
                   width: '100%',
                   height: '50px',
@@ -65,7 +65,7 @@ export class LevelSelector extends React.Component<Props, State> {
                 onClick={() => this.loadLevel(level)}
               >
                 {level.name}
-              </a>
+              </button>
             </li>
           ))}
       </ul>

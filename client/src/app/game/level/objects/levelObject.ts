@@ -10,7 +10,13 @@ import {LevelObjectProjectile} from './levelObjectProjectile';
 
 export class LevelObject {
   private cacheCompiled: {
-    [key: string]: (_: LevelObjectInfo, __: SonicLevel, ___: Sonic, ____: SensorResult, _____: LevelObjectPiece) => boolean;
+    [key: string]: (
+      _: LevelObjectInfo,
+      __: SonicLevel,
+      ___: Sonic,
+      ____: SensorResult,
+      _____: LevelObjectPiece
+    ) => boolean;
   } = {};
   private cacheLast: {[key: string]: string} = {};
   oldKey: string;
@@ -93,6 +99,7 @@ export class LevelObject {
     }
     this.cacheLast[js] = this[js];
     if (this.cacheCompiled[js] == null) {
+      // eslint-disable-next-line no-eval
       this.cacheCompiled[js] = eval('(function(object,level,sonic,sensor,piece){' + this[js] + '});') as (
         _: LevelObjectInfo,
         __: SonicLevel,

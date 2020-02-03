@@ -19,10 +19,10 @@ export class Tile {
     const palette = this.sonicManager.sonicLevel.palette;
 
     for (let x = 0; x < 8; x++) {
-      let drawX = x;
+      /*let drawX = x;
       if (xFlip) {
         drawX = 7 - x;
-      }
+      }*/
 
       const color = this.colors[x];
       for (let y = 0; y < 8; y++) {

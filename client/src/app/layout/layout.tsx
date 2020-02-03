@@ -1,5 +1,4 @@
 import React from 'react';
-import {Fragment} from 'react';
 import {LevelSelector} from './levelSelector/levelSelector';
 import sonic from './assets/tabs/sonic.png';
 import tile from './assets/tabs/tile.png';
@@ -305,6 +304,7 @@ export class Layout extends React.Component<Props, State> {
                   >
                     <div>
                       <img
+                        alt={item.label}
                         style={{display: 'block', imageRendering: 'pixelated'}}
                         width={94}
                         height={94}

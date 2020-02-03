@@ -90,7 +90,7 @@ export class SonicManager {
       const ch = this.sonicLevel.getChunkAt(ex, ey);
       const tp = ch.getTilePieceAt(e.x - ex * 128, e.y - ey * 128, true);
       console.log(e.x, e.y);
-      // console.log(tp.index);
+      console.log(tp.index);
       // (console as any).image(tp.getImage().canvas.toDataURL());
 
       //            if (this.UIManager.UIManagerAreas.TilePieceArea != null)
@@ -101,6 +101,7 @@ export class SonicManager {
       ex = (e.x / 128) | 0;
       ey = (e.y / 128) | 0;
       const ch = this.sonicLevel.getChunkAt(ex, ey);
+      console.log(ch);
       //            if (this.UIManager.UIManagerAreas.TileChunkArea != null)
       //                this.SonicLevel.SetChunkAt(ex, ey, this.UIManager.UIManagerAreas.TileChunkArea.Data);
       return true;
@@ -246,7 +247,6 @@ export class SonicManager {
     if (this.currentGameState === GameState.playing) {
       this.sonicToon.draw(this.engine.spriteCanvas.context);
     }
-    const fakeSonics: PositionTestSonic[] = [];
 
     if (this.showHeightMap || this.currentGameState === GameState.editing) {
       const w1: number = ((this.windowLocation.width / 128) | 0) + 2;
@@ -937,6 +937,7 @@ export class SonicManager {
         const pal = slData.paletteItems[0][k];
 
         const animatedPalette = new PaletteItem();
+        // eslint-disable-next-line no-eval
         animatedPalette.palette = (eval(pal.palette) as string[]).map(col => {
           const r = parseInt(col.slice(0, 2), 16);
           const g = parseInt(col.slice(2, 4), 16);

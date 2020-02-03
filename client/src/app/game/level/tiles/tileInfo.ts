@@ -1,6 +1,5 @@
 import {SonicManager} from '../../sonicManager';
 import {Tile} from './tile';
-import {SonicLevel} from '../../sonicLevel';
 
 export class TileInfo {
   constructor(private sonicManager: SonicManager) {}

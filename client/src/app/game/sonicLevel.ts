@@ -107,7 +107,7 @@ export class SonicLevel {
         if (tilePieceInfo.yFlip) {
           tileAngle = 192 - tileAngle + 192;
         } else {
-          tileAngle = tileAngle;
+          // tileAngle = tileAngle;
         }
       }
     }

@@ -50,7 +50,6 @@ export class SensorManager {
       collisionMap,
       interTileX,
       interTileY,
-      tileAngle,
       tileLeftEdge,
       tileRightEdge,
       tileTopEdge,
@@ -344,7 +343,7 @@ export class Sensor {
           if (tilePieceInfo.yFlip) {
             tileAngle = 192 - tileAngle + 192;
           } else {
-            tileAngle = tileAngle;
+            // tileAngle = tileAngle;
           }
         }
 

@@ -1,8 +1,6 @@
 export class LevelService {
   private static storedLevels: SonicLevelData[];
 
-  constructor() {}
-
   private static getLevelsUrl = 'https://api.oursonic.org/levels';
   private static getLevelUrl = 'https://api.oursonic.org/level';
 
