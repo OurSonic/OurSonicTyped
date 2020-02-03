@@ -73,7 +73,13 @@ export class SensorManager {
     return null;
   }
 
-  getFloor(side: 'left' | 'right', x: number, y: number, mode: RotationMode, doubleCheck = false): SensorResult {
+  getFloor(
+    side: 'left' | 'right',
+    x: number,
+    y: number,
+    mode: RotationMode,
+    checking: 'up' | 'down' | 'start' = 'start'
+  ): NewSensorResult {
     const allowTopSolid = true; /*todo*/
 
     let minSolidity = 0;
@@ -117,7 +123,6 @@ export class SensorManager {
         extensionY = 0;
         break;
     }
-
     const tilePieceResult = this.sonicManager.sonicLevel.getTilePieceAt(testX, testY);
     if (!tilePieceResult) return null;
 
@@ -131,18 +136,20 @@ export class SensorManager {
       tileRightEdge,
       tileTopEdge,
       tileBottomEdge,
-      heightMapValues
+      heightMapValues,
+      tilePiece,
+      tilePieceInfo
     } = tilePieceResult;
 
-    if (solidity === Solidity.NotSolid && !doubleCheck) {
+    if (solidity === Solidity.NotSolid && checking === 'start') {
       // console.log('extend', side);
-      const floor = this.getFloor(side, x + extensionX, y + extensionY, mode, true);
+      const floor = this.getFloor(side, x + extensionX, y + extensionY, mode, 'down');
       if (floor) return floor;
     }
 
-    if (solidity === Solidity.AllSolid && !doubleCheck) {
+    if (solidity > minSolidity && checking === 'start') {
       // console.log('regress', side);
-      const floor = this.getFloor(side, x - extensionX, y - extensionY, mode, true);
+      const floor = this.getFloor(side, x - extensionX, y - extensionY, mode, 'up');
       if (floor) return floor;
     }
 
@@ -155,16 +162,17 @@ export class SensorManager {
             letter: side === 'left' ? 'a' : 'b',
             chosen: false,
             angle: tileAngle,
-            value: tileBottomEdge - heightMapValues[interTileX] - bodyHeightRadius
+            valueX: x,
+            valueY: tileBottomEdge - heightMapValues[interTileX] - bodyHeightRadius
           };
         case RotationMode.rightWall:
-          debugger;
           return {
             solidity,
             letter: side === 'left' ? 'a' : 'b',
             chosen: false,
             angle: tileAngle,
-            value: tileRightEdge - heightMapValues[interTileX] - bodyHeightRadius
+            valueX: tileRightEdge - heightMapValues[interTileY] - bodyHeightRadius,
+            valueY: y
           };
         case RotationMode.ceiling:
           return {
@@ -172,7 +180,8 @@ export class SensorManager {
             letter: side === 'left' ? 'a' : 'b',
             chosen: false,
             angle: tileAngle,
-            value: tileTopEdge + heightMapValues[interTileX] + bodyHeightRadius
+            valueX: x,
+            valueY: tileTopEdge + heightMapValues[interTileX] + bodyHeightRadius
           };
         case RotationMode.leftWall:
           return {
@@ -180,7 +189,8 @@ export class SensorManager {
             letter: side === 'left' ? 'a' : 'b',
             chosen: false,
             angle: tileAngle,
-            value: tileLeftEdge + heightMapValues[interTileX] + bodyHeightRadius
+            valueX: tileLeftEdge + heightMapValues[interTileY] + bodyHeightRadius,
+            valueY: y
           };
       }
     }
@@ -266,11 +276,9 @@ export class Sensor {
         const solidity = this.sonicManager.sonicLevel.curHeightMap ? tilePieceInfo.solid1 : tilePieceInfo.solid2;
 
         const heightMap = this.sonicManager.sonicLevel.curHeightMap
-          ? tilePiece.getLayer1HeightMap()
-          : tilePiece.getLayer2HeightMap();
-        let tileAngle = this.sonicManager.sonicLevel.curHeightMap
-          ? tilePiece.getLayer1Angle()
-          : tilePiece.getLayer2Angle();
+          ? tilePiece.layer1HeightMap
+          : tilePiece.layer2HeightMap;
+        let tileAngle = this.sonicManager.sonicLevel.curHeightMap ? tilePiece.layer1Angle : tilePiece.layer2Angle;
 
         if (tilePieceInfo.xFlip) {
           if (tilePieceInfo.yFlip) {
@@ -504,6 +512,21 @@ export class Sensor {
       }
     }
     return sensor;
+  }
+}
+
+export class NewSensorResult {
+  valueX: number = 0;
+  valueY: number = 0;
+  angle: number = 0;
+  letter: string;
+  chosen: boolean = false;
+  solidity: Solidity = 0;
+
+  constructor(valueX: number, valueY: number, angle: number) {
+    this.valueX = valueX;
+    this.valueY = valueY;
+    this.angle = angle;
   }
 }
 

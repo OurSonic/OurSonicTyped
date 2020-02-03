@@ -92,8 +92,8 @@ export class SonicLevel {
     const tilePieceInfo = chunk.getTilePieceInfo(tileX, tileY, false);
     const solidity = this.curHeightMap ? tilePieceInfo.solid1 : tilePieceInfo.solid2;
 
-    const heightMap = this.curHeightMap ? tilePiece.getLayer1HeightMap() : tilePiece.getLayer2HeightMap();
-    let tileAngle = this.curHeightMap ? tilePiece.getLayer1Angle() : tilePiece.getLayer2Angle();
+    const heightMap = this.curHeightMap ? tilePiece.layer1HeightMap : tilePiece.layer2HeightMap;
+    let tileAngle = this.curHeightMap ? tilePiece.layer1Angle : tilePiece.layer2Angle;
 
     if (!(tileAngle === 0 || tileAngle === 255 || tileAngle === 1)) {
       if (tilePieceInfo.xFlip) {
@@ -131,6 +131,7 @@ export class SonicLevel {
         heightMapValues = heightMap.items;
       }
     }
+
     return {
       collisionMap,
       tileAngle,

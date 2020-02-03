@@ -9,8 +9,8 @@ export enum ChunkLayerState {
 }
 
 export enum RotationMode {
-  floor = 134,
-  rightWall = 224,
-  ceiling = 314,
-  leftWall = 44
+  floor = 0,
+  rightWall = 3,
+  ceiling = 2,
+  leftWall = 1
 }

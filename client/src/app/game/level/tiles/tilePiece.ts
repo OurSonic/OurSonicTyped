@@ -50,19 +50,19 @@ export class TilePiece {
     this.isOnlyForeground = true;
   }
 
-  getLayer1Angle(): number {
+  get layer1Angle(): number {
     return this.sonicManager.sonicLevel.angles[this.sonicManager.sonicLevel.collisionIndexes1[this.index]];
   }
 
-  getLayer2Angle(): number {
+  get layer2Angle(): number {
     return this.sonicManager.sonicLevel.angles[this.sonicManager.sonicLevel.collisionIndexes2[this.index]];
   }
 
-  getLayer1HeightMap(): HeightMap {
+  get layer1HeightMap(): HeightMap {
     return this.sonicManager.sonicLevel.heightMaps[this.sonicManager.sonicLevel.collisionIndexes1[this.index]];
   }
 
-  getLayer2HeightMap(): HeightMap {
+  get layer2HeightMap(): HeightMap {
     return this.sonicManager.sonicLevel.heightMaps[this.sonicManager.sonicLevel.collisionIndexes2[this.index]];
   }
 

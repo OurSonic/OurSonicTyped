@@ -4,7 +4,7 @@ import {Help} from '../../common/help';
 import {SonicEngine} from '../sonicEngine';
 
 export class HeightMap {
-  static colors = ['rgba(255,0,0,0.6)', 'rgba(0,255,0,0.6)', 'rgba(0,0,255,0.6)', 'rgba(255,255,0,0.6)'];
+  static colors = ['rgba(255,0,0,0.87)', 'rgba(0,255,0,0.87)', 'rgba(0,0,255,0.87)', 'rgba(255,255,0,0.87)'];
   width: number = 0;
   height: number = 0;
   index: number = 0;
@@ -13,6 +13,11 @@ export class HeightMap {
   itemsXFlip: number[];
   itemsYFlip: number[];
   itemsXFlipYFlip: number[];
+
+  items90deg: number[];
+  items90degXFlip: number[];
+  items90degYFlip: number[];
+  items90degXFlipYFlip: number[];
 
   collisionBlock: boolean[];
   collisionBlockXFlip: boolean[];
@@ -56,11 +61,9 @@ export class HeightMap {
       const ntcanvas = CanvasInformation.create(16, 16, false);
       const ncanvas = ntcanvas.context;
       if (solid > 0) {
-        ncanvas.fillStyle = 'rgba(0,0,0,.6)';
-        ncanvas.fillRect(0, 0, 16, 16);
         ncanvas.fillStyle = HeightMap.colors[Math.round(angle / 63) % 4];
-        for (let xi = 1; xi < 15; xi++) {
-          for (let yi = 1; yi < 15; yi++) {
+        for (let xi = 0; xi < 16; xi++) {
+          for (let yi = 0; yi < 16; yi++) {
             let jx = 0;
             let jy = 0;
             if (HeightMap.itemsGood(this.items, xi, yi)) {
@@ -72,13 +75,15 @@ export class HeightMap {
               ncanvas.fillRect(_x, _y, 1, 1);
               ncanvas.beginPath();
               ncanvas.lineWidth = 1;
-              ncanvas.strokeStyle = 'rgba(163,241,255,0.8)';
+              ncanvas.strokeStyle = 'rgba(163,241,255,0.97)';
               ncanvas.moveTo(16 / 2, 16 / 2);
               ncanvas.lineTo(16 / 2 - Help.sin(angle) * 8, 16 / 2 - Help.cos(angle) * 8);
               ncanvas.stroke();
             }
           }
         }
+        ncanvas.strokeStyle = 'rgba(0,0,0,.9)';
+        ncanvas.strokeRect(0, 0, 16, 16);
       }
       SonicEngine.instance.spriteCache.heightMaps[this.index + (solid << 20)] = ntcanvas;
       canvas.drawImage(ntcanvas.canvas, x, y);
@@ -102,10 +107,32 @@ export class HeightMap {
 
     this.itemsXFlip = this.items.map(a => a);
     this.itemsXFlip.reverse();
-    this.itemsYFlip = this.items.map(a => 16 - a);
-    this.itemsXFlipYFlip = this.items.map(a => 16 - a);
+    this.itemsYFlip = this.items.map(a => (a === 16 ? 16 : 16 - a));
+    this.itemsXFlipYFlip = this.items.map(a => (a === 16 ? 16 : 16 - a));
     this.itemsXFlipYFlip.reverse();
+
+    const items90deg = new Array(16);
+
+    for (let y = 0; y < 16; y++) {
+      for (let x = 0; x < 16; x++) {
+        if (this.collisionBlock[x + y * 16]) {
+          items90deg[y] = 16 - x;
+          break;
+        }
+      }
+      if (!items90deg[y]) {
+        items90deg[y] = 0;
+      }
+    }
+
+    this.items90deg = items90deg;
+    this.items90degXFlip = items90deg.map(a => a);
+    this.items90degXFlip.reverse();
+    this.items90degYFlip = items90deg.map(a => (a === 16 ? 16 : 16 - a));
+    this.items90degXFlipYFlip = items90deg.map(a => (a === 16 ? 16 : 16 - a));
+    this.items90degXFlipYFlip.reverse();
   }
+
   private static itemsGood(items: number[], x: number, y: number): boolean {
     if (items[x] < 0) {
       return Math.abs(items[x]) >= y;

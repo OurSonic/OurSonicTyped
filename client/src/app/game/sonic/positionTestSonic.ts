@@ -2,9 +2,8 @@ import {RotationMode} from '../../common/enums';
 import {Help} from '../../common/help';
 import {Point} from '../../common/utils';
 import {SonicEngine} from '../sonicEngine';
-import {SonicLevel} from '../sonicLevel';
 import {SonicManager} from '../sonicManager';
-import {SensorResult, SensorManager, OldSensorManager} from './sensorManager';
+import {NewSensorResult, SensorManager, SensorResult} from './sensorManager';
 
 export class PositionTestSonic {
   x = 0;
@@ -58,36 +57,17 @@ export class PositionTestSonic {
       }
     }
 
-    const sensorA = this.sensorManager.getFloor('left', this.x, this.y, this.mode, false);
-    const sensorB = this.sensorManager.getFloor('right', this.x, this.y, this.mode, false);
-    const best = this.getBestSensor(sensorA, sensorB, this.mode);
+    const sensorA = this.sensorManager.getFloor('left', this.x, this.y, this.mode);
+    const sensorB = this.sensorManager.getFloor('right', this.x, this.y, this.mode);
+    const best = this.getBestNewSensor(sensorA, sensorB, this.mode);
     this.inAir = false;
     if (best === null) {
       this.inAir = true;
     } else {
       // console.log(best.letter);
-      switch (this.mode) {
-        case RotationMode.floor:
-          best.chosen = true;
-          this.angle = best.angle;
-          this.y = best.value;
-          break;
-        case RotationMode.leftWall:
-          best.chosen = true;
-          this.angle = best.angle;
-          this.x = best.value;
-          break;
-        case RotationMode.ceiling:
-          best.chosen = true;
-          this.angle = best.angle;
-          this.y = best.value;
-          break;
-        case RotationMode.rightWall:
-          best.chosen = true;
-          this.angle = best.angle;
-          this.x = best.value;
-          break;
-      }
+      this.angle = best.angle;
+      this.x = best.valueX;
+      this.y = best.valueY;
     }
     this.updateMode();
   }
@@ -102,6 +82,7 @@ export class PositionTestSonic {
     if (sensor2 === null) {
       return sensor1;
     }
+
     switch (mode) {
       case RotationMode.floor:
         return sensor1.value < sensor2.value ? sensor1 : sensor2;
@@ -111,6 +92,29 @@ export class PositionTestSonic {
         return sensor1.value > sensor2.value ? sensor1 : sensor2;
       case RotationMode.rightWall:
         return sensor1.value < sensor2.value ? sensor1 : sensor2;
+    }
+    return null;
+  }
+  private getBestNewSensor(sensor1: NewSensorResult, sensor2: NewSensorResult, mode: RotationMode): NewSensorResult {
+    if (sensor1 === null && sensor2 === null) {
+      return null;
+    }
+    if (sensor1 === null) {
+      return sensor2;
+    }
+    if (sensor2 === null) {
+      return sensor1;
+    }
+
+    switch (mode) {
+      case RotationMode.floor:
+        return sensor1.valueY < sensor2.valueY ? sensor1 : sensor2;
+      case RotationMode.leftWall:
+        return sensor1.valueX > sensor2.valueX ? sensor1 : sensor2;
+      case RotationMode.ceiling:
+        return sensor1.valueY > sensor2.valueY ? sensor1 : sensor2;
+      case RotationMode.rightWall:
+        return sensor1.valueX < sensor2.valueX ? sensor1 : sensor2;
     }
     return null;
   }

@@ -72,72 +72,80 @@ export class SonicManager {
   }
 
   private effectClick(event: MouseEvent): boolean {
-    return true;
-    /*
-                if (!this.sonicLevel) return;
-                let e = new Point((event.clientX + this.windowLocation.x),
-                    (event.clientY + this.windowLocation.y));
-                let ey: number;
-                let ex: number;
-                if (event.ctrlKey) {
-                    ex = e.x / 128 | 0;
-                    ey = e.y / 128 | 0;
-                    let ch = this.sonicLevel.getChunkAt(ex, ey);
-                    //            if (this.UIManager.UIManagerAreas.TilePieceArea != null)
-                    //                ch.SetTilePieceAt(e.X - ex * 128, e.Y - ey * 128, this.UIManager.UIManagerAreas.TilePieceArea.Data, true);
-                    return true;
-                }
-                if (event.shiftKey) {
-                    ex = e.x / 128 | 0;
-                    ey = e.y / 128 | 0;
-                    let ch = this.sonicLevel.getChunkAt(ex, ey);
-                    //            if (this.UIManager.UIManagerAreas.TileChunkArea != null)
-                    //                this.SonicLevel.SetChunkAt(ex, ey, this.UIManager.UIManagerAreas.TileChunkArea.Data);
-                    return true;
-                }
-                if (event.button === 0) {
-                    switch (this.clickState) {
-                        case ClickState.Dragging:
-                            return true;
-                        case ClickState.PlaceChunk: {
-                            ex = e.x / 128 | 0;
-                            ey = e.y / 128 | 0;
-                            let ch = this.sonicLevel.getChunkAt(ex, ey);
-                            let tp = ch.getTilePieceAt(e.x - ex * 128, e.y - ey * 128, true);
-                            let dontClear: boolean = false;
-                            //                    if (this.UIManager.UIManagerAreas.TileChunkArea != null) {
-                            //                        if (this.UIManager.UIManagerAreas.TileChunkArea.Data == ch)
-                            //                            dontClear = true;
-                            //                        this.UIManager.UIManagerAreas.TileChunkArea.Data = ch;
-                            //                    }
-                            //                    if (this.UIManager.UIManagerAreas.TilePieceArea != null) {
-                            //                        if (this.UIManager.UIManagerAreas.TilePieceArea.Data != tp)
-                            //                            dontClear = true;
-                            //                        this.UIManager.UIManagerAreas.TilePieceArea.Data = tp;
-                            //                    }
-                            // this.clearCache();
-                            return true;
+    // return true;
+    if (!this.sonicLevel) return;
+    const target = event.target as HTMLCanvasElement;
+    const xRatio = target.width / target.clientWidth;
+    const yRatio = target.height / target.clientHeight;
+    const e = new Point(
+      Help.mod(event.clientX * xRatio + this.windowLocation.x, this.sonicLevel.levelWidth * 128),
+      Help.mod(event.clientY * yRatio + this.windowLocation.y, this.sonicLevel.levelHeight * 128)
+    );
+    let ey: number;
+    let ex: number;
+    if (event.ctrlKey) {
+      ex = (e.x / 128) | 0;
+      ey = (e.y / 128) | 0;
+      console.log(ex, ey);
+      const ch = this.sonicLevel.getChunkAt(ex, ey);
+      const tp = ch.getTilePieceAt(e.x - ex * 128, e.y - ey * 128, true);
+      console.log(tp.index);
+      (console as any).image(tp.getImage().canvas.toDataURL());
 
-                        }
-                        case ClickState.PlaceRing:
-                            ex = e.x;
-                            ey = e.y;
-                            this.sonicLevel.rings.push(Help.merge(new Ring(true), {X: ex, Y: ey}));
-                            return true;
-                        case ClickState.PlaceObject: {
-                            ex = e.x;
-                            ey = e.y;
-                            let pos = new Point(ex, ey);
-                            for (let o of this.sonicLevel.objects) {
-                                if (IntersectingRectangle.IntersectsRect(o.getRect(), pos))
-                                    alert("Object Data: " + Help.stringify(o));
-                            }
-                            return true;
-                        }
-                    }
-                }
-                return false;
-        */
+      //            if (this.UIManager.UIManagerAreas.TilePieceArea != null)
+      //                ch.SetTilePieceAt(e.X - ex * 128, e.Y - ey * 128, this.UIManager.UIManagerAreas.TilePieceArea.Data, true);
+      return true;
+    }
+    if (event.shiftKey) {
+      ex = (e.x / 128) | 0;
+      ey = (e.y / 128) | 0;
+      const ch = this.sonicLevel.getChunkAt(ex, ey);
+      //            if (this.UIManager.UIManagerAreas.TileChunkArea != null)
+      //                this.SonicLevel.SetChunkAt(ex, ey, this.UIManager.UIManagerAreas.TileChunkArea.Data);
+      return true;
+    }
+    if (event.button === 0) {
+      /*
+      switch (this.clickState) {
+        case ClickState.Dragging:
+          return true;
+        case ClickState.PlaceChunk: {
+          ex = (e.x / 128) | 0;
+          ey = (e.y / 128) | 0;
+          const ch = this.sonicLevel.getChunkAt(ex, ey);
+          const tp = ch.getTilePieceAt(e.x - ex * 128, e.y - ey * 128, true);
+          const dontClear: boolean = false;
+          //                    if (this.UIManager.UIManagerAreas.TileChunkArea != null) {
+          //                        if (this.UIManager.UIManagerAreas.TileChunkArea.Data == ch)
+          //                            dontClear = true;
+          //                        this.UIManager.UIManagerAreas.TileChunkArea.Data = ch;
+          //                    }
+          //                    if (this.UIManager.UIManagerAreas.TilePieceArea != null) {
+          //                        if (this.UIManager.UIManagerAreas.TilePieceArea.Data != tp)
+          //                            dontClear = true;
+          //                        this.UIManager.UIManagerAreas.TilePieceArea.Data = tp;
+          //                    }
+          // this.clearCache();
+          return true;
+        }
+        case ClickState.PlaceRing:
+          ex = e.x;
+          ey = e.y;
+          this.sonicLevel.rings.push(Help.merge(new Ring(true), {X: ex, Y: ey}));
+          return true;
+        case ClickState.PlaceObject: {
+          ex = e.x;
+          ey = e.y;
+          const pos = new Point(ex, ey);
+          for (const o of this.sonicLevel.objects) {
+            if (IntersectingRectangle.IntersectsRect(o.getRect(), pos)) alert('Object Data: ' + Help.stringify(o));
+          }
+          return true;
+        }
+      }
+*/
+    }
+    return false;
   }
 
   private tickObjects(): void {
@@ -212,28 +220,28 @@ export class SonicManager {
     this.drawObjects(this.engine.spriteCanvas.context);
     this.drawRings(this.engine.spriteCanvas.context);
     let index = 0;
-    this.foreachTopOfVisibleTilePiece(
-      this.windowLocation.x,
-      this.windowLocation.y,
-      (x, y, tpx, tpy, piece, pieceInfo) => {
-        index++;
-        if (index !== this.currentTestSonic) {
-          return;
+    false &&
+      this.foreachTopOfVisibleTilePiece(
+        this.windowLocation.x,
+        this.windowLocation.y,
+        (x, y, tpx, tpy, piece, pieceInfo) => {
+          index++;
+          if (index !== this.currentTestSonic) {
+            return;
+          }
+          this.engine.highTileCanvas.context.fillStyle = 'white';
+          this.engine.highTileCanvas.context.fillRect(tpx - this.windowLocation.x, tpy - this.windowLocation.y, 16, 16);
+          const positionTestSonic = new PositionTestSonic(this);
+          positionTestSonic.x = x;
+          positionTestSonic.y = y;
+          // debugger;
+          positionTestSonic.tick();
+          this.engine.spriteCanvas.context.save();
+          this.engine.spriteCanvas.context.globalAlpha = 0.96;
+          positionTestSonic.draw(this.engine.spriteCanvas.context);
+          this.engine.spriteCanvas.context.restore();
         }
-        console.log(index, x, y, tpx, tpy, pieceInfo.xFlip, pieceInfo.yFlip);
-        this.engine.highTileCanvas.context.fillStyle = 'white';
-        this.engine.highTileCanvas.context.fillRect(tpx - this.windowLocation.x, tpy - this.windowLocation.y, 16, 16);
-        const positionTestSonic = new PositionTestSonic(this);
-        positionTestSonic.x = x;
-        positionTestSonic.y = y;
-        debugger;
-        positionTestSonic.tick();
-        this.engine.spriteCanvas.context.save();
-        this.engine.spriteCanvas.context.globalAlpha = 0.96;
-        positionTestSonic.draw(this.engine.spriteCanvas.context);
-        this.engine.spriteCanvas.context.restore();
-      }
-    );
+      );
     if (this.currentGameState === GameState.playing) {
       this.sonicToon.draw(this.engine.spriteCanvas.context);
     }
@@ -484,7 +492,7 @@ export class SonicManager {
         const tpX = tileX * 8 + pixelX;
         const tpY = tileY * 8 + pixelY;
 
-        const angle = this.sonicLevel.curHeightMap ? piece.getLayer1Angle() : piece.getLayer2Angle();
+        const angle = this.sonicLevel.curHeightMap ? piece.layer1Angle : piece.layer2Angle;
 
         if (this.sonicLevel.curHeightMap) {
           if (pieceInfo.solid1 === Solidity.NotSolid) {
