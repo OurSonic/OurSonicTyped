@@ -18,7 +18,6 @@ export class Sonic {
   sonicLastHitTick: number;
   private sonicLevel: SonicLevel;
 
-  watcher: Watcher;
   x: number = 0;
   y: number = 0;
   rings: number = 0;
@@ -53,7 +52,6 @@ export class Sonic {
   private oldSensorManager: OldSensorManager;
 
   constructor(private sonicManager: SonicManager) {
-    this.watcher = new Watcher();
     this.physicsVariables = SonicConstants.sonic();
     this.sonicLevel = sonicManager.sonicLevel;
     this.x = this.sonicLevel.startPositions[0].x;
@@ -61,8 +59,8 @@ export class Sonic {
     this.sensorManager = new SensorManager(sonicManager);
     this.oldSensorManager = new OldSensorManager(sonicManager);
 
-    this.oldSensorManager.createVerticalSensor('a', -9, 0, 36, '#F202F2');
-    this.oldSensorManager.createVerticalSensor('b', 9, 0, 36, '#02C2F2');
+    this.oldSensorManager.createVerticalSensor('a', -9, 0, 19, '#F202F2');
+    this.oldSensorManager.createVerticalSensor('b', 10, 0, 19, '#02C2F2');
     this.oldSensorManager.createVerticalSensor('c', -9, 0, -20, '#2D2C21');
     this.oldSensorManager.createVerticalSensor('d', 9, 0, -20, '#C24222');
     this.oldSensorManager.createHorizontalSensor('m1', 4, 0, -12, '#212C2E');
@@ -96,7 +94,7 @@ export class Sonic {
 
   tick(sonicLevel: SonicLevel): void {
     if (this.debugging) {
-      const debugSpeed = this.watcher.Multiply(16);
+      const debugSpeed = 16;
       if (this.holdingRight) {
         this.x += debugSpeed;
       }
@@ -121,6 +119,7 @@ export class Sonic {
     }
     if (this.hLock > 0) {
       this.hLock--;
+      console.log('lock', this.hLock);
       this.holdingRight = false;
       this.holdingLeft = false;
     }
@@ -442,7 +441,6 @@ export class Sonic {
   }
 
   private effectPhysics(): void {
-    this.watcher.Tick();
     const physics = this.physicsVariables;
     const max = physics.topSpeed;
     if (!this.jumping) {
@@ -469,22 +467,22 @@ export class Sonic {
     }
     if (!this.inAir && !this.rolling && !this.spinDash) {
       if (!this.holdingLeft && !this.holdingRight && !this.justHit) {
-        this.gsp -= Math.min(Math.abs(this.gsp), this.watcher.Multiply(physics.frc)) * (this.gsp > 0 ? 1 : -1);
+        this.gsp -= Math.min(Math.abs(this.gsp), physics.frc) * (this.gsp > 0 ? 1 : -1);
       }
       this.oldSign = Help.sign(this.gsp);
-      this.gsp += this.watcher.Multiply(physics.slp) * -Help.sin(this.angle);
+      this.gsp -= physics.slp * Help.sin(this.angle);
       if (this.oldSign !== Help.sign(this.gsp) && this.oldSign !== 0) {
         this.hLock = 30;
       }
       if (this.holdingRight && !this.holdingLeft && !this.justHit) {
         this.facing = true;
         if (this.gsp >= 0) {
-          this.gsp += this.watcher.Multiply(physics.acc);
+          this.gsp += physics.acc;
           if (this.gsp > max) {
             this.gsp = max;
           }
         } else {
-          this.gsp += this.watcher.Multiply(physics.dec);
+          this.gsp += physics.dec;
           if (Math.abs(this.gsp) > 4.5) {
             this.facing = false;
             this.breaking = 1;
@@ -495,12 +493,12 @@ export class Sonic {
       if (this.holdingLeft && !this.holdingRight && !this.justHit) {
         this.facing = false;
         if (this.gsp <= 0) {
-          this.gsp -= this.watcher.Multiply(physics.acc);
+          this.gsp -= physics.acc;
           if (this.gsp < -max) {
             this.gsp = -max;
           }
         } else {
-          this.gsp -= this.watcher.Multiply(physics.dec);
+          this.gsp -= physics.dec;
           if (Math.abs(this.gsp) > 4.5) {
             this.facing = true;
             this.breaking = -1;
@@ -529,25 +527,25 @@ export class Sonic {
       if (this.holdingLeft && !this.justHit) {
         if (this.gsp > 0) {
           if (this.rolling) {
-            this.gsp = Help.max(0, this.gsp - this.watcher.Multiply(physics.rdec));
+            this.gsp = Help.max(0, this.gsp - physics.rdec);
           }
         }
       }
       if (this.holdingRight && !this.justHit) {
         if (this.gsp < 0) {
           if (this.rolling) {
-            this.gsp = Help.min(0, this.gsp + this.watcher.Multiply(physics.rdec));
+            this.gsp = Help.min(0, this.gsp + physics.rdec);
           }
         }
       }
-      this.gsp -= Math.min(Math.abs(this.gsp), this.watcher.Multiply(physics.rfrc)) * (this.gsp > 0 ? 1 : -1);
+      this.gsp -= Math.min(Math.abs(this.gsp), physics.rfrc) * (this.gsp > 0 ? 1 : -1);
       this.oldSign = Help.sign(this.gsp);
       const ang = Help.sin(this.angle);
       // eslint-disable-next-line no-mixed-operators
       if (ang > 0 === this.gsp > 0) {
-        this.gsp += this.watcher.Multiply(-physics.slpRollingUp) * ang;
+        this.gsp += -physics.slpRollingUp * ang;
       } else {
-        this.gsp += this.watcher.Multiply(-physics.slpRollingDown) * ang;
+        this.gsp += -physics.slpRollingDown * ang;
       }
       if (this.gsp > max * 2.5) {
         this.gsp = max * 2.5;
@@ -567,18 +565,18 @@ export class Sonic {
       if (this.holdingRight && !this.holdingLeft && !this.justHit) {
         this.facing = true;
         if (this.xsp >= 0) {
-          this.xsp += this.watcher.Multiply(physics.air);
+          this.xsp += physics.air;
           if (this.xsp > max) {
             this.xsp = max;
           }
         } else {
-          this.xsp += this.watcher.Multiply(physics.air);
+          this.xsp += physics.air;
         }
       }
       if (this.holdingLeft && !this.holdingRight && !this.justHit) {
         this.facing = false;
         if (this.xsp <= 0) {
-          this.xsp -= this.watcher.Multiply(physics.air);
+          this.xsp -= physics.air;
           if (this.xsp < -max) {
             this.xsp = -max;
           }
@@ -625,32 +623,18 @@ export class Sonic {
       if (this.spinDash) {
         this.gsp = 0;
       }
+      if (Math.abs(this.gsp) < 0.067) {
+        this.gsp = 0;
+      }
       this.xsp = this.gsp * Help.cos(this.angle);
       this.ysp = this.gsp * -Help.sin(this.angle);
       if (Math.abs(this.gsp) < 2.5 && this.mode !== RotationMode.floor) {
-        if (this.mode === RotationMode.rightWall) {
-          this.x += 0;
-        } else if (this.mode === RotationMode.leftWall) {
-          this.x += 0;
-        } else if (this.mode === RotationMode.ceiling) {
-          this.y += 0;
-        }
-        this.updateMode();
         this.mode = RotationMode.floor;
         this.hLock = 30;
-        this.inAir = true;
       }
     }
-    if (this.xsp > 0 && this.xsp < 0.008) {
-      this.gsp = 0;
-      this.xsp = 0;
-    }
-    if (this.xsp < 0 && this.xsp > -0.008) {
-      this.gsp = 0;
-      this.xsp = 0;
-    }
-    this.x = (this.sonicLevel.levelWidth * 128 + (this.x + this.xsp)) % (this.sonicLevel.levelWidth * 128);
-    this.y = (this.sonicLevel.levelHeight * 128 + (this.y + this.ysp)) % (this.sonicLevel.levelHeight * 128);
+    this.x = Help.mod(this.x + this.xsp, this.sonicLevel.levelWidth * 128);
+    this.y = Help.mod(this.y + this.ysp, this.sonicLevel.levelHeight * 128);
   }
 
   draw(context: CanvasRenderingContext2D): void {
@@ -933,25 +917,5 @@ export class Sonic {
       }
     }
     return angle;
-  }
-}
-
-export class Watcher {
-  private lastTick: number = 0;
-  mult: number = 1;
-
-  Tick(): void {
-    this.mult = 1;
-    /*     let ticks = new Date().getTime();
-             let offset: number = 0;
-             if (this.lastTick===0)
-                 offset = 16;
-             else offset = ticks - this.lastTick;
-             this.lastTick = ticks;
-             this.mult = (offset / 16) | 0;*/
-  }
-
-  Multiply(v: number): number {
-    return this.mult * v;
   }
 }

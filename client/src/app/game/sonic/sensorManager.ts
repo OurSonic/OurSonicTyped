@@ -139,7 +139,7 @@ export class SensorManager {
       tileBottomEdge
     } = tilePieceResult;
 
-    if (!inAir && solidity === Solidity.NotSolid && checking === 'start') {
+    if (!inAir && solidity === Solidity.NotSolid && mode === RotationMode.floor && checking === 'start') {
       // console.log('extend', side);
       const floor = this.getFloor(side, x + extensionX, y + extensionY, mode, 'down', isBall, inAir);
       if (floor) return floor;
@@ -154,6 +154,9 @@ export class SensorManager {
             // console.log('regress', side);
             const floor = this.getFloor(side, x - extensionX, y - extensionY, mode, 'up', isBall, inAir);
             if (floor) return floor;
+          }
+          if (inAir && 16 - interTileY > heightMap) {
+            return null;
           }
           return {
             solidity,
