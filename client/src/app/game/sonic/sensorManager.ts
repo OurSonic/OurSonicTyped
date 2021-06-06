@@ -45,16 +45,8 @@ export class SensorManager {
     const tilePieceResult = this.sonicManager.sonicLevel.getTilePieceAt(x, y);
     if (!tilePieceResult) return null;
 
-    const {
-      solidity,
-      collisionMap,
-      interTileX,
-      interTileY,
-      tileLeftEdge,
-      tileRightEdge,
-      tileTopEdge,
-      tileBottomEdge
-    } = tilePieceResult;
+    const {solidity, collisionMap, interTileX, interTileY, tileLeftEdge, tileRightEdge, tileTopEdge, tileBottomEdge} =
+      tilePieceResult;
 
     if (solidity > minSolidity && collisionMap[interTileX + interTileY * 16]) {
       switch (mode) {
@@ -136,7 +128,7 @@ export class SensorManager {
       tileLeftEdge,
       tileRightEdge,
       tileTopEdge,
-      tileBottomEdge
+      tileBottomEdge,
     } = tilePieceResult;
 
     if (!inAir && solidity === Solidity.NotSolid && mode === RotationMode.floor && checking === 'start') {
@@ -164,7 +156,7 @@ export class SensorManager {
             chosen: false,
             angle: tileAngle,
             valueX: x,
-            valueY: tileBottomEdge - heightMap - bodyHeightRadius
+            valueY: tileBottomEdge - heightMap - bodyHeightRadius,
           };
         }
         case RotationMode.rightWall: {
@@ -180,7 +172,7 @@ export class SensorManager {
             chosen: false,
             angle: tileAngle,
             valueX: tileRightEdge - heightMap - bodyHeightRadius,
-            valueY: y
+            valueY: y,
           };
         }
         case RotationMode.ceiling: {
@@ -196,7 +188,7 @@ export class SensorManager {
             chosen: false,
             angle: tileAngle,
             valueX: x,
-            valueY: tileTopEdge + heightMap + bodyHeightRadius
+            valueY: tileTopEdge + heightMap + bodyHeightRadius,
           };
         }
         case RotationMode.leftWall: {
@@ -212,7 +204,7 @@ export class SensorManager {
             chosen: false,
             angle: tileAngle,
             valueX: tileLeftEdge + heightMap + bodyHeightRadius,
-            valueY: y
+            valueY: y,
           };
         }
       }

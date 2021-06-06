@@ -52,7 +52,7 @@ export enum Solidity {
   NotSolid = 0,
   TopSolid = 1,
   LRBSolid = 2,
-  AllSolid = 3
+  AllSolid = 3,
 }
 
 export interface SLDataChunkBlock {

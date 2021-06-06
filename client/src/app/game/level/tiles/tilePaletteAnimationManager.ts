@@ -78,6 +78,9 @@ export class TilePaletteAnimation {
     }
     for (let j = 0; j <= pal.totalLength; j += pal.skipIndex) {
       if (this.manager.sonicManager.drawTickCount % (pal.totalLength + pal.skipIndex) === j) {
+        if (pal.totalLength === 24) {
+          console.log(j / pal.skipIndex);
+        }
         this.currentFrame = j / pal.skipIndex;
       }
     }
@@ -91,11 +94,8 @@ export class TilePaletteAnimation {
     if (pal.totalLength === 0) {
       return;
     }
-    for (let j = 0; j <= pal.totalLength; j += pal.skipIndex) {
-      const frameIndex = j / pal.skipIndex;
-      if (this.frames[frameIndex] == null) {
-        this.frames[frameIndex] = new TilePaletteAnimationFrame(frameIndex, this);
-      }
+    for (let j = 0; j <= Math.round(pal.totalLength / pal.skipIndex); j += 1) {
+      this.frames.push(new TilePaletteAnimationFrame(j, this));
     }
   }
 }
@@ -112,15 +112,25 @@ export class TilePaletteAnimationFrame {
   setPalette(): void {
     const levelPalette = this.animation.manager.sonicManager.sonicLevel.palette;
     const pal = this.animation.animatedPaletteData;
+
     for (let index = 0; index < pal.pieces.length; index++) {
       const palettePiece = pal.pieces[index];
       const colorIndex = this.frameIndex + pal.pieces.length * index;
       const replaceIndex = (palettePiece.paletteOffset / 2) | 0;
-      const color = pal.palette[colorIndex];
-      if (color != null) {
-        levelPalette[palettePiece.paletteIndex][replaceIndex] = color;
+      if (pal.totalLength === 24) {
+        console.log(replaceIndex);
+      }
+      const color1 = pal.palette[colorIndex];
+      if (color1) {
+        levelPalette[palettePiece.paletteIndex][replaceIndex] = color1;
       } else {
         levelPalette[palettePiece.paletteIndex][replaceIndex] = 0;
+      }
+      const color2 = pal.palette[colorIndex + 1];
+      if (color2) {
+        levelPalette[palettePiece.paletteIndex][replaceIndex + 1] = color2;
+      } else {
+        levelPalette[palettePiece.paletteIndex][replaceIndex + 1] = 0;
       }
     }
   }

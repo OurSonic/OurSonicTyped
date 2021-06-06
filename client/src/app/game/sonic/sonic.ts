@@ -623,7 +623,7 @@ export class Sonic {
       if (this.spinDash) {
         this.gsp = 0;
       }
-      if (Math.abs(this.gsp) < 0.067) {
+      if (Math.abs(this.gsp) < 0.067 && !this.holdingLeft && !this.holdingRight) {
         this.gsp = 0;
       }
       this.xsp = this.gsp * Help.cos(this.angle);

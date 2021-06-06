@@ -152,7 +152,7 @@ export class Help {
     const sprite1 = new Image();
     sprite1.addEventListener(
       'load',
-      e => {
+      (e) => {
         Help.loaded(sprite1, true);
         if (complete) {
           complete(sprite1);

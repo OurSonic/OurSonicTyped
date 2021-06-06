@@ -151,7 +151,7 @@ export class SonicLevel {
       tileBottomEdge: y - interTileY + 16,
       heightMapValues,
       heightMap90Values,
-      yFlip: tilePieceInfo.yFlip
+      yFlip: tilePieceInfo.yFlip,
     };
   }
 }

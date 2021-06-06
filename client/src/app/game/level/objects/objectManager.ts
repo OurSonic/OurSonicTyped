@@ -8,7 +8,7 @@ import {LevelObjectPieceLayout} from './levelObjectPieceLayout';
 import {LevelObjectProjectile} from './levelObjectProjectile';
 
 export class ObjectManager {
-  static broken = Help.loadSprite('assets/sprites/broken.png', e => {});
+  static broken = Help.loadSprite('assets/sprites/broken.png', (e) => {});
   private sonicManager: SonicManager;
 
   constructor(sonicManager: SonicManager) {
@@ -41,7 +41,7 @@ export class ObjectManager {
           hurtSonicMap: fr.hurtSonicMap,
           collisionMap: fr.collisionMap,
           colorMap: fr.colorMap,
-          palette: fr.palette
+          palette: fr.palette,
         });
       }
       obj.assets[i] = levelObjectAsset;
@@ -56,7 +56,7 @@ export class ObjectManager {
       const pl = d.pieceLayouts[index];
       obj.pieceLayouts[index] = Help.merge(new LevelObjectPieceLayout(pl.name), {
         height: pl.height,
-        width: pl.width
+        width: pl.width,
       });
       obj.pieceLayouts[index].pieces = [];
       for (let i: number = 0; i < d.pieceLayouts[index].pieces.length; i++) {
@@ -74,7 +74,7 @@ export class ObjectManager {
         xflip: proj.xflip,
         yflip: proj.yflip,
         assetIndex: proj.assetIndex,
-        frameIndex: proj.frameIndex
+        frameIndex: proj.frameIndex,
       });
       obj.projectiles[index] = proj;
     }

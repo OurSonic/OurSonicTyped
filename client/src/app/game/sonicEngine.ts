@@ -56,7 +56,7 @@ export class SonicEngine {
     );
 
     this.bindInput();
-    window.addEventListener('resize', e => this.resizeCanvas());
+    window.addEventListener('resize', (e) => this.resizeCanvas());
     this.sonicManager = new SonicManager(this, () => this.resizeCanvas());
 
     window.requestAnimationFrame(this.tick);
@@ -87,7 +87,7 @@ export class SonicEngine {
       const spriteStep = this.spriteLoader.addStep(
         'Sprites',
         (i, done) => {
-          Help.loadSprite(spriteLocations[i], jd => {
+          Help.loadSprite(spriteLocations[i], (jd) => {
             this.spriteCache.rings[i] = CanvasInformation.create(jd.width, jd.height, false);
             this.spriteCache.rings[i].context.drawImage(jd, 0, 0);
             done();
@@ -115,7 +115,7 @@ export class SonicEngine {
             this.spriteCache.sonicSprites[sonicSprite] = Help.scaleCsImage(
               this.sonicSprites[sonicSprite],
               new Point(1, 1),
-              ec => {}
+              (ec) => {}
             );
           }
           done();
@@ -146,10 +146,10 @@ export class SonicEngine {
   };
 
   private bindInput(): void {
-    this.highTileCanvas.canvas.onmousedown = e => this.canvasOnClick(e);
-    this.highTileCanvas.canvas.onmouseup = e => this.canvasMouseUp(e);
-    this.highTileCanvas.canvas.onmousemove = e => this.canvasMouseMove(e);
-    this.highTileCanvas.canvas.oncontextmenu = e => e.preventDefault();
+    this.highTileCanvas.canvas.onmousedown = (e) => this.canvasOnClick(e);
+    this.highTileCanvas.canvas.onmouseup = (e) => this.canvasMouseUp(e);
+    this.highTileCanvas.canvas.onmousemove = (e) => this.canvasMouseMove(e);
+    this.highTileCanvas.canvas.oncontextmenu = (e) => e.preventDefault();
 
     // (<any>keyboardJS).watch(document.getElementById('canvasBox'));
     keyboardJS.bind('f', () => (this.sonicManager.showHeightMap = !this.sonicManager.showHeightMap));

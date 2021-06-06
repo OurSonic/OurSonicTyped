@@ -54,7 +54,7 @@ export class LevelObject {
       level,
       sonic,
       sensor as any /*todo bad*/,
-      piece
+      piece,
     ]) as boolean;
   }
   onHurtSonic(
@@ -69,7 +69,7 @@ export class LevelObject {
       level,
       sonic,
       sensor as any /*todo bad*/,
-      piece
+      piece,
     ]) as boolean;
   }
   tick($object: LevelObjectInfo, level: SonicLevel, sonic: Sonic): boolean {

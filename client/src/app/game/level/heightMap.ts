@@ -104,11 +104,11 @@ export class HeightMap {
       }
     }
 
-    this.itemsXFlip = this.items.map(a => a);
+    this.itemsXFlip = this.items.map((a) => a);
     this.itemsXFlip.reverse();
-    this.itemsYFlip = this.items.map(a => a);
+    this.itemsYFlip = this.items.map((a) => a);
     this.itemsYFlip.reverse();
-    this.itemsXFlipYFlip = this.items.map(a => (a === 16 ? 16 : 16 - a));
+    this.itemsXFlipYFlip = this.items.map((a) => (a === 16 ? 16 : 16 - a));
     this.itemsXFlipYFlip.reverse();
 
     const items90deg = new Array(16);
@@ -126,11 +126,11 @@ export class HeightMap {
     }
 
     this.items90deg = items90deg;
-    this.items90degXFlip = items90deg.map(a => (a === 16 ? 16 : 16 - a));
+    this.items90degXFlip = items90deg.map((a) => (a === 16 ? 16 : 16 - a));
     this.items90degXFlip.reverse();
-    this.items90degYFlip = items90deg.map(a => a);
+    this.items90degYFlip = items90deg.map((a) => a);
     this.items90degYFlip.reverse();
-    this.items90degXFlipYFlip = items90deg.map(a => (a === 16 ? 16 : 16 - a));
+    this.items90degXFlipYFlip = items90deg.map((a) => (a === 16 ? 16 : 16 - a));
     this.items90degXFlipYFlip.reverse();
   }
 
@@ -205,7 +205,7 @@ export class HeightMap {
     true,
     true,
     true,
-    true
+    true,
   ];
   static empty = [
     false,
@@ -271,6 +271,6 @@ export class HeightMap {
     false,
     false,
     false,
-    false
+    false,
   ];
 }

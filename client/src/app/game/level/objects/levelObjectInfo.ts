@@ -60,7 +60,7 @@ export class LevelObjectInfo {
     this.pieces = [];
     for (const t of pcs) {
       // todo look into this...
-      this.pieces.push((t as any) as LevelObjectPiece);
+      this.pieces.push(t as any as LevelObjectPiece);
     }
   }
   setObjectData(obj: LevelObject): void {

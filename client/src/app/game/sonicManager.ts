@@ -269,9 +269,8 @@ export class SonicManager {
         const x = (_xPreal * 128 - this.windowLocation.x) | 0;
         const y = (_yPreal * 128 - this.windowLocation.y) | 0;
         if (this.showHeightMap) {
-          let heightMapChunk = this.engine.spriteCache.heightMapChunks[
-            (this.sonicLevel.curHeightMap ? 1 : 2) + ' ' + chunk.index
-          ];
+          let heightMapChunk =
+            this.engine.spriteCache.heightMapChunks[(this.sonicLevel.curHeightMap ? 1 : 2) + ' ' + chunk.index];
           if (!heightMapChunk) {
             heightMapChunk = this.cacheHeightMapForChunk(chunk);
           }
@@ -764,7 +763,7 @@ export class SonicManager {
         t.setObjectData(this.cachedObjects[o]);
         continue;
       }
-      const d = objects.filter(p => p.key === o)[0];
+      const d = objects.filter((p) => p.key === o)[0];
       if (!d) {
         t.setObjectData(new LevelObject(o));
         continue;
@@ -782,7 +781,7 @@ export class SonicManager {
   }
 
   downloadObjects(objects: string[]): void {
-    fetch('https://api.oursonic.org/objects?object-keys=' + objects.join('~')).then(async resp => {
+    fetch('https://api.oursonic.org/objects?object-keys=' + objects.join('~')).then(async (resp) => {
       this.loadObjects(await resp.json());
     });
   }
@@ -809,7 +808,7 @@ export class SonicManager {
     const objectKeys: string[] = [];
     for (const obj of this.sonicLevel.objects) {
       const o = obj.key;
-      if (objectKeys.filter(p => p !== o).length === objectKeys.length) {
+      if (objectKeys.filter((p) => p !== o).length === objectKeys.length) {
         objectKeys.push(o);
       }
     }
@@ -878,12 +877,12 @@ export class SonicManager {
       this.sonicLevel.tilePieces[blockIndex] = tilePiece;
     }
     this.sonicLevel.angles = slData.angles;
-    this.sonicLevel.tileAnimations = slData.animations.map(tileData => {
+    this.sonicLevel.tileAnimations = slData.animations.map((tileData) => {
       const tileAnimation = new TileAnimationData(this);
       tileAnimation.animationTileFile = tileData.animationFile;
       tileAnimation.animationTileIndex = tileData.animationTileIndex;
       tileAnimation.numberOfTiles = tileData.numberOfTiles;
-      tileAnimation.dataFrames = tileData.frames.map(frameData => {
+      tileAnimation.dataFrames = tileData.frames.map((frameData) => {
         const frame = new TileAnimationDataFrame();
         frame.ticks = frameData.ticks;
         frame.startingTileIndex = frameData.startingTileIndex;
@@ -918,8 +917,8 @@ export class SonicManager {
       }
       this.sonicLevel.tileChunks[j] = mj;
     }
-    this.sonicLevel.palette = slData.palette.map(a =>
-      a.map(col => {
+    this.sonicLevel.palette = slData.palette.map((a) =>
+      a.map((col) => {
         const r = parseInt(col.slice(0, 2), 16);
         const g = parseInt(col.slice(2, 4), 16);
         const b = parseInt(col.slice(4, 6), 16);
@@ -928,7 +927,7 @@ export class SonicManager {
       })
     );
 
-    this.sonicLevel.startPositions = slData.startPositions.map(a => new Point(a.x, a.y));
+    this.sonicLevel.startPositions = slData.startPositions.map((a) => new Point(a.x, a.y));
     this.sonicLevel.animatedPalettes = [];
 
     if (slData.paletteItems.length > 0) {
@@ -938,7 +937,7 @@ export class SonicManager {
 
         const animatedPalette = new PaletteItem();
         // eslint-disable-next-line no-eval
-        animatedPalette.palette = (eval(pal.palette) as string[]).map(col => {
+        animatedPalette.palette = (eval(pal.palette) as string[]).map((col) => {
           const r = parseInt(col.slice(0, 2), 16);
           const g = parseInt(col.slice(2, 4), 16);
           const b = parseInt(col.slice(4, 6), 16);
@@ -946,7 +945,7 @@ export class SonicManager {
         });
         animatedPalette.skipIndex = pal.skipIndex;
         animatedPalette.totalLength = pal.totalLength;
-        animatedPalette.pieces = pal.pieces.map(a => {
+        animatedPalette.pieces = pal.pieces.map((a) => {
           const piece = new PaletteItemPieces();
           piece.paletteIndex = a.paletteIndex;
           piece.paletteMultiply = a.paletteMultiply;
@@ -992,7 +991,7 @@ export class SonicManager {
         this.loading = false;
         this.resize();
       },
-      s => {}
+      (s) => {}
     );
     this.resize();
   }

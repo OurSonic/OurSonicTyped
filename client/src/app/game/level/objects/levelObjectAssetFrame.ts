@@ -56,9 +56,10 @@ export class LevelObjectAssetFrame {
     mainCanvas.restore();
   }
   getCache(showOutline: boolean, showCollideMap: boolean, showHurtMap: boolean): CanvasInformation {
-    let m = this.image[
-      (((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)
-    ];
+    let m =
+      this.image[
+        (((showOutline ? 1 : 0) + 2) * 7) ^ (((showCollideMap ? 1 : 0) + 2) * 89) ^ (((showHurtMap ? 1 : 0) + 2) * 79)
+      ];
     if (m == null) {
       const mj = CanvasInformation.create(this.width, this.height, false);
       const canvas = mj.context;

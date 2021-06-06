@@ -16,7 +16,7 @@ export class LevelSelector extends React.Component<Props, State> {
     super(props);
     this.state = {
       loadedALevel: false,
-      levels: null
+      levels: null,
     };
   }
 
@@ -40,7 +40,7 @@ export class LevelSelector extends React.Component<Props, State> {
       <ul style={{margin: 0, width: '100%', overflowY: 'scroll'}}>
         {!this.state.levels && <div style={{fontSize: '3rem', color: 'white'}}>Loading Levels</div>}
         {this.state.levels &&
-          this.state.levels.map(level => (
+          this.state.levels.map((level) => (
             <li key={level.name}>
               <button
                 style={{
@@ -60,7 +60,7 @@ export class LevelSelector extends React.Component<Props, State> {
                   padding: '0 2rem',
                   textTransform: 'uppercase',
                   verticalAlign: 'middle',
-                  WebkitTapHighlightColor: 'transparent'
+                  WebkitTapHighlightColor: 'transparent',
                 }}
                 onClick={() => this.loadLevel(level)}
               >

@@ -14,5 +14,5 @@ export class TileCacheBlock {
 }
 export enum TileCacheBlockType {
   Block,
-  TilePiece
+  TilePiece,
 }

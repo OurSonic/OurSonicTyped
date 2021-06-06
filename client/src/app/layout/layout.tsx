@@ -32,15 +32,15 @@ export class Layout extends React.Component<Props, State> {
       tabItems: [
         {
           image: sonic,
-          label: 'Level Select'
+          label: 'Level Select',
         },
         {
           image: tile,
-          label: 'Tiles'
+          label: 'Tiles',
         },
         {
           image: tilePiece,
-          label: 'Tile Pieces'
+          label: 'Tile Pieces',
         },
         /*         {
             image: 'assets/images/tabs/sonic.png',
@@ -48,20 +48,20 @@ export class Layout extends React.Component<Props, State> {
         },*/
         {
           image: tileChunk,
-          label: 'Tile Chunks'
+          label: 'Tile Chunks',
         } /*,
             {
                 image: 'assets/images/tabs/sonic.png',
                 label: 'Animated Tiles'
-            }*/
-      ]
+            }*/,
+      ],
     };
   }
 
   tabClick(index: number) {
     this.setState({
       selectedTabIndex: index,
-      title: this.state.tabItems[this.state.selectedTabIndex].label
+      title: this.state.tabItems[this.state.selectedTabIndex].label,
     });
   }
 
@@ -69,7 +69,7 @@ export class Layout extends React.Component<Props, State> {
     this.setState({collapseSide});
   }
 
-  managerListenerMove = manager => {
+  managerListenerMove = (manager) => {
     manager.on('move', (e, stick) => {
       SonicEngine.instance.sonicManager.sonicToon.releaseCrouch();
       SonicEngine.instance.sonicManager.sonicToon.releaseUp();
@@ -98,7 +98,7 @@ export class Layout extends React.Component<Props, State> {
     });
   };
 
-  managerListenerJump = manager => {
+  managerListenerJump = (manager) => {
     manager.on('move', (e, stick) => {
       SonicEngine.instance.sonicManager.sonicToon.pressJump();
     });
@@ -162,7 +162,7 @@ export class Layout extends React.Component<Props, State> {
                   mode: 'semi',
                   catchDistance: 150,
                   color: 'white',
-                  dataOnly: true
+                  dataOnly: true,
                 }}
                 containerStyle={{
                   position: 'absolute',
@@ -170,7 +170,7 @@ export class Layout extends React.Component<Props, State> {
                   width: '60%',
                   bottom: 0,
                   left: 0,
-                  background: 'transparent'
+                  background: 'transparent',
                 }}
                 managerListener={this.managerListenerMove}
               />
@@ -179,7 +179,7 @@ export class Layout extends React.Component<Props, State> {
                   mode: 'semi',
                   catchDistance: 150,
                   color: 'white',
-                  dataOnly: true
+                  dataOnly: true,
                 }}
                 containerStyle={{
                   position: 'absolute',
@@ -187,7 +187,7 @@ export class Layout extends React.Component<Props, State> {
                   width: '40%',
                   bottom: 0,
                   right: 0,
-                  background: 'transparent'
+                  background: 'transparent',
                 }}
                 managerListener={this.managerListenerJump}
               />
@@ -204,7 +204,7 @@ export class Layout extends React.Component<Props, State> {
               background: 'black',
               border: 'none',
               right: '0',
-              bottom: '0'
+              bottom: '0',
             }}
             onClick={() => this.collapse(false)}
           >
@@ -218,7 +218,7 @@ export class Layout extends React.Component<Props, State> {
             margin: 0,
             height: '100vh',
             position: 'relative',
-            display: this.state.collapseSide ? 'none' : 'block'
+            display: this.state.collapseSide ? 'none' : 'block',
           }}
         >
           <div style={{width: '100%', backgroundColor: 'white', height: '100%'}}>
@@ -231,7 +231,7 @@ export class Layout extends React.Component<Props, State> {
                   position: 'relative',
                   height: '91%',
                   display: 'flex',
-                  flexFlow: 'column nowrap'
+                  flexFlow: 'column nowrap',
                 }}
               >
                 <div
@@ -243,7 +243,7 @@ export class Layout extends React.Component<Props, State> {
                     fontSize: '3.2rem',
                     backgroundColor: '#29B6F6',
                     color: 'white',
-                    padding: '10px 10px 10px 30px'
+                    padding: '10px 10px 10px 30px',
                   }}
                 >
                   <span
@@ -260,14 +260,14 @@ export class Layout extends React.Component<Props, State> {
                 {this.state.selectedTabIndex === 0 && (
                   <div style={{flex: '13 0', width: '100%', height: '100%', display: 'inline-flex'}}>
                     <LevelSelector
-                      setLoading={loading => {
+                      setLoading={(loading) => {
                         if (!loading) {
                           if (Help.isMobile()) {
                             this.setState({collapseSide: true});
                           }
                         }
                         this.setState({
-                          loading
+                          loading,
                         });
                       }}
                     />
@@ -298,7 +298,7 @@ export class Layout extends React.Component<Props, State> {
                       alignItems: 'center',
                       padding: '15px',
                       color: 'white',
-                      backgroundColor: ind === this.state.selectedTabIndex ? '#29B6F6' : '#81D4FA'
+                      backgroundColor: ind === this.state.selectedTabIndex ? '#29B6F6' : '#81D4FA',
                     }}
                     onClick={() => this.tabClick(ind)}
                   >
