@@ -79,7 +79,7 @@ export class TilePaletteAnimation {
     for (let j = 0; j <= pal.totalLength; j += pal.skipIndex) {
       if (this.manager.sonicManager.drawTickCount % (pal.totalLength + pal.skipIndex) === j) {
         if (pal.totalLength === 24) {
-          console.log(j / pal.skipIndex);
+          // console.log(j / pal.skipIndex);
         }
         this.currentFrame = j / pal.skipIndex;
       }
@@ -118,7 +118,7 @@ export class TilePaletteAnimationFrame {
       const colorIndex = this.frameIndex + pal.pieces.length * index;
       const replaceIndex = (palettePiece.paletteOffset / 2) | 0;
       if (pal.totalLength === 24) {
-        console.log(replaceIndex);
+        // console.log(replaceIndex);
       }
       const color1 = pal.palette[colorIndex];
       if (color1) {

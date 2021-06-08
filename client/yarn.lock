@@ -13418,10 +13418,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-joystick@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-joystick/-/react-joystick-2.0.0.tgz#a82a633871d672553b8eb04c81b5574b32676f7e"
-  integrity sha512-HzXTZ2p59Lxq5JkfXqwBzi1fuBCF2dpQZjjKBq4Fff+r6TvWXYGXAukDEzAeNQgSQ7yB6JZsuwvMP/E751el/g==
+react-joystick@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-joystick/-/react-joystick-1.0.3.tgz#c217b5d42e474f750c2bbac7aadabb7a1fd0cd54"
+  integrity sha512-QimbkKqeNWCzdBa7UDRkBWzjqD7P4Nq7Il1TvpVRH7oT1/ZLRCYXCKgtUZSzxRUq5vzKLYtmts7w/sAxyovWBg==
   dependencies:
     css-loader "^0.28.11"
     file-loader "^1.1.11"
@@ -15800,6 +15800,11 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
+
+twgl.js@^4.19.1:
+  version "4.19.1"
+  resolved "https://registry.yarnpkg.com/twgl.js/-/twgl.js-4.19.1.tgz#bf7216ae4d6aff333c5511b612e674b7672b2ea2"
+  integrity sha512-zI28+xIQskBXpnoX9rsJ2n6zrx0AN3yFZASyp4u1IBscndUKlzRBwNtnD17BoO+RzQieuJksPzJKy8H6lRa97A==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"

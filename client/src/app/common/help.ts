@@ -3,6 +3,7 @@ import {CanvasInformation} from './canvasInformation';
 import {Color} from './color';
 import {Point} from './utils';
 export class Help {
+  static DRAWGL = true;
   // prettier-ignore
   private static cosTable = [
     1.00000, 0.99970, 0.99880, 0.99729, 0.99518, 0.99248, 0.98918, 0.98528,
@@ -201,3 +202,4 @@ export class Help {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
   }
 }
+export function assertType<T>(assertion: any): asserts assertion is T {}

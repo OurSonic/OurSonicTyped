@@ -16,7 +16,7 @@
     "outDir": "./dist/",
     "inlineSourceMap": true,
     "baseUrl": "./src",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "allowJs": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -25,7 +25,8 @@
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "noFallthroughCasesInSwitch": true
   },
   "exclude": [
     "node_modules"

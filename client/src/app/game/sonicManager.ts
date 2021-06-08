@@ -1,6 +1,6 @@
 import {CanvasInformation} from '../common/canvasInformation';
 import {GameState} from '../common/enums';
-import {Help} from '../common/help';
+import {assertType, Help} from '../common/help';
 import {IntersectingRectangle, Point, Rectangle} from '../common/utils';
 import {SlData, Solidity} from '../slData';
 import {TileAnimationData, TileAnimationDataFrame} from './level/animations/tileAnimationData';
@@ -245,7 +245,9 @@ export class SonicManager {
         }
       );
     if (this.currentGameState === GameState.playing) {
-      this.sonicToon.draw(this.engine.spriteCanvas.context);
+      if (!Help.DRAWGL) {
+        this.sonicToon.draw(this.engine.spriteCanvas.context);
+      }
     }
 
     if (this.showHeightMap || this.currentGameState === GameState.editing) {
@@ -363,7 +365,6 @@ export class SonicManager {
 
         const chunkX = (repositionedX / 128) | 0;
         const chunkY = (repositionedY / 128) | 0;
-
         const chunk = this.sonicLevel.getChunkAt(chunkX, chunkY);
         if (chunk === undefined) {
           continue;
@@ -434,8 +435,11 @@ export class SonicManager {
         }
       }
     }
-    this.engine.lowTileCanvas.context.putImageData(this.lowCacheImageData, -17, -17);
-    this.engine.highTileCanvas.context.putImageData(this.highCacheImageData, -17, -17);
+    if (!Help.DRAWGL) {
+      assertType<CanvasRenderingContext2D>(this.engine.lowTileCanvas.context);
+      this.engine.lowTileCanvas.context.putImageData(this.lowCacheImageData, -17, -17);
+      this.engine.highTileCanvas.context.putImageData(this.highCacheImageData, -17, -17);
+    }
   }
 
   private foreachTopOfVisibleTilePiece(
@@ -994,5 +998,6 @@ export class SonicManager {
       (s) => {}
     );
     this.resize();
+    this.engine.setupGL();
   }
 }
