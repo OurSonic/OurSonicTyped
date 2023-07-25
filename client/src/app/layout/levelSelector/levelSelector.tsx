@@ -20,10 +20,12 @@ export class LevelSelector extends React.Component<Props, State> {
     };
   }
 
-  async componentDidMount() {
-    const levels = await LevelService.getLevels();
-    this.loadLevel(levels[0]);
-    this.setState({levels});
+   componentDidMount() {
+setTimeout(async ()=>{
+  const levels = await LevelService.getLevels();
+  this.loadLevel(levels[0]);
+  this.setState({levels});
+},200)
   }
 
   async loadLevel(level: SonicLevelData) {
@@ -31,6 +33,9 @@ export class LevelSelector extends React.Component<Props, State> {
     this.props.setLoading(true);
     document.getElementById('hiddenBox').focus();
     const levelData = await LevelService.getLevel(level.name);
+    if(!SonicEngine.instance) {
+      new SonicEngine()
+    }
     SonicEngine.instance.loadLevel(levelData);
     this.props.setLoading(false);
   }

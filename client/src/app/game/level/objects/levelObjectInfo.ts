@@ -78,7 +78,7 @@ export class LevelObjectInfo {
     }
     try {
       return this.objectData.tick($object, level, sonic);
-    } catch (EJ) {
+    } catch (EJ:any) {
       this.log(EJ.Message, 0);
       return false;
     }
@@ -199,7 +199,7 @@ export class LevelObjectInfo {
   collide(sonic: Sonic, sensor: string, piece: any): boolean {
     try {
       return this.objectData.onCollide(this, SonicManager.instance.sonicLevel, sonic, sensor, piece);
-    } catch (EJ) {
+    } catch (EJ:any) {
       console.log(EJ);
       this.log(EJ.Message, 0);
       return false;
@@ -208,7 +208,7 @@ export class LevelObjectInfo {
   hurtSonic(sonic: Sonic, sensor: string, piece: any): boolean {
     try {
       return this.objectData.onHurtSonic(this, SonicManager.instance.sonicLevel, sonic, sensor, piece);
-    } catch (EJ) {
+    } catch (EJ:any) {
       this.log(EJ.Message, 0);
       return false;
     }

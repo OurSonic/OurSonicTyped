@@ -3,40 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.13.0",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^13.1.9",
     "@types/jest": "^26.0.23",
-    "@types/node": "^15.12.1",
-    "@types/react": "^17.0.9",
-    "@types/react-dom": "^17.0.6",
-    "mobx": "^6.3.2",
-    "mobx-react": "^7.2.0",
-    "prettier": "^2.3.1",
+    "@types/node": "^20.4.5",
+    "@types/react": "^17.0.62",
+    "@types/react-dom": "^17.0.20",
+    "mobx": "^6.10.0",
+    "mobx-react": "^7.6.0",
+    "twgl.js": "^4.19.1",
+    "prettier": "^3.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-joystick": "^2.0.0",
-    "react-scripts": "4.0.3",
-    "tslint": "^6.1.3",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-eslint-rules": "^5.4.0",
-    "tslint-plugin-prettier": "^2.3.0",
-    "tslint-react": "^5.0.0",
-    "typescript": "~4.3.2"
+    "eslint": "^8.45.0",
+    "react-joystick": "1.0.3",
+    "react-scripts": "5.0.1",
+    "typescript": "~5.1.6"
   },
   "scripts": {
     "pretty": "npx prettier \"*/**/*.ts*\"  --config .prettierrc --write",
     "lint": "npx tslint -p tsconfig.json --fix",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build-prod": "set \"REACT_APP_ENV=prod\" && react-scripts build",
     "start-prod": "set \"REACT_APP_ENV=prod\" && react-scripts start",
     "postbuild": "rimraf build/**/*.map"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
